@@ -1,0 +1,895 @@
+﻿<html>
+<head>
+	<title>Bar Graph</title>
+    <style>
+        	#drawing-mode {
+			  margin-bottom: 10px;
+			  vertical-align: top;
+			}
+			#drawing-mode-options {
+			  display: inline-block;
+			  vertical-align: top;
+			  margin-bottom: 10px;
+			  margin-top: 10px;
+			  background: #f5f2f0;
+			  padding: 10px;
+			}
+			.info {
+			  display: inline-block;
+			  width: 25px;
+			  background: #ffc;
+			}
+			#bd-wrapper {
+			  min-width: 1500px;
+			}
+    </style>
+        
+        <script src="hichart/hiChart_main.js"></script>
+        <script src="hichart/hichart_calculate.js"></script>
+        <script src="hichart/hiChart_bar.js"></script>
+        <script src="hichart/hiChart_stackedBar.js"></script>
+        <script src="hichart/hiChart_line.js"></script>
+        <script src="hichart/hiChart_pie.js"></script>
+        <script src="hichart/hiChart_polar.js"></script>
+        <script src="hichart/hiChart_basicPie.js"></script>
+        <script src="hichart/hiChart_area.js"></script>
+        <script src="hichart/hiChart_stackedArea.js"></script>
+        <script src="hichart/hichart_radar.js"></script>
+
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/fabric.min.js"></script>
+    </head>
+<body>
+    <!-- <canvas id="canvas" width='800' height='800'></canvas> -->
+
+
+    <div id="bd-wrapper" ng-controller="CanvasControls">
+        <canvas style="left: -300px; border: 2px solid; " height="600" width="632" id="c"></canvas>
+        <li style="list-style-type: none; margin-top:10px;">
+            <button id="drawing-mode" class="btn btn-info">Turn On Free Draw</button>
+            <button id="select" class="btn btn-info">Turn On Selection Mode</button>
+            <button id="grid" class="btn btn-info">Toggle Grid On/Off</button>
+            <br>
+            <button id="line" class="btn btn-info">Straight Line</button>
+            <button id="circle" class="btn btn-info">Circle</button>
+            <button id="squrect" class="btn btn-info">Square/Rectangle</button>
+            <button id="arrow" class="btn btn-info">Arrow</button>
+            <br><br>
+            <button id="copy" class="btn btn-info">Copy Object</button>
+            <button id="paste" class="btn btn-info">Paste Object</button>
+            <button id="delete" class="btn btn-info">Delete Object(s)</button>
+            <button id="clear-canvas" class="btn btn-info">Clear All</button>
+            <button id="saveCanvas" class="btn btn-info">Save</button>
+            <br>
+            <div class="inputboxes" style="display: none;" id="drawing-mode-options">
+                <label for="drawing-mode-selector">Brush Mode:</label>
+                <select id="drawing-mode-selector">
+        <option>Pencil</option>
+        <option>Circle</option>
+        <option>Spray</option>
+        <option>Pattern</option>
+        <option>hline</option>
+        <option>vline</option>
+        <option>square</option>
+        <option>diamond</option>
+        <option>texture</option>
+      </select>
+                <br>
+                <label for="drawing-line-width">Line width:</label>
+                <input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
+                <label for="drawing-color">Line color:</label>
+                <input type="color" value="#005E7A" id="drawing-color"><br>
+                <label for="drawing-shadow-width">Line shadow width:</label>
+                <input type="range" value="0" min="0" max="50" id="drawing-shadow-width"><br>
+            </div>
+        </li>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    var canvas = new fabric.Canvas('c');
+    canvas.isDrawingMode = false;
+    canvas.selection = false;
+
+    var drawingModeEl = document.getElementById('drawing-mode'),
+        drawingOptionsEl = document.getElementById('drawing-mode-options'),
+        drawingColorEl = document.getElementById('drawing-color'),
+        drawingLineWidthEl = document.getElementById('drawing-line-width'),
+        drawingShadowWidth = document.getElementById('drawing-shadow-width');
+
+    var clearEl = document.getElementById('clear-canvas');
+    clearEl.onclick = function() {
+        canvas.clear()
+    };
+
+    var cSelection = document.getElementById('select');
+
+    drawingModeEl.onclick = drawingModeElFunc;
+
+    function drawingModeElFunc() {
+        var val = canvas.isDrawingMode;
+        val = !val;
+        changeCanvasProperty(false, val);
+        removeCanvasEvents();
+        if (val) {
+            drawingModeEl.innerHTML = 'Turn Off Free Draw';
+            cSelection.innerHTML = 'Turn On Selection Mode';
+            drawingOptionsEl.style.display = '';
+        } else {
+            drawingModeEl.innerHTML = 'Turn On Free Draw';
+            cSelection.innerHTML = 'Turn Off Selection Mode';
+            drawingOptionsEl.style.display = 'none';
+        }
+    };
+
+    cSelection.onclick = function() {
+        var val = canvas.selection,
+            val2 = canvas.isDrawingMode;
+        val = !val;
+        changeCanvasProperty(val, false);
+        removeCanvasEvents();
+        if (canvas.selection) {
+            changeSelectableStatus(true);
+            cSelection.innerHTML = 'Turn Off Selection Mode';
+            if (val2) {
+                drawingModeEl.innerHTML = 'Turn On Free Draw';
+                canvas.isDrawingMode = false;
+                drawingOptionsEl.style.display = 'none';
+
+            }
+        } else {
+            // drawingModeEl.innerHTML = 'Turn Off Free Draw';
+            changeSelectableStatus(false);
+            cSelection.innerHTML = 'Turn On Selection Mode';
+            // drawingOptionsEl.style.display = 'none';
+        }
+    };
+
+    var setGrid = document.getElementById('grid');
+    var gridOn = false;
+    $("#grid").click(function() {
+        // Set background image (grid)
+        if (!gridOn) {
+            fabric.Image.fromURL('https://i.imgur.com/iwkpx13.png', function(img) {
+                gridOn = true;
+                img.set({
+                    width: canvas.width,
+                    height: canvas.height,
+                    originX: 'left',
+                    originY: 'top'
+                });
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+            });
+        } else if (gridOn = true) {
+            fabric.Image.fromURL('', function(img) {
+                img.set({
+                    width: canvas.width,
+                    height: canvas.height,
+                    originX: 'left',
+                    originY: 'top'
+                });
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+                gridOn = false;
+            });
+        }
+    });
+
+    $("#select").click(function() {
+        this.isDrawing = false;
+    });
+    $("#copy").click(function() {
+        copy();
+    });
+    $("#paste").click(function() {
+        paste();
+    });
+    $("#delete").click(function() {
+        canvas.isDrawingMode = false;
+        deleteObjects();
+    });
+    var lineOn = false;
+    var line;
+    $("#line").click(function() {
+        removeCanvasEvents();
+        if (!lineOn) {
+            lineOn = true;
+            changeSelectableStatus(false);
+            changeCanvasProperty(false, false);
+            canvas.isDrawingMode = false;
+            line = new Line(canvas);
+
+        } else if (lineOn) {
+            lineOn = false;
+            // changeSelectableStatus(true);
+        }
+    });
+
+    function changeCanvasProperty(selValue, drawingVal) {
+        canvas.selection = selValue;
+        canvas.isDrawingMode = drawingVal;
+    }
+
+    function changeSelectableStatus(val) {
+        canvas.forEachObject(function(obj) {
+            obj.selectable = val;
+        })
+        canvas.renderAll();
+    }
+
+    function removeCanvasEvents() {
+        canvas.off('mouse:down');
+        canvas.off('mouse:move');
+        canvas.off('mouse:up');
+        canvas.off('object:moving');
+    }
+
+    $("#circle").click(function() {
+        removeCanvasEvents();
+        changeSelectableStatus(false);
+        changeCanvasProperty(false, false);
+        var circle = new Circle(canvas);
+    });
+    $("#squrect").click(function() {
+        removeCanvasEvents();
+        changeSelectableStatus(false);
+        changeCanvasProperty(false, false);
+        var squrect = new Rectangle(canvas);
+    });
+    $("#arrow").click(function() {
+        removeCanvasEvents();
+        changeSelectableStatus(false);
+        changeCanvasProperty(false, false);
+        var arrow = new Arrow(canvas);
+    });
+
+    canvas.renderAll();
+
+    createListenersKeyboard();
+
+    function createListenersKeyboard() {
+        document.onkeydown = onKeyDownHandler;
+        //document.onkeyup = onKeyUpHandler;
+    }
+
+    function onKeyDownHandler(event) {
+        //event.preventDefault();
+        var key;
+        if (window.event) {
+            key = window.event.keyCode;
+        } else {
+            key = event.keyCode;
+        }
+
+        switch (key) {
+            // Shortcuts
+            case 67: // Ctrl+C
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                    copy();
+                }
+                break;
+                // Paste (Ctrl+V)
+            case 86: // Ctrl+V
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                    paste();
+                }
+                break;
+
+            default:
+                // TODO
+                break;
+        }
+    }
+
+    var copiedObject,
+        copiedObjects = new Array();
+
+    function copy() {
+        copiedObjects = new Array();
+        if (canvas.getActiveObject()) {
+            var object = fabric.util.object.clone(canvas.getActiveObject());
+            copiedObject = object;
+            copiedObjects = new Array();
+        }
+    }
+
+    function paste() {
+        if (copiedObjects.length > 0) {
+            for (var i in copiedObjects) {
+                copiedObjects[i] = fabric.util.object.clone(copiedObjects[i]);
+
+                copiedObjects[i].set("top", copiedObjects[i].top + 100);
+                copiedObjects[i].set("left", copiedObjects[i].left + 100);
+
+                canvas.add(copiedObjects[i]);
+                canvas.item(canvas.size() - 1).hasControls = true;
+            }
+        } else if (copiedObject) {
+            copiedObject = fabric.util.object.clone(copiedObject);
+            copiedObject.set("top", 150);
+            copiedObject.set("left", 150);
+            canvas.add(copiedObject);
+            canvas.item(canvas.size() - 1).hasControls = true;
+        }
+        canvas.renderAll();
+    }
+    /*
+      var saveCanvas = document.getElementById('saveCanvas');
+      saveCanvas.onclick = function() {
+        canvas.toDataURL({
+          format: 'jpeg',
+        })
+      };
+    */
+
+    function deleteObjects() {
+        var activeObject = canvas.getActiveObject();
+        if (activeObject) {
+            /*	if (confirm('Are you sure?')) { */
+            canvas.discardActiveObject();
+            canvas.remove(activeObject);
+            canvas.remove(Line);
+            canvas.remove(Circle);
+            canvas.remove(Rectangle);
+            canvas.remove(Arrow);
+            /*	} */
+        }
+        /*else if (canvas.getActiveGroup()) {
+               canvas.getActiveGroup().forEachObject(function(a) {
+                 canvas.remove(a);
+               });
+               canvas.discardActiveGroup();
+             } */
+    }
+
+    if (fabric.PatternBrush) {
+        var vLinePatternBrush = new fabric.PatternBrush(canvas);
+        vLinePatternBrush.getPatternSrc = function() {
+
+            var patternCanvas = fabric.document.createElement('canvas');
+            patternCanvas.width = patternCanvas.height = 10;
+            var ctx = patternCanvas.getContext('2d');
+
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(0, 5);
+            ctx.lineTo(10, 5);
+            ctx.closePath();
+            ctx.stroke();
+
+            return patternCanvas;
+        };
+
+        var hLinePatternBrush = new fabric.PatternBrush(canvas);
+        hLinePatternBrush.getPatternSrc = function() {
+
+            var patternCanvas = fabric.document.createElement('canvas');
+            patternCanvas.width = patternCanvas.height = 10;
+            var ctx = patternCanvas.getContext('2d');
+
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(5, 0);
+            ctx.lineTo(5, 10);
+            ctx.closePath();
+            ctx.stroke();
+
+            return patternCanvas;
+        };
+
+        var squarePatternBrush = new fabric.PatternBrush(canvas);
+        squarePatternBrush.getPatternSrc = function() {
+
+            var squareWidth = 10,
+                squareDistance = 2;
+
+            var patternCanvas = fabric.document.createElement('canvas');
+            patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
+            var ctx = patternCanvas.getContext('2d');
+
+            ctx.fillStyle = this.color;
+            ctx.fillRect(0, 0, squareWidth, squareWidth);
+
+            return patternCanvas;
+        };
+
+        var diamondPatternBrush = new fabric.PatternBrush(canvas);
+        diamondPatternBrush.getPatternSrc = function() {
+
+            var squareWidth = 10,
+                squareDistance = 5;
+            var patternCanvas = fabric.document.createElement('canvas');
+            var rect = new fabric.Rect({
+                width: squareWidth,
+                height: squareWidth,
+                angle: 45,
+                fill: this.color
+            });
+
+            var canvasWidth = rect.getBoundingRectWidth();
+
+            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+            rect.set({
+                left: canvasWidth / 2,
+                top: canvasWidth / 2
+            });
+
+            var ctx = patternCanvas.getContext('2d');
+            rect.render(ctx);
+
+            return patternCanvas;
+        };
+
+        var img = new Image();
+        img.src = '';
+
+        var texturePatternBrush = new fabric.PatternBrush(canvas);
+        texturePatternBrush.source = img;
+    }
+
+    document.getElementById('drawing-mode-selector').addEventListener('change', function() {
+        if (this.value === 'hline') {
+            canvas.freeDrawingBrush = vLinePatternBrush;
+        } else if (this.value === 'vline') {
+            canvas.freeDrawingBrush = hLinePatternBrush;
+        } else if (this.value === 'square') {
+            canvas.freeDrawingBrush = squarePatternBrush;
+        } else if (this.value === 'diamond') {
+            canvas.freeDrawingBrush = diamondPatternBrush;
+        } else if (this.value === 'texture') {
+            canvas.freeDrawingBrush = texturePatternBrush;
+        } else {
+            canvas.freeDrawingBrush = new fabric[this.value + 'Brush'](canvas);
+        }
+
+        if (canvas.freeDrawingBrush) {
+            canvas.freeDrawingBrush.color = drawingColorEl.value;
+            canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+            canvas.freeDrawingBrush.shadowBlur = parseInt(drawingShadowWidth.value, 10) || 0;
+        }
+    });
+
+    drawingColorEl.onchange = function() {
+        canvas.freeDrawingBrush.color = drawingColorEl.value;
+    };
+    drawingLineWidthEl.onchange = function() {
+        canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+    };
+    drawingShadowWidth.onchange = function() {
+        canvas.freeDrawingBrush.shadowBlur = parseInt(drawingShadowWidth.value, 10) || 0;
+    };
+
+    if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = drawingColorEl.value;
+        canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+        canvas.freeDrawingBrush.shadowBlur = 0;
+    }
+    // Draw Line
+    var Line = (function() {
+        function Line(canvas) {
+            this.canvas = canvas;
+            this.isDrawing = false;
+            this.bindEvents();
+        }
+
+        Line.prototype.bindEvents = function() {
+            var inst = this;
+            inst.canvas.on('mouse:down', function(o) {
+                inst.onMouseDown(o);
+            });
+            inst.canvas.on('mouse:move', function(o) {
+                inst.onMouseMove(o);
+            });
+            inst.canvas.on('mouse:up', function(o) {
+                inst.onMouseUp(o);
+            });
+            inst.canvas.on('object:moving', function(o) {
+                inst.disable();
+            })
+        }
+
+        Line.prototype.onMouseUp = function(o) {
+            var inst = this;
+            if (inst.isEnable()) {
+                inst.disable();
+            }
+        };
+
+        Line.prototype.onMouseMove = function(o) {
+            var inst = this;
+            if (!inst.isEnable()) {
+                return;
+            }
+
+            var pointer = inst.canvas.getPointer(o.e);
+            var activeObj = inst.canvas.getActiveObject();
+
+            activeObj.set({
+                x2: pointer.x,
+                y2: pointer.y
+            });
+            activeObj.setCoords();
+            inst.canvas.renderAll();
+        };
+
+        Line.prototype.onMouseDown = function(o) {
+            var inst = this;
+            inst.enable();
+
+            var pointer = inst.canvas.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+
+            var points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            var line = new fabric.Line(points, {
+                strokeWidth: 5,
+                stroke: 'red',
+                fill: 'red',
+                originX: 'center',
+                originY: 'center',
+                selectable: false,
+                hasBorders: false,
+                hasControls: false
+            });
+            inst.canvas.add(line).setActiveObject(line);
+        };
+
+        Line.prototype.isEnable = function() {
+            return this.isDrawing;
+        }
+
+        Line.prototype.enable = function() {
+            this.isDrawing = true;
+        }
+
+        Line.prototype.disable = function() {
+            this.isDrawing = false;
+        }
+
+        return Line;
+    }());
+    // Draw Circle
+    var Circle = (function() {
+        function Circle(canvas) {
+            this.canvas = canvas;
+            this.className = 'Circle';
+            this.isDrawing = false;
+            this.bindEvents();
+        }
+
+        Circle.prototype.bindEvents = function() {
+            var inst = this;
+            inst.canvas.on('mouse:down', function(o) {
+                inst.onMouseDown(o);
+            });
+            inst.canvas.on('mouse:move', function(o) {
+                inst.onMouseMove(o);
+            });
+            inst.canvas.on('mouse:up', function(o) {
+                inst.onMouseUp(o);
+            });
+            inst.canvas.on('object:moving', function(o) {
+                inst.disable();
+            })
+        }
+
+        Circle.prototype.onMouseUp = function(o) {
+            var inst = this;
+            inst.disable();
+        };
+
+        Circle.prototype.onMouseMove = function(o) {
+            var inst = this;
+            if (!inst.isEnable()) {
+                return;
+            }
+
+            var pointer = inst.canvas.getPointer(o.e);
+            var activeObj = inst.canvas.getActiveObject();
+
+            activeObj.stroke = 'red',
+                activeObj.strokeWidth = 5;
+            activeObj.fill = 'red';
+
+            if (origX > pointer.x) {
+                activeObj.set({
+                    left: Math.abs(pointer.x)
+                });
+            }
+
+            if (origY > pointer.y) {
+                activeObj.set({
+                    top: Math.abs(pointer.y)
+                });
+            }
+
+            activeObj.set({
+                rx: Math.abs(origX - pointer.x) / 2
+            });
+            activeObj.set({
+                ry: Math.abs(origY - pointer.y) / 2
+            });
+            activeObj.setCoords();
+            inst.canvas.renderAll();
+        };
+
+        Circle.prototype.onMouseDown = function(o) {
+            var inst = this;
+            inst.enable();
+
+            var pointer = inst.canvas.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+
+            var ellipse = new fabric.Ellipse({
+                top: origY,
+                left: origX,
+                rx: 0,
+                ry: 0,
+                selectable: false,
+                hasBorders: false,
+                hasControls: false
+            });
+
+            inst.canvas.add(ellipse).setActiveObject(ellipse);
+        };
+
+        Circle.prototype.isEnable = function() {
+            return this.isDrawing;
+        }
+
+        Circle.prototype.enable = function() {
+            this.isDrawing = true;
+        }
+
+        Circle.prototype.disable = function() {
+            this.isDrawing = false;
+        }
+
+        return Circle;
+    }());
+    // Draw Rectangle/Square
+    var Rectangle = (function() {
+        function Rectangle(canvas) {
+            var inst = this;
+            this.canvas = canvas;
+            this.className = 'Rectangle';
+            this.isDrawing = false;
+            this.bindEvents();
+        }
+
+        Rectangle.prototype.bindEvents = function() {
+            var inst = this;
+            inst.canvas.on('mouse:down', function(o) {
+                inst.onMouseDown(o);
+            });
+            inst.canvas.on('mouse:move', function(o) {
+                inst.onMouseMove(o);
+            });
+            inst.canvas.on('mouse:up', function(o) {
+                inst.onMouseUp(o);
+            });
+            inst.canvas.on('object:moving', function(o) {
+                inst.disable();
+            })
+        }
+        Rectangle.prototype.onMouseUp = function(o) {
+            var inst = this;
+            inst.disable();
+        };
+
+        Rectangle.prototype.onMouseMove = function(o) {
+            var inst = this;
+
+
+            if (!inst.isEnable()) {
+                return;
+            }
+            console.log("mouse move rectange");
+            var pointer = inst.canvas.getPointer(o.e);
+            var activeObj = inst.canvas.getActiveObject();
+
+            activeObj.stroke = 'red',
+                activeObj.strokeWidth = 5;
+            activeObj.fill = 'transparent';
+
+            if (origX > pointer.x) {
+                activeObj.set({
+                    left: Math.abs(pointer.x)
+                });
+            }
+            if (origY > pointer.y) {
+                activeObj.set({
+                    top: Math.abs(pointer.y)
+                });
+            }
+
+            activeObj.set({
+                width: Math.abs(origX - pointer.x)
+            });
+            activeObj.set({
+                height: Math.abs(origY - pointer.y)
+            });
+
+            activeObj.setCoords();
+            inst.canvas.renderAll();
+
+        };
+
+        Rectangle.prototype.onMouseDown = function(o) {
+            var inst = this;
+            inst.enable();
+
+            var pointer = inst.canvas.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+
+            var rect = new fabric.Rect({
+                left: origX,
+                top: origY,
+                originX: 'left',
+                originY: 'top',
+                width: pointer.x - origX,
+                height: pointer.y - origY,
+                selectable: false,
+                hasBorders: false,
+                hasControls: false
+            });
+
+            inst.canvas.add(rect).setActiveObject(rect);
+        };
+
+        Rectangle.prototype.isEnable = function() {
+            return this.isDrawing;
+        }
+
+        Rectangle.prototype.enable = function() {
+            this.isDrawing = true;
+        }
+
+        Rectangle.prototype.disable = function() {
+            this.isDrawing = false;
+        }
+
+        return Rectangle;
+    }());
+    // Draw Arrow
+    // Extended fabric line class
+    fabric.LineArrow = fabric.util.createClass(fabric.Line, {
+
+        type: 'lineArrow',
+
+        initialize: function(element, options) {
+            options || (options = {});
+            this.callSuper('initialize', element, options);
+        },
+
+        toObject: function() {
+            return fabric.util.object.extend(this.callSuper('toObject'));
+        },
+
+        _render: function(ctx) {
+            this.callSuper('_render', ctx);
+
+            // do not render if width/height are zeros or object is not visible
+            if (this.width === 0 || this.height === 0 || !this.visible) return;
+
+            ctx.save();
+
+            var xDiff = this.x2 - this.x1;
+            var yDiff = this.y2 - this.y1;
+            var angle = Math.atan2(yDiff, xDiff);
+            ctx.translate((this.x2 - this.x1) / 2, (this.y2 - this.y1) / 2);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            //move 10px in front of line to start the arrow so it does not have the square line end showing in front (0,0)
+            ctx.moveTo(10, 0);
+            ctx.lineTo(-20, 15);
+            ctx.lineTo(-20, -15);
+            ctx.closePath();
+            ctx.fillStyle = this.stroke;
+            ctx.fill();
+
+            ctx.restore();
+
+        }
+    });
+
+    fabric.LineArrow.fromObject = function(object, callback) {
+        callback && callback(new fabric.LineArrow([object.x1, object.y1, object.x2, object.y2], object));
+    };
+
+    fabric.LineArrow.async = true;
+
+
+    var Arrow = (function() {
+        function Arrow(canvas) {
+            this.canvas = canvas;
+            this.className = 'Arrow';
+            this.isDrawing = false;
+            this.bindEvents();
+        }
+
+        Arrow.prototype.bindEvents = function() {
+            var inst = this;
+            inst.canvas.on('mouse:down', function(o) {
+                inst.onMouseDown(o);
+            });
+            inst.canvas.on('mouse:move', function(o) {
+                inst.onMouseMove(o);
+            });
+            inst.canvas.on('mouse:up', function(o) {
+                inst.onMouseUp(o);
+            });
+            inst.canvas.on('object:moving', function(o) {
+                inst.disable();
+            })
+        }
+
+        Arrow.prototype.onMouseUp = function(o) {
+            var inst = this;
+            inst.disable();
+        };
+
+        Arrow.prototype.onMouseMove = function(o) {
+            var inst = this;
+            if (!inst.isEnable()) {
+                return;
+            }
+
+            var pointer = inst.canvas.getPointer(o.e);
+            var activeObj = inst.canvas.getActiveObject();
+            activeObj.set({
+                x2: pointer.x,
+                y2: pointer.y
+            });
+            activeObj.setCoords();
+            inst.canvas.renderAll();
+        };
+
+        Arrow.prototype.onMouseDown = function(o) {
+            var inst = this;
+            inst.enable();
+            var pointer = inst.canvas.getPointer(o.e);
+
+            var points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            var line = new fabric.LineArrow(points, {
+                strokeWidth: 5,
+                fill: 'red',
+                stroke: 'red',
+                originX: 'center',
+                originY: 'center',
+                selectable: false,
+                hasBorders: false,
+                hasControls: false
+            });
+
+            inst.canvas.add(line).setActiveObject(line);
+        };
+
+        Arrow.prototype.isEnable = function() {
+            return this.isDrawing;
+        }
+
+        Arrow.prototype.enable = function() {
+            this.isDrawing = true;
+        }
+
+        Arrow.prototype.disable = function() {
+            this.isDrawing = false;
+        }
+
+        return Arrow;
+    }());
+});
+
+</script>
+
+
+
+</html>    
