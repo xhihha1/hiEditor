@@ -47,6 +47,14 @@
         var arrow = new edit.Arrow(edit.canvasView, objOption);
     });
 
+    $("#polygon").click(function() {
+        edit.removeCanvasEvents();
+        edit.changeSelectableStatus(false);
+        edit.changeCanvasProperty(false, false);
+        var polygon = new edit.Polygon(edit.canvasView, objOption);
+    });
+
+
     $("#select").click(function() {
         // this.isDrawing = false;
         var canvas = edit.canvasView;
