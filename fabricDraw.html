@@ -60,6 +60,7 @@
             <button id="delete" class="btn btn-info">Delete Object(s)</button>
             <button id="clear-canvas" class="btn btn-info">Clear All</button>
             <button id="saveCanvas" class="btn btn-info">Save</button>
+			<button id="toJSON" class="btn btn-info">ToJson</button>
             <br>
             <div class="inputboxes" style="display: none;" id="drawing-mode-options">
                 <label for="drawing-mode-selector">Brush Mode:</label>
@@ -84,6 +85,8 @@
             </div>
         </li>
     </div>
+	<textarea id="jsontext"></textarea>
+	
 </body>
 
 <script type="text/javascript">
@@ -886,6 +889,11 @@ $(document).ready(function() {
 
         return Arrow;
     }());
+	
+	
+	$('#toJSON').click(function(){
+		document.getElementById('jsontext').value = JSON.stringify(canvas.toJSON());
+	});
 });
 
 </script>

@@ -95,11 +95,14 @@ hiDraw.prototype.Rectangle = (function() {
             strokeUniform: true
         });
         rect.on('selected', function(data) {
-            console.log('selected a rect', rect);
+            console.log('selected a rect-----');
             inst.enable();
             rect.set('stroke','green').setCoords();
             inst.canvas.requestRenderAll();
             // inst.bindEvents();
+            if(inst.options && inst.options.onSelected){
+                inst.options.onSelected(rect);
+            }
         });
         rect.on('mousedown', function() {
             console.log('mousedown a rect');

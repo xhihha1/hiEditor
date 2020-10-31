@@ -1,20 +1,33 @@
 (function(global){
 
     
-
+    var elem = document.getElementById('parentCanvas');
     var edit = new hiDraw(
         {
             canvasViewId: 'mainEditor',
-            viewJsonTextId: 'hiJsonArea'
+            viewJsonTextId: 'hiJsonArea',
+            activeJsonTextId: 'hiActiveJsonArea',
+            canvasWidth: elem.offsetWidth
         }
     ).createView().viewEvent();
 
     var objOption = {
+        activeJsonTextId: 'hiActiveJsonArea',
         endDraw: function(){
             console.log('**');
             edit.changeCanvasProperty(true, false);
             edit.changeSelectableStatus(true);
             edit.viewEvent();
+        },
+        onSelected: function(opt){
+            // if(opt){
+            //     edit.DatGUI.updateOptions({
+            //         type: opt.get('type'),
+            //         stroke: opt.get('stroke'),
+            //         fill: opt.get('fill'),
+            //         message: 'hello'
+            //     })
+            // }
         }
     };
 
@@ -54,6 +67,13 @@
         var polygon = new edit.Polygon(edit.canvasView, objOption);
     });
 
+    $("#image").click(function() {
+        edit.removeCanvasEvents();
+        edit.changeSelectableStatus(false);
+        edit.changeCanvasProperty(false, false);
+        var image = new edit.Image(edit.canvasView, objOption);
+    });
+
 
     $("#select").click(function() {
         // this.isDrawing = false;
@@ -83,7 +103,19 @@
         edit.canvasView.renderAll();
     });
 
-    
+    window.addEventListener('resize', function(){
+        
+        var elem = document.getElementById('parentCanvas');
+        // var elem = document.getElementById(edit.defaultOptions.canvasViewId);
+        // console.log('resize',elem.offsetWidth)
+        // that.canvasView.setDimensions({width:elem.offsetWidth, height:elem.offsetHeight});
+        setTimeout(function(){
+            edit.canvasView.setWidth( parseInt(elem.offsetWidth) )
+            // edit.canvasView.setHeight( parseInt(elem.offsetHeight) )
+            edit.canvasView.renderAll()
+        },300)
+        // that.canvasView.renderAll()
+    });
 
     
     window.edit = edit;
