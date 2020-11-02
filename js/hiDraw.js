@@ -15,10 +15,10 @@ function hiDraw(options) {
     }
 
     var that = this;
-    if (typeof(this.DatGUI) !== 'undefined') {
+    if (typeof (this.DatGUI) !== 'undefined') {
         this.DatGUI = new this.DatGUI()
         this.DatGUI.updateSetting({
-            onFinishChange:function(propertyName, value){
+            onFinishChange: function (propertyName, value) {
                 console.log(propertyName, value)
                 if (that.canvasView.getActiveObject()) {
                     that.canvasView.getActiveObject().set(propertyName, value)
@@ -84,8 +84,9 @@ hiDraw.prototype.viewEvent = function () {
     var that = this;
     this.canvasView.on('object:modified', function (opt) {
         // console.log('***', opt, opt.target, opt.target.get('type'))
-        document.getElementById(that.defaultOptions.viewJsonTextId).value = JSON.stringify(that.canvasView.toJSON());
-        if(that.DatGUI){
+        // that.canvasView.toJSON(['uniqueIndex']) // 添加客製屬性置JSON中
+        document.getElementById(that.defaultOptions.viewJsonTextId).value = JSON.stringify(that.canvasView.toJSON(['uniqueIndex']));
+        if (that.DatGUI) {
             that.DatGUI.updateOptions({
                 type: opt.target.get('type'),
                 stroke: opt.target.get('stroke'),
@@ -93,7 +94,7 @@ hiDraw.prototype.viewEvent = function () {
                 message: 'hello'
             })
         }
-        
+
         // that.canvasView.loadFromJSON()
     });
     // this.canvasView.on('selection:updated', function (event) {
@@ -138,7 +139,7 @@ hiDraw.prototype.viewEvent = function () {
     });
     this.canvasView.on('selection:created', function (opt) {
         // console.log('selection:created',opt.target? opt.target.get('type'): opt)
-        if(that.DatGUI){
+        if (that.DatGUI) {
             that.DatGUI.updateOptions({
                 type: opt.target.get('type'),
                 stroke: opt.target.get('stroke'),
@@ -153,8 +154,6 @@ hiDraw.prototype.viewEvent = function () {
     this.canvasView.on('selection:cleared', function (opt) {
 
     });
-
-    
 
     return this;
 }
@@ -176,4 +175,114 @@ hiDraw.prototype.removeCanvasEvents = function () {
     this.canvasView.off('mouse:move');
     this.canvasView.off('mouse:up');
     this.canvasView.off('object:moving');
+}
+
+hiDraw.prototype.logEachObjects = function () {
+    var i = 0;
+    this.canvasView.forEachObject(function (obj) {
+        console.log(obj)
+        obj.set('uniqueIndex', i)
+        i++;
+    })
+}
+
+hiDraw.prototype.copyCloneTempObjs = new Array();
+hiDraw.prototype.copy = function () {
+    this.copyCloneTempObjs = new Array();
+    if (this.canvasView.getActiveObject()) {
+        var object = fabric.util.object.clone(this.canvasView.getActiveObject());
+        this.copiedObject = object;
+        this.copyCloneTempObjs = new Array();
+    }
+}
+
+hiDraw.prototype.paste = function () {
+    if (this.copyCloneTempObjs.length > 0) {
+        for (var i in this.copyCloneTempObjs) {
+            this.copyCloneTempObjs[i] = fabric.util.object.clone(this.copyCloneTempObjs[i]);
+
+            this.copyCloneTempObjs[i].set("top", this.copyCloneTempObjs[i].top + 100);
+            this.copyCloneTempObjs[i].set("left", this.copyCloneTempObjs[i].left + 100);
+
+            this.canvasView.add(this.copyCloneTempObjs[i]);
+            this.canvasView.item(this.canvasView.size() - 1).hasControls = true;
+        }
+        this.canvasView.renderAll();
+    } else if (this.copiedObject) {
+        // this.copiedObject = fabric.util.object.clone(this.copiedObject);
+        // if (this.copiedObject.get('type') == 'activeSelection') {
+        //     console.log(this.copiedObject.get("top"), this.copiedObject.get("left"))
+        //     this.copiedObject.set("top", this.copiedObject.get("top") + 10);
+        //     this.copiedObject.set("left", this.copiedObject.get("left") + 10);
+        //     this.canvasView.add(this.copiedObject);
+        //     this.canvasView.item(this.canvasView.size() - 1).hasControls = true;
+        // } else {
+        //     this.copiedObject.set("top", this.copiedObject.get("top") + 10);
+        //     this.copiedObject.set("left", this.copiedObject.get("left") + 10);
+        //     this.canvasView.add(this.copiedObject);
+        //     this.canvasView.item(this.canvasView.size() - 1).hasControls = true;
+        // }
+        // this.canvasView.renderAll();
+        var that = this;
+        this.copiedObject.clone(function (clonedObj) {
+            that.canvasView.discardActiveObject();
+            clonedObj.set({
+                left: clonedObj.left + 10,
+                top: clonedObj.top + 10,
+                evented: true,
+            });
+            if (clonedObj.type === 'activeSelection') {
+                // active selection needs a reference to the canvas.
+                clonedObj.canvas = that.canvasView;
+                clonedObj.forEachObject(function (obj) {
+                    that.canvasView.add(obj);
+                });
+                // this should solve the unselectability
+                clonedObj.setCoords();
+            } else {
+                that.canvasView.add(clonedObj);
+            }
+            that.copiedObject.top += 10;
+            that.copiedObject.left += 10;
+            that.canvasView.setActiveObject(clonedObj);
+            that.canvasView.requestRenderAll();
+        });
+    }
+
+}
+
+hiDraw.prototype.delete = function () {
+    var that = this;
+    var activeObject = this.canvasView.getActiveObject();
+    if (activeObject.type === 'activeSelection') {
+        this.canvasView.discardActiveObject();
+        activeObject.forEachObject(function (obj) {
+            that.canvasView.remove(obj);
+        });
+    } else {
+        this.canvasView.discardActiveObject();
+        this.canvasView.remove(activeObject);
+        // this.canvasView.remove(Line);
+        // this.canvasView.remove(Circle);
+        // this.canvasView.remove(Rectangle);
+        // this.canvasView.remove(Arrow);
+    }
+    // //-----------------------------
+    // var that = this;
+    // var activeObject = this.canvasView.getActiveObject(),
+    //     activeGroup = this.canvasView.getActiveGroup();
+    // if (activeObject) {
+    //     // if (confirm('Are you sure?')) {
+    //     // }
+    //     this.canvasView.remove(activeObject);
+
+    // } else if (activeGroup) {
+    //     // if (confirm('Are you sure?')) {}
+    //     var objectsInGroup = activeGroup.getObjects();
+    //     this.canvasView.discardActiveGroup();
+    //     objectsInGroup.forEach(function (object) {
+    //         that.canvasView.remove(object);
+    //     });
+
+    // }
 }

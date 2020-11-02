@@ -1,6 +1,7 @@
 hiDraw.prototype.Circle = (function() {
-    function Circle(canvas, options) {
-        this.canvas = canvas;
+    function Circle(canvasItem, options) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
         this.options = options;
         this.className = 'Circle';
         this.isDrawing = false;
@@ -107,6 +108,7 @@ hiDraw.prototype.Circle = (function() {
         });
 
         inst.canvas.add(ellipse).setActiveObject(ellipse);
+        ellipse.canvasItem = inst.canvasItem;
     };
 
     Circle.prototype.isEnable = function() {

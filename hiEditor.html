@@ -50,6 +50,8 @@
     <script src="js/hiDraw_Line.js"></script>
     <script src="js/hiDraw_Rectangle.js"></script>
     <script src="js/hiDraw_Polygon.js"></script>
+    <script src="js/hiDraw_Polyline.js"></script>
+    <script src="js/hiDraw_Path.js"></script>
     <script src="js/hiDraw_Image.js"></script>
     <script src="js/hiDraw_DatGUI.js"></script>
 
@@ -71,18 +73,28 @@
 
     <hr>
     <textarea id="hiJsonArea"></textarea>
+    <textarea id="hiLoadJsonArea"></textarea>
     <textarea id="hiActiveJsonArea"></textarea>
     <canvas id="minimap" width="130" height="130" style=""></canvas>
     <hr>
+    <button id="path" class="btn btn-info">Path</button>
     <button id="line" class="btn btn-info">Straight Line</button>
     <button id="circle" class="btn btn-info">Circle</button>
     <button id="squrect" class="btn btn-info">Square/Rectangle</button>
     <button id="arrow" class="btn btn-info">Arrow</button>
     <button id="polygon" class="btn btn-info">Polygon</button>
+    <button id="polyline" class="btn btn-info">Polyline</button>
     <button id="image" class="btn btn-info">Image</button>
     <br>
+    <hr>
+    <button id="copy" class="btn btn-info">Copy Object</button>
+    <button id="paste" class="btn btn-info">Paste Object</button>
+    <button id="delete" class="btn btn-info">Delete Selected Object(s)</button>
+    <hr>
+    <button id="load" class="btn btn-info">load</button>
     <button id="select" class="btn btn-info">Turn On Selection</button>
     <button id="render" class="btn btn-info">render</button>
+    <button id="logEach" class="btn btn-info">logEach</button>
     <hr>
 </body>
 <script src="js/hiEditor.js"></script>

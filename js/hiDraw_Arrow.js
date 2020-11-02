@@ -46,8 +46,9 @@ fabric.LineArrow.async = true;
 
 
 hiDraw.prototype.Arrow = (function() {
-    function Arrow(canvas, options) {
-        this.canvas = canvas;
+    function Arrow(canvasItem, options) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
         this.options = options;
         this.className = 'Arrow';
         this.isDrawing = false;
@@ -118,6 +119,7 @@ hiDraw.prototype.Arrow = (function() {
         });
 
         inst.canvas.add(line).setActiveObject(line);
+        line.canvasItem = inst.canvasItem;
     };
 
     Arrow.prototype.isEnable = function() {
@@ -131,6 +133,9 @@ hiDraw.prototype.Arrow = (function() {
     Arrow.prototype.disable = function() {
         this.isDrawing = false;
         this.unbindEvents();
+        if(this.options && this.options.endDraw){
+            this.options.endDraw();
+        }
     }
 
     return Arrow;

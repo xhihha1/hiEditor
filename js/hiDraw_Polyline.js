@@ -1,5 +1,5 @@
-hiDraw.prototype.Polygon = (function () {
-    function Polygon(canvasItem, options) {
+hiDraw.prototype.Polyline = (function () {
+    function Polyline(canvasItem, options) {
         this.canvasItem = canvasItem;
         this.canvas = canvasItem.canvasView;
         this.options = options;
@@ -9,15 +9,15 @@ hiDraw.prototype.Polygon = (function () {
 
         this.min = 99;
         this.max = 999999;
-        this.polygonMode = true;
+        this.PolylineMode = true;
         this.pointArray = new Array();
         this.lineArray = new Array();
-        this.tempPolygonArray = new Array();
+        this.tempPolylineArray = new Array();
         this.activeLine;
         this.activeShape = false;
     }
 
-    Polygon.prototype.bindEvents = function () {
+    Polyline.prototype.bindEvents = function () {
         var inst = this;
         inst.canvas.on('mouse:down', function (o) {
             inst.onMouseDown(o);
@@ -33,7 +33,7 @@ hiDraw.prototype.Polygon = (function () {
         })
     }
 
-    Polygon.prototype.unbindEvents = function () {
+    Polyline.prototype.unbindEvents = function () {
         var inst = this;
         inst.canvas.off('mouse:down');
         inst.canvas.off('mouse:move');
@@ -42,44 +42,18 @@ hiDraw.prototype.Polygon = (function () {
     }
 
 
-    Polygon.prototype.onMouseUp = function (o) {
+    Polyline.prototype.onMouseUp = function (o) {
         var inst = this;
         // inst.disable();
     };
 
-    Polygon.prototype.onMouseMove = function (options) {
+    Polyline.prototype.onMouseMove = function (options) {
         var inst = this;
         if (!inst.isEnable()) {
             return;
         }
 
-        // var pointer = inst.canvas.getPointer(o.e);
-        // var activeObj = inst.canvas.getActiveObject();
 
-        // activeObj.stroke = 'red',
-        //     activeObj.strokeWidth = 5;
-        // activeObj.fill = 'red';
-
-        // if (origX > pointer.x) {
-        //     activeObj.set({
-        //         left: Math.abs(pointer.x)
-        //     });
-        // }
-
-        // if (origY > pointer.y) {
-        //     activeObj.set({
-        //         top: Math.abs(pointer.y)
-        //     });
-        // }
-
-        // activeObj.set({
-        //     rx: Math.abs(origX - pointer.x) / 2
-        // });
-        // activeObj.set({
-        //     ry: Math.abs(origY - pointer.y) / 2
-        // });
-        // activeObj.setCoords();
-        // inst.canvas.renderAll();
         if(inst.activeLine && inst.activeLine.class == "line"){
             var pointer = inst.canvas.getPointer(options.e);
             inst.activeLine.set({ x2: pointer.x, y2: pointer.y });
@@ -97,51 +71,27 @@ hiDraw.prototype.Polygon = (function () {
         inst.canvas.renderAll();
     };
 
-    Polygon.prototype.onMouseDown = function (o) {
+    Polyline.prototype.onMouseDown = function (o) {
         var inst = this;
         inst.enable();
-
-        // var pointer = inst.canvas.getPointer(o.e);
-        // origX = pointer.x;
-        // origY = pointer.y;
-
-        // var ellipse = new fabric.Ellipse({
-        //     top: origY,
-        //     left: origX,
-        //     rx: 0,
-        //     ry: 0,
-        //     selectable: false,
-        //     hasBorders: true,
-        //     hasControls: true,
-        //     strokeUniform: true
-        // });
-
-        // ellipse.on('selected', function () {
-        //     console.log('selected a Circle');
-        //     inst.enable();
-        // });
-        // ellipse.on('mousedown', function () {
-        //     console.log('mousedown a Circle');
-        // });
-
-        // inst.canvas.add(ellipse).setActiveObject(ellipse);
-        if(o.target && o.target.id == inst.pointArray[0].id){
-            inst.generatePolygon(inst.pointArray);
+        var lastIdx = inst.pointArray.length - 1;
+        if(lastIdx > 0 && o.target && o.target.id == inst.pointArray[lastIdx].id){
+            inst.generatePolyline(inst.pointArray);
         }
-        if(inst.polygonMode){
+        if(inst.PolylineMode){
             inst.addPoint(o);
         }
     };
 
-    Polygon.prototype.isEnable = function () {
+    Polyline.prototype.isEnable = function () {
         return this.isDrawing;
     }
 
-    Polygon.prototype.enable = function () {
+    Polyline.prototype.enable = function () {
         this.isDrawing = true;
     }
 
-    Polygon.prototype.disable = function () {
+    Polyline.prototype.disable = function () {
         this.isDrawing = false;
         this.unbindEvents();
         if (this.options && this.options.endDraw) {
@@ -149,7 +99,7 @@ hiDraw.prototype.Polygon = (function () {
         }
     }
 
-    Polygon.prototype.addPoint = function(options) {
+    Polyline.prototype.addPoint = function(options) {
         var inst = this;
         var random = Math.floor(Math.random() * (inst.max - inst.min + 1)) + inst.min;
         var id = new Date().getTime() + random;
@@ -196,10 +146,10 @@ hiDraw.prototype.Polygon = (function () {
                 x: pos.x,
                 y: pos.y
             });
-            var polygon = new fabric.Polygon(points,{
+            var Polyline = new fabric.Polyline(points,{
                 stroke:'#333333',
                 strokeWidth:1,
-                fill: '#cccccc',
+                fill: 'transparent',
                 opacity: 0.3,
                 selectable: false,
                 hasBorders: false,
@@ -208,17 +158,17 @@ hiDraw.prototype.Polygon = (function () {
                 objectCaching:false
             });
             inst.canvas.remove(inst.activeShape);
-            inst.canvas.add(polygon);
-            // inst.tempPolygonArray.push(polygon);
-            inst.activeShape = polygon;
+            inst.canvas.add(Polyline);
+            // inst.tempPolylineArray.push(Polyline);
+            inst.activeShape = Polyline;
             inst.canvas.renderAll();
         }
         else{
             var polyPoint = [{x:(options.e.layerX/inst.canvas.getZoom()),y:(options.e.layerY/inst.canvas.getZoom())}];
-            var polygon = new fabric.Polygon(polyPoint,{
+            var Polyline = new fabric.Polyline(polyPoint,{
                 stroke:'#333333',
                 strokeWidth:1,
-                fill: '#cccccc',
+                fill: 'transparent',
                 opacity: 0.3,
                 selectable: false,
                 hasBorders: false,
@@ -226,9 +176,9 @@ hiDraw.prototype.Polygon = (function () {
                 evented: false,
                 objectCaching:false
             });
-            inst.activeShape = polygon;
-            inst.canvas.add(polygon);
-            // inst.tempPolygonArray.push(polygon);
+            inst.activeShape = Polyline;
+            inst.canvas.add(Polyline);
+            // inst.tempPolylineArray.push(Polyline);
         }
         inst.activeLine = line;
 
@@ -239,7 +189,7 @@ hiDraw.prototype.Polygon = (function () {
         inst.canvas.add(circle);
     }
 
-    Polygon.prototype.generatePolygon = function (pointArray) {
+    Polyline.prototype.generatePolyline = function (pointArray) {
         var inst = this;
         
         var points = new Array();
@@ -259,36 +209,36 @@ hiDraw.prototype.Polygon = (function () {
         console.log('///', inst.canvas.getActiveObject())
         console.log('activeShape',inst.activeShape, inst.activeLine)
         inst.canvas.remove(inst.activeShape).remove(inst.activeLine);
-        var polygon = new fabric.Polygon(points,{
+        var Polyline = new fabric.Polyline(points,{
             stroke:'#333333',
             strokeWidth:0.5,
-            fill: 'red',
+            fill: 'transparent',
             opacity: 1,
             hasBorders: true,
             hasControls: true
         });
-        inst.canvas.add(polygon).setActiveObject(polygon);
-        polygon.canvasItem = inst.canvasItem;
+        inst.canvas.add(Polyline).setActiveObject(Polyline);
+        Polyline.canvasItem = inst.canvasItem;
 
         inst.activeLine = null;
         inst.activeShape = null;
-        inst.polygonMode = false;
+        inst.PolylineMode = false;
         inst.disable();
     }
     
 
 
-    return Polygon;
+    return Polyline;
 })()
 
-// var polygon = canvas.getActiveObject();
+// var Polyline = canvas.getActiveObject();
 
-// var polygonCenter = polygon.getCenterPoint();
+// var PolylineCenter = Polyline.getCenterPoint();
 
-// var translatedPoints = polygon.get('points').map(function(p) {
+// var translatedPoints = Polyline.get('points').map(function(p) {
 //   return { 
-//     x: polygonCenter.x + p.x, 
-//     y: polygonCenter.y + p.y
+//     x: PolylineCenter.x + p.x, 
+//     y: PolylineCenter.y + p.y
 //   };
 // });
 

@@ -1,6 +1,9 @@
 hiDraw.prototype.Line = (function() {
-    function Line(canvas) {
-        this.canvas = canvas;
+    function Line(canvasItem, options) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
+        this.options = options;
+        this.className = 'Line';
         this.isDrawing = false;
         this.bindEvents();
     }
@@ -19,6 +22,14 @@ hiDraw.prototype.Line = (function() {
         inst.canvas.on('object:moving', function(o) {
             inst.disable();
         })
+    }
+
+    Line.prototype.unbindEvents = function() {
+        var inst = this;
+        inst.canvas.off('mouse:down');
+        inst.canvas.off('mouse:move');
+        inst.canvas.off('mouse:up');
+        inst.canvas.off('object:moving');
     }
 
     Line.prototype.onMouseUp = function(o) {
@@ -61,10 +72,12 @@ hiDraw.prototype.Line = (function() {
             originX: 'center',
             originY: 'center',
             selectable: false,
-            hasBorders: false,
-            hasControls: false
+            hasBorders: true,
+            hasControls: true,
+            strokeUniform: true
         });
         inst.canvas.add(line).setActiveObject(line);
+        line.canvasItem = inst.canvasItem;
     };
 
     Line.prototype.isEnable = function() {
@@ -77,6 +90,10 @@ hiDraw.prototype.Line = (function() {
 
     Line.prototype.disable = function() {
         this.isDrawing = false;
+        this.unbindEvents();
+        if(this.options && this.options.endDraw){
+            this.options.endDraw();
+        }
     }
 
     return Line;

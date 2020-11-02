@@ -1,6 +1,7 @@
 hiDraw.prototype.Image = (function () {
-    function Image(canvas, options) {
-        this.canvas = canvas;
+    function Image(canvasItem, options) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
         this.options = options;
         this.className = 'Image';
         this.isDrawing = false;
@@ -112,6 +113,11 @@ hiDraw.prototype.Image = (function () {
             imagePath = inst.options.imagePath;
         }
 
+        // var activeObject = canvas.getActiveObject();
+        // activeObject.setSrc('images/my-image.png', function(img) {
+        //     canvas.add(img);
+        // });
+        // activeObject.setSrc(data.url);
         fabric.Image.fromURL(imagePath, function (img) {
             img.scale(0.5).set({
                 // angle: -15,
@@ -157,6 +163,7 @@ hiDraw.prototype.Image = (function () {
             });
 
             inst.canvas.add(img).setActiveObject(img);
+            img.canvasItem = inst.canvasItem;
         });
     };
 

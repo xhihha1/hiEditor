@@ -1,6 +1,7 @@
 hiDraw.prototype.Rectangle = (function() {
-    function Rectangle(canvas, options) {
-        this.canvas = canvas;
+    function Rectangle(canvasItem, options) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
         this.options = options;
         this.className = 'Rectangle';
         this.isDrawing = false;
@@ -109,6 +110,7 @@ hiDraw.prototype.Rectangle = (function() {
         });
 
         inst.canvas.add(rect).setActiveObject(rect);
+        rect.canvasItem = inst.canvasItem;
     };
 
     Rectangle.prototype.isEnable = function() {
