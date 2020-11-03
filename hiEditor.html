@@ -7,9 +7,10 @@
         box-shadow:5px 5px 5px #ccc;
 		border:5px solid #eee;
         margin-bottom:10px;}*/
-        .parentCanvas{
+        .parentCanvas {
             position: relative;
         }
+
         #mainEditor {
             position: absolute;
             border: 1px solid #eee;
@@ -40,7 +41,7 @@
     <script src="libs/bootstrap/bootstrap.min.js"></script>
     <link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
     <script src="libs/datGUI/dat.gui.min.js"></script>
-    
+
     <!-- https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js -->
 
     <script src="js/fabric.min.js"></script>
@@ -68,7 +69,7 @@
                 2 of 2
             </div>
         </div>
-        
+
     </div>
 
     <hr>
@@ -86,6 +87,36 @@
     <button id="polyline" class="btn btn-info">Polyline</button>
     <button id="image" class="btn btn-info">Image</button>
     <br>
+    <hr>
+    <div id="drawing-mode-options" style="">
+        <label for="drawing-mode-selector">Mode:</label>
+        <select id="drawing-mode-selector">
+            <option>Pencil</option>
+            <option>Circle</option>
+            <option>Spray</option>
+            <option>Pattern</option>
+            <option>hline</option>
+            <option>vline</option>
+            <option>square</option>
+            <option>diamond</option>
+            <option>texture</option>
+        </select><br>
+
+        <label for="drawing-line-width">Line width:</label>
+        <span class="info">5</span><input type="range" value="5" min="0" max="150" id="drawing-line-width"><br>
+
+        <label for="drawing-color">Line color:</label>
+        <input type="color" value="#CCCCCC" id="drawing-color"><br>
+
+        <label for="drawing-shadow-color">Shadow color:</label>
+        <input type="color" value="#005E7A" id="drawing-shadow-color"><br>
+
+        <label for="drawing-shadow-width">Shadow width:</label>
+        <span class="info">0</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-width"><br>
+
+        <label for="drawing-shadow-offset">Shadow offset:</label>
+        <span class="info">0</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-offset"><br>
+    </div>
     <hr>
     <button id="copy" class="btn btn-info">Copy Object</button>
     <button id="paste" class="btn btn-info">Paste Object</button>

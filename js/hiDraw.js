@@ -8,7 +8,12 @@ function hiDraw(options) {
         viewJsonTextId: 'hiJsonArea',
         activeJsonTextId: 'hiActiveJsonArea',
         canvasWidth: 500,
-        canvasHeight: 500
+        canvasHeight: 500,
+        objectDefault: {
+            fillColor: '#cccccc',
+            strokeColor: '#CCCCCC',
+            lineWidth: 5
+        }
     }
     if (options) {
         this.defaultOptions = this.mergeDeep(this.defaultOptions, options);
