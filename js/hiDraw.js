@@ -69,7 +69,7 @@ hiDraw.prototype.createView = function () {
         height: that.defaultOptions.canvasHeight, // 讓畫布同視窗大小
         width: that.defaultOptions.canvasWidth, // 讓畫布同視窗大小
         isDrawingMode: false, // 設置成 true 一秒變身小畫家
-        hoverCursor: 'progress', // 移動時鼠標顯示
+        hoverCursor: 'pointer', // 移動時鼠標顯示
         freeDrawingCursor: 'all-scroll', // 畫畫模式時鼠標模式
         //backgroundColor: 'rgb(255,255,255)' // 背景色,
     }); //声明画布
@@ -106,11 +106,13 @@ hiDraw.prototype.viewEvent = function () {
         zoom *= 0.999 ** delta;
         if (zoom > 20) zoom = 20;
         if (zoom < 0.01) zoom = 0.01;
-        this.setZoom(zoom);
+        // this.setZoom(zoom);
+        this.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
         // updateMiniMapVP();
         opt.e.preventDefault();
         opt.e.stopPropagation();
     });
+
 
     this.canvasView.on('mouse:down', function (opt) {
         var evt = opt.e;
@@ -134,6 +136,7 @@ hiDraw.prototype.viewEvent = function () {
         }
     });
     this.canvasView.on('mouse:up', function (opt) {
+        this.setViewportTransform(this.viewportTransform);
         this.isDragging = false;
         this.selection = true;
     });
@@ -154,6 +157,7 @@ hiDraw.prototype.viewEvent = function () {
     this.canvasView.on('selection:cleared', function (opt) {
 
     });
+
 
     return this;
 }

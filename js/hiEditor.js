@@ -146,6 +146,34 @@
             edit.canvasView.loadFromJSON(string)
         }
     });
+
+    var gridOn = false;
+    $("#grid").click(function() {
+        // Set background image (grid)
+        if (!gridOn) {
+            fabric.Image.fromURL('https://i.imgur.com/iwkpx13.png', function(img) {
+                gridOn = true;
+                img.set({
+                    width: edit.canvasView.width,
+                    height: edit.canvasView.height,
+                    originX: 'left',
+                    originY: 'top'
+                });
+                edit.canvasView.setBackgroundImage(img, edit.canvasView.renderAll.bind(edit.canvasView));
+            });
+        } else if (gridOn = true) {
+            fabric.Image.fromURL('', function(img) {
+                img.set({
+                    width: edit.canvasView.width,
+                    height: edit.canvasView.height,
+                    originX: 'left',
+                    originY: 'top'
+                });
+                edit.canvasView.setBackgroundImage(img, edit.canvasView.renderAll.bind(edit.canvasView));
+                gridOn = false;
+            });
+        }
+    });
     
 
     window.addEventListener('resize', function(){
