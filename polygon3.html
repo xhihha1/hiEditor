@@ -10,7 +10,9 @@
     </head>
     <body>
 		<canvas id="c" width="600" height="600"></canvas>
+      <div>orig.</div>
       <div id="pp"></div>
+      <div>new</div>
       <div id="ppp"></div>
       <button id="cc">click</button>
     </body>
@@ -84,8 +86,10 @@ function newPoints(){
     })
   .map(function(p){
     var b = fabric.util.transformPoint(p, matrix);
+    console.log(b)
     return b
   });
+  console.log('transformedPoints', transformedPoints)
   return transformedPoints;
 }
 
@@ -109,6 +113,13 @@ function drawPoints(){
       name: index
     });
     canvas.add(circle);
+    circle.on('mousedown',function(opt){
+      var p = opt.target;
+      circle.startOriginalPoint = {
+        x: p.getCenterPoint().x, 
+        y: p.getCenterPoint().y
+      }
+    })
     circle.on('moving',function(opt){
       console.log('moving', opt.target)
       var p = opt.target;
@@ -191,8 +202,8 @@ drawPoints()
 //   //canvas.sendToBack(polygon);
 // });
 document.getElementById('cc').onclick = function(){
-  document.getElementById('pp').innerHTML = polygon.get('points')
-  document.getElementById('ppp').innerHTML = newPoints()
+  document.getElementById('pp').innerHTML = JSON.stringify(polygon.get('points'))
+  document.getElementById('ppp').innerHTML = JSON.stringify(newPoints())
 }
     </script>
 </html>
