@@ -1,0 +1,184 @@
+<html>
+    <head>
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/fabric.min.js"></script>
+        <style>
+            .c {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+		<canvas id="c" width="600" height="600"></canvas>
+
+    </body>
+    <script>
+
+/**
+ * fabric.js template for bug reports
+ *
+ * Please update the name of the jsfiddle (see Fiddle Options).
+ * This templates uses latest dev verison of fabric.js (https://rawgithub.com/kangax/fabric.js/master/dist/fabric.js).
+ */
+
+// initialize fabric canvas and assign to global windows object for debug
+var canvas = window._canvas = new fabric.Canvas('c');
+
+var tempLines = [];
+var tempPoints = [];
+// ADD YOUR CODE HERE
+var points = [{"x":60,"y":20},{"x":100,"y":40},{"x":100,"y":80},{"x":60,"y":100},{"x":20,"y":80},{"x":20,"y":40}]
+var options = {selectable: true, objectCaching: false, hasControls: true};
+var polygon = new fabric.Polygon(points, options);
+polygon.on('moved',function(opt){
+  console.log('poly moved',opt.target, opt.target.points)
+  drawEdge()
+  drawPoints()
+})
+polygon.on("modified", function () {
+  var matrix = this.calcTransformMatrix();
+  var transformedPoints = this.get("points")
+  .map(function(p){
+    console.log('p',p)
+    var a = new fabric.Point(
+         p.x - polygon.pathOffset.x,
+         p.y - polygon.pathOffset.y);
+    console.log('a',a)
+    return a
+    })
+  .map(function(p){
+    var b = fabric.util.transformPoint(p, matrix);
+    console.log('b',b)
+    return b
+  });
+  console.log(polygon.get("points"),transformedPoints)
+  // var circles = transformedPoints.map(function(p){
+  //   return new fabric.Circle({
+  //     left: p.x,
+  //     top: p.y,
+  //     radius: 3,
+  //     fill: "red",
+  //     originX: "center",
+  //     originY: "center",
+  //     hasControls: false,
+  //     hasBorders: false,
+  //     selectable: false
+  //   });
+  // });
+  
+  // this.canvas.clear().add(this).add.apply(this.canvas, circles).setActiveObject(this).renderAll();
+});
+canvas.add(polygon);
+
+function newPoints(){
+  var transformedPoints = polygon.get("points")
+  .map(function(p){
+    var a = new fabric.Point(
+         p.x - polygon.pathOffset.x,
+         p.y - polygon.pathOffset.y);
+    return a
+    })
+  .map(function(p){
+    var b = fabric.util.transformPoint(p, matrix);
+    return b
+  });
+  return transformedPoints;
+}
+
+function drawPoints(){
+  tempPoints.forEach(function(circle, index) {
+    canvas.remove(circle);
+  })
+  tempPoints = [];
+  var points = polygon.points;
+  points.forEach(function(point, index) {
+    var circle = new fabric.Circle({
+      radius: 5,
+      fill: 'green',
+      left: point.x,
+      top: point.y,
+      originX: 'center',
+      originY: 'center',
+      hasBorders: false,
+      hasControls: false,
+      name: index
+    });
+    canvas.add(circle);
+    circle.on('moving',function(opt){
+      console.log('moving', opt.target)
+      var p = opt.target;
+      polygon.points[p.name] = {x: p.getCenterPoint().x, y: p.getCenterPoint().y};
+    })
+    circle.on('moved',function(opt){
+      console.log('moved', opt.target)
+      drawEdge()
+      drawPoints()
+    })
+    tempPoints.push(circle)
+  });
+}
+
+function drawEdge(){
+  tempLines.forEach(function(line, index) {
+    canvas.remove(line);
+  })
+  tempLines = [];
+  var points = polygon.points;
+  points.forEach(function(point, index) {
+    var lineX1 = point.x, lineY1 = point.y, lineX2, lineY2, pointsLength = points.length;
+    if(index == 0){
+      lineX2 = points[pointsLength - 1].x;
+      lineY2 = points[pointsLength - 1].y;
+    } else {
+      lineX2 = points[index - 1].x;
+      lineY2 = points[index - 1].y;
+    }
+    var line = new fabric.Line([lineX1, lineY1, lineX2, lineY2],{
+      strokeWidth: 2,
+      fill: '#999999',
+      stroke: '#999999',
+      originX: 'center',
+      originY: 'center',
+      selectable: false,
+      hasBorders: false,
+      hasControls: false,
+      lockMovementX: true,
+      lockMovementY: true,
+      name: 'L'+index,
+      ll:  '/' + lineX1 + '/' + lineY1 + '/' +  lineX2 + '/' +  lineY2
+    });
+    canvas.add(line);
+    // line.sendToBack();
+    line.on('mousedown',function(opt){
+      console.log('mousedown', opt)
+      console.log(opt.target.x1,opt.target.getCoords())
+      var idx = parseInt(opt.target.name.replace('L', ''))
+      mouseCoords = {
+        x: canvas.getPointer(opt.e).x,
+        y: canvas.getPointer(opt.e).y
+      }
+      // polygon.points.push({x: mouseCoords.x, y: mouseCoords.y});
+      polygon.points.splice(idx, 0, {x: mouseCoords.x, y: mouseCoords.y});
+      canvas.renderAll()
+      drawEdge()
+      drawPoints()
+    })
+    tempLines.push(line)
+  });
+}
+drawEdge()
+drawPoints()
+// canvas.on('object:moving', function (options) {
+  
+//   var objType = options.target.get('type');
+//   var p = options.target;
+//   polygon.points[p.name] = {x: p.getCenterPoint().x, y: p.getCenterPoint().y};
+//   drawEdge()
+//   //UNCOMMENT LINES 39 - 42 TO HAVE A WORKAROUND
+// 	//canvas.remove(polygon);
+//   //polygon = new fabric.Polygon(polygon.points, {selectable: false});
+//   //canvas.add(polygon);
+//   //canvas.sendToBack(polygon);
+// });
+    </script>
+</html>
