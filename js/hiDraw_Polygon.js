@@ -365,6 +365,7 @@ hiDraw.prototype.Polygon = (function () {
                 polygonBaseSize = fabricObject._getNonTransformedDimensions(),
                 newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
                 newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
+                console.log('absolutePoint',absolutePoint)
             fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
             return actionPerformed;
         }
