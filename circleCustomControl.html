@@ -1,0 +1,169 @@
+<html>
+    <head>
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/fabric.min.js"></script>
+        <style>
+            .canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="controls">
+            <p>
+              <button id="edit" onclick="Edit()">Toggle editing polygon</button>
+            </p>
+          </div>
+          <canvas id="c" width="500" height="400" style="border:1px solid #ccc"></canvas>
+    </body>
+    <script>
+
+
+
+    (function(){
+        var canvas = this.__canvas = new fabric.Canvas('c');
+	// create a polygon object
+	const circle = new fabric.Circle({
+		radius: 50,
+		stroke: 'green',
+		strokeWidth: 4,
+		fill: 'red', // 填色,
+		objectCaching: false,
+        top: 0,
+        left: 0
+      })
+	  canvas.add(circle)//加入到canvas中
+
+
+	  var deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
+
+  var img = document.createElement('img');
+  img.src = deleteIcon;
+
+  function renderIcon(ctx, left, top, styleOverride, fabricObject) {
+	var size = this.cornerSize;
+	ctx.beginPath();
+	var r = 6;
+	ctx.arc(left + r/2, top + r/2, r, 0, 2 * Math.PI);
+	ctx.fillStyle = "rgba(0,0,0,0.7)";
+	ctx.fill();
+  }
+
+
+	function Edit() {
+		// clone what are you copying since you
+		// may want copy and paste on different moment.
+		// and you do not want the changes happened
+		// later to reflect on the copy.
+		var poly = canvas.getObjects()[0];
+		canvas.setActiveObject(poly);
+		poly.edit = !poly.edit;
+		if (poly.edit) {
+			poly.cornerStyle = 'circle';
+			poly.cornerColor = 'rgba(0,0,255,0.5)';
+			poly.controls = {
+				centerControl: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						fabricObject.centerX = (fabricObject.left + fabricObject.width / 2);
+						fabricObject.centerY = (fabricObject.top + fabricObject.height / 2);
+						return {
+							x: fabricObject.centerX,
+							y: fabricObject.centerY
+						}
+					},
+					mouseDownHandler:function(eventData, target){
+						var polygon = target;
+						polygon.centerX = polygon.left + polygon.radius;
+						polygon.centerY = polygon.top + polygon.radius;
+					},
+					actionHandler: function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.left = x - polygon.radius;
+						polygon.top = y - polygon.radius;
+						polygon.centerX = x;
+						polygon.centerY = y;
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				}),
+				borderControl: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						if(fabricObject.borderPoint && fabricObject.borderPointTheta){
+							if(fabricObject.borderPointTheta){
+								fabricObject.borderPoint.x = fabricObject.centerX + fabricObject.radius * Math.cos(fabricObject.borderPointTheta)
+								fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius * Math.sin(fabricObject.borderPointTheta)
+							}
+						} else {
+							fabricObject.borderPoint = {
+								x: (fabricObject.left + fabricObject.width / 2),
+								y: (fabricObject.top + fabricObject.height / 2) + fabricObject.radius
+							}
+						}
+						return fabricObject.borderPoint;
+					},
+					mouseDownHandler:function(eventData, target){
+						var polygon = target;
+						polygon.centerX = polygon.left + polygon.radius;
+						polygon.centerY = polygon.top + polygon.radius;
+
+						var distC = Math.sqrt(Math.pow(polygon.borderPoint.x - polygon.centerX - polygon.radius, 2) + Math.pow(polygon.borderPoint.y - polygon.centerY, 2))
+						cosTheta = (2*Math.pow(polygon.radius,2) - Math.pow(distC,2))/(2*Math.pow(polygon.radius,2))
+						if(polygon.borderPoint.y - polygon.centerY > 0){
+							polygon.borderPointTheta = Math.acos(cosTheta);
+						} else {
+							polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+						}
+					},
+					mouseUpHandler:function(eventData, target){
+
+					},
+					actionHandler:function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.radius = Math.sqrt((polygon.centerX - x) * (polygon.centerX - x) + (polygon.centerY - y) * (polygon.centerY - y))
+						polygon.left = polygon.centerX - polygon.radius;
+						polygon.top = polygon.centerY - polygon.radius;
+						polygon.width = polygon.radius * 2;
+						polygon.height = polygon.radius * 2;
+						polygon.borderPoint = {
+							x: x,
+							y: y
+						}
+						var distC = Math.sqrt(Math.pow(x - polygon.centerX - polygon.radius, 2) + Math.pow(y - polygon.centerY, 2))
+						cosTheta = (2*Math.pow(polygon.radius,2) - Math.pow(distC,2))/(2*Math.pow(polygon.radius,2))
+						if(polygon.borderPoint.y - polygon.centerY > 0){
+							polygon.borderPointTheta = Math.acos(cosTheta);
+						} else {
+							polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+						}
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				})
+			}
+		} else {
+            poly.cornerColor = 'blue';
+            poly.cornerStyle = 'rect';
+			poly.controls = fabric.Object.prototype.controls;
+		}
+		poly.hasBorders = !poly.edit;
+		canvas.requestRenderAll();
+    }
+    
+    window.Edit = Edit;
+
+    })()
+
+
+	var A = [{'A':0},{'A':1},{'A':2}]
+	var B = A.reduce(function(acc, point, index){
+		acc[index] = point;
+		return acc
+	}, { })
+	console.log(B)
+    </script>
+</html>

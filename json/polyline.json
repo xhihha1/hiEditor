@@ -1,0 +1,48 @@
+{
+    "version": "4.1.0",
+    "objects": [{
+        "type": "polyline",
+        "version": "4.1.0",
+        "originX": "left",
+        "originY": "top",
+        "left": 69.75,
+        "top": 125.75,
+        "width": 290,
+        "height": 267,
+        "fill": "transparent",
+        "stroke": "#333333",
+        "strokeWidth": 0.5,
+        "strokeDashArray": null,
+        "strokeLineCap": "butt",
+        "strokeDashOffset": 0,
+        "strokeLineJoin": "miter",
+        "strokeMiterLimit": 4,
+        "scaleX": 1,
+        "scaleY": 1,
+        "angle": 0,
+        "flipX": false,
+        "flipY": false,
+        "opacity": 1,
+        "shadow": null,
+        "visible": true,
+        "backgroundColor": "",
+        "fillRule": "nonzero",
+        "paintFirst": "fill",
+        "globalCompositeOperation": "source-over",
+        "skewX": 0,
+        "skewY": 0,
+        "points": [{
+            "x": 162,
+            "y": 126
+        }, {
+            "x": 360,
+            "y": 220
+        }, {
+            "x": 275,
+            "y": 382
+        }, {
+            "x": 70,
+            "y": 393
+        }]
+    }]
+}

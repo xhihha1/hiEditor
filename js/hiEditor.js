@@ -30,12 +30,27 @@
     };
 
     // const circle = new fabric.Circle({
-    //     radius: 30,
+    //     radius: 50,
     //     fill: 'red', // 填色,
-    //     top: 10,
+    //     top: 0,
     //     left: 0
     //   })
     // edit.canvasView.add(circle)//加入到canvas中
+
+    // const imgEl = document.createElement('img')
+    // imgEl.crossOrigin = 'Anonymous' // 讓圖片能讓所有人存取
+    // imgEl.src = './labelmeJSON/circle.png'
+    // imgEl.onload = () => {
+    //     const image = new fabric.Image(imgEl, {
+    //         // scaleX: 0.5,
+    //         // scaleY: 0.5,
+    //         // angle: 15,
+    //         top: 0,
+    //         left: 0
+    //     })
+    //     edit.canvasView.add(image)
+    // }
+    
 
     $("#circle").click(function () {
         edit.removeCanvasEvents();
@@ -172,6 +187,10 @@
             });
         }
     });
+
+    $("#currentJson").click(function () {
+        $('#hiCurrentJsonArea').val(JSON.stringify(edit.canvasView.toJSON(['uniqueIndex'])))
+    })
 
     // -------------- Drawing Option Start ----------------
     if (fabric.PatternBrush) {
@@ -369,6 +388,12 @@
 
         switch (key) {
             // Shortcuts
+            case 27: // Ctrl+V
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                    edit.paste();
+                }
+                break;
             case 46: // Ctrl+C
                 event.preventDefault();
                 edit.delete();
@@ -386,6 +411,7 @@
                     edit.paste();
                 }
                 break;
+            
 
             default:
                 // TODO

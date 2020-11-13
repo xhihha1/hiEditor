@@ -1,0 +1,48 @@
+{
+    "version": "4.1.0",
+    "objects": [{
+        "type": "polygon",
+        "version": "4.1.0",
+        "originX": "left",
+        "originY": "top",
+        "left": 137.75,
+        "top": 142.75,
+        "width": 247,
+        "height": 161,
+        "fill": "rgba(0,0,0,0)",
+        "stroke": "#333333",
+        "strokeWidth": 0.5,
+        "strokeDashArray": null,
+        "strokeLineCap": "butt",
+        "strokeDashOffset": 0,
+        "strokeLineJoin": "miter",
+        "strokeMiterLimit": 4,
+        "scaleX": 1,
+        "scaleY": 1,
+        "angle": 0,
+        "flipX": false,
+        "flipY": false,
+        "opacity": 1,
+        "shadow": null,
+        "visible": true,
+        "backgroundColor": "",
+        "fillRule": "nonzero",
+        "paintFirst": "fill",
+        "globalCompositeOperation": "source-over",
+        "skewX": 0,
+        "skewY": 0,
+        "points": [{
+            "x": 138,
+            "y": 189
+        }, {
+            "x": 271,
+            "y": 143
+        }, {
+            "x": 385,
+            "y": 225
+        }, {
+            "x": 185,
+            "y": 304
+        }]
+    }]
+}

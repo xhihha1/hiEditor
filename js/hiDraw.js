@@ -127,6 +127,8 @@ hiDraw.prototype.viewEvent = function () {
             this.lastPosX = evt.clientX;
             this.lastPosY = evt.clientY;
         }
+        console.log('mouse down',opt.target? opt.target.get('type'): opt)
+        that.deselectPolygons(opt.target)
     });
     this.canvasView.on('mouse:move', function (opt) {
         if (this.isDragging) {
@@ -146,7 +148,7 @@ hiDraw.prototype.viewEvent = function () {
         this.selection = true;
     });
     this.canvasView.on('selection:created', function (opt) {
-        // console.log('selection:created',opt.target? opt.target.get('type'): opt)
+        console.log('selection:created',opt.target? opt.target.get('type'): opt)
         if (that.DatGUI) {
             that.DatGUI.updateOptions({
                 type: opt.target.get('type'),
@@ -294,4 +296,69 @@ hiDraw.prototype.delete = function () {
     //     });
 
     // }
+}
+
+hiDraw.prototype.deselectPolygons = function (selectedObj) {
+    var that = this;
+    if (selectedObj && selectedObj.type === 'activeSelection') {
+        this.canvasView.forEachObject(function (obj) {
+            if(obj.get('type') == 'polygon'){
+                if(obj.tempPoints){
+                    obj.tempPoints.forEach(function(circle, index) {
+                        that.canvasView.remove(circle);
+                    })
+                }
+                if(obj.tempLines){
+                    obj.tempLines.forEach(function(line, index) {
+                        that.canvasView.remove(line);
+                    })
+                }
+                obj.controls = fabric.Object.prototype.controls;
+                obj.selectable = true;
+                obj.hasBorders = true;
+                obj.hasControls = true;
+                obj.editShape = false;
+            }
+        })
+    } else {
+        if(selectedObj && selectedObj.tempLines){
+            console.log('tempPoints')
+        } else if(selectedObj && selectedObj.tempPoints){
+            console.log('tempLines')
+        } else {
+            this.canvasView.forEachObject(function (obj) {
+                // console.log(obj.get('type'))
+                if(selectedObj == obj){
+                    console.log('same')
+                    selectedObj.sendToBack();
+                    if(obj.tempPoints){
+                        obj.tempPoints.forEach(function(circle, index) {
+                            circle.bringToFront();
+                        })
+                    }
+                    if(obj.tempLines){
+                        obj.tempLines.forEach(function(line, index) {
+                            line.bringToFront();
+                        })
+                    }
+                } else if(obj.get('type') == 'polygon'){
+                    if(obj.tempPoints){
+                        obj.tempPoints.forEach(function(circle, index) {
+                            that.canvasView.remove(circle);
+                        })
+                    }
+                    if(obj.tempLines){
+                        obj.tempLines.forEach(function(line, index) {
+                            that.canvasView.remove(line);
+                        })
+                    }
+                    obj.controls = fabric.Object.prototype.controls;
+                    obj.selectable = true;
+                    obj.hasBorders = true;
+                    obj.hasControls = true;
+                    obj.editShape = false;
+                }
+            })
+        }
+    }
 }

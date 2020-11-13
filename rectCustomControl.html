@@ -1,0 +1,212 @@
+<html>
+    <head>
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/fabric.min.js"></script>
+        <style>
+            .canvas {
+                border: 1px solid black;
+            }
+			#A5{
+				width: 500px;
+				height: 1000px;
+			}
+        </style>
+    </head>
+    <body>
+
+        <div class="controls">
+            <p>
+              <button id="edit" onclick="Edit()">Toggle editing polygon</button>
+            </p>
+          </div>
+		  <canvas id="c" width="500" height="400" style="border:1px solid #ccc"></canvas>
+		  <textarea id="A5"></textarea>
+		  <button id="A4">AAA</button>
+		  <button id="A3">A3</button>
+    </body>
+    <script>
+
+
+
+    (function(){
+        var canvas = this.__canvas = new fabric.Canvas('c');
+	// create a polygon object
+	const circle = new fabric.Rect({
+		stroke: 'green',
+		strokeWidth: 4,
+		fill: 'red', // 填色,
+		left: 10,
+		top: 10,
+		width: 100,
+        height: 100,
+        originX: 'left',
+        originY: 'top',
+		objectCaching: false
+      })
+	  canvas.add(circle)//加入到canvas中
+
+
+  function renderIcon(ctx, left, top, styleOverride, fabricObject) {
+	var size = this.cornerSize;
+	ctx.beginPath();
+	var r = 6;
+	var d = 2;
+	ctx.arc(left + d, top + d, r, 0, 2 * Math.PI);
+	ctx.fillStyle = "rgba(0,0,0,0.7)";
+	ctx.fill();
+  }
+
+
+	function Edit() {
+		// clone what are you copying since you
+		// may want copy and paste on different moment.
+		// and you do not want the changes happened
+		// later to reflect on the copy.
+		var poly = canvas.getObjects()[0];
+		canvas.setActiveObject(poly);
+		poly.edit = !poly.edit;
+		if (poly.edit) {
+			poly.cornerStyle = 'circle';
+			poly.cornerColor = 'rgba(0,0,255,0.5)';
+			poly.controls = {
+				lt: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						return {
+								x: fabricObject.left,
+								y: fabricObject.top
+							}	
+					},
+					mouseDownHandler:function(eventData, target){
+						var fabricObject = target;
+						fabricObject.rb = {
+							x: fabricObject.left + fabricObject.width,
+							y: fabricObject.top + fabricObject.height
+						}
+					},
+					actionHandler: function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.left = Math.min(x, polygon.rb.x);
+						polygon.top = Math.min(y, polygon.rb.y);
+						polygon.width = Math.abs(x - polygon.rb.x);
+						polygon.height = Math.abs(y - polygon.rb.y);
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				}),
+				lb: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						return {
+								x: fabricObject.left,
+								y: fabricObject.top + fabricObject.height
+							}
+					},
+					mouseDownHandler:function(eventData, target){
+						var fabricObject = target;
+						fabricObject.rt = {
+							x: fabricObject.left + fabricObject.width,
+							y: fabricObject.top
+						}
+					},
+					actionHandler:function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.left = Math.min(x, polygon.rt.x);
+						polygon.top = Math.min(y, polygon.rt.y);
+						polygon.width = Math.abs(x - polygon.rt.x);
+						polygon.height = Math.abs(y - polygon.rt.y);
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				}),
+				rt: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						return {
+								x: fabricObject.left + fabricObject.width,
+								y: fabricObject.top
+							}
+					},
+					mouseDownHandler:function(eventData, target){
+						var fabricObject = target;
+						fabricObject.lb = {
+							x: fabricObject.left,
+							y: fabricObject.top + fabricObject.height
+						}
+					},
+					mouseUpHandler:function(eventData, target){
+
+					},
+					actionHandler:function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.left = Math.min(x, polygon.lb.x);
+						polygon.top = Math.min(y, polygon.lb.y);
+						polygon.width = Math.abs(x - polygon.lb.x);
+						polygon.height = Math.abs(y - polygon.lb.y);
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				}),
+				rb: new fabric.Control({
+					positionHandler:function(dim, finalMatrix, fabricObject){
+						return {
+								x: fabricObject.left + fabricObject.width,
+								y: fabricObject.top + fabricObject.height
+							}
+					},
+					mouseDownHandler:function(eventData, target){
+						var fabricObject = target;
+						fabricObject.lt = {
+							x: fabricObject.left,
+							y: fabricObject.top
+						}
+
+					},
+					mouseUpHandler:function(eventData, target){
+
+					},
+					actionHandler:function(eventData, transform, x, y){
+						var polygon = transform.target;
+						polygon.left = Math.min(x, polygon.lt.x);
+						polygon.top = Math.min(y, polygon.lt.y);
+						polygon.width = Math.abs(x - polygon.lt.x);
+						polygon.height = Math.abs(y - polygon.lt.y);
+						return true;
+					},
+					cursorStyle: 'pointer',
+					render: renderIcon,
+    				cornerSize: 5
+				})
+			}
+		} else {
+            poly.cornerColor = 'blue';
+            poly.cornerStyle = 'rect';
+			poly.controls = fabric.Object.prototype.controls;
+		}
+		poly.hasBorders = !poly.edit;
+		canvas.requestRenderAll();
+    }
+    
+	window.Edit = Edit;
+	
+	$('#A4').on('click',function(){
+		$('#A5').val(JSON.stringify(canvas.getObjects()[0].toJSON()));
+	})
+	$('#A3').on('click',function(){
+		canvas.setActiveObject(canvas.getObjects()[0]);
+	});
+
+    })()
+
+
+	var A = [{'A':0},{'A':1},{'A':2}]
+	var B = A.reduce(function(acc, point, index){
+		acc[index] = point;
+		return acc
+	}, { })
+	console.log(B)
+    </script>
+</html>

@@ -124,6 +124,7 @@ function minXY(){
 }
 
 function drawPoints(){
+  console.log('?')
   tempPoints.forEach(function(circle, index) {
     canvas.remove(circle);
   })
@@ -241,13 +242,21 @@ function drawEdge(){
     canvas.add(line);
     // line.sendToBack();
     line.on('mousedown',function(opt){
-      console.log('mousedown', opt)
-      console.log(opt.target.x1,opt.target.getCoords())
+      // console.log('mousedown', opt)
+      // console.log(opt.target.x1,opt.target.getCoords())
+      // console.log(opt.target.x1, opt.target.x2, opt.target.y1, opt.target.y2)
       var idx = parseInt(opt.target.name.replace('L', ''))
       mouseCoords = {
         x: canvas.getPointer(opt.e).x,
         y: canvas.getPointer(opt.e).y
       }
+      var x1 = opt.target.x1, x2 = opt.target.x2, y1 = opt.target.y1, y2 = opt.target.y2;
+      var a = (y1 - y2)
+      var b = (x2 - x1)
+      var c = (x1 - x2)* y2 - (y1 - y2) * x2;
+      var x0 = mouseCoords.x, y0 = mouseCoords.y;
+      var dist = Math.abs(a * x0 + b * y0 + c)/ Math.sqrt(a*a + b*b);
+      // console.log('dist: ', dist)
       var mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(mouseCoords.x, mouseCoords.y), 'center', 'center')
       var polygonBaseSize = polygon._getNonTransformedDimensions();
       var size = polygon._getTransformedDimensions(0, 0);
@@ -257,10 +266,12 @@ function drawEdge(){
       }
       // polygon.points.push({x: mouseCoords.x, y: mouseCoords.y});
       // polygon.points.splice(idx, 0, {x: mouseCoords.x, y: mouseCoords.y});
-      polygon.points.splice(idx, 0, newPoint);
-      canvas.renderAll()
-      drawEdge()
-      drawPoints()
+      if ( dist <= 2){
+        polygon.points.splice(idx, 0, newPoint);
+        canvas.renderAll()
+        drawEdge()
+        drawPoints()
+      }
     })
     tempLines.push(line)
   });
