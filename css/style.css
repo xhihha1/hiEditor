@@ -1,0 +1,65 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+#main{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#menu{
+    float: left;
+    position: relative;
+    width: 50px;
+    height: 100%;
+    box-sizing: border-box;
+}
+#content{
+    float: right;
+    position: relative;
+    width: calc(100% - 50px);
+    height: 100%;
+    box-sizing: border-box;
+}
+.clearBoth{
+    clear: both;
+}
+#menu ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#menu li {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    text-align: center;
+
+}
+#menu li img{
+    width: 50px;
+    height: 50px;
+}
+
+#mainEditor{
+    position: absolute;
+    width: calc(100% - 200px);
+    height: 100%;
+}
+
+#infoArea{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: aqua;
+    width: 200px;
+    height: 100%;
+    overflow: auto;
+}
+
+#minimap{
+    background-color: aliceblue;
+}
