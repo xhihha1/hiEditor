@@ -1,0 +1,97 @@
+
+html, body{
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+#main{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#menu{
+  float: left;
+  position: relative;
+  width: 50px;
+  height: 100%;
+  box-sizing: border-box;
+}
+/* --- content --- */
+#content{
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  width: calc(100% - 270px);
+  height: 100%;
+  box-sizing: border-box;
+}
+#content #mainEditor{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+/* --- menu --- */
+#menu{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 70px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+#menu ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#menu li {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  text-align: center;
+  background-color: #AAFFEE;
+  border-bottom: 1px solid #00AA88;
+}
+#menu li img{
+  width: 50px;
+  height: 50px;
+}
+/* --- property --- */
+#property{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 200px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+#property ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#property .prop-title{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  text-indent: 10px;
+  overflow: hidden;
+  text-align: left;
+  line-height: 50px;
+  font-size: 30px;
+  background-color: #C10066;
+}
+#property .prop-content{
+  position: relative;
+  width: 100%;
+  text-indent: 10px;
+  text-align: left;
+  font-size: 16px;
+  background-color: #FFCCCC;
+}
