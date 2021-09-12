@@ -135,7 +135,10 @@ function editorEvent(edit, objOption) {
 
   $("#resize").click(function () {
     edit.canvasView.setZoom(1)
-    edit.canvasView.absolutePan({ x: 0, y: 0 })
+    edit.canvasView.absolutePan({
+      x: 0,
+      y: 0
+    })
   });
 
   $('#goRight').click(function () {
@@ -234,12 +237,65 @@ function editorEvent(edit, objOption) {
     }
   });
 
-  $('#objlist').click(function(e){
+  var showaxis = false
+  $('#axis').click(function (e) {
+    showaxis = !showaxis
+    if (showaxis) {
+      var canvasTemplate
+      if (document.getElementById('tempaxis')) {
+        canvasTemplate = document.getElementById('tempaxis')
+      } else {
+        canvasTemplate = document.createElement('canvas')
+        canvasTemplate.id = 'tempaxis'
+        document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
+      }
+      canvasTemplate.style.position = 'absolute'
+      canvasTemplate.style.top = '0px'
+      canvasTemplate.style.left = '0px'
+      canvasTemplate.style.zIndex = '-100'
+      canvasTemplate.style.pointerEvents = 'none'
+      canvasTemplate.width = document.getElementById(edit.defaultOptions.canvasViewId).width
+      canvasTemplate.height = document.getElementById(edit.defaultOptions.canvasViewId).height
+      var ctx = canvasTemplate.getContext("2d");
+      var canvas = edit.canvasView;
+      var canvasZoom = canvas.getZoom();
+      var lt = fabric.util.transformPoint({
+        x: 0,
+        y: 0
+      }, fabric.util.invertTransform(canvas.viewportTransform))
+      var x = 0,
+        y = 0;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(200,200,200, 0.9)'
+      while (x < canvasTemplate.width) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvasTemplate.height);
+        ctx.stroke();
+        x += (10 * canvasZoom)
+      }
+      while (y < canvasTemplate.height) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvasTemplate.width, y);
+        ctx.stroke();
+        y += (10 * canvasZoom)
+      }
+    } else {
+      var canvasTemplate = document.getElementById('tempaxis')
+      if (canvasTemplate) {
+        var ctx = canvasTemplate.getContext("2d");
+        ctx.clearRect(0, 0, canvasTemplate.width, canvasTemplate.height);
+      }
+    }
+  })
+
+  $('#objlist').click(function (e) {
     var target = e.target
     var i = 0
     edit.canvasView.forEachObject(function (obj) {
       if (obj['tempDrawShape']) {} else {
-        if(i === $(target).prev('li').length) {
+        if (i === $(target).prev('li').length) {
           edit.canvasView.setActiveObject(obj);
         }
         i++
@@ -723,7 +779,7 @@ function heatmapCreate(edit, objOption) {
     canvasTemplate.id = 'tempHeatmap'
     document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
   }
-  canvasTemplate.style.position = 'abcolute'
+  canvasTemplate.style.position = 'absolute'
   canvasTemplate.style.top = '0px'
   canvasTemplate.style.left = '0px'
   canvasTemplate.style.zIndex = '-50'
@@ -800,7 +856,7 @@ function heatmapSetData(edit, objOption) {
   var pointers = []
   var points = []
   edit.canvasView.forEachObject(function (obj) {
-    if(obj.get('type') === 'heatmapPoint') {
+    if (obj.get('type') === 'heatmapPoint') {
       // console.log(obj)
       pointers.push(obj)
     }
@@ -811,7 +867,7 @@ function heatmapSetData(edit, objOption) {
     x: 0,
     y: 0
   }, fabric.util.invertTransform(canvas.viewportTransform))
-  for(var i = 0; i < pointers.length; i++) {
+  for (var i = 0; i < pointers.length; i++) {
     // console.log(pointers[0])
     var val = pointers[i].heatVal;
     max = Math.max(max, val);
@@ -833,6 +889,54 @@ function heatmapSetData(edit, objOption) {
   });
 }
 
+function addImageObj(edit, objOption) {
+  var canvas = edit.canvasView;
+  $('#imageIconArea').click(function (e) {
+    var target = e.target;
+    if ($(target).attr('src')) {
+      fabric.Image.fromURL($(target).attr('src'), function (img) {
+        var oImg = img.set({
+          left: 0,
+          top: 0
+        }).scale(0.25);
+        canvas.add(oImg);
+      });
+    }
+  })
+  // var activeObject = canvas.getActiveObject();
+  //  activeObject.setSrc(data.url);
+}
+
+function addVideoObj(edit, objOption) {
+  var canvas = edit.canvasView;
+  $('#video').click(function (e) {
+    var target = e.target;
+    var canvasTemplate
+    if (document.getElementById('tempVideo')) {
+      canvasTemplate = document.getElementById('tempVideo')
+    } else {
+      canvasTemplate = document.createElement('video')
+      canvasTemplate.id = 'tempVideo'
+      document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
+    }
+    canvasTemplate.width = 300
+    canvasTemplate.height = 200
+    canvasTemplate.style.display = 'none'
+    canvasTemplate.innerHTML = '<source src="http://html5demos.com/assets/dizzy.mp4">'
+    var video1El = canvasTemplate;
+    var video1 = new fabric.Image(video1El, {
+      left: 0,
+      top: 0,
+      angle: 0,
+      originX: 'left',
+      originY: 'top',
+      objectCaching: false,
+    });
+    canvas.add(video1);
+    video1.getElement().play();
+  })
+}
+
 
 
 (function () {
@@ -843,5 +947,13 @@ function heatmapSetData(edit, objOption) {
   dataStructure.editor[0].heatmapInstance = heatmapCreate(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   window.requestAnimationFrame(() => {
     heatmapSetData(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
+  });
+  addImageObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
+  addVideoObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
+
+
+  fabric.util.requestAnimFrame(function render() {
+    dataStructure.editor[0].canvasView.renderAll();
+    fabric.util.requestAnimFrame(render);
   });
 })()
