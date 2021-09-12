@@ -19,7 +19,7 @@ hichart.prototype.plotBasicPieData = function (dataSet) {
     var margin = this.options.margin;
     var centerX = rect.x + rect.width / 2;
     var centerY = rect.y + rect.height / 2;
-    var radius = rect.width / 2 - 2 * margin;
+    var radius = Math.min(rect.width, rect.height) / 2 - 2 * margin;
     var Val_max = this.options.Val_max;
 	var Val_min = this.options.Val_min;
     var stepSize = this.options.stepSize;
@@ -62,6 +62,7 @@ hichart.prototype.plotBasicPieData = function (dataSet) {
             context.beginPath();
             context.moveTo(0,0);
             //context.arc(0, 0, radius, 0, 2 * Math.PI);
+            if (radius <= 0) { radius = 1}
             context.arc(0, 0, radius, currentSum/sumOfData * 2 * Math.PI, (currentSum+series[s]['data'][d]['value'])/sumOfData * 2 * Math.PI);
             context.lineTo(0,0);
             context.fill();

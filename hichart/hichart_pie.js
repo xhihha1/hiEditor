@@ -21,12 +21,12 @@ hichart.prototype.plotPieData = function (dataSet) {
     var fontText = this.options.centerFontText;
     var centerX = rect.x + rect.width / 2;
     var centerY = rect.y + rect.height / 2;
-    var radius = rect.width / 2 - margin;
+    var radius = Math.min(rect.width, rect.height) / 2 - margin;
     var radius_margin = 5;
     var pieThin = 20;
-    var pieOuterRdius = radius - radius_margin;
-    var pieInnerRdius = radius - radius_margin - pieThin;
-    var innerCircleRadius = pieInnerRdius - radius_margin;
+    var pieOuterRdius = (radius - radius_margin) > 0? (radius - radius_margin) : 1;
+    var pieInnerRdius = (radius - radius_margin - pieThin) > 0? (radius - radius_margin - pieThin) : 1;
+    var innerCircleRadius = (pieInnerRdius - radius_margin) > 0? (pieInnerRdius - radius_margin) : 1;
     var unitDegree = 2 * Math.PI / 360;
     var shiftDegree = -90 * unitDegree;
     var valueList = [];
@@ -58,6 +58,7 @@ hichart.prototype.plotPieData = function (dataSet) {
     context.strokeStyle = borderColor;
     context.font = "20 pt Verdana"
     context.beginPath();
+    if (radius <= 0) { radius = 1 }
     context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     context.stroke();
 

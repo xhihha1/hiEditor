@@ -21,7 +21,8 @@
         var margin = this.options.margin;
         var centerX = rect.x + rect.width / 2;
         var centerY = rect.y + rect.height / 2;
-        var radius = rect.width / 2 - 2 * margin;
+        var radius = Math.min(rect.width, rect.height) / 2 - 2 * margin;
+        radius = radius > 0? radius : 1;
         var innerRadius = radius * 0.5;
         var Val_max = this.options.Val_max;
         var Val_min = this.options.Val_min;
