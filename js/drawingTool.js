@@ -290,6 +290,137 @@ function editorEvent(edit, objOption) {
     }
   })
 
+  function circle (x,y,r, color){
+    if(!r){ r = 1 }
+    if(!color){ color = 'red' }
+    var ellipse = new fabric.Ellipse({
+      strokeWidth: 14,
+      fill: color,
+      stroke: color,
+      originX: 'center',
+      originY: 'center',
+      top: y,
+      left: x,
+      rx: r,
+      ry: r,
+      selectable: true,
+      hasBorders: true,
+      hasControls: true,
+      strokeUniform: true
+    });
+    edit.canvasView.add(ellipse)
+  }
+
+  var oX, endX, oXo, endXo
+  var oY, endY, oYo, endYo
+  var oW, oH, oWo, oHo
+  var startDrawing = false
+  function startSelectMagnifyArea(e) {
+    var o
+      if (document.getElementById('selectView')) {
+        const canvasSelectTemplate = document.getElementById('selectView')
+        const ctx = canvasSelectTemplate.getContext('2d')
+        if (!startDrawing) {
+          startDrawing = true
+          oX = e.offsetX
+          oY = e.offsetY
+          o = fabric.util.transformPoint({
+            x: oX,
+            y: oY
+          }, fabric.util.invertTransform(edit.canvasView.viewportTransform))
+          oXo = o.x
+          oYo = o.y
+        } else {
+          startDrawing = false
+          var zoom = edit.canvasView.getZoom()
+          var zoomRateW = edit.canvasView.width / oW
+          var zoomRateH = edit.canvasView.height / oH
+          var zoomRate = Math.min(zoomRateW, zoomRateH)
+          o = fabric.util.transformPoint({
+            x: endX,
+            y: endY
+          }, fabric.util.invertTransform(edit.canvasView.viewportTransform))
+          endXo = o.x
+          endYo = o.y
+          var ary = new Array(6)
+          ary = edit.canvasView.viewportTransform
+          var pointer = fabric.util.transformPoint({
+            x: edit.canvasView.width / 2,
+            y: edit.canvasView.height / 2
+          }, fabric.util.invertTransform(edit.canvasView.viewportTransform))
+          var center = { x: (oXo + endXo) / 2, y: (oYo + endYo) / 2 }
+          var centerMoveMatirx = [1, 0, 0, 1, pointer.x - center.x, pointer.y - center.y]
+
+          var delta = new fabric.Point(pointer.x - center.x, pointer.y - center.y);
+          edit.canvasView.relativePan(delta);
+          let zoomF = Math.floor(zoom * zoomRate)
+          edit.canvasView.zoomToPoint({
+            x: edit.canvasView.width / 2,
+            y: edit.canvasView.height / 2
+          }, zoomF)
+          edit.canvasView.renderAll()
+          ctx.clearRect(0, 0, canvasSelectTemplate.width, canvasSelectTemplate.height)
+          canvasSelectTemplate.parentNode.removeChild(canvasSelectTemplate)
+        }
+      }
+  }
+  function moveSelectMagnifyArea (e) {
+    if (document.getElementById('selectView')) {
+      const canvasSelectTemplate = document.getElementById('selectView')
+      const ctx = canvasSelectTemplate.getContext('2d')
+      if (startDrawing) {
+        endX = e.offsetX
+        endY = e.offsetY
+        ctx.clearRect(0, 0, canvasSelectTemplate.width, canvasSelectTemplate.height)
+        ctx.strokeStyle = '#FFFFFF'
+        ctx.fillStyle = 'rgba(255,255,255,0.2)'
+        ctx.lineWidth = 2
+        oW = Math.abs(endX - oX)
+        oH = Math.abs(endY - oY)
+        ctx.beginPath()
+        ctx.setLineDash([2, 2])
+        ctx.rect(
+          Math.min(oX, endX),
+          Math.min(oY, endY),
+          Math.abs(endX - oX),
+          Math.abs(endY - oY)
+        )
+        ctx.stroke()
+        ctx.fill()
+      }
+    }
+  }
+
+  var showSelect = false
+  $('#selectArea').click(function (e) {
+    showaxis = !showaxis
+    if (showaxis) {
+      var canvasTemplate
+      if (document.getElementById('selectView')) {
+        canvasTemplate = document.getElementById('selectView')
+      } else {
+        canvasTemplate = document.createElement('canvas')
+        canvasTemplate.id = 'selectView'
+        document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
+      }
+      canvasTemplate.style.position = 'absolute'
+      canvasTemplate.style.top = '0px'
+      canvasTemplate.style.left = '0px'
+      canvasTemplate.style.zIndex = '100'
+      canvasTemplate.style.background = 'rgba(0,0,0,0.3)'
+      // canvasTemplate.style.pointerEvents = 'none'
+      canvasTemplate.width = edit.canvasView.width
+      canvasTemplate.height = edit.canvasView.height
+      canvasTemplate.addEventListener('mousedown', startSelectMagnifyArea, false)
+      canvasTemplate.addEventListener('mousemove', moveSelectMagnifyArea, false)
+    } else {
+      if (document.getElementById('selectView')) {
+        var elem = document.getElementById('selectView')
+        elem.parentNode.removeChild(elem)
+      }
+    }
+  })
+
   $('#objlist').click(function (e) {
     var target = e.target
     var i = 0
@@ -329,7 +460,7 @@ function editorEvent(edit, objOption) {
     // console.log('resize',elem.offsetWidth)
     // that.canvasView.setDimensions({width:elem.offsetWidth, height:elem.offsetHeight});
     setTimeout(function () {
-      edit.canvasView.setWidth(parseInt(elem.offsetWidth) - 200)
+      edit.canvasView.setWidth(parseInt(elem.offsetWidth))
       edit.canvasView.setHeight(parseInt(elem.offsetHeight))
       edit.canvasView.renderAll()
     }, 300)
