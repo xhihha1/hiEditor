@@ -29,6 +29,9 @@ hiDraw.prototype.viewEvent = (function () {
             if(that.defaultOptions.openEventHistory &&
                that.historySaveAction &&
                !opt.target.tempDrawShape){that.historySaveAction()}
+            if (opt.target && opt.target.hiDrawEvnt && typeof(opt.target.hiDrawEvnt.objRemove) === 'function') {
+                opt.target.hiDrawEvnt.objRemove(opt)
+            }
             if (that.defaultOptions.event && that.defaultOptions.event['object_removed']) {
                 that.defaultOptions.event['object_removed'](opt)
             }

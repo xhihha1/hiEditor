@@ -778,6 +778,7 @@ $(document).ready(function() {
 
         _render: function(ctx) {
             this.callSuper('_render', ctx);
+            console.log('----------', this)
 
             // do not render if width/height are zeros or object is not visible
             if (this.width === 0 || this.height === 0 || !this.visible) return;
@@ -795,11 +796,12 @@ $(document).ready(function() {
             ctx.lineTo(-20, 15);
             ctx.lineTo(-20, -15);
             ctx.closePath();
-            ctx.fillStyle = this.stroke;
+            // ctx.fillStyle = this.stroke;
+            ctx.fillStyle = 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')';
             ctx.fill();
 
             ctx.restore();
-
+            
         }
     });
 
@@ -869,7 +871,8 @@ $(document).ready(function() {
                 originY: 'center',
                 selectable: false,
                 hasBorders: false,
-                hasControls: false
+                hasControls: false,
+                objectCaching: false
             });
 
             inst.canvas.add(line).setActiveObject(line);

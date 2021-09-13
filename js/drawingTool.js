@@ -113,6 +113,13 @@ function editorEvent(edit, objOption) {
     var polyline = new edit.Polyline(edit, objOption);
   });
 
+  $('#drawDiv').click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var line = new edit.DivHtml(edit, objOption);
+  });
+
   $("#zoomIn").click(function () {
     var zoom = edit.canvasView.getZoom() * 1.1
     if (zoom > 20) zoom = 20
