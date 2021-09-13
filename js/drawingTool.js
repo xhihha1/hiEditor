@@ -387,6 +387,31 @@ function editorEvent(edit, objOption) {
         )
         ctx.stroke()
         ctx.fill()
+        // line arrow
+        if (Math.abs(oX - endX) > 10 && Math.abs(oY - endY) > 10) {
+          ctx.beginPath()
+          ctx.moveTo((oX - endX) > 0? oX - 10: oX + 10, (oY - endY) > 0? oY - 10: oY + 10)
+          ctx.lineTo((oX - endX) > 0? endX + 10: endX - 10, (oY - endY) > 0? endY + 10: endY - 10)
+          ctx.stroke()
+          ctx.setLineDash([])
+          ctx.fillStyle = 'rgba(255,255,255,1)'
+          ctx.beginPath()
+          var end = {
+            x: (oX - endX) > 0? endX + 10: endX - 10,
+            y: (oY - endY) > 0? endY + 10: endY - 10
+          }
+          ctx.moveTo(end.x, end.y)
+          var xDiff = endX - oX;
+          var yDiff = endY - oY;
+          var angle = Math.atan2(yDiff, xDiff);
+          var a1 = fabric.util.rotatePoint(new fabric.Point(10,0),new fabric.Point(0,0), angle + 165 * Math.PI / 180)
+          var a2 = fabric.util.rotatePoint(new fabric.Point(10,0),new fabric.Point(0,0), angle - 165 * Math.PI / 180)
+          ctx.lineTo(end.x + a1.x, end.y + a1.y)
+          ctx.lineTo(end.x + a2.x, end.y + a2.y)
+          ctx.closePath()
+          ctx.stroke()
+          ctx.fill()
+        }
       }
     }
   }
