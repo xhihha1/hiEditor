@@ -134,7 +134,7 @@ hiDraw.prototype.viewEvent = (function () {
                     // )
                 }
                 if (opt.target.get('type') == 'polygon') {
-                    opt.target.controls = controlOverride.polygon(opt.target)
+                    // opt.target.controls = controlOverride.polygon(opt.target)
                 } else if (opt.target.get('type') == 'polyline') {
                     opt.target.controls = controlOverride.polyline(opt.target)
                 } else { }
@@ -155,7 +155,7 @@ hiDraw.prototype.viewEvent = (function () {
                     // )
                 }
                 if (opt.target.get('type') == 'polygon') {
-                    opt.target.controls = controlOverride.polygon(opt.target)
+                    // opt.target.controls = controlOverride.polygon(opt.target)
                 } else if (opt.target.get('type') == 'polyline') {
                     opt.target.controls = controlOverride.polyline(opt.target)
                 } else { }

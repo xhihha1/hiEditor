@@ -350,17 +350,17 @@ hiDraw.prototype.import = (function () {
 			// `o` = json object
 			// `object` = fabric.Object instance
 			if (object.type == 'polygon') {
-				object.on('selected', function (opt) {
-					var polygon = this;
-					var evt = opt.e;
-					if (evt && evt.shiftKey === true) {
-						polygon.editShape = true;
-						polygon.hasControls = false;
-						polygon.hasBorders = false;
-						polygon.selectable = false;
-						controlOverride.polygonAddPoints(polygon)
-					}
-				})
+				// object.on('selected', function (opt) {
+				// 	var polygon = this;
+				// 	var evt = opt.e;
+				// 	if (evt && evt.shiftKey === true) {
+				// 		polygon.editShape = true;
+				// 		polygon.hasControls = false;
+				// 		polygon.hasBorders = false;
+				// 		polygon.selectable = false;
+				// 		controlOverride.polygonAddPoints(polygon)
+				// 	}
+				// })
 				object.perPixelTargetFind = true;
 			} else if (object.type == 'circle') {
 				object.perPixelTargetFind = true;

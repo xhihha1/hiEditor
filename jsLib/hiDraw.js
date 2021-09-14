@@ -269,7 +269,7 @@ hiDraw.prototype.deselectPolygons = function (selectedObj) {
     var that = this;
     if (selectedObj && selectedObj.type === 'activeSelection') {
         this.canvasView.forEachObject(function (obj) {
-            if (obj.get('type') == 'polygon' || obj.get('type') == 'polyline') {
+            if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'polyline') {
                 if (obj.tempPoints) {
                     obj.tempPoints.forEach(function (circle, index) {
                         that.canvasView.remove(circle);
@@ -312,7 +312,7 @@ hiDraw.prototype.deselectPolygons = function (selectedObj) {
                             })
                         }
                     }
-                } else if (obj.get('type') == 'polygon' || obj.get('type') == 'polyline') {
+                } else if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'polyline') {
                     if (obj.tempPoints) {
                         obj.tempPoints.forEach(function (circle, index) {
                             that.canvasView.remove(circle);
