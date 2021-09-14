@@ -42,6 +42,7 @@ function initCanvas(canvasId, canvasViewId) {
             listStr += '<li>' + obj.get('type') + '/' + obj['name'] + '/' + obj['label'] + '</li>'
           }
         })
+        console.log('???')
         $('#objlist').html(listStr)
       },
       selection_created: function (opt) {
@@ -1160,8 +1161,8 @@ function basicDraw(edit, objOption){
   addVideoObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   basicDraw(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
 
-  fabric.util.requestAnimFrame(function render() {
-    dataStructure.editor[0].canvasView.renderAll();
-    fabric.util.requestAnimFrame(render);
-  });
+  // fabric.util.requestAnimFrame(function render() {
+  //   dataStructure.editor[0].canvasView.renderAll();
+  //   fabric.util.requestAnimFrame(render);
+  // });
 })()
