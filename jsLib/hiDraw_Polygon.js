@@ -1,3 +1,94 @@
+fabric.HiPolygon = fabric.util.createClass(fabric.Polygon, {
+
+    type: 'hiPolygon',
+
+    initialize: function (element, options) {
+        options || (options = {});
+        this.callSuper('initialize', element, options);
+    },
+
+    toObject: function () {
+        return fabric.util.object.extend(this.callSuper('toObject'));
+    },
+
+    _render: function (ctx) {
+        this.callSuper('_render', ctx);
+
+        // do not render if width/height are zeros or object is not visible
+        if (this.width === 0 || this.height === 0 || !this.visible) return;
+        this.controls = this.controlsGenerator(this)
+    }
+});
+
+fabric.HiPolygon.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiPolygon(object.points, object));
+};
+
+fabric.HiPolygon.async = true;
+
+// fabric.HiPolygon.prototype.controls = {}
+
+fabric.HiPolygon.prototype.controlsGenerator = function (polygon) {
+
+    var polygonPositionHandler = function (dim, finalMatrix, fabricObject) {
+        var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
+            y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
+        return fabric.util.transformPoint({
+            x: x,
+            y: y
+        },
+            fabric.util.multiplyTransformMatrices(
+                fabricObject.canvas.viewportTransform,
+                fabricObject.calcTransformMatrix()
+            )
+        );
+    }
+
+    var actionHandler = function (eventData, transform, x, y) {
+        var polygon = transform.target,
+            currentControl = polygon.controls[polygon.__corner],
+            mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
+            polygonBaseSize = polygon._getNonTransformedDimensions(),
+            size = polygon._getTransformedDimensions(0, 0),
+            finalPointPosition = {
+                x: mouseLocalPosition.x * polygonBaseSize.x / size.x + polygon.pathOffset.x,
+                y: mouseLocalPosition.y * polygonBaseSize.y / size.y + polygon.pathOffset.y
+            };
+        polygon.points[currentControl.pointIndex] = finalPointPosition;
+        return true;
+    }
+
+    var anchorWrapper = function (anchorIndex, fn) {
+        return function (eventData, transform, x, y) {
+            var fabricObject = transform.target,
+                absolutePoint = fabric.util.transformPoint({
+                    x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
+                    y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
+                }, fabricObject.calcTransformMatrix()),
+                actionPerformed = fn(eventData, transform, x, y),
+                newDim = fabricObject._setPositionDimensions({}),
+                polygonBaseSize = fabricObject._getNonTransformedDimensions(),
+                newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
+                newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
+            fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
+            return actionPerformed;
+        }
+    }
+
+    var lastControl = polygon.points.length - 1;
+
+    return polygon.points.reduce(function (acc, point, index) {
+        acc['p' + index] = new fabric.Control({
+            positionHandler: polygonPositionHandler,
+            actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
+            actionName: 'modifyPolygon',
+            pointIndex: index
+        });
+        return acc;
+    }, {});
+}
+
+
 hiDraw.prototype.Polygon = (function () {
     function Polygon(canvasItem, options, otherProps) {
         this.canvasItem = canvasItem;
@@ -253,7 +344,7 @@ hiDraw.prototype.Polygon = (function () {
                 x: pos.x,
                 y: pos.y
             });
-            var polygon = new fabric.Polygon(points, {
+            var polygon = new fabric.HiPolygon(points, {
                 tempDrawShape: true,
                 stroke: '#333333',
                 strokeWidth: 1 / zoom,
@@ -280,7 +371,7 @@ hiDraw.prototype.Polygon = (function () {
                 x: (pointer.x),
                 y: (pointer.y)
             }];
-            var polygon = new fabric.Polygon(polyPoint, {
+            var polygon = new fabric.HiPolygon(polyPoint, {
                 tempDrawShape: true,
                 stroke: '#333333',
                 strokeWidth: 1 / zoom,
@@ -326,7 +417,7 @@ hiDraw.prototype.Polygon = (function () {
             inst.canvas.remove(line);
         })
         inst.canvas.remove(inst.activeShape).remove(inst.activeLine);
-        var polygon = new fabric.Polygon(points, {
+        var polygon = new fabric.HiPolygon(points, {
             // stroke: '#333333',
             // strokeWidth: 1,
             // fill: 'rgba(0,0,0,0)',
