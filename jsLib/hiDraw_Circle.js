@@ -1,3 +1,130 @@
+fabric.HiCircle = fabric.util.createClass(fabric.Circle, {
+
+    type: 'hiCircle',
+
+    initialize: function (element, options) {
+        options || (options = {});
+        this.callSuper('initialize', element, options);
+    },
+
+    toObject: function () {
+        return fabric.util.object.extend(this.callSuper('toObject'));
+    },
+
+    _render: function (ctx) {
+        this.callSuper('_render', ctx);
+
+        // do not render if width/height are zeros or object is not visible
+        if (this.width === 0 || this.height === 0 || !this.visible) return;
+
+    }
+});
+
+fabric.HiCircle.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiCircle(object));
+};
+
+fabric.HiCircle.async = true;
+
+fabric.HiCircle.prototype.controls = {
+    centerControl: new fabric.Control({
+        positionHandler: function (dim, finalMatrix, fabricObject) {
+            fabricObject.centerX = fabricObject.left;
+            fabricObject.centerY = fabricObject.top;
+            // return {
+            //     x: fabricObject.centerX,
+            //     y: fabricObject.centerY
+            // }
+            return fabric.util.transformPoint({
+                    x: fabricObject.centerX,
+                    y: fabricObject.centerY
+                },
+                fabricObject.canvas.viewportTransform
+            );
+        },
+        mouseDownHandler: function (eventData, target) {
+            var polygon = target;
+            polygon.centerX = polygon.left;
+            polygon.centerY = polygon.top;
+        },
+        actionHandler: function (eventData, transform, x, y) {
+            var polygon = transform.target;
+            polygon.left = x;
+            polygon.top = y;
+            polygon.centerX = x;
+            polygon.centerY = y;
+            return true;
+        },
+        cursorStyle: 'pointer',
+        // render: renderIcon,
+        cornerSize: 5
+    }),
+    borderControl: new fabric.Control({
+        positionHandler: function (dim, finalMatrix, fabricObject) {
+            if (fabricObject.borderPoint && fabricObject.borderPointTheta) {
+                if (fabricObject.borderPointTheta) {
+                    fabricObject.borderPoint.x = fabricObject.centerX + fabricObject.radius * Math.cos(parseFloat(fabricObject.borderPointTheta))
+                    fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius * Math.sin(parseFloat(fabricObject.borderPointTheta))
+                } else {
+                    fabricObject.borderPoint.x = fabricObject.centerX;
+                    fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius;
+                }
+            } else {
+                fabricObject.borderPoint = {
+                    x: fabricObject.left,
+                    y: fabricObject.top + fabricObject.radius
+                }
+            }
+            // return fabricObject.borderPoint;
+            return fabric.util.transformPoint(
+                fabricObject.borderPoint,
+                fabricObject.canvas.viewportTransform
+            );
+        },
+        mouseDownHandler: function (eventData, target) {
+            var polygon = target;
+            polygon.centerX = polygon.left;
+            polygon.centerY = polygon.top;
+
+            var distC = Math.sqrt(Math.pow(polygon.borderPoint.x - polygon.centerX - polygon.radius, 2) + Math.pow(polygon.borderPoint.y - polygon.centerY, 2))
+            cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
+            if (polygon.borderPoint.y - polygon.centerY > 0) {
+                polygon.borderPointTheta = Math.acos(cosTheta);
+            } else {
+                polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+            }
+        },
+        mouseUpHandler: function (eventData, target) {
+
+        },
+        actionHandler: function (eventData, transform, x, y) {
+            var polygon = transform.target;
+            polygon.radius = Math.sqrt((polygon.centerX - x) * (polygon.centerX - x) + (polygon.centerY - y) * (polygon.centerY - y))
+            polygon.left = polygon.centerX;
+            polygon.top = polygon.centerY;
+            polygon.width = polygon.radius * 2;
+            polygon.height = polygon.radius * 2;
+            polygon.borderPoint = {
+                x: x,
+                y: y
+            }
+            var distC = Math.sqrt(Math.pow(x - polygon.centerX - polygon.radius, 2) + Math.pow(y - polygon.centerY, 2))
+            cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
+            if (polygon.borderPoint.y - polygon.centerY > 0) {
+                polygon.borderPointTheta = Math.acos(cosTheta);
+            } else {
+                polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+            }
+            return true;
+        },
+        cursorStyle: 'pointer',
+        // render: renderIcon,
+        cornerSize: 5
+    })
+}
+
+
+
 hiDraw.prototype.Circle = (function () {
 
     function Circle(canvasItem, options, otherProps) {
@@ -61,7 +188,7 @@ hiDraw.prototype.Circle = (function () {
         if (inst.tempPointsArray.length == 0) {
             return;
         }
-        
+
 
         var pointer = inst.canvas.getPointer(o.e);
         var activeObj = inst.canvas.getActiveObject();
@@ -91,7 +218,7 @@ hiDraw.prototype.Circle = (function () {
             inst.enable();
             var zoom = inst.canvas.getZoom() || 1;
             // center point
-            var centerPoint = new fabric.Circle({
+            var centerPoint = new fabric.HiCircle({
                 tempDrawShape: true,
                 ignoreZoom: true,
                 radius: 5 / zoom,
@@ -116,7 +243,7 @@ hiDraw.prototype.Circle = (function () {
             inst.tempPointsArray.push(centerPoint);
             inst.canvas.add(centerPoint)
 
-            var borderPoint = new fabric.Circle({
+            var borderPoint = new fabric.HiCircle({
                 tempDrawShape: true,
                 ignoreZoom: true,
                 radius: 5 / zoom,
@@ -143,7 +270,7 @@ hiDraw.prototype.Circle = (function () {
 
             var radius = Math.sqrt(Math.pow(inst.tempPointsArray[0].get('left') - inst.tempPointsArray[1].get('left'), 2) + Math.pow(inst.tempPointsArray[0].get('top') - inst.tempPointsArray[1].get('top'), 2))
 
-            var ellipse = new fabric.Circle({
+            var ellipse = new fabric.HiCircle({
                 tempDrawShape: true,
                 stroke: '#333333',
                 strokeWidth: 1 / zoom,
@@ -232,7 +359,7 @@ hiDraw.prototype.Circle = (function () {
 
         inst.canvas.remove(inst.shape);
 
-        var ellipse = new fabric.Circle({
+        var ellipse = new fabric.HiCircle({
             // stroke: '#333333',
             // strokeWidth: 1,
             // fill: 'rgba(0,0,0,0)',
@@ -245,21 +372,15 @@ hiDraw.prototype.Circle = (function () {
             hasBorders: true,
             hasControls: true,
             strokeUniform: true,
-            objectCaching: false, 
+            objectCaching: false,
             perPixelTargetFind: true
         })
         ellipse.on('selected', function (opt) {
             // var evt = opt.e;
             // var ellipse = inst.canvas.getActiveObject();
             // if (evt && evt.ctrlKey === true) {
-                ellipse.cornerStyle = 'circle';
-                ellipse.cornerColor = 'rgba(0,0,255,0.5)';
-                ellipse.controls = inst.customControl()
-            // } else {
-            //     ellipse.cornerColor = 'rgb(178,204,255)';
-            //     ellipse.cornerStyle = 'rect';
-            //     ellipse.controls = fabric.Object.prototype.controls;
-            // }
+            ellipse.cornerStyle = 'circle';
+            ellipse.cornerColor = 'rgba(0,0,255,0.5)';
         });
         for (var prop in inst.otherProps) {
             ellipse[prop] = inst.otherProps[prop];
@@ -286,106 +407,6 @@ hiDraw.prototype.Circle = (function () {
         })
 
         inst.canvas.renderAll();
-    }
-
-    Circle.prototype.customControl = function () {
-        return {
-            centerControl: new fabric.Control({
-                positionHandler:function(dim, finalMatrix, fabricObject){
-                    fabricObject.centerX = fabricObject.left;
-                    fabricObject.centerY = fabricObject.top;
-                    // return {
-                    //     x: fabricObject.centerX,
-                    //     y: fabricObject.centerY
-                    // }
-                    return fabric.util.transformPoint(
-                        {
-                            x: fabricObject.centerX,
-                            y: fabricObject.centerY
-                        },
-                        fabricObject.canvas.viewportTransform
-                    );
-                },
-                mouseDownHandler:function(eventData, target){
-                    var polygon = target;
-                    polygon.centerX = polygon.left;
-                    polygon.centerY = polygon.top;
-                },
-                actionHandler: function(eventData, transform, x, y){
-                    var polygon = transform.target;
-                    polygon.left = x;
-                    polygon.top = y;
-                    polygon.centerX = x;
-                    polygon.centerY = y;
-                    return true;
-                },
-                cursorStyle: 'pointer',
-                // render: renderIcon,
-                cornerSize: 5
-            }),
-            borderControl: new fabric.Control({
-                positionHandler:function(dim, finalMatrix, fabricObject){
-                    if(fabricObject.borderPoint && fabricObject.borderPointTheta){
-                        if(fabricObject.borderPointTheta){
-                            fabricObject.borderPoint.x = fabricObject.centerX + fabricObject.radius * Math.cos(parseFloat(fabricObject.borderPointTheta))
-                            fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius * Math.sin(parseFloat(fabricObject.borderPointTheta))
-                        } else {
-                            fabricObject.borderPoint.x = fabricObject.centerX;
-                            fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius;
-                        }
-                    } else {
-                        fabricObject.borderPoint = {
-                            x: fabricObject.left,
-                            y: fabricObject.top + fabricObject.radius
-                        }
-                    }
-                    // return fabricObject.borderPoint;
-                    return fabric.util.transformPoint(
-                        fabricObject.borderPoint,
-                        fabricObject.canvas.viewportTransform
-                    );
-                },
-                mouseDownHandler:function(eventData, target){
-                    var polygon = target;
-                    polygon.centerX = polygon.left;
-                    polygon.centerY = polygon.top;
-
-                    var distC = Math.sqrt(Math.pow(polygon.borderPoint.x - polygon.centerX - polygon.radius, 2) + Math.pow(polygon.borderPoint.y - polygon.centerY, 2))
-                    cosTheta = (2*Math.pow(polygon.radius,2) - Math.pow(distC,2))/(2*Math.pow(polygon.radius,2))
-                    if(polygon.borderPoint.y - polygon.centerY > 0){
-                        polygon.borderPointTheta = Math.acos(cosTheta);
-                    } else {
-                        polygon.borderPointTheta = Math.acos(cosTheta) * -1;
-                    }
-                },
-                mouseUpHandler:function(eventData, target){
-
-                },
-                actionHandler:function(eventData, transform, x, y){
-                    var polygon = transform.target;
-                    polygon.radius = Math.sqrt((polygon.centerX - x) * (polygon.centerX - x) + (polygon.centerY - y) * (polygon.centerY - y))
-                    polygon.left = polygon.centerX;
-                    polygon.top = polygon.centerY;
-                    polygon.width = polygon.radius * 2;
-                    polygon.height = polygon.radius * 2;
-                    polygon.borderPoint = {
-                        x: x,
-                        y: y
-                    }
-                    var distC = Math.sqrt(Math.pow(x - polygon.centerX - polygon.radius, 2) + Math.pow(y - polygon.centerY, 2))
-                    cosTheta = (2*Math.pow(polygon.radius,2) - Math.pow(distC,2))/(2*Math.pow(polygon.radius,2))
-                    if(polygon.borderPoint.y - polygon.centerY > 0){
-                        polygon.borderPointTheta = Math.acos(cosTheta);
-                    } else {
-                        polygon.borderPointTheta = Math.acos(cosTheta) * -1;
-                    }
-                    return true;
-                },
-                cursorStyle: 'pointer',
-                // render: renderIcon,
-                cornerSize: 5
-            })
-        }
     }
 
     return Circle;

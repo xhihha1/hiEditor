@@ -297,27 +297,6 @@ function editorEvent(edit, objOption) {
     }
   })
 
-  function circle (x,y,r, color){
-    if(!r){ r = 1 }
-    if(!color){ color = 'red' }
-    var ellipse = new fabric.Ellipse({
-      strokeWidth: 14,
-      fill: color,
-      stroke: color,
-      originX: 'center',
-      originY: 'center',
-      top: y,
-      left: x,
-      rx: r,
-      ry: r,
-      selectable: true,
-      hasBorders: true,
-      hasControls: true,
-      strokeUniform: true
-    });
-    edit.canvasView.add(ellipse)
-  }
-
   var oX, endX, oXo, endXo
   var oY, endY, oYo, endYo
   var oW, oH, oWo, oHo
@@ -1102,6 +1081,72 @@ function addVideoObj(edit, objOption) {
 
 
 
+function basicDraw(edit, objOption){
+  function circle (x,y,r, color){
+    if(!r){ r = 1 }
+    if(!color){ color = 'red' }
+    var ellipse = new fabric.Ellipse({
+      strokeWidth: 14,
+      fill: color,
+      stroke: color,
+      originX: 'center',
+      originY: 'center',
+      top: y,
+      left: x,
+      rx: r,
+      ry: r,
+      selectable: true,
+      hasBorders: true,
+      hasControls: true,
+      strokeUniform: true
+    });
+    edit.canvasView.add(ellipse)
+  }
+  function Line (color){
+    if(!color){ color = 'red' }
+    var ellipse = new fabric.Line([50,50,100,100], {
+      strokeWidth: 14,
+      fill: color,
+      stroke: color,
+      originX: 'center',
+      originY: 'center',
+      selectable: true,
+      hasBorders: true,
+      hasControls: true,
+      strokeUniform: true
+    });
+    edit.canvasView.add(ellipse)
+  }
+  function Rect (left, top, color){
+    if(!color){ color = 'red' }
+    if(!left) {
+      left = 0
+    }
+    if(!top) {
+      top = 0
+    }
+    var ellipse = new fabric.Rect({
+      left: left,
+      top: top,
+      strokeWidth: 14,
+      fill: color,
+      stroke: color,
+      width: 100,
+      height: 100,
+      originX: 'center',
+      originY: 'center',
+      selectable: true,
+      hasBorders: true,
+      hasControls: true,
+      strokeUniform: true
+    });
+    edit.canvasView.add(ellipse)
+  }
+  window.circle1 = circle
+  window.line1 = Line
+  window.rect1 = Rect
+}
+
 (function () {
   dataStructure.editor.push(initCanvas('content', 'mainEditor'))
   editorEvent(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
@@ -1113,7 +1158,7 @@ function addVideoObj(edit, objOption) {
   });
   addImageObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   addVideoObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
-
+  basicDraw(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
 
   fabric.util.requestAnimFrame(function render() {
     dataStructure.editor[0].canvasView.renderAll();

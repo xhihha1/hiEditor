@@ -1,3 +1,137 @@
+fabric.HiLine = fabric.util.createClass(fabric.Line, {
+
+    type: 'hiLine',
+
+    initialize: function (element, options) {
+        options || (options = {});
+        this.callSuper('initialize', element, options);
+    },
+
+    toObject: function () {
+        return fabric.util.object.extend(this.callSuper('toObject'));
+    },
+
+    _render: function (ctx) {
+        this.callSuper('_render', ctx);
+
+        // do not render if width/height are zeros or object is not visible
+        if (this.width === 0 || this.height === 0 || !this.visible) return;
+
+    }
+});
+
+fabric.HiLine.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiLine([object.x1, object.y1, object.x2, object.y2], object));
+};
+
+fabric.HiLine.async = true;
+
+fabric.HiLine.prototype.controls = {
+    firstControl: new fabric.Control({
+        positionHandler: function (dim, finalMatrix, fabricObject) {
+            var centerP = {
+                x: (fabricObject.x1 + fabricObject.x2) / 2,
+                y: (fabricObject.y1 + fabricObject.y2) / 2
+            }
+            var finalPoint = {}
+            if (centerP.x != fabricObject.left || centerP.y != fabricObject.top) {
+                var finalPoint = {
+                    x: fabricObject.left - centerP.x + fabricObject.x1,
+                    y: fabricObject.top - centerP.y + fabricObject.y1
+                }
+            } else {
+                var finalPoint = {
+                    x: fabricObject.x1,
+                    y: fabricObject.y1
+                }
+            }
+            return fabric.util.transformPoint(
+                finalPoint,
+                fabricObject.canvas.viewportTransform
+            );
+        },
+        mouseDownHandler: function (eventData, target) {
+            var fabricObject = target;
+            var centerP = {
+                x: (fabricObject.x1 + fabricObject.x2) / 2,
+                y: (fabricObject.y1 + fabricObject.y2) / 2
+            }
+            if (centerP.x != fabricObject.left || centerP.y != fabricObject.top) {
+                fabricObject.x1 = fabricObject.x1 - centerP.x + fabricObject.left
+                fabricObject.y1 = fabricObject.y1 - centerP.y + fabricObject.top
+                fabricObject.x2 = fabricObject.x2 - centerP.x + fabricObject.left
+                fabricObject.y2 = fabricObject.y2 - centerP.y + fabricObject.top
+            }
+        },
+        actionHandler: function (eventData, transform, x, y) {
+            var polygon = transform.target;
+            polygon.x1 = x;
+            polygon.y1 = y;
+            polygon.left = (polygon.x1 + polygon.x2) / 2;
+            polygon.top = (polygon.y1 + polygon.y2) / 2;
+            polygon.width = Math.abs(x - polygon.x2);
+            polygon.height = Math.abs(y - polygon.y2);
+            return true;
+        },
+        cursorStyle: 'pointer',
+        // render: renderIcon,
+        cornerSize: 5
+    }),
+    secondControl: new fabric.Control({
+        positionHandler: function (dim, finalMatrix, fabricObject) {
+            var centerP = {
+                x: (fabricObject.x1 + fabricObject.x2) / 2,
+                y: (fabricObject.y1 + fabricObject.y2) / 2
+            }
+            var finalPoint = {}
+            if (centerP.x != fabricObject.left || centerP.y != fabricObject.top) {
+                finalPoint = {
+                    x: fabricObject.left - centerP.x + fabricObject.x2,
+                    y: fabricObject.top - centerP.y + fabricObject.y2
+                }
+            } else {
+                finalPoint = {
+                    x: fabricObject.x2,
+                    y: fabricObject.y2
+                }
+            }
+            return fabric.util.transformPoint(
+                finalPoint,
+                fabricObject.canvas.viewportTransform
+            );
+        },
+        mouseDownHandler: function (eventData, target) {
+            var fabricObject = target;
+            var centerP = {
+                x: (fabricObject.x1 + fabricObject.x2) / 2,
+                y: (fabricObject.y1 + fabricObject.y2) / 2
+            }
+            if (centerP.x != fabricObject.left || centerP.y != fabricObject.top) {
+                fabricObject.x1 = fabricObject.x1 - centerP.x + fabricObject.left
+                fabricObject.y1 = fabricObject.y1 - centerP.y + fabricObject.top
+                fabricObject.x2 = fabricObject.x2 - centerP.x + fabricObject.left
+                fabricObject.y2 = fabricObject.y2 - centerP.y + fabricObject.top
+            }
+        },
+        mouseUpHandler: function (eventData, target) {
+
+        },
+        actionHandler: function (eventData, transform, x, y) {
+            var polygon = transform.target;
+            polygon.x2 = x;
+            polygon.y2 = y;
+            polygon.left = (polygon.x1 + polygon.x2) / 2;
+            polygon.top = (polygon.y1 + polygon.y2) / 2;
+            polygon.width = Math.abs(x - polygon.x1);
+            polygon.height = Math.abs(y - polygon.y1);
+            return true;
+        },
+        cursorStyle: 'pointer',
+        // render: renderIcon,
+        cornerSize: 5
+    })
+};
+
 hiDraw.prototype.Line = (function () {
     function Line(canvasItem, options) {
         this.canvasItem = canvasItem;
@@ -140,7 +274,7 @@ hiDraw.prototype.Line = (function () {
                 inst.tempPointsArray[1].get('left'),
                 inst.tempPointsArray[1].get('top')
             ];
-            var line = new fabric.Line(points, {
+            var line = new fabric.HiLine(points, {
                 tempDrawShape: true,
                 stroke: '#333333',
                 strokeWidth: 2,
@@ -190,7 +324,7 @@ hiDraw.prototype.Line = (function () {
             inst.tempPointsArray[1].get('left'),
             inst.tempPointsArray[1].get('top')
         ];
-        var line = new fabric.Line(points, {
+        var line = new fabric.HiLine(points, {
             // stroke: '#333333',
             // strokeWidth: 1,
             fill: 'rgba(204,204,204,0.3)',
@@ -206,14 +340,8 @@ hiDraw.prototype.Line = (function () {
             var evt = opt.e;
             var line = inst.canvas.getActiveObject();
             // if (evt && evt.ctrlKey === true) {
-                line.cornerStyle = 'circle';
-                line.cornerColor = 'rgba(0,0,255,0.5)';
-                line.controls = inst.customControl()
-            // } else {
-            //     line.cornerColor = 'rgb(178,204,255)';
-            //     line.cornerStyle = 'rect';
-            //     line.controls = fabric.Object.prototype.controls;
-            // }
+            line.cornerStyle = 'circle';
+            line.cornerColor = 'rgba(0,0,255,0.5)';
         });
         inst.canvas.add(line).setActiveObject(line);
         line.canvasItem = inst.canvasItem;
@@ -223,114 +351,6 @@ hiDraw.prototype.Line = (function () {
         })
 
         inst.canvas.renderAll();
-    }
-
-    Line.prototype.customControl = function () {
-        return {
-            firstControl: new fabric.Control({
-                positionHandler:function(dim, finalMatrix, fabricObject){
-                    var centerP = {
-                        x: (fabricObject.x1 + fabricObject.x2)/2,
-                        y: (fabricObject.y1 + fabricObject.y2)/2
-                    }
-                    var finalPoint = {}
-                    if(centerP.x != fabricObject.left || centerP.y != fabricObject.top){
-                        var finalPoint = {
-                            x: fabricObject.left - centerP.x + fabricObject.x1,
-                            y: fabricObject.top - centerP.y + fabricObject.y1
-                        }	
-                    } else {
-                        var finalPoint = {
-                            x: fabricObject.x1,
-                            y: fabricObject.y1
-                        }	
-                    }
-                    return fabric.util.transformPoint(
-                        finalPoint,
-                        fabricObject.canvas.viewportTransform
-                    );
-                },
-                mouseDownHandler:function(eventData, target){
-                    var fabricObject = target;
-                    var centerP = {
-                        x: (fabricObject.x1 + fabricObject.x2)/2,
-                        y: (fabricObject.y1 + fabricObject.y2)/2
-                    }
-                    if(centerP.x != fabricObject.left || centerP.y != fabricObject.top){
-                        fabricObject.x1 = fabricObject.x1 - centerP.x + fabricObject.left
-                        fabricObject.y1 = fabricObject.y1 - centerP.y + fabricObject.top
-                        fabricObject.x2 = fabricObject.x2 - centerP.x + fabricObject.left
-                        fabricObject.y2 = fabricObject.y2 - centerP.y + fabricObject.top
-                    }
-                },
-                actionHandler: function(eventData, transform, x, y){
-                    var polygon = transform.target;
-                    polygon.x1 = x;
-                    polygon.y1 = y;
-                    polygon.left = (polygon.x1 + polygon.x2)/2;
-                    polygon.top = (polygon.y1 + polygon.y2)/2;
-                    polygon.width = Math.abs(x - polygon.x2);
-                    polygon.height = Math.abs(y - polygon.y2);
-                    return true;
-                },
-                cursorStyle: 'pointer',
-                // render: renderIcon,
-                cornerSize: 5
-            }),
-            secondControl: new fabric.Control({
-                positionHandler:function(dim, finalMatrix, fabricObject){
-                    var centerP = {
-                        x: (fabricObject.x1 + fabricObject.x2)/2,
-                        y: (fabricObject.y1 + fabricObject.y2)/2
-                    }
-                    var finalPoint = {}
-                    if(centerP.x != fabricObject.left || centerP.y != fabricObject.top){
-                        finalPoint = {
-                            x: fabricObject.left - centerP.x + fabricObject.x2,
-                            y: fabricObject.top - centerP.y + fabricObject.y2
-                        }	
-                    } else {
-                        finalPoint = {
-                            x: fabricObject.x2,
-                            y: fabricObject.y2
-                        }	
-                    }
-                    return fabric.util.transformPoint(
-                        finalPoint,
-                        fabricObject.canvas.viewportTransform
-                    );
-                },
-                mouseDownHandler:function(eventData, target){
-                    var fabricObject = target;
-                    var centerP = {
-                        x: (fabricObject.x1 + fabricObject.x2)/2,
-                        y: (fabricObject.y1 + fabricObject.y2)/2
-                    }
-                    if(centerP.x != fabricObject.left || centerP.y != fabricObject.top){
-                        fabricObject.x1 = fabricObject.x1 - centerP.x + fabricObject.left
-                        fabricObject.y1 = fabricObject.y1 - centerP.y + fabricObject.top
-                        fabricObject.x2 = fabricObject.x2 - centerP.x + fabricObject.left
-                        fabricObject.y2 = fabricObject.y2 - centerP.y + fabricObject.top
-                    }
-                },
-                mouseUpHandler:function(eventData, target){
-
-                },
-                actionHandler:function(eventData, transform, x, y){
-                    var polygon = transform.target;
-                    polygon.x2 = x;
-                    polygon.y2 = y;
-                    polygon.left = (polygon.x1 + polygon.x2)/2;
-                    polygon.top = (polygon.y1 + polygon.y2)/2;
-                    polygon.width = Math.abs(x - polygon.x1);
-                    polygon.height = Math.abs(y - polygon.y1);
-                    return true;
-                },
-                cursorStyle: 'pointer',
-                // render: renderIcon,
-                cornerSize: 5
-            })
-        };
     }
 
     return Line;
@@ -349,56 +369,56 @@ this.activeCanvas.view.drawLine(this.activeCanvas.view, {}, [
       ])
 */
 hiDraw.prototype.drawLine = (function () {
-  // points = [[startX, startY], [endX, endY]]
-  function Line(canvasItem, options, points) {
-    this.canvasItem = canvasItem;
-    this.canvas = canvasItem.canvasView;
-    this.options = options;
-    this.className = 'Line';
-    this.isDrawing = false;
-    this.tempPointsArray = new Array();
-    var inst = this
+    // points = [[startX, startY], [endX, endY]]
+    function Line(canvasItem, options, points) {
+        this.canvasItem = canvasItem;
+        this.canvas = canvasItem.canvasView;
+        this.options = options;
+        this.className = 'Line';
+        this.isDrawing = false;
+        this.tempPointsArray = new Array();
+        var inst = this
 
-    var points = [
-      points[0][0],
-      points[0][1],
-      points[1][0],
-      points[1][1]
-    ];
+        var points = [
+            points[0][0],
+            points[0][1],
+            points[1][0],
+            points[1][1]
+        ];
 
-    var colorStroke = 'rgba(255,0,0,1)'
-    var colorFill = 'rgba(255,0,0,1)'
-    if (this.options.stroke) {
-      colorStroke = this.options.stroke
+        var colorStroke = 'rgba(255,0,0,1)'
+        var colorFill = 'rgba(255,0,0,1)'
+        if (this.options.stroke) {
+            colorStroke = this.options.stroke
+        }
+        if (this.options.fill) {
+            colorFill = this.options.fill
+        }
+        var zoom = inst.canvas.getZoom() || 1;
+        var line = new fabric.HiLine(points, {
+            referenceLine: true,
+            stroke: colorStroke,
+            strokeWidth: 1 / zoom,
+            fill: colorFill,
+            opacity: 1,
+            originX: 'center',
+            originY: 'center',
+            selectable: false,
+            hasBorders: false,
+            hasControls: false,
+            strokeUniform: true,
+            objectCaching: false,
+            perPixelTargetFind: true
+        });
+        // inst.canvas.add(line).setActiveObject(line);
+        inst.canvas.add(line)
+        line.canvasItem = inst.canvasItem;
+
+        inst.tempPointsArray.forEach(function (point) {
+            inst.canvas.remove(point);
+        })
+
+        inst.canvas.renderAll();
     }
-    if (this.options.fill) {
-      colorFill = this.options.fill
-    }
-    var zoom = inst.canvas.getZoom() || 1;
-    var line = new fabric.Line(points, {
-      referenceLine: true,
-      stroke: colorStroke,
-      strokeWidth: 1 / zoom,
-      fill: colorFill,
-      opacity: 1,
-      originX: 'center',
-      originY: 'center',
-      selectable: false,
-      hasBorders: false,
-      hasControls: false,
-      strokeUniform: true,
-      objectCaching: false,
-      perPixelTargetFind: true
-    });
-    // inst.canvas.add(line).setActiveObject(line);
-    inst.canvas.add(line)
-    line.canvasItem = inst.canvasItem;
-
-    inst.tempPointsArray.forEach(function (point) {
-      inst.canvas.remove(point);
-    })
-
-    inst.canvas.renderAll();
-  }
-  return Line;
+    return Line;
 }());
