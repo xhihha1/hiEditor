@@ -236,4 +236,5 @@ function addVideoObj(edit, objOption) {
   //   dataStructure.editor[0].canvasView.renderAll();
   //   fabric.util.requestAnimFrame(render);
   // });
+  editor3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption) 
 })()
