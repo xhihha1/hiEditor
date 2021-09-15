@@ -114,6 +114,18 @@ function editorEvent(edit, objOption) {
     var polyline = new edit.Polyline(edit, objOption);
   });
 
+  $("#drawPath").click(function () {
+    edit.removeCanvasEvents()
+    edit.changeStatus({ panCanvas: false })
+    edit.changeSelectableStatus(false)
+    edit.changeCanvasProperty(false, true)
+    // var polyline = new edit.Polyline(edit, objOption);
+    var path = new edit.Path(edit, this.objOption, {
+      className: 'xxx',
+      label: 'xxx'
+    })
+  });
+
   $('#drawDiv').click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
