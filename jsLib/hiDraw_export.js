@@ -33,6 +33,7 @@ hiDraw.prototype.export = (function () {
                         labelmeItem["group_id"] = null;
                         labelmeItem["flags"] = {};
                         labelmeItem["points"] = []
+                        labelmeItem["note"] = item["note"];
                         var centerPoint = [], borderPoint = [];
                         if(item["originX"] == "left"){
                             centerPoint[0] = item.left + item.radius;
@@ -83,6 +84,7 @@ hiDraw.prototype.export = (function () {
                         labelmeItem["group_id"] = null;
                         labelmeItem["flags"] = {};
                         labelmeItem["points"] = []
+                        labelmeItem["note"] = item["note"];
                         var leftTop = [], rightBottom = [];
                         if(item["originX"] == "left"){
                             leftTop[0] = item.left;
@@ -121,6 +123,7 @@ hiDraw.prototype.export = (function () {
                         labelmeItem["group_id"] = null;
                         labelmeItem["flags"] = {};
                         labelmeItem["points"] = []
+                        labelmeItem["note"] = item["note"];
                         var firstPoint = [
                             item.left + item.x1,
                             item.top + item.y1
@@ -146,6 +149,7 @@ hiDraw.prototype.export = (function () {
                         labelmeItem["group_id"] = null;
                         labelmeItem["flags"] = {};
                         labelmeItem["points"] = []
+                        labelmeItem["note"] = item["note"];
                         var points = []
                         var maxX, maxY, minX, minY, shiftX, shiftY;
                         for (var j = 0;j < item["points"].length; j++) {
@@ -187,6 +191,7 @@ hiDraw.prototype.export = (function () {
                         labelmeItem["group_id"] = null;
                         labelmeItem["flags"] = {};
                         labelmeItem["points"] = []
+                        labelmeItem["note"] = item["note"];
                         var points = []
                         var maxX, maxY, minX, minY, shiftX, shiftY;
                         for (var j = 0;j < item["points"].length; j++) {

@@ -54,6 +54,7 @@ hiDraw.prototype.import = (function () {
 			var label = item['label'];
 			var className = item['className'];
 			var strokeColor = item['stroke'] ? item['stroke'] : "rgba(3,212,193,1)";
+			var note = item['note']
 			// console.log('----', item["shape_type"])
 			if (item["shape_type"] == "circle") {
 				var newFabricObj = {}
@@ -105,7 +106,8 @@ hiDraw.prototype.import = (function () {
 							"startAngle": 0,
 							"endAngle": 6.283185307179586,
 							"label": label,
-							"className": className
+							"className": className,
+							"note": note
 						}
 					)
 				}
@@ -157,7 +159,8 @@ hiDraw.prototype.import = (function () {
 						"rx": 0,
 						"ry": 0,
 						"label": label,
-						"className": className
+						"className": className,
+						"note": note
 					})
 				}
 			} else if (item["shape_type"] == "polygon") {
@@ -221,7 +224,8 @@ hiDraw.prototype.import = (function () {
 					"skewY": 0,
 					"points": points,
 					"label": label,
-					"className": className
+					"className": className,
+					"note": note
 				})
 			} else if (item["shape_type"] == "linestrip") {
 				var points = []
@@ -280,7 +284,8 @@ hiDraw.prototype.import = (function () {
 					"skewY": 0,
 					"points": points,
 					"label": label,
-					"className": className
+					"className": className,
+					"note": note
 				})
 			} else if (item["shape_type"] == "line") {
 				if (item["points"].length != 2) {
@@ -333,7 +338,8 @@ hiDraw.prototype.import = (function () {
 					"y1": newY1,
 					"y2": newY2,
 					"label": label,
-					"className": className
+					"className": className,
+					"note": note
 				})
 			} else {
 
