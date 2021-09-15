@@ -48,13 +48,20 @@ fabric.DivHtml = fabric.util.createClass(fabric.Line, {
       canvasTemplate.id = divId
       this.canvas.lowerCanvasEl.parentNode.appendChild(canvasTemplate)
     }
+    var zoom = this.canvas.getZoom()
+    var original = fabric.util.transformPoint({
+        x: 0,
+        y: 0
+    }, fabric.util.invertTransform(this.canvas.viewportTransform))
     canvasTemplate.style.position = 'absolute'
-    canvasTemplate.style.top = (this.top - Math.abs(this.y1 - this.y2) / 2) + 'px'
-    canvasTemplate.style.left = (this.left - Math.abs(this.x1 - this.x2) / 2) + 'px'
-    canvasTemplate.style.width = this.width + 'px'
-    canvasTemplate.style.height = this.height + 'px'
+    canvasTemplate.style.top = ((this.top - Math.abs(this.y1 - this.y2) / 2 * this.scaleY - original.y) * zoom) + 'px'
+    canvasTemplate.style.left = ((this.left - Math.abs(this.x1 - this.x2) / 2 * this.scaleX - original.x) * zoom) + 'px'
+    canvasTemplate.style.width = ((this.width * zoom) * this.scaleX) + 'px'
+    canvasTemplate.style.height = ((this.height * zoom) * this.scaleY) + 'px'
     canvasTemplate.style.background = 'rgba(0,0,0,0.3)'
     canvasTemplate.style.pointerEvents = 'none'
+    canvasTemplate.style.transform = 'rotate(' + this.angle + 'deg)'
+
     this.divHtml = canvasTemplate 
 
     if(!this.hiDrawEvnt){ this.hiDrawEvnt = {} }
