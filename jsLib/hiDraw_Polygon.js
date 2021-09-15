@@ -1027,7 +1027,7 @@ hiDraw.prototype.renderPolygonLayer = function (canvasView) {
   var that = this;
   var ary = []
   canvasView.forEachObject(function (obj) {
-    if (obj.get('type') === 'polygon') {
+    if (obj.get('type') === 'hiPolygon') {
       ary.push(obj)
     }
   })
