@@ -2,9 +2,9 @@
 
     // 'use strict';
   
-    var fabric = global.HiPolyline || (global.fabric = { });
+    var fabric = global.fabric || (global.fabric = { });
   
-    if (fabric.HiRect) {
+    if (fabric.HiPolyline) {
       fabric.warn('fabric.HiPolyline is already defined');
       return;
     }
