@@ -1,3 +1,14 @@
+(function(global) {
+
+    // 'use strict';
+  
+    var fabric = global.fabric || (global.fabric = { });
+  
+    if (fabric.HiCircle) {
+      fabric.warn('fabric.HiCircle is already defined');
+      return;
+    }
+
 fabric.HiCircle = fabric.util.createClass(fabric.Circle, {
 
     type: 'hiCircle',
@@ -411,3 +422,6 @@ hiDraw.prototype.Circle = (function () {
 
     return Circle;
 }(this));
+
+
+})(typeof exports !== 'undefined' ? exports : this);

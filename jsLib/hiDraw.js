@@ -1,3 +1,14 @@
+(function(global) {
+
+    // 'use strict';
+  
+    var fabric = global.fabric || (global.fabric = { });
+  
+    if (global.hiDraw) {
+      fabric.warn('hiDraw is already defined');
+      return;
+    }
+
 function hiDraw(options) {
     if (!fabric) {
         console.log('lib fabric not exist');
@@ -387,3 +398,7 @@ hiDraw.prototype.colorToRgbA = function (color, alpha) {
         return 'rgba(0,0,0,'+ alpha +')'
     }
 }
+
+global.hiDraw = hiDraw
+
+})(typeof exports !== 'undefined' ? exports : this);

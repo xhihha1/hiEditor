@@ -1,3 +1,14 @@
+(function(global) {
+
+    // 'use strict';
+  
+    var fabric = global.fabric || (global.fabric = { });
+  
+    if (fabric.HiLine) {
+      fabric.warn('fabric.HiLine is already defined');
+      return;
+    }
+
 fabric.HiLine = fabric.util.createClass(fabric.Line, {
 
     type: 'hiLine',
@@ -422,3 +433,6 @@ hiDraw.prototype.drawLine = (function () {
     }
     return Line;
 }());
+
+
+})(typeof exports !== 'undefined' ? exports : this);

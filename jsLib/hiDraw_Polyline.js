@@ -1,3 +1,14 @@
+(function(global) {
+
+    // 'use strict';
+  
+    var fabric = global.HiPolyline || (global.fabric = { });
+  
+    if (fabric.HiRect) {
+      fabric.warn('fabric.HiPolyline is already defined');
+      return;
+    }
+
 fabric.HiPolyline = fabric.util.createClass(fabric.Polyline, {
 
     type: 'hiPolyline',
@@ -685,3 +696,6 @@ hiDraw.prototype.Polyline = (function () {
 
     return Polyline;
 })()
+
+
+})(typeof exports !== 'undefined' ? exports : this);

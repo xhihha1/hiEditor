@@ -1,3 +1,15 @@
+(function(global) {
+
+    // 'use strict';
+  
+    var fabric = global.fabric || (global.fabric = { });
+  
+    if (fabric.HiRect) {
+      fabric.warn('fabric.HiRect is already defined');
+      return;
+    }
+
+
 fabric.HiRect = fabric.util.createClass(fabric.Rect, {
 
     type: 'hiRect',
@@ -400,3 +412,5 @@ hiDraw.prototype.Rectangle = (function () {
 
     return Rectangle;
 }());
+
+})(typeof exports !== 'undefined' ? exports : this);

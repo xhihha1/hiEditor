@@ -1,3 +1,15 @@
+(function(global) {
+
+    // 'use strict';
+  
+    // var fabric = global.fabric || (global.fabric = { });
+  
+    // if (global.hiDraw) {
+    //   fabric.warn('hiDraw is already defined');
+    //   return;
+    // }
+
+
 hiDraw.prototype.viewEvent = (function () {
     var viewEvent = function () {
         // object:removed
@@ -229,3 +241,5 @@ hiDraw.prototype.viewEvent = (function () {
     return viewEvent;
 }(this))
 
+
+})(typeof exports !== 'undefined' ? exports : this);

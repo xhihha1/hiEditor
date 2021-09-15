@@ -1,3 +1,14 @@
+(function(global) {
+
+  // 'use strict';
+
+  var fabric = global.fabric || (global.fabric = { });
+
+  if (fabric.HiPolygon) {
+    fabric.warn('fabric.HiPolygon is already defined');
+    return;
+  }
+
 fabric.HiPolygon = fabric.util.createClass(fabric.Polygon, {
 
   type: 'hiPolygon',
@@ -1041,3 +1052,6 @@ hiDraw.prototype.renderPolygonLayer = function (canvasView) {
   })
   canvasView.renderAll()
 }
+
+
+})(typeof exports !== 'undefined' ? exports : this);
