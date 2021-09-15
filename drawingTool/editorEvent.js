@@ -36,15 +36,23 @@ function editorEvent(edit, objOption) {
   });
 
   $("#drawPath").click(function () {
-    edit.removeCanvasEvents()
-    edit.changeStatus({ panCanvas: false })
-    edit.changeSelectableStatus(false)
-    edit.changeCanvasProperty(false, true)
-    // var polyline = new edit.Polyline(edit, objOption);
-    var path = new edit.Path(edit, this.objOption, {
-      className: 'xxx',
-      label: 'xxx'
-    })
+    var val = edit.canvasView.isDrawingMode;
+    val = !val;
+    if (val) {
+        edit.removeCanvasEvents()
+        edit.changeStatus({ panCanvas: false })
+        edit.changeSelectableStatus(false)
+        edit.changeCanvasProperty(false, true)
+        // var polyline = new edit.Polyline(edit, objOption);
+        var path = new edit.Path(edit, this.objOption, {
+        className: 'xxx',
+        label: 'xxx'
+        })
+    } else {
+        edit.removeCanvasEvents()
+        edit.changeCanvasProperty(false, false)
+    }
+    
   });
 
   $('#drawDiv').click(function () {

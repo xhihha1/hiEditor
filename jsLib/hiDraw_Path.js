@@ -115,7 +115,7 @@ hiDraw.prototype.Path = (function() {
         var last_element = my_array[my_array.length - 1];
         // console.log('polygon', last_element, last_element.get('type'))
         if (last_element.get('type') === 'path') {
-            if (typeof(inst.options.tag) != 'undefined') {
+            if (inst.options && typeof(inst.options.tag) != 'undefined') {
                 last_element.tag = inst.options.tag
             }
             for (var prop in inst.otherProps) {
