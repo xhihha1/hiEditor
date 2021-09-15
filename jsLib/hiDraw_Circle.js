@@ -13,7 +13,7 @@ fabric.HiCircle = fabric.util.createClass(fabric.Circle, {
 
     _render: function (ctx) {
         this.callSuper('_render', ctx);
-
+        this.perPixelTargetFind = true;
         // do not render if width/height are zeros or object is not visible
         if (this.width === 0 || this.height === 0 || !this.visible) return;
 

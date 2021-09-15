@@ -72,7 +72,7 @@ hiDraw.prototype.import = (function () {
 
 					hiObj["fabricObj"]["objects"].push(
 						{
-							"type": "circle",
+							"type": "hiCircle",
 							"version": "4.1.0",
 							"originX": "center",
 							"originY": "center",
@@ -125,7 +125,7 @@ hiDraw.prototype.import = (function () {
 					var height = Math.abs(y1 - y2);
 
 					hiObj["fabricObj"]["objects"].push({
-						"type": "rect",
+						"type": "hiRect",
 						"version": "4.1.0",
 						"originX": "center",
 						"originY": "center",
@@ -190,7 +190,7 @@ hiDraw.prototype.import = (function () {
 				// 	points = simplify(points, defaultImportOptions.polygon.simplifyNum, false);
 				// }
 				hiObj["fabricObj"]["objects"].push({
-					"type": "polygon",
+					"type": "hiPolygon",
 					"version": "4.1.0",
 					"originX": "left",
 					"originY": "top",
@@ -249,7 +249,7 @@ hiDraw.prototype.import = (function () {
 				}
 				// console.log(left, top, width, height, points)
 				hiObj["fabricObj"]["objects"].push({
-					"type": "polyline",
+					"type": "hiPolyline",
 					"version": "4.1.0",
 					"originX": "left",
 					"originY": "top",
@@ -259,7 +259,6 @@ hiDraw.prototype.import = (function () {
 					"height": height,
 					"fill": colorToRgbA(strokeColor, fillAlpha),
 					"stroke": strokeColor,
-					"strokeWidth": 1,
 					"strokeDashArray": null,
 					"strokeLineCap": "butt",
 					"strokeDashOffset": 0,
@@ -300,7 +299,7 @@ hiDraw.prototype.import = (function () {
 				var newX2 = x2 - left;
 				var newY2 = y2 - top;
 				hiObj["fabricObj"]["objects"].push({
-					"type": "line",
+					"type": "hiLine",
 					"version": "4.1.0",
 					"originX": "center",
 					"originY": "center",
@@ -365,17 +364,17 @@ hiDraw.prototype.import = (function () {
 			} else if (object.type == 'circle') {
 				object.perPixelTargetFind = true;
 			} else if (object.type == 'polyline') {
-				object.on('selected', function (opt) {
-					var polyline = this;
-					var evt = opt.e;
-					if (evt && evt.shiftKey === true) {
-						polyline.editShape = true;
-						polyline.hasControls = false;
-						polyline.hasBorders = false;
-						polyline.selectable = false;
-						controlOverride.polylineAddPoints(polyline)
-					}
-				})
+				// object.on('selected', function (opt) {
+				// 	var polyline = this;
+				// 	var evt = opt.e;
+				// 	if (evt && evt.shiftKey === true) {
+				// 		polyline.editShape = true;
+				// 		polyline.hasControls = false;
+				// 		polyline.hasBorders = false;
+				// 		polyline.selectable = false;
+				// 		controlOverride.polylineAddPoints(polyline)
+				// 	}
+				// })
 			}
 			that.canvasView.discardActiveObject()
 		})

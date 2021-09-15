@@ -24,7 +24,7 @@ hiDraw.prototype.export = (function () {
 
                 for (var i = 0; i < hiObj["fabricObj"]["objects"].length; i++) {
                     var item = hiObj["fabricObj"]["objects"][i];
-                    if (item["type"] == "circle") {
+                    if (item["type"] == "hiCircle") {
                         var labelmeItem = {}
                         labelmeItem["shape_type"] = "circle";
                         labelmeItem["label"] = item["label"];
@@ -74,7 +74,7 @@ hiDraw.prototype.export = (function () {
                         }
                         labelmeItem["points"] = [centerPoint, borderPoint]
                         labelmeObj['shapes'].push(labelmeItem)
-                    } else if (item["type"] == "rect") {
+                    } else if (item["type"] == "hiRect") {
                         var labelmeItem = {}
                         labelmeItem["shape_type"] = "rectangle";
                         labelmeItem["label"] = item["label"];
@@ -112,7 +112,7 @@ hiDraw.prototype.export = (function () {
                         }
                         labelmeItem["points"] = [leftTop, rightBottom]
                         labelmeObj['shapes'].push(labelmeItem)
-                    } else if (item["type"] == "line") {
+                    } else if (item["type"] == "hiLine") {
                         var labelmeItem = {}
                         labelmeItem["shape_type"] = "line";
                         labelmeItem["label"] = item["label"];
@@ -137,7 +137,7 @@ hiDraw.prototype.export = (function () {
                         }
                         labelmeItem["points"] = [firstPoint, secondPoint]
                         labelmeObj['shapes'].push(labelmeItem)
-                    } else if (item["type"] == "polyline") {
+                    } else if (item["type"] == "hiPolyline") {
                         var labelmeItem = {}
                         labelmeItem["shape_type"] = "linestrip";
                         labelmeItem["label"] = item["label"];
@@ -178,7 +178,7 @@ hiDraw.prototype.export = (function () {
                         }
                         labelmeItem["points"] = points;
                         labelmeObj['shapes'].push(labelmeItem)
-                    } else if (item["type"] == "polygon") {
+                    } else if (item["type"] == "hiPolygon") {
                         var labelmeItem = {}
                         labelmeItem["shape_type"] = "polygon";
                         labelmeItem["label"] = item["label"];
