@@ -289,3 +289,5 @@ hi3D.prototype.mergeDeep = function (target, source) {
 // https://threejs.org/docs/#api/en/geometries/TubeGeometry
 // https://threejs.org/docs/#api/en/extras/curves/SplineCurve
 // https://threejs.org/docs/#api/en/objects/Line
+// 讀取obj mtl
+// https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/227973/
