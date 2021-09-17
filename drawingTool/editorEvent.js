@@ -1,5 +1,18 @@
 
 function editorEvent(edit, objOption) {  
+  $("#drawCamera").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var circle = new edit.HiCamera(edit, objOption);
+  });
+  $("#drawLookAt").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var circle = new edit.HiLookAt(edit, objOption);
+  });
+
   $("#drawRect").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);

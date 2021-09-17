@@ -1,50 +1,75 @@
 function editor3D (edit, objOption) {
 
-    
-    
-    // var container = document.getElementById( 'content3D' );
-    // var containWidth = container.clientWidth
-    // var containHeight = container.clientHeight
-    // const scene = new THREE.Scene();
-    // const camera = new THREE.PerspectiveCamera( 75, containWidth / containHeight, 0.1, 1000 );
-
-    // const renderer = new THREE.WebGLRenderer();
-    // renderer.setSize( containWidth, containHeight );
-    
-    // container.appendChild( renderer.domElement );
-
-    // const geometry = new THREE.BoxGeometry();
-    // const material = new THREE.MeshBasicMaterial( { color: '#F00' } );
-    // const cube = new THREE.Mesh( geometry, material );
-    // cube.position.set(0, 0, 0);
-    // scene.add( cube );
-
-    // camera.position.z = 20;
-
-    // const animate = function () {
-    //     requestAnimationFrame( animate );
-
-    //     cube.rotation.x += 0.01;
-    //     cube.rotation.y += 0.01;
-
-    //     renderer.render( scene, camera );
-    // };
-
-    
-    // const addCube = function (x, y, z, color) {
-    //     const geometry = new THREE.BoxGeometry();
-    //     const material = new THREE.MeshBasicMaterial( { color: color } );
-    //     const cube = new THREE.Mesh( geometry, material );
-    //     cube.position.set(x, y, z);
-    //     scene.add( cube );
-    // }
-
     edit.hi3d = new hi3D()
     edit.hi3d.addscene()
     edit.hi3d.addCamera()
-    edit.hi3d.setCamera()
+    edit.hi3d.addLight()
+    edit.hi3d.setCamera({position: [0, 0, 100]})
     edit.hi3d.addCube()
-    edit.hi3d.animate()
+    edit.hi3d.addCube({position:[5,0,0], color:'#F00'})
+    edit.hi3d.addCube({position:[0,5,0], color:'#0F0'})
+    edit.hi3d.addCube({position:[0,0,5], color:'#00F'})
+    edit.hi3d.addObj()
+    // edit.hi3d.animate()
+
+    function animateA(){
+        // ---------------
+        requestAnimationFrame( animateA );
+        var fabricJson = edit.canvasView.toJSON();
+        if(typeof json == 'string'){
+            fabricJson = JSON.parse(fabricJson)
+        }
+        // console.log('3D ---', edit.canvasView.toJSON())
+        edit.hi3d.removeAllCube()
+        // edit.hi3d.addObj()
+        for (var i = 0; i < fabricJson["objects"].length; i++) {
+            var item = fabricJson["objects"][i];
+            if (item["type"] == "hiCamera") {
+                edit.hi3d.camera.position.set(item["left"], 0, item["top"]);
+            }
+            if (item["type"] == "hiLookAt") {
+                edit.hi3d.camera.lookAt(new THREE.Vector3(item["left"], 0, item["top"])); 
+            }
+            if (item["type"] == "hiRect") {
+                var opt = {
+                    color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    position: [item["left"], 0, item["top"]],
+                    size: [item["width"], 1, item["height"]]
+                }
+                edit.hi3d.addCube(opt)
+            }
+            if (item["type"] == "hiCircle") {
+                var opt = {
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    position: [item["left"], 0, item["top"]],
+                    radius: item["radius"],
+                    widthSegments: item["width"],
+                    heightSegments: item["height"]
+                }
+                edit.hi3d.addSphere(opt)
+            }
+            if (item["type"] == "hiPolyline") {
+                var opt = {
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    position: [item["left"], 0, item["top"]],
+                    radius: item["radius"],
+                    widthSegments: item["width"],
+                    heightSegments: item["height"]
+                }
+                var points = []
+                for(var j = 0; j < item['points'].length; j++) {
+                    points.push([item['points'][j].x, 0, item['points'][j].y])
+                }
+                edit.hi3d.addLine({
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    points: points
+                })
+            }
+        }
+        edit.hi3d.renderer.render( edit.hi3d.scene, edit.hi3d.camera );
+        // ----------------
+    }
+    animateA()
 
     $('#render3D').click(function(){
         var fabricJson = edit.canvasView.toJSON();
@@ -55,25 +80,46 @@ function editor3D (edit, objOption) {
         edit.hi3d.removeAllCube()
         for (var i = 0; i < fabricJson["objects"].length; i++) {
             var item = fabricJson["objects"][i];
+            if (item["type"] == "hiCamera") {
+                edit.hi3d.camera.position.set(item["left"], 0, item["top"]);
+            }
             if (item["type"] == "hiRect") {
                 var opt = {
                     color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                    position: [Math.round(Math.random()*10), Math.round(Math.random()*10), Math.round(Math.random()*10)]
+                    position: [item["left"], 0, item["top"]],
+                    size: [item["width"], 1, item["height"]]
                 }
                 edit.hi3d.addCube(opt)
             }
+            if (item["type"] == "hiCircle") {
+                var opt = {
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    position: [item["left"], 0, item["top"]],
+                    radius: item["radius"],
+                    widthSegments: item["width"],
+                    heightSegments: item["height"]
+                }
+                edit.hi3d.addSphere(opt)
+            }
+            if (item["type"] == "hiPolyline") {
+                var opt = {
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    position: [item["left"], 0, item["top"]],
+                    radius: item["radius"],
+                    widthSegments: item["width"],
+                    heightSegments: item["height"]
+                }
+                var points = []
+                for(var j = 0; j < item['points'].length; j++) {
+                    points.push([item['points'][j].x, 0, item['points'][j].y])
+                }
+                edit.hi3d.addLine({
+                    // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                    points: points
+                })
+            }
         }
-        edit.hi3d.addLine({
-            color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-            points: [
-                [0, 0, 0],
-                [Math.round(Math.random()*10), Math.round(Math.random()*10), Math.round(Math.random()*10)],
-                [Math.round(Math.random()*10), Math.round(Math.random()*10), Math.round(Math.random()*10)],
-                [Math.round(Math.random()*10), Math.round(Math.random()*10), Math.round(Math.random()*10)],
-                [Math.round(Math.random()*10), Math.round(Math.random()*10), Math.round(Math.random()*10)],
-                [10, 10, 10]
-            ]
-        })
+        
         // console.log(scene)
         // scene.traverse( function( node ) {
 
@@ -127,13 +173,22 @@ hi3D.prototype.addscene = function () {
     return this
 }
 
+hi3D.prototype.addLight = function () {
+    var light = new THREE.DirectionalLight(0xffffff);//光源顏色
+    light.position.set(20, 10, 5);//光源位置
+    this.scene.add(light);//光源新增到場景中
+    return this
+}
+
+
+
 hi3D.prototype.addCamera = function (option) {
     // fov : Number, aspect : Number, near : Number, far : Number
     const cameraOption = {
         fov: 75,
         aspect: this.defaultOptions.containWidth / this.defaultOptions.containHeight,
         near: 0.1,
-        far: 1000,
+        far: 2000,
         position: [0, 0, 20],
         targetPoint: [0, 0, 0]
     }
@@ -181,13 +236,54 @@ hi3D.prototype.addCube = function (option) {
     return this
 }
 
+hi3D.prototype.addSphere = function (option) {
+    var objOption = {
+        color: '#F00',
+        position: [0, 0, 0],
+        radius: 5,
+        widthSegments: 5, // Minimum value is 3, and the default is 32
+        heightSegments: 5, // Minimum value is 2, and the default is 16
+        phiStart: 0,
+        phiLength: Math.PI * 2,
+        thetaStart: 0,
+        thetaLength: Math.PI
+    }
+    objOption = this.mergeDeep(objOption, option)
+
+    const geometry = new THREE.SphereGeometry(
+        objOption.radius,
+        objOption.widthSegments,
+        objOption.heightSegments,
+        objOption.phiStart,
+        objOption.phiLength,
+        objOption.thetaStart,
+        objOption.thetaLength
+    );
+    const material = new THREE.MeshBasicMaterial( { color: objOption.color } );
+    const sphere = new THREE.Mesh( geometry, material );
+    sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    this.scene.add( sphere );
+
+    // SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
+    // radius — sphere radius. Default is 1.
+    // widthSegments — number of horizontal segments. Minimum value is 3, and the default is 32.
+    // heightSegments — number of vertical segments. Minimum value is 2, and the default is 16.
+    // phiStart — specify horizontal starting angle. Default is 0.
+    // phiLength — specify horizontal sweep angle size. Default is Math.PI * 2.
+    // thetaStart — specify vertical starting angle. Default is 0.
+    // thetaLength — specify vertical sweep angle size. Default is Math.PI.
+
+    return this
+}
+
 hi3D.prototype.addCube = function (option) {
     var objOption = {
         color: '#F00',
-        position: [0, 0, 0]
+        position: [0, 0, 0],
+        size: [1 ,1 ,1]
     }
     objOption = this.mergeDeep(objOption, option)
-    const geometry = new THREE.BoxGeometry();
+    const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
     const material = new THREE.MeshBasicMaterial( { color: objOption.color } );
     const cube = new THREE.Mesh( geometry, material );
     cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -203,7 +299,7 @@ hi3D.prototype.addLine = function (option) {
     objOption = this.mergeDeep(objOption, option)
 
     const material = new THREE.LineBasicMaterial({
-        color: 0x0000ff
+        color: objOption.color
     });
     const points = [];
     for (var i = 0; i < objOption.points.length; i++) {
@@ -219,6 +315,41 @@ hi3D.prototype.addLine = function (option) {
     const line = new THREE.Line( geometry, material );
 
     this.scene.add( line );
+    return this
+}
+
+hi3D.prototype.addObj = function (option) {
+    var objOption = {
+        color: '#F00',
+        position: [0, 0, 0],
+        size: [1 ,1 ,1]
+    }
+    objOption = this.mergeDeep(objOption, option)
+    // const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
+    // const material = new THREE.MeshBasicMaterial( { color: objOption.color } );
+    // const cube = new THREE.Mesh( geometry, material );
+    // cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // this.scene.add( cube );
+
+    var loader = new THREE.OBJLoader(); //在init函式中，建立loader變數，用於匯入模型
+    loader.load('./assets/male02.obj', function (obj) { //第一個表示模型路徑，第二個表示完成匯入後的回撥函式，一般我們需要在這個回撥函式中將匯入的模型新增到場景中
+        obj.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                // child.material.side = THREE.DoubleSide;
+                // child.material.color.setHex(0x00FF00);
+                // child.material.ambient.setHex(0xFF0000);
+                child.material.color.setHex(0x00FF00);
+                // child.material.color.set('blue');
+            }
+            console.log(child)
+        });
+        console.log('/******************', this)
+        // mesh = obj; //儲存到全域性變數中
+        this.scene.add(obj); //將匯入的模型新增到場景中
+    }.bind(this));
+
+    
+
     return this
 }
 
@@ -255,8 +386,8 @@ hi3D.prototype.animate = function () {
         }
     } );
     // if(typeof this.theta === 'undefined') { this.theta = 0 }
-    // else { this.theta = (this.theta + 5) % 360 }
-    // this.camera.position.set(20 * Math.cos(this.theta * Math.PI / 180), 0, 20 * Math.sin(this.theta * Math.PI / 180))
+    // else { this.theta = (this.theta + 1) % 360 }
+    // this.camera.position.set(100 * Math.cos(this.theta * Math.PI / 180), 50, 100 * Math.sin(this.theta * Math.PI / 180))
     this.renderer.render( this.scene, this.camera );
 };
 
@@ -291,3 +422,5 @@ hi3D.prototype.mergeDeep = function (target, source) {
 // https://threejs.org/docs/#api/en/objects/Line
 // 讀取obj mtl
 // https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/227973/
+
+// 控制物件 THREE.BoxHelper
