@@ -155,6 +155,9 @@ function hi3D (options) {
                 zoomMin: 0.01
             }
         },
+        scene: {
+            background: '#FF0000'
+        },
         renderSetting: {
 
         }
@@ -169,6 +172,7 @@ function hi3D (options) {
 
 hi3D.prototype.addscene = function () {
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color(this.defaultOptions.scene.background)
     this.scene = scene
     return this
 }
@@ -177,6 +181,17 @@ hi3D.prototype.addLight = function () {
     var light = new THREE.DirectionalLight(0xffffff);//光源顏色
     light.position.set(20, 10, 5);//光源位置
     this.scene.add(light);//光源新增到場景中
+
+    //添加环境光
+    var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    this.scene.add(ambientLight);
+
+    //添加聚光灯光源
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40, 60, -10);
+    spotLight.castShadow = true;
+    this.scene.add(spotLight);
+
     return this
 }
 
