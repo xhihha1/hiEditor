@@ -52,8 +52,8 @@ function refreshByFabricJson(edit, objOption) {
         if (item["type"] == "hiCube") {
             var opt = {
                 hiId: item.hiId,
-                color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                // color: item["fill"] || item["stroke"],
+                // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
                 position: [item["left"], item['altitude'], item["top"]],
                 size: [item["width"], 1, item["height"]]
             }
@@ -68,8 +68,8 @@ function refreshByFabricJson(edit, objOption) {
         if (item["type"] == "hiSphere") {
             var opt = {
                 hiId: item.hiId,
-                color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                // color: item["fill"] || item["stroke"],
+                // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
                 position: [item["left"], item['altitude'], item["top"]],
                 radius: item["radius"],
                 widthSegments: item["width"],
@@ -89,8 +89,8 @@ function refreshByFabricJson(edit, objOption) {
             }
             var opt = {
                 hiId: item.hiId,
-                color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                // color: item["fill"] || item["stroke"],
+                // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
                 points: points
             }
             if (itemExist) {

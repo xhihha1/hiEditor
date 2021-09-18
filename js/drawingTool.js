@@ -51,6 +51,9 @@ function initCanvas(canvasId, canvasViewId) {
           $('#objPropName').val(opt.target.get('name'))
           $('#objPropLabel').val(opt.target.get('label'))
           $('#objPropStroke').val(opt.target.get('stroke'))
+          $('#newPropStroke').val(opt.target.get('stroke'))
+          $('#newPropFill').val(opt.target.get('fill'))
+          $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
         }
       },
       import_callback: function () {
@@ -164,6 +167,22 @@ function objectPropertyChange(edit, objOption) {
     var activeObj = edit.canvasView.getActiveObject();
     activeObj.set({
       stroke: $('#newPropStroke').val()
+    });
+    edit.canvasView.renderAll();
+  })
+  $('#propChangeFill').click(function () {
+
+    var activeObj = edit.canvasView.getActiveObject();
+    activeObj.set({
+      fill: $('#newPropFill').val()
+    });
+    edit.canvasView.renderAll();
+  })
+  $('#propChangeAltitude').click(function () {
+
+    var activeObj = edit.canvasView.getActiveObject();
+    activeObj.set({
+      altitude: $('#newPropAltitude').val()
     });
     edit.canvasView.renderAll();
   })
