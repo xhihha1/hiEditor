@@ -22,9 +22,9 @@ function initCanvas(canvasId, canvasViewId) {
       strokeColor: 'rgba(51, 51, 51, 1)'
     },
     event: {
-      object_added: function (opt) {},
-      object_modified: function (opt) {},
-      object_removed: function (opt) {},
+      object_added: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
+      object_modified: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
+      object_removed: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
       after_render: function (opt) {
         var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex']);
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
@@ -42,8 +42,8 @@ function initCanvas(canvasId, canvasViewId) {
             listStr += '<li>' + obj.get('type') + '/' + obj['name'] + '/' + obj['label'] + '</li>'
           }
         })
-        console.log('???')
         $('#objlist').html(listStr)
+        edit.hi3d.refreshByFabricJson(edit);
       },
       selection_created: function (opt) {
         if (opt.target) {
@@ -54,7 +54,29 @@ function initCanvas(canvasId, canvasViewId) {
           $('#newPropStroke').val(opt.target.get('stroke'))
           $('#newPropFill').val(opt.target.get('fill'))
           $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
+          if (opt.target.hiId) {
+            edit.hi3d.scene.traverse(function (node) {
+              if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
+                edit.hi3d.setTransformControlsMesh(node)
+                edit.hi3d.refreshByFabricJson(edit);
+              }
+            })
+          }
         }
+      },
+      selection_updated: function (opt) {
+        if (opt.target.hiId) {
+          edit.hi3d.scene.traverse(function (node) {
+            if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
+              edit.hi3d.setTransformControlsMesh(node)
+              edit.hi3d.refreshByFabricJson(edit);
+            }
+          })
+        }
+      },
+      selection_cleared: function (opt) {
+        edit.hi3d.disposeTransformControlsMesh()
+        edit.hi3d.refreshByFabricJson(edit);
       },
       import_callback: function () {
 
@@ -169,6 +191,7 @@ function objectPropertyChange(edit, objOption) {
       stroke: $('#newPropStroke').val()
     });
     edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
   })
   $('#propChangeFill').click(function () {
 
@@ -177,14 +200,18 @@ function objectPropertyChange(edit, objOption) {
       fill: $('#newPropFill').val()
     });
     edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
   })
   $('#propChangeAltitude').click(function () {
 
     var activeObj = edit.canvasView.getActiveObject();
-    activeObj.set({
-      altitude: $('#newPropAltitude').val()
-    });
+    if (activeObj) {
+      activeObj.set({
+        altitude: $('#newPropAltitude').val()
+      });
+    }
     edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
   })
 }
 

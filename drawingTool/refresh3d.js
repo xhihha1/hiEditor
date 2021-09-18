@@ -1,4 +1,4 @@
-function refreshByFabricJson(edit, objOption) {
+hi3D.prototype.refreshByFabricJson = function(edit, objOption) {
     
     var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
     if (typeof json == 'string') {
