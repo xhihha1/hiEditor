@@ -399,6 +399,7 @@ hi3D.prototype.addObj = function (option) {
     // console.log('/******************', this)
     // mesh = obj; //儲存到全域性變數中
     this.scene.add(obj); //將匯入的模型新增到場景中
+    this.renderer.render(this.scene, this.camera);
   }.bind(this));
   return this
 }

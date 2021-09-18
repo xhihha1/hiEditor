@@ -421,8 +421,12 @@ function editorEvent(edit, objOption) {
   })
 
   $('#add3dObj').click(function (e) {
-    console.log('Add 3d obj')
     edit.hi3d.addObj()
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+
+  $('#addAxesHelper').click(function (e) {
+    edit.hi3d.addAxesHelper()
     edit.hi3d.refreshByFabricJson(edit);
   })
 
