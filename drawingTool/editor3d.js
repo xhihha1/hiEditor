@@ -553,4 +553,6 @@ hi3D.prototype.mergeDeep = function (target, source) {
 // 讀取obj mtl
 // https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/227973/
 
-// 控制物件 THREE.BoxHelper
+// 物件bounding box THREE.BoxHelper
+
+// 控制物件  https://threejs.org/examples/#misc_controls_transform
