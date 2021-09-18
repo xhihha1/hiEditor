@@ -420,6 +420,12 @@ function editorEvent(edit, objOption) {
     })
   })
 
+  $('#add3dObj').click(function (e) {
+    console.log('Add 3d obj')
+    edit.hi3d.addObj()
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+
   function pointsArrayToObjs(array) {
     var newPoints = []
     for (var i = 0; i < array.length; i++) {

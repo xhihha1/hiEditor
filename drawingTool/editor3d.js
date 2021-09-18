@@ -22,7 +22,7 @@ function editor3D(edit, objOption) {
     position: [0, 0, 5],
     color: '#00F'
   })
-  edit.hi3d.addObj()
+  // edit.hi3d.addObj()
   edit.hi3d.addAxesHelper()
   edit.hi3d.addOrbitControls()
   // edit.hi3d.addTransformControls()
