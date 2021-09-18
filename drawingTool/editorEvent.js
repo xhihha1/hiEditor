@@ -12,7 +12,27 @@ function editorEvent(edit, objOption) {
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiLookAt(edit, objOption);
   });
+  $("#drawCube").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var circle = new edit.HiCube(edit, objOption);
+  });
+  $("#drawSphere").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var squrect = new edit.HiSphere(edit, objOption);
+  });
+  $("#draw3dPolyline").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var polyline = new edit.Hi3DPolyline(edit, objOption);
+  });
+  
 
+  // 2D --------------------------------------------------
   $("#drawRect").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
@@ -127,7 +147,7 @@ function editorEvent(edit, objOption) {
   });
 
   $('#export').click(function () {
-    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex']);
+    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude']);
     fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
       if (!obj['tempDrawShape']) {
         return true;
@@ -141,7 +161,7 @@ function editorEvent(edit, objOption) {
   });
 
   $('#exportFabric').click(function () {
-    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex']);
+    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId']);
     fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
       if (!obj['tempDrawShape']) {
         return true;
