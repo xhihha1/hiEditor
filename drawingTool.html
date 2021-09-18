@@ -2,9 +2,11 @@
 <html>
 
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.js"></script> -->
+  <script src="thirdparty/three.js"></script>
   <script src="loaders/MTLLoader.js"></script>
   <script src="loaders/OBJLoader.js"></script>
+  <script src="controls/OrbitControls.js"></script>
   <script src="js/jquery-3.5.1.min.js"></script>
   <script src="js/heatmap.js"></script>
   <script src="js/fabric.min.js"></script>
@@ -91,6 +93,9 @@
         <li id="render3D">3d render</li>
         <li id="drawCamera">Camera</li>
         <li id="drawLookAt">LookAt</li>
+        <li id="drawCube">cube</li>
+        <li id="drawSphere">sphere</li>
+        <li id="draw3dPolyline">3D polyline</li>
       </ul>
     </div>
     <div id="content">
@@ -188,10 +193,14 @@
   
   <script src="drawingTool/hi3d_Camera.js"></script>
   <script src="drawingTool/hi3d_LookAt.js"></script>
+  <script src="drawingTool/hi3d_Cube.js"></script>
+  <script src="drawingTool/hi3d_Sphere.js"></script>
+  <script src="drawingTool/hi3d_3dPolyline.js"></script>
   <script src="drawingTool/editorEvent.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>
   <script src="drawingTool/fabricTest.js"></script>
   <script src="drawingTool/editor3d.js"></script>
+  <script src="drawingTool/refresh3d.js"></script>
   <script src="js/drawingTool.js"></script>
   
   <script>
