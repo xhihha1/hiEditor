@@ -77,7 +77,7 @@ hichart.prototype.plotPolarData = function (dataSet) {
         }
         context.strokeStyle = grd;
         context.beginPath();
-        for(var d = 0; d < series[s]['data'].length; d++){
+        for(var d = 0;series[s]['data'] && d < series[s]['data'].length; d++){
             var r = (series[s]['data'][d][0] - Val_min) / (Val_max - Val_min) * radius;
             var the = series[s]['data'][d][1] / 360 * 2 * Math.PI;
             if (d == 0) {
