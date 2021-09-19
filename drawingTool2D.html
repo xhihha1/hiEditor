@@ -58,7 +58,7 @@
 
   <!-- <script src="js/opencv.js" async onload="onOpenCvReady();" type="text/javascript"></script> -->
   <!-- <script src="js/simplify.js" type="text/javascript"></script> -->
-  <link rel="stylesheet" href="drawingTool/editor3d/style/drawingTool.css">
+  <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool.css">
   <style>
   </style>
 </head>
@@ -67,14 +67,7 @@
   <div id="main">
     <div id="menu">
       <ul>
-        <li class="menuTitle">3D</li>
-        <li id="render3D">3d render</li>
-        <li id="drawCamera">Camera</li>
-        <li id="drawLookAt">LookAt</li>
-        <li id="drawCube">cube</li>
-        <li id="drawSphere">sphere</li>
-        <li id="draw3dPolyline">3D polyline</li>
-        <li class="menuTitle">2D_Shape</li>
+        <li class="menuTitle">Shape</li>
         <li id="drawRect"><img src="icon/rectangle.png"></li>
         <li id="drawCircle"><img src="icon/ellipse.png"></li>
         <li id="drawPolygon"><img src="icon/polygon.png"></li>
@@ -97,12 +90,19 @@
         <li id="axis"><img src="icon/axis.png"></li>
         <li id="simple">S</li>
         <li id="opCV">opCV</li>
+        <!-- <li class="menuTitle">3D</li>
+        <li id="render3D">3d render</li>
+        <li id="drawCamera">Camera</li>
+        <li id="drawLookAt">LookAt</li>
+        <li id="drawCube">cube</li>
+        <li id="drawSphere">sphere</li>
+        <li id="draw3dPolyline">3D polyline</li> -->
       </ul>
     </div>
     <div id="content">
       <canvas id="mainEditor"></canvas>
     </div>
-    <div id="content3D"></div>
+    <!-- <div id="content3D"></div> -->
     <div id="property">
       <ul>
         <li class="prop-title">Title</li>
@@ -203,17 +203,17 @@
     </div>
   </div>
   
-  <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
+  <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_LookAt.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Cube.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Sphere.js"></script>
-  <script src="drawingTool/fabricExtend/hi3d_3dPolyline.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_3dPolyline.js"></script> -->
   <script src="drawingTool/editorEvent.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>
   <script src="drawingTool/fabricTest.js"></script>
-  <script src="drawingTool/editor3d.js"></script>
-  <script src="drawingTool/refresh3d.js"></script>
-  <script src="drawingTool/drawingTool.js"></script>
+  <!-- <script src="drawingTool/editor3d.js"></script>
+  <script src="drawingTool/refresh3d.js"></script> -->
+  <script src="drawingTool/drawingTool2D.js"></script>
   
   <script>
     $(document).ready(function () {

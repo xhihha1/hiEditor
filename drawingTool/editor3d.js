@@ -1,4 +1,4 @@
-function editor3D(edit, objOption) {
+function initCanvas3D(edit, objOption) {
 
   edit.hi3d = new hi3D()
   edit.hi3d.addscene()
