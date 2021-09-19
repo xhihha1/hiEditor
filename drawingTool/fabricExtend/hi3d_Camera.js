@@ -27,6 +27,8 @@ fabric.HiCamera = fabric.util.createClass(fabric.Circle, {
         // this.perPixelTargetFind = true;
         // do not render if width/height are zeros or object is not visible
         if (this.width === 0 || this.height === 0 || !this.visible) return;
+        ctx.font = "16px Arial";
+        ctx.fillText("Camera", 0, 0);
 
     }
 });
