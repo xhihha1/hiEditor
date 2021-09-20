@@ -1,5 +1,5 @@
 hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
-
+// return false
   var fabricJson = null
   if (edit.canvasView) {
     // fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
@@ -52,24 +52,25 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       }
     }
   }.bind(this));
-  for (var i = removeNodes.length - 1; i >= 0; i--) {
-    if (removeNodes[i] instanceof THREE.Line ||
-      removeNodes[i] instanceof THREE.Mesh) {
-      if (removeNodes[i].geometry) {
-        removeNodes[i].geometry.dispose();
-      }
-      if (removeNodes[i].material) {
-        removeNodes[i].material.dispose();
-      }
-      this.scene.remove(removeNodes[i]);
-    }
-    if (removeNodes[i] instanceof THREE.Group) {
-      removeNodes[i].traverse(function (node) {
-        this.scene.remove(node);
-      }.bind(this))
-    }
+  // 先不移除多餘物件
+  // for (var i = removeNodes.length - 1; i >= 0; i--) {
+  //   if (removeNodes[i] instanceof THREE.Line ||
+  //     removeNodes[i] instanceof THREE.Mesh) {
+  //     if (removeNodes[i].geometry) {
+  //       removeNodes[i].geometry.dispose();
+  //     }
+  //     if (removeNodes[i].material) {
+  //       removeNodes[i].material.dispose();
+  //     }
+  //     this.scene.remove(removeNodes[i]);
+  //   }
+  //   if (removeNodes[i] instanceof THREE.Group) {
+  //     removeNodes[i].traverse(function (node) {
+  //       this.scene.remove(node);
+  //     }.bind(this))
+  //   }
 
-  }
+  // }
   // 添加或修改 id 
   for (var i = 0; i < fabricJson["objects"].length; i++) {
     var item = fabricJson["objects"][i];

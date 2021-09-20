@@ -98,6 +98,8 @@ function hi3D(options) {
   hi3D.prototype.addscene = function () {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(this.defaultOptions.scene.background)
+    // scene.add( new THREE.AxesHelper(500));
+    // scene.add( new THREE.GridHelper( 1000, 10, 0x888888, 0x444444 ) );
     this.scene = scene
     return this
   }
@@ -174,6 +176,16 @@ function hi3D(options) {
     this.renderer = renderer
     return this
   }
+
+  hi3D.prototype.setGridHelper = function () {
+    var gHelp = new THREE.GridHelper( 1000, 10, 0x888888, 0x444444 )
+    console.log(gHelp)
+    this.scene.add( gHelp );
+    console.log(this.scene.children)
+    return this
+  }
+
+  
   
   hi3D.prototype.addSphere = function (option) {
     var objOption = {
@@ -387,7 +399,7 @@ function hi3D(options) {
     // new THREE.AxesHelper( 50 )
     // const axesHelper = new THREE.AxesHelper( 500 );
     this.scene.add(new THREE.AxesHelper(500));
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
     return this
   }
   

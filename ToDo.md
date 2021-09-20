@@ -11,3 +11,8 @@
 ## bug  
 
 1. 2d viewer can't show video
+
+
+## note  
+
+1. editor 移除多於物件可能導致`helper`參考線一併被移除，所以先不移除。  

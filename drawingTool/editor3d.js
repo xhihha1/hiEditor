@@ -2,6 +2,8 @@ function initCanvas3D(edit, objOption) {
 
   edit.hi3d = new hi3D()
   edit.hi3d.addscene()
+  edit.hi3d.setGridHelper()
+  edit.hi3d.addAxesHelper()
   edit.hi3d.addCamera()
   edit.hi3d.addLight()
   edit.hi3d.addHemisphereLight()
@@ -23,8 +25,8 @@ function initCanvas3D(edit, objOption) {
     color: '#00F'
   })
   // edit.hi3d.addObj()
-  edit.hi3d.addAxesHelper()
   edit.hi3d.addOrbitControls()
+  // edit.hi3d.setRender()
   // edit.hi3d.addTransformControls()
   // edit.hi3d.animate()
 
