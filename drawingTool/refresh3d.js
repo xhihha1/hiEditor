@@ -54,22 +54,21 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
   }.bind(this));
   // 先不移除多餘物件
   // for (var i = removeNodes.length - 1; i >= 0; i--) {
-  //   if (removeNodes[i] instanceof THREE.Line ||
-  //     removeNodes[i] instanceof THREE.Mesh) {
-  //     if (removeNodes[i].geometry) {
-  //       removeNodes[i].geometry.dispose();
-  //     }
-  //     if (removeNodes[i].material) {
-  //       removeNodes[i].material.dispose();
-  //     }
-  //     this.scene.remove(removeNodes[i]);
-  //   }
-  //   if (removeNodes[i] instanceof THREE.Group) {
-  //     removeNodes[i].traverse(function (node) {
-  //       this.scene.remove(node);
-  //     }.bind(this))
-  //   }
-
+    // if (removeNodes[i] instanceof THREE.Line ||
+    //   removeNodes[i] instanceof THREE.Mesh) {
+    //   if (removeNodes[i].geometry) {
+    //     removeNodes[i].geometry.dispose();
+    //   }
+    //   if (removeNodes[i].material) {
+    //     removeNodes[i].material.dispose();
+    //   }
+    //   this.scene.remove(removeNodes[i]);
+    // }
+    // if (removeNodes[i] instanceof THREE.Group) {
+    //   removeNodes[i].traverse(function (node) {
+    //     this.scene.remove(node);
+    //   }.bind(this))
+    // }
   // }
   // 添加或修改 id 
   for (var i = 0; i < fabricJson["objects"].length; i++) {
@@ -133,15 +132,17 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       var opt = {
         hiId: item.hiId,
         // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        color: this.rgba2hex(item["stroke"]) || '#FF0000',
         points: points
       }
       if (itemExist) {
         // console.log('set hi3DPolyline', opt)
-        this.setLine(objNode, opt)
+        // this.setLine(objNode, opt)
+        this.setLine2(objNode, opt)
       } else {
         // console.log('add hi3DPolyline', opt)
-        this.addLine(opt)
+        // this.addLine(opt)
+        this.addLine2(opt)
       }
     }
     if (item["type"] == "hiFormatObj") {
@@ -161,6 +162,25 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       } else {
         // console.log('add addObj', opt)
         this.addObj(opt)
+      }
+    }
+    if (item["type"] == "hiFormatCollada") {
+      var opt = {
+        hiId: item.hiId,
+        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        position: [item["left"], item['altitude'], item["top"]],
+        widthSegments: item["width"],
+        heightSegments: item["height"],
+        source: item.source,
+        scale: [item["scaleX"], 1, item["scaleY"]]
+      }
+      if (itemExist) {
+        // console.log('set setObj', opt)
+        this.setCollada(objNode, opt)
+      } else {
+        // console.log('add addObj', opt)
+        this.addCollada(opt)
       }
     }
   }

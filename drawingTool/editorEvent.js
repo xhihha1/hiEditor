@@ -194,7 +194,7 @@ function editorEvent(edit, objOption) {
     // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
     var fabricJson = edit.toFabricJson()
     localStorage.setItem('viewJson', JSON.stringify(fabricJson))
-    window.open('drawingToolView.html', '_blank').focus();
+    window.open('drawingToolView2D.html', '_blank').focus();
   })
 
   $('#saveFabricLocalStorage3D').click(function(){

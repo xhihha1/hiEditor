@@ -36,4 +36,12 @@ function editorEvent3D(edit, objOption) {
     edit.changeCanvasProperty(false, false);
     var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: './assets/male02.obj'}});
   });
+
+  $("#draw3dHiFormatCollada").click(function () {
+    console.log('load Collada')
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: './assets/elf/elf.dae'}});
+  });
 }
