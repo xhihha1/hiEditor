@@ -115,6 +115,6 @@ function heatmapCreate(edit, objOption) {
     heatmapInstance.setData(data);
   
     window.requestAnimationFrame(() => {
-      heatmapSetData(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
+      heatmapSetData(edit, objOption)
     });
   }

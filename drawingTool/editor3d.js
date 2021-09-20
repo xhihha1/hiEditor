@@ -30,7 +30,7 @@ function initCanvas3D(edit, objOption) {
 
   function animateA() {
     // ---------------
-    var fabricJson = edit.canvasView.toJSON(['hiId']);
+    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
     if (typeof json == 'string') {
       fabricJson = JSON.parse(fabricJson)
     }

@@ -1,8 +1,15 @@
-hi3D.prototype.refreshByFabricJson = function(edit, objOption) {
+hi3D.prototype.refreshByFabricJson = function(edit, objOption, json) {
     
-    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
-    if (typeof json == 'string') {
-        fabricJson = JSON.parse(fabricJson)
+    var fabricJson = null
+    if (edit.canvasView) {
+        fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    }
+    if (json) {
+        if (typeof json == 'string') {
+            fabricJson = JSON.parse(json)
+        } else {
+            fabricJson = json
+        }
     }
     // 移除 id 不存在的
     var removeNodes = []
@@ -53,7 +60,7 @@ hi3D.prototype.refreshByFabricJson = function(edit, objOption) {
             var opt = {
                 hiId: item.hiId,
                 // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
+                color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
                 position: [item["left"], item['altitude'], item["top"]],
                 size: [item["width"], 1, item["height"]]
             }
@@ -69,7 +76,7 @@ hi3D.prototype.refreshByFabricJson = function(edit, objOption) {
             var opt = {
                 hiId: item.hiId,
                 // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
+                color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
                 position: [item["left"], item['altitude'], item["top"]],
                 radius: item["radius"],
                 widthSegments: item["width"],
@@ -90,7 +97,7 @@ hi3D.prototype.refreshByFabricJson = function(edit, objOption) {
             var opt = {
                 hiId: item.hiId,
                 // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-                color: edit.rgba2hex(item["fill"]) || edit.rgba2hex(item["stroke"]) || '#FF0000',
+                color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
                 points: points
             }
             if (itemExist) {

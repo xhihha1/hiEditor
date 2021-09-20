@@ -26,7 +26,7 @@ function initCanvas(canvasId, canvasViewId) {
       object_modified: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
       object_removed: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
       after_render: function (opt) {
-        var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex']);
+        var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude']);
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
           if (!obj['tempDrawShape']) {
             return true;

@@ -129,7 +129,7 @@ function editorEvent(edit, objOption) {
   });
 
   $('#exportFabric').click(function () {
-    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId']);
+    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude']);
     fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
       if (!obj['tempDrawShape']) {
         return true;
@@ -186,6 +186,20 @@ function editorEvent(edit, objOption) {
       edit.canvasView.loadFromJSON(json)
     }
   });
+
+  $('#saveFabricLocalStorage2D').click(function(){
+    console.log('view 2d')
+    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    localStorage.setItem('viewJson', JSON.stringify(fabricJson))
+    window.open('drawingToolView.html', '_blank').focus();
+  })
+
+  $('#saveFabricLocalStorage3D').click(function(){
+    console.log('view 3d')
+    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    localStorage.setItem('viewJson', JSON.stringify(fabricJson))
+    window.open('drawingToolView3D.html', '_blank').focus();
+  })
 
   var showaxis = false
   $('#axis').click(function (e) {
