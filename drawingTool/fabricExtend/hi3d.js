@@ -73,7 +73,7 @@ function hi3D(options) {
         pointer.y = -((event.clientY - container.offsetTop) / container.offsetHeight) * 2 + 1; // bug 重新計算
         var raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(pointer, this.camera);
-        const intersects = raycaster.intersectObjects(this.scene.children, false);
+        const intersects = raycaster.intersectObjects(this.scene.children, true);
         if (intersects.length > 0) {
           intersects[0].object.material.color.setHex(Math.random() * 0xffffff);
           this.setTransformControlsMesh(intersects[0].object)
@@ -318,7 +318,7 @@ function hi3D(options) {
       line.material.linewidth = objOption.linewidth
     }
   }
-  
+    
   hi3D.prototype.addObj = function (option) {
     var objOption = {
       color: '#F00',
@@ -333,23 +333,50 @@ function hi3D(options) {
     // this.scene.add( cube );
   
     var loader = new THREE.OBJLoader(); //在init函式中，建立loader變數，用於匯入模型
-    loader.load('./assets/male02.obj', function (obj) { //第一個表示模型路徑，第二個表示完成匯入後的回撥函式，一般我們需要在這個回撥函式中將匯入的模型新增到場景中
+    loader.load(objOption.source.obj, function (obj) { //第一個表示模型路徑，第二個表示完成匯入後的回撥函式，一般我們需要在這個回撥函式中將匯入的模型新增到場景中
       obj.traverse(function (child) {
         if (child instanceof THREE.Mesh) {
           // child.material.side = THREE.DoubleSide;
           // child.material.color.setHex(0x00FF00);
           // child.material.ambient.setHex(0xFF0000);
-          child.material.color.setHex(0x00FF00);
+          child.material.color.set(objOption.color);
           // child.material.color.set('blue');
         }
         // console.log(child)
       });
       // console.log('/******************', this)
       // mesh = obj; //儲存到全域性變數中
-      this.scene.add(obj); //將匯入的模型新增到場景中
+      let objExist = false
+      this.scene.traverse(function (child) {
+        if (child.hiId === objOption.hiId) { objExist = true }
+      })
+      if (!objExist) {
+        obj.hiId = objOption.hiId
+        this.scene.add(obj); //將匯入的模型新增到場景中
+      }
       this.renderer.render(this.scene, this.camera);
     }.bind(this));
     return this
+  }
+
+  hi3D.prototype.setObj = function (node, objOption) {
+    if (objOption.position) {
+      node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    }
+    if (objOption.color) {
+      // node.material.color = new THREE.Color(objOption.color)
+      node.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.color.set(objOption.color);
+        }
+        // console.log(child)
+      });
+    }
+    if (objOption.scale) {
+      node.scale.x = objOption.scale[0];
+      node.scale.y = objOption.scale[1];
+      node.scale.z = objOption.scale[2];
+    }
   }
   
   hi3D.prototype.addAxesHelper = function (option) {

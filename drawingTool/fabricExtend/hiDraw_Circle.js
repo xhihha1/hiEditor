@@ -14,6 +14,7 @@ fabric.HiCircle = fabric.util.createClass(fabric.Circle, {
     type: 'hiCircle',
 
     initialize: function (element, options) {
+        console.log('options', options)
         options || (options = {});
         this.callSuper('initialize', element, options);
     },

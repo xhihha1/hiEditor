@@ -4,22 +4,23 @@
   
     var fabric = global.fabric || (global.fabric = { });
   
-    if (fabric.HiCamera) {
-      fabric.warn('fabric.HiCamera is already defined');
+    if (fabric.HiFormatObj) {
+      fabric.warn('fabric.HiFormatObj is already defined');
       return;
     }
 
-fabric.HiCamera = fabric.util.createClass(fabric.Circle, {
+fabric.HiFormatObj = fabric.util.createClass(fabric.Rect, {
 
-    type: 'hiCamera',
+    type: 'hiFormatObj',
 
     initialize: function (element, options) {
+        // console.log(this) // 屬性都寫在 this 中
         options || (options = {});
         this.callSuper('initialize', element, options);
     },
 
     toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude });
+        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude, source: this.source });
     },
 
     _render: function (ctx) {
@@ -28,26 +29,26 @@ fabric.HiCamera = fabric.util.createClass(fabric.Circle, {
         // do not render if width/height are zeros or object is not visible
         if (this.width === 0 || this.height === 0 || !this.visible) return;
         ctx.font = "16px Arial";
-        ctx.fillText("Camera", 0, 0);
+        ctx.fillText("Obj", 0, 0);
 
     }
 });
 
-fabric.HiCamera.fromObject = function (object, callback) {
-    callback && callback(new fabric.HiCamera(object));
+fabric.HiFormatObj.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiFormatObj(object));
 };
 
-fabric.HiCamera.async = true;
+fabric.HiFormatObj.async = true;
 
 
-hiDraw.prototype.HiCamera = (function () {
+hiDraw.prototype.HiFormatObj = (function () {
 
     function Circle(canvasItem, options, otherProps) {
         this.canvasItem = canvasItem;
         this.canvas = canvasItem.canvasView;
         this.options = options;
         this.otherProps = otherProps;
-        this.className = 'HiCamera';
+        this.className = 'HiFormatObj';
         this.isDrawing = false;
         this.tempPointsArray = new Array();
         this.bindEvents();
@@ -130,19 +131,23 @@ hiDraw.prototype.HiCamera = (function () {
         //     hasControls: true,
         //     strokeUniform: true
         // });
-        var ellipse = new fabric.HiCamera({
-            stroke: '#333333',
+
+        var prop = this.canvasItem.mergeDeep({
             strokeWidth: 2,
-            fill: 'rgba(50,50,50,0.5)',
+            stroke: '#7B7B7B',
+            fill: '#7B7B7B',
             opacity: 1,
-            radius: 10,
+            width: 100,
+            height: 100,
             top: origY,
             left: origX,
             // selectable: false,
             hasBorders: true,
-            hasControls: false,
+            hasControls: true,
             strokeUniform: true
-        })
+        }, this.otherProps)
+        // this.source = {}  // obj: url
+        var ellipse = new fabric.HiFormatObj(prop)
 
         // ellipse.on('selected', function () {
         //     console.log('selected a Circle');
@@ -152,6 +157,7 @@ hiDraw.prototype.HiCamera = (function () {
         //     console.log('mousedown a Circle');
         // });
         ellipse.altitude = 0
+        ellipse.hiId = new Date().getTime()
         inst.canvas.add(ellipse).setActiveObject(ellipse);
         ellipse.canvasItem = inst.canvasItem;
     };

@@ -580,7 +580,8 @@ hiDraw.prototype.Hi3DPolyline = (function () {
         var Polyline = new fabric.Hi3DPolyline(points,{
             // stroke: '#333333',
             // strokeWidth: 1,
-            fill: 'rgba(0,0,0,0)',
+            stroke: '#7B7B7B',
+            fill: '#7B7B7B',
             opacity: 1,
             hasBorders: true,
             hasControls: true,

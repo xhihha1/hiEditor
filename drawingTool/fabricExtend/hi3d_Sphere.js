@@ -371,9 +371,9 @@ hiDraw.prototype.HiSphere = (function () {
         inst.canvas.remove(inst.shape);
 
         var ellipse = new fabric.HiSphere({
-            // stroke: '#333333',
+            stroke: '#7B7B7B',
             // strokeWidth: 1,
-            // fill: 'rgba(0,0,0,0)',
+            fill: '#7B7B7B',
             opacity: 1,
             radius: radius,
             originX: 'center',

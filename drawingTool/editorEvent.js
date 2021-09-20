@@ -115,7 +115,7 @@ function editorEvent(edit, objOption) {
   });
 
   $('#export').click(function () {
-    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude']);
+    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source']);
     fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
       if (!obj['tempDrawShape']) {
         return true;
@@ -129,7 +129,7 @@ function editorEvent(edit, objOption) {
   });
 
   $('#exportFabric').click(function () {
-    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude']);
+    var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source']);
     fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
       if (!obj['tempDrawShape']) {
         return true;
@@ -189,14 +189,14 @@ function editorEvent(edit, objOption) {
 
   $('#saveFabricLocalStorage2D').click(function(){
     console.log('view 2d')
-    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
     localStorage.setItem('viewJson', JSON.stringify(fabricJson))
     window.open('drawingToolView.html', '_blank').focus();
   })
 
   $('#saveFabricLocalStorage3D').click(function(){
     console.log('view 3d')
-    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
     localStorage.setItem('viewJson', JSON.stringify(fabricJson))
     window.open('drawingToolView3D.html', '_blank').focus();
   })
