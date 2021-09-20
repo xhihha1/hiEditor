@@ -88,6 +88,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       this.camera.position.set(item["left"], item['altitude'], item["top"]);
     }
     if (item["type"] == "hiLookAt") {
+      console.log(item["left"], item['altitude'], item["top"])
       this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
     }
     if (item["type"] == "hiCube") {

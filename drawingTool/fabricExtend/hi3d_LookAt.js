@@ -38,6 +38,74 @@ fabric.HiLookAt.fromObject = function (object, callback) {
 
 fabric.HiLookAt.async = true;
 
+  // -----------------------------------------------------
+  var upIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG9SURBVGhD7ZctTwNBEIaPD4lAIEhAIJFIBAKJRCCQCH4AEolHIPgJSEwTJAbCH8AACQgwfH+FAIIAgfelM8n20sLd3t6x18yTPJltk+7NXNuducQwDMPoVgbgKhz9eVVTWMQe/IKXcBzWjmF4BFnEh0QWMwVrA+/8KWTy9xIvJD7DWhQzCXnnmfSVRPVc4jucg9EyA3nHmax+A2m1SBazCKNjHjI5JtmpCPXOWS/BaGAymti1s/7NJ6iHAI/nf4dJaHKPzjqrnxLXYT+sHF50A7rJ+PomcRNWWgwb3RZ0kyiq7rMNuX/pDEHt1npChVL34/6DsDTcbv0gMbTaQHkdXi847NbaA9zjswy1mBMYdD7jSKEnUrpbl6VeJ9iwOQv/6tZlqb+AwvPZAtRufSixao8lshiOQLlZhulNO3nT5r088vOvkP+9tPqt0NzDJkcOjuFZO/VBm/fymPfzweezFciNQxWyBscy2kKvxFjgIHmW0RZiK8QbKyQ2rJDYsEJiwwqJDSskNrqmkD6JvkyLHPk58N16+gJH4C7cgZXDsTs9khfR+zmjR6IvfJ6faC6D0ID7zaVhGIYRPUnyDe15w+jjPoVKAAAAAElFTkSuQmCC';
+  var downIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHASURBVGhD7Zg9LwRRFIaXKCUUCoVCqVSJwg9QKhRKhR+g1KFWKPwEpUaiVOpUGiQUKp/xEUEhCO9r75tMNhM7c+fOnbtynuTJmd2Yc+bMmL1npmUYhmE0QZ+LvszByfZmEHbhUXszLpvwO6DL0IuqV2QNrsJDOMgvPHmFU3AdMmd0WJRn8thFX7W/dxP9LvY81khqWCOpYY2khjWSGtZIalgjNTEExwtaCD4XXMAn2Dmp5hlq+i1qqeeWFZiXJM+7nO/KyP3f4H2O11B/9wHnYWkWIXdmkhMXY3vm4guchd7wuZxJmOzKxVjqarD+DKwMk+h+uXGxblWHzUzAYDCZzhD/d7NFQ/vg4jkM2oQYhaeQRR5dDK2aYB3Wq40ReABZTPdOKJWP+Ydh7fDVzx5k0XcXq6o8+7DKq6XSDMBtyOJfLvqqJnYg8zbCBtQBFZ0EsuokbMHGmhAcGXRgt5ntv3yGn26bJyMZFqCmgG4LZ/bn2/t9b51whOg2BWgtYtNLMFmmoQ62cwq4dNF7+IsNV2M+BvCgtcDpCgWbm2KRnQJ0U/NK9VQTggubpoDgw19s2Ax/Xsd+PxmGYRj/h1brB3aWrHtcxtm1AAAAAElFTkSuQmCC'
+  var imgUp = document.createElement('img');
+  imgUp.src = upIcon;
+  var imgDown = document.createElement('img');
+  imgDown.src = downIcon;
+
+  fabric.HiLookAt.prototype.transparentCorners = false;
+//   fabric.HiLookAt.prototype.cornerColor = 'blue';
+//   fabric.HiLookAt.prototype.cornerStyle = 'circle';
+
+  fabric.HiLookAt.prototype.controls = {}
+  fabric.HiLookAt.prototype.controls.upControl = new fabric.Control({
+    x: 1,
+    y: -1,
+    offsetX: 10,
+    offsetY: 10,
+    cursorStyle: 'pointer',
+    mouseUpHandler: upObject,
+    render: renderUpIcon,
+    cornerSize: 24
+  });
+  fabric.HiLookAt.prototype.controls.downControl = new fabric.Control({
+    x: 1,
+    y: 0,
+    offsetX: 10,
+    offsetY: 10,
+    cursorStyle: 'pointer',
+    mouseUpHandler: downObject,
+    render: renderDownIcon,
+    cornerSize: 24
+  });
+
+
+  function upObject(eventData, transform) {
+    transform.altitude += 10
+    var canvas = transform.canvas;
+    console.log('canvas', canvas)
+    canvas.requestRenderAll();
+  }
+
+  function renderUpIcon(ctx, left, top, styleOverride, fabricObject) {
+    var size = this.cornerSize;
+    ctx.save();
+    ctx.translate(left, top);
+    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+    ctx.drawImage(imgUp, -size / 2, -size / 2, size, size);
+    ctx.restore();
+  }
+
+  function downObject(eventData, transform) {
+    transform.altitude -= 10
+    var canvas = transform.canvas;
+    console.log('canvas', canvas)
+    canvas.requestRenderAll();
+  }
+
+  function renderDownIcon(ctx, left, top, styleOverride, fabricObject) {
+    var size = this.cornerSize;
+    ctx.save();
+    ctx.translate(left, top);
+    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+    ctx.drawImage(imgDown, -size / 2, -size / 2, size, size);
+    ctx.restore();
+  }
+
+  // -----------------------------------------------------
 
 hiDraw.prototype.HiLookAt = (function () {
 
@@ -138,8 +206,8 @@ hiDraw.prototype.HiLookAt = (function () {
             top: origY,
             left: origX,
             // selectable: false,
-            hasBorders: true,
-            hasControls: false,
+            hasBorders: false,
+            hasControls: true,
             strokeUniform: true
         })
 
