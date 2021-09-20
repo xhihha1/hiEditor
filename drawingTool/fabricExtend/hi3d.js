@@ -352,6 +352,7 @@ function hi3D(options) {
       })
       if (!objExist) {
         obj.hiId = objOption.hiId
+        obj.source = { obj: objOption.source.obj }
         this.scene.add(obj); //將匯入的模型新增到場景中
       }
       this.renderer.render(this.scene, this.camera);
@@ -371,6 +372,9 @@ function hi3D(options) {
         }
         // console.log(child)
       });
+    }
+    if (objOption.source && objOption.source.obj !== node.source.obj) {
+      console.log('--- change obj source ---')
     }
     if (objOption.scale) {
       node.scale.x = objOption.scale[0];

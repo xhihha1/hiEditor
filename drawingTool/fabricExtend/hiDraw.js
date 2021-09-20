@@ -421,6 +421,15 @@ hiDraw.prototype.rgba2hex = function (orig) {
     return (hex).substring(0,7);
 }
 
+hiDraw.prototype.toFabricJson = function () {
+    if (this.canvasView) {
+        return this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
+    } else {
+        return {}
+    }
+    
+}
+
 global.hiDraw = hiDraw
 
 })(typeof exports !== 'undefined' ? exports : this);

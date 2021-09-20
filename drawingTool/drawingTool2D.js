@@ -26,7 +26,8 @@ function initCanvas(canvasId, canvasViewId) {
       object_modified: function (opt) {},
       object_removed: function (opt) {},
       after_render: function (opt) {
-        var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source']);
+        // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source']);
+        var fabricJson = edit.toFabricJson()
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
           if (!obj['tempDrawShape']) {
             return true;

@@ -26,7 +26,8 @@ function initCanvas(canvasId, canvasViewId) {
       object_modified: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
       object_removed: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
       after_render: function (opt) {
-        var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source']);
+        // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
+        var fabricJson = edit.toFabricJson()
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
           if (!obj['tempDrawShape']) {
             return true;
@@ -51,9 +52,11 @@ function initCanvas(canvasId, canvasViewId) {
           $('#objPropName').val(opt.target.get('name'))
           $('#objPropLabel').val(opt.target.get('label'))
           $('#objPropStroke').val(opt.target.get('stroke'))
+          if(opt.target.get('source')){$('#objPropSourceObj').val(opt.target.get('source').obj)}
           $('#newPropStroke').val(opt.target.get('stroke'))
           $('#newPropFill').val(opt.target.get('fill'))
           $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
+          $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
           if (opt.target.hiId) {
             edit.hi3d.scene.traverse(function (node) {
               if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
@@ -127,6 +130,17 @@ function objectPropertyChange(edit, objOption) {
     if (activeObj) {
       activeObj.set({
         altitude: $('#newPropAltitude').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#propChangeDepth').click(function () {
+
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        depth: $('#newPropDepth').val()
       });
     }
     edit.canvasView.renderAll();

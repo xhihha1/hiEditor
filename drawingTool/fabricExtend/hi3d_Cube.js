@@ -19,7 +19,7 @@ fabric.HiCube = fabric.util.createClass(fabric.Rect, {
     },
 
     toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude });
+        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude, depth: this.depth });
     },
 
     _render: function (ctx) {
@@ -402,6 +402,7 @@ hiDraw.prototype.HiCube = (function () {
         }
         rect.hiId = new Date().getTime()
         rect.altitude = 0
+        rect.depth = 1
         inst.canvas.add(rect).setActiveObject(rect);
         rect.canvasItem = inst.canvasItem;
 

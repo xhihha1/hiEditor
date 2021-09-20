@@ -2,7 +2,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
 
   var fabricJson = null
   if (edit.canvasView) {
-    fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    // fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);
+    fabricJson = edit.toFabricJson()
   }
   if (json) {
     if (typeof json == 'string') {
@@ -90,12 +91,13 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
     }
     if (item["type"] == "hiCube") {
+      var depth = item["depth"] || 1
       var opt = {
         hiId: item.hiId,
         // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
         color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
         position: [item["left"], item['altitude'], item["top"]],
-        size: [item["width"], 1, item["height"]]
+        size: [item["width"], depth, item["height"]]
       }
       if (itemExist) {
         // console.log('exist cube', objNode, opt)
@@ -149,7 +151,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         position: [item["left"], item['altitude'], item["top"]],
         widthSegments: item["width"],
         heightSegments: item["height"],
-        source: item.source
+        source: item.source,
+        scale: [item["scaleX"], 1, item["scaleY"]]
       }
       if (itemExist) {
         // console.log('set setObj', opt)
