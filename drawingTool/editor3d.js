@@ -1,6 +1,12 @@
 function initCanvas3D(edit, objOption) {
 
-  edit.hi3d = new hi3D()
+  edit.hi3d = new hi3D({
+    transformControls: {
+      objectChange: function (event) {
+        if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
+      }.bind(edit.hi3d)
+    }
+  })
   edit.hi3d.addscene()
   edit.hi3d.setGridHelper()
   edit.hi3d.addAxesHelper()

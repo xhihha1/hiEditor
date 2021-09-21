@@ -2,12 +2,17 @@
 
 1. 2d viewer (OK)  
 2. 3d viewer (OK)  
-3. 3d 管線取代 line  
+3. 3d 管線取代 line (OK)  
 4. 針對 `2d Chart` 寫 hiDraw prototype (OK)  
 5. edit.hi3d.addObj  寫 hiDraw prototype (先添加到2D，再由fabric json更新到3D) (OK)  
 6. grid helper (OK)  
 7. group  
-8. add spot light icon 控制
+8. add spot light icon 控制 (OK)  
+9. remove spot light  
+10. 使用 transform control的 object change 反向控制 fabric 物件位置  
+11. transform control切換模式  
+12. 添加 `helper`
+13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、PointLightHelper、SpotLightHelper  
 
 ## bug  
 

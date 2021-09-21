@@ -48,10 +48,15 @@ function hi3D(options) {
       change: function (event) {}
     },
     transformControls: {
-      change: function (event) { console.log('transformControls change:', this, event) }.bind(this),
+      change: function (event) {
+        // console.log('transformControls change:', arguments, this, event)
+      }.bind(this),
       mouseDown: function (event) {},
       mouseUp: function (event) {},
-      objectChange: function (event) { console.log('transformControls objectChange:', this, event) }.bind(this),
+      objectChange: function (event) {
+        // if (event.target) { console.log(event.target.object.position.x); }
+        // console.log('transformControls objectChange:', arguments, this, event)
+      }.bind(this),
       dragging_changed: function (event) {}
     },
     renderSetting: {
@@ -655,7 +660,14 @@ hi3D.prototype.addTransformControls = function (mesh) {
     }
     this.renderer.render(this.scene, this.camera);
   }.bind(this));
-
+  control.addEventListener('worldPosition-changed', function (event) {
+  }.bind(this));
+  control.addEventListener('translationSnap-changed', function (event) {
+  }.bind(this));
+  control.addEventListener('rotationSnap-changed', function (event) {
+  }.bind(this));
+  control.addEventListener('scaleSnap-changed', function (event) {
+  }.bind(this));
   
   control.attach(mesh);
   this.scene.add(control);
