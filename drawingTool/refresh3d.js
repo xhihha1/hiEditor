@@ -27,7 +27,9 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         removeNodes.push(node)
       }
     }
-    if (node instanceof THREE.Line) {
+    if (node instanceof THREE.Line ||
+      node instanceof THREE.Line2 ||
+      node instanceof THREE.SpotLight) {
       var nodeIdExist = false
       for (var i = 0; i < fabricJson["objects"].length; i++) {
         var itemId = fabricJson["objects"][i].hiId;
@@ -53,23 +55,29 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
     }
   }.bind(this));
   // 先不移除多餘物件
-  // for (var i = removeNodes.length - 1; i >= 0; i--) {
-    // if (removeNodes[i] instanceof THREE.Line ||
-    //   removeNodes[i] instanceof THREE.Mesh) {
-    //   if (removeNodes[i].geometry) {
-    //     removeNodes[i].geometry.dispose();
-    //   }
-    //   if (removeNodes[i].material) {
-    //     removeNodes[i].material.dispose();
-    //   }
-    //   this.scene.remove(removeNodes[i]);
-    // }
-    // if (removeNodes[i] instanceof THREE.Group) {
-    //   removeNodes[i].traverse(function (node) {
-    //     this.scene.remove(node);
-    //   }.bind(this))
-    // }
-  // }
+  for (var i = removeNodes.length - 1; i >= 0; i--) {
+    if (removeNodes[i] instanceof THREE.SpotLight && removeNodes[i].hiId) {
+      console.log('remove spotlight')
+      this.scene.remove(removeNodes[i]);
+    }
+    if ((removeNodes[i] instanceof THREE.Line ||
+      removeNodes[i] instanceof THREE.Mesh) &&
+      removeNodes[i].hiId) {
+      if (removeNodes[i].geometry) {
+        removeNodes[i].geometry.dispose();
+      }
+      if (removeNodes[i].material) {
+        removeNodes[i].material.dispose();
+      }
+      this.scene.remove(removeNodes[i]);
+    }
+    if (removeNodes[i] instanceof THREE.Group &&
+      removeNodes[i].hiId) {
+      removeNodes[i].traverse(function (node) {
+        this.scene.remove(node);
+      }.bind(this))
+    }
+  }
   // 添加或修改 id 
   for (var i = 0; i < fabricJson["objects"].length; i++) {
     var item = fabricJson["objects"][i];
@@ -88,8 +96,21 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       this.camera.position.set(item["left"], item['altitude'], item["top"]);
     }
     if (item["type"] == "hiLookAt") {
-      console.log(item["left"], item['altitude'], item["top"])
       this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
+    }
+    if (item["type"] == "hiSpotLight") {
+      var opt = {
+        hiId: item.hiId,
+        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        position: [item["left"], item['altitude'], item["top"]],
+      }
+      if (itemExist) {
+        // console.log('exist SpotLight', objNode, opt)
+        this.setSpotLight(objNode, opt)
+      } else {
+        // console.log('add SpotLight', opt)
+        this.addSpotLight(opt)
+      }
     }
     if (item["type"] == "hiCube") {
       var depth = item["depth"] || 1

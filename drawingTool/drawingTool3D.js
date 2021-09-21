@@ -44,7 +44,7 @@ function initCanvas(canvasId, canvasViewId) {
           }
         })
         $('#objlist').html(listStr)
-        edit.hi3d.refreshByFabricJson(edit);
+        // edit.hi3d.refreshByFabricJson(edit);
       },
       selection_created: function (opt) {
         if (opt.target) {
@@ -61,9 +61,11 @@ function initCanvas(canvasId, canvasViewId) {
             edit.hi3d.scene.traverse(function (node) {
               if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
                 edit.hi3d.setTransformControlsMesh(node)
-                edit.hi3d.refreshByFabricJson(edit);
+                // edit.hi3d.refreshByFabricJson(edit);
               }
             })
+          } else {
+            edit.hi3d.setTransformControlsMesh()
           }
         }
       },
@@ -72,14 +74,16 @@ function initCanvas(canvasId, canvasViewId) {
           edit.hi3d.scene.traverse(function (node) {
             if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
               edit.hi3d.setTransformControlsMesh(node)
-              edit.hi3d.refreshByFabricJson(edit);
+              // edit.hi3d.refreshByFabricJson(edit);
             }
           })
+        } else {
+          edit.hi3d.setTransformControlsMesh()
         }
       },
       selection_cleared: function (opt) {
         edit.hi3d.disposeTransformControlsMesh()
-        edit.hi3d.refreshByFabricJson(edit);
+        // edit.hi3d.refreshByFabricJson(edit);
       },
       import_callback: function () {
 

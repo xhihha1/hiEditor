@@ -1,4 +1,9 @@
 function editorEvent3D(edit, objOption) {
+  $('#render3D').click(function () {
+    edit.hi3d.refreshByFabricJson(edit, objOption)
+    edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+  });
+
   $("#drawCamera").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
@@ -10,6 +15,12 @@ function editorEvent3D(edit, objOption) {
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiLookAt(edit, objOption);
+  });
+  $("#drawSpotLight").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var circle = new edit.HiSpotLight(edit, objOption);
   });
   $("#drawCube").click(function () {
     edit.removeCanvasEvents();

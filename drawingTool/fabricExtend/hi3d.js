@@ -24,7 +24,7 @@ function hi3D(options) {
       enableDefaultEvent: true
     },
     scene: {
-      background: '#FFFF00'
+      background: '#F0F0F0'
     },
     light: [{
       type: 'DirectionalLight',
@@ -42,15 +42,17 @@ function hi3D(options) {
       castShadow: true
     }],
     orbitControls: {
+      enable: false,
       minDistance: 0,
       maxDistance: 10000,
       change: function (event) {}
     },
     transformControls: {
-      change: function (event) {},
+      change: function (event) { console.log('transformControls change:', this, event) }.bind(this),
       mouseDown: function (event) {},
       mouseUp: function (event) {},
-      objectChange: function (event) {}
+      objectChange: function (event) { console.log('transformControls objectChange:', this, event) }.bind(this),
+      dragging_changed: function (event) {}
     },
     renderSetting: {
 
@@ -123,14 +125,28 @@ hi3D.prototype.addAmbientLight = function () {
 }
 
 
-hi3D.prototype.addSpotLight = function () {
+hi3D.prototype.addSpotLight = function (option) {
+  var objOption = {
+    hiId: new Date().getTime(),
+    color: '#F00',
+    position: [0, 0, 0]
+  }
+  objOption = this.mergeDeep(objOption, option)
   //添加聚光灯光源
-  var spotLight = new THREE.SpotLight(0xffffff);
-  spotLight.position.set(-40, 60, -10);
+  var spotLight = new THREE.SpotLight(objOption.color);
+  spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   spotLight.castShadow = true;
+  spotLight.hiId = objOption.hiId
   this.scene.add(spotLight);
 
   return this
+}
+
+hi3D.prototype.setSpotLight = function (spotLight, objOption) {
+  if (objOption.color) {}
+  if (objOption.position) {
+    spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
 }
 
 hi3D.prototype.addHemisphereLight = function () {
@@ -632,6 +648,15 @@ hi3D.prototype.addTransformControls = function (mesh) {
     }
     this.renderer.render(this.scene, this.camera);
   }.bind(this));
+  control.addEventListener('dragging-changed', function (event) {
+    if (this.orbitControls) { this.orbitControls.enabled = ! event.value; }
+    if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['dragging_changed']) {
+      this.defaultOptions.transformControls['dragging_changed'](event)
+    }
+    this.renderer.render(this.scene, this.camera);
+  }.bind(this));
+
+  
   control.attach(mesh);
   this.scene.add(control);
   this.transformControls = control
@@ -639,6 +664,7 @@ hi3D.prototype.addTransformControls = function (mesh) {
 }
 hi3D.prototype.setTransformControlsMesh = function (mesh) {
   if (!mesh) {
+    this.transformControls.detach ()
     return false
   }
   if (!this.transformControls) {
@@ -647,6 +673,7 @@ hi3D.prototype.setTransformControlsMesh = function (mesh) {
   this.transformControls.attach(mesh);
   this.renderer.render(this.scene, this.camera);
 }
+
 hi3D.prototype.disposeTransformControlsMesh = function (mesh) {
   if (this.transformControls) {
     this.transformControls.detach()
