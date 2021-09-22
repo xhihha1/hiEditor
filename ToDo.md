@@ -13,6 +13,9 @@
 11. transform control切換模式  
 12. 添加 `helper`
 13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、PointLightHelper、SpotLightHelper  
+14. 將fabric繪的2D圖進行貼皮  
+15. 數據資料綁訂  
+16. 添加陰影shadow顯示  
 
 ## bug  
 
