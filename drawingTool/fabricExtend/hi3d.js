@@ -293,6 +293,46 @@ hi3D.prototype.setCube = function (cube, objOption) {
   }
 }
 
+
+hi3D.prototype.addPlane = function (option) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [5, 5, 5],
+    scale: [1, 1, 1],
+    textureSource: {
+      imageType: 'base64',
+      base64: ''
+    }
+  }
+  objOption = this.mergeDeep(objOption, option)
+  const geometry = new THREE.PlaneBufferGeometry(objOption.size[0], objOption.size[2]);
+  if (objOption.textureSource.imageType === 'base64') {
+    var image = new Image();
+    image.src = objOption.textureSource.base64;
+    var texture = new THREE.Texture();
+    texture.image = image;
+    image.onload = function() {
+      texture.needsUpdate = true;
+    };
+  } else {
+    var loader = new THREE.TextureLoader();
+    var texture = loader.load( objOption.textureSource.url );
+  }
+  const material = new THREE.MeshBasicMaterial( { map: texture ,opacity: 0.8, transparent: true } );
+
+  const plane = new THREE.Mesh(geometry, material);
+  plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  plane.hiId = objOption.hiId
+  this.scene.add(plane);
+  return this
+
+  // width — Width along the X axis. Default is 1.
+  // height — Height along the Y axis. Default is 1.
+  // widthSegments — Optional. Default is 1.
+  // heightSegments — Optional. Default is 1.
+}
+
 hi3D.prototype.addLine = function (option) {
   var objOption = {
     color: '#F00',

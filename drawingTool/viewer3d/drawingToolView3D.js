@@ -58,7 +58,7 @@ function initCanvas3D(edit, objOption) {
 
 function importJson(edit, objOption) {
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
-  var fabricJson = JSON.parse(localStorage.getItem('viewJson'))
+  var fabricJson = JSON.parse(localStorage.getItem('viewJson3D'))
   // console.log(fabricJson)
   if (fabricJson) {
     edit.hi3d.refreshByFabricJson(edit, objOption, fabricJson)

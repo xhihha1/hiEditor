@@ -16,6 +16,7 @@
 14. 將fabric繪的2D圖進行貼皮  
 15. 數據資料綁訂  
 16. 添加陰影shadow顯示  
+17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  
 
 ## bug  
 

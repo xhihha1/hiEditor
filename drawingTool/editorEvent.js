@@ -189,11 +189,21 @@ function editorEvent(edit, objOption) {
     }
   });
 
+  $('#saveFabricImage2D').click(function() {
+    let data = edit.canvasView.toDataURL();
+    let w = window.open('about:blank');
+    let image = new Image();
+    image.src = data;
+    setTimeout(function(){
+      w.document.write(image.outerHTML);
+    }, 0);
+  });
+
   $('#saveFabricLocalStorage2D').click(function(){
     console.log('view 2d')
     // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
     var fabricJson = edit.toFabricJson()
-    localStorage.setItem('viewJson', JSON.stringify(fabricJson))
+    localStorage.setItem('viewJson2D', JSON.stringify(fabricJson))
     window.open('drawingToolView2D.html', '_blank').focus();
   })
 
@@ -201,7 +211,7 @@ function editorEvent(edit, objOption) {
     console.log('view 3d')
     // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
     var fabricJson = edit.toFabricJson()
-    localStorage.setItem('viewJson', JSON.stringify(fabricJson))
+    localStorage.setItem('viewJson3D', JSON.stringify(fabricJson))
     window.open('drawingToolView3D.html', '_blank').focus();
   })
 

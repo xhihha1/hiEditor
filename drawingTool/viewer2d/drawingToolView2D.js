@@ -50,7 +50,7 @@ function initCanvas(canvasId, canvasViewId) {
 
 function importJson(edit, objOption) {
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
-  var fabricJson = JSON.parse(localStorage.getItem('viewJson'))
+  var fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
   console.log(fabricJson)
   if (fabricJson) {
     edit.canvasView.loadFromJSON(fabricJson)
