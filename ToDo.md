@@ -13,7 +13,7 @@
 11. transform control切換模式  
 12. 添加 `helper`
 13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、PointLightHelper、SpotLightHelper  
-14. 將fabric繪的2D圖進行貼皮  
+14. 將fabric繪的2D圖進行貼皮 (功能 OK，未封裝，圖片下載可能非同步)  
 15. 數據資料綁訂  
 16. 添加陰影shadow顯示  
 17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  
@@ -27,10 +27,4 @@
 
 1. editor 移除多於物件可能導致`helper`參考線一併被移除，所以先不移除。  
 
-2. Image plane textture  
-
-	var loader = new THREE.TextureLoader();
-    var texture = loader.load( 'https://i.imgur.com/RoNmD7W.png' );
-    geometry = new THREE.PlaneBufferGeometry();
-    material = new THREE.MeshBasicMaterial( { map: texture ,opacity: 0.8, transparent: true } );
-    mesh = new THREE.Mesh( geometry, material );
+2. Image plane textture (OK)  

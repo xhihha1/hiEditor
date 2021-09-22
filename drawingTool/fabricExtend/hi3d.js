@@ -306,6 +306,7 @@ hi3D.prototype.addPlane = function (option) {
     }
   }
   objOption = this.mergeDeep(objOption, option)
+  // var geometry = new THREE.Plane( new THREE.Vector3( 1, 0, 0 ), 0 );
   const geometry = new THREE.PlaneBufferGeometry(objOption.size[0], objOption.size[2]);
   if (objOption.textureSource.imageType === 'base64') {
     var image = new Image();
@@ -322,6 +323,7 @@ hi3D.prototype.addPlane = function (option) {
   const material = new THREE.MeshBasicMaterial( { map: texture ,opacity: 0.8, transparent: true } );
 
   const plane = new THREE.Mesh(geometry, material);
+  plane.visible = true;
   plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   plane.hiId = objOption.hiId
   this.scene.add(plane);
