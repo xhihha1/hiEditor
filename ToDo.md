@@ -25,3 +25,11 @@
 ## note  
 
 1. editor 移除多於物件可能導致`helper`參考線一併被移除，所以先不移除。  
+
+2. Image plane textture  
+
+	var loader = new THREE.TextureLoader();
+    var texture = loader.load( 'https://i.imgur.com/RoNmD7W.png' );
+    geometry = new THREE.PlaneBufferGeometry();
+    material = new THREE.MeshBasicMaterial( { map: texture ,opacity: 0.8, transparent: true } );
+    mesh = new THREE.Mesh( geometry, material );
