@@ -5,6 +5,44 @@ function initCanvas3D(edit, objOption) {
       objectChange: function (event) {
         if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
       }.bind(edit.hi3d)
+    },
+    orbitControls: {
+      change: function (event) {
+        console.log(edit.hi3d.camera)
+        edit.hi3d.camera.position
+        edit.canvasView.forEachObject(function(obj2d){
+          if (obj2d.hiId === edit.hi3d.camera.hiId) {
+            obj2d.left = edit.hi3d.camera.position.x
+            obj2d.altitude = edit.hi3d.camera.position.y
+            obj2d.top = edit.hi3d.camera.position.z
+          }
+          if (obj2d.type === 'hiLookAt') {
+            var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
+            obj2d.left = lookAtVector.x
+            obj2d.altitude = lookAtVector.y
+            obj2d.top = lookAtVector.z
+          }
+          // var lookAtVector = new THREE.Vector3(cam.matrix[8], cam.matrix[9], cam.matrix[10]);
+        })
+        edit.canvasView.renderAll();
+      }
+    },
+    renderSetting: {
+      callback: function (event) {
+        edit.hi3d.scene.traverse(function (node) {
+          if (node.hiId) {
+            console.log('render', node.position)
+            edit.canvasView.forEachObject(function(obj2d){
+              if (obj2d.hiId === node.hiId) {
+                obj2d.left = node.position.x
+                obj2d.altitude = node.position.y
+                obj2d.top = node.position.z
+              }
+            })
+            edit.canvasView.renderAll();
+          }
+        })
+      }.bind(edit.hi3d)
     }
   })
   edit.hi3d.addscene()

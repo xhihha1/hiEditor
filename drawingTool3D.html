@@ -7,6 +7,7 @@
   <script src="drawingTool/common/thirdparty/threejs/loaders/MTLLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/OBJLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/ColladaLoader.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/loaders/STLLoader.js"></script>
   <!-- <script src="drawingTool/common/thirdparty/threejs/loaders/"></script> -->
   <!-- Line2 start -->
   <script src='drawingTool/common/thirdparty/threejs/lines/LineSegmentsGeometry.js'></script>
@@ -89,6 +90,7 @@
         <li id="draw3dPolyline">polyline</li>
         <li id="draw3dHiFormatObj">obj</li>
         <li id="draw3dHiFormatCollada">Collada</li>
+        <li id="draw3dHiFormatSTL">STL</li>
         <li id="draw3dPlane">Plane</li>
         <li class="menuTitle">2D_Shape</li>
         <li id="drawRect"><img src="icon/rectangle.png"></li>
@@ -134,6 +136,7 @@
           <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
           <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
           <div><label><input name="" id="btnSpotLightHelper" type="checkbox" checked> SpotLight Helper</label></div>
+          <div><label><input name="" id="btnCameraHelper" type="checkbox" checked> Camera Helper</label></div>
         </li>
         <li class="prop-title">Series Page</li>
         <li class="prop-content">
@@ -251,6 +254,7 @@
   <script src="drawingTool/fabricExtend/hi3d_3dPolyline.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_obj.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_Collada.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_format_stl.js"></script>
   <script src="drawingTool/editor2d/addHichartObj.js"></script>
   <script src="drawingTool/editorEvent.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>

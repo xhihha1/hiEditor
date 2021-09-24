@@ -130,6 +130,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       }
     }
     if (item["type"] == "hiSphere") {
+      console.log('r:', item["radius"])
       var opt = {
         hiId: item.hiId,
         // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
@@ -205,12 +206,35 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         this.addCollada(opt)
       }
     }
+    if (item["type"] == "hiFormatSTL") {
+      var opt = {
+        hiId: item.hiId,
+        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        position: [item["left"], item['altitude'], item["top"]],
+        widthSegments: item["width"],
+        heightSegments: item["height"],
+        source: item.source,
+        scale: [item["scaleX"], 1, item["scaleY"]]
+      }
+      if (itemExist) {
+        // console.log('set setObj', opt)
+        this.setSTL(objNode, opt)
+      } else {
+        // console.log('add addObj', opt)
+        this.addSTL(opt)
+      }
+    }
   }
   this.scene.traverse(function (node) {
     if (node instanceof THREE.SpotLightHelper) {
       node.update();
     }
+    if (node instanceof THREE.CameraHelper) {
+      node.update();
+    }
   })
   // this.addLine({points:[ [0,0,0], [5,5,5], [0,5,0] ]})
-  this.renderer.render(this.scene, this.camera);
+  // this.renderer.render(this.scene, this.camera);
+  this.viewRender()
 }

@@ -60,7 +60,7 @@ function hi3D(options) {
       dragging_changed: function (event) {}
     },
     renderSetting: {
-
+      callback: function (event) {}
     }
   }
   this.defaultOptions = this.mergeDeep(this.defaultOptions, options)
@@ -243,6 +243,13 @@ hi3D.prototype.setCamera = function (option) {
   return this
 }
 
+hi3D.prototype.addCameraHelper = function (option) {
+  const cameraPerspectiveHelper = new THREE.CameraHelper( this.camera );
+  this.scene.add( cameraPerspectiveHelper );
+  this.cameraHelper = cameraPerspectiveHelper
+  return this
+}
+
 hi3D.prototype.setRender = function () {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
@@ -303,6 +310,20 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
   if (objOption.position) {
     sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   }
+  if (objOption.radius) {
+    sphere.radius = objOption.color;
+    let new_geometry = new THREE.SphereGeometry(
+      objOption.radius,
+      objOption.widthSegments,
+      objOption.heightSegments,
+      objOption.phiStart,
+      objOption.phiLength,
+      objOption.thetaStart,
+      objOption.thetaLength
+    );
+    sphere.geometry.dispose();
+    sphere.geometry = new_geometry;
+  }
   if (objOption.color) {
     sphere.material.color = new THREE.Color(objOption.color)
   }
@@ -320,6 +341,11 @@ hi3D.prototype.addCube = function (option) {
   const material = new THREE.MeshBasicMaterial({
     color: objOption.color
   });
+  // const material = new THREE.MeshPhongMaterial( {
+  //   color: objOption.color,
+  //   shininess: 0,
+  //   specular: 0x222222
+  // } );
   const cube = new THREE.Mesh(geometry, material);
   cube.castShadow = true;
   cube.receiveShadow = true;
@@ -378,6 +404,8 @@ hi3D.prototype.addPlane = function (option) {
   const material = new THREE.MeshBasicMaterial( { map: texture ,opacity: 0.8, transparent: true } );
 
   const plane = new THREE.Mesh(geometry, material);
+  plane.castShadow = true;
+  plane.receiveShadow = true;
   plane.visible = true;
   plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   plane.hiId = objOption.hiId
@@ -602,7 +630,8 @@ hi3D.prototype.addObj = function (option) {
       obj.receiveShadow = true;
       this.scene.add(obj); //將匯入的模型新增到場景中
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   return this
 }
@@ -673,7 +702,8 @@ hi3D.prototype.addCollada = function (option) {
       obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
       this.scene.add(obj); //將匯入的模型新增到場景中
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   return this
 }
@@ -691,8 +721,70 @@ hi3D.prototype.setCollada = function (node, objOption) {
     //   // console.log(child)
     // });
   }
-  if (objOption.source && objOption.source.obj !== node.source.obj) {
-    console.log('--- change obj source ---')
+  if (objOption.source && objOption.source.dae !== node.source.dae) {
+    console.log('--- change dae source ---')
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+  }
+}
+
+hi3D.prototype.addSTL = function (option) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [1, 1, 1]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  const loader = new THREE.STLLoader();
+  loader.load( objOption.source.stl, function ( geometry ) {
+
+    const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // mesh.rotation.set( 0, - Math.PI / 2, 0 );
+    // mesh.scale.set( 0.5, 0.5, 0.5 );
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    let objExist = false
+    this.scene.traverse(function (child) {
+      if (child.hiId === objOption.hiId) {
+        objExist = true
+      }
+    })
+    if (!objExist) {
+      mesh.hiId = objOption.hiId
+      mesh.source = {
+        stl: objOption.source.stl
+      }
+      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      this.scene.add(mesh); //將匯入的模型新增到場景中
+    }
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
+  }.bind(this) );
+  return this
+}
+
+hi3D.prototype.setSTL = function (node, objOption) {
+  if (objOption.position) {
+    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+  if (objOption.color) {
+    // node.material.color = new THREE.Color(objOption.color)
+    // node.traverse(function (child) {
+    //   if (child instanceof THREE.Mesh) {
+    //     child.material.color.set(objOption.color);
+    //   }
+    //   // console.log(child)
+    // });
+  }
+  if (objOption.source && objOption.source.stl !== node.source.stl) {
+    console.log('--- change stl source ---')
   }
   if (objOption.scale) {
     node.scale.x = objOption.scale[0];
@@ -741,7 +833,8 @@ hi3D.prototype.addOrbitControls = function () {
     if (this.defaultOptions.orbitControls && this.defaultOptions.orbitControls['change']) {
       this.defaultOptions.orbitControls['change'](event)
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   this.orbitControls = controls
   return this
@@ -753,7 +846,8 @@ hi3D.prototype.addTransformControls = function (mesh) {
   }
   const control = new THREE.TransformControls(this.camera, this.renderer.domElement);
   control.addEventListener('change', function (event) {
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
     if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['change']) {
       this.defaultOptions.transformControls['change'](event)
     }
@@ -762,26 +856,30 @@ hi3D.prototype.addTransformControls = function (mesh) {
     if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['mouseDown']) {
       this.defaultOptions.transformControls['mouseDown'](event)
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   control.addEventListener('mouseUp', function (event) {
     if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['mouseUp']) {
       this.defaultOptions.transformControls['mouseUp'](event)
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   control.addEventListener('objectChange', function (event) {
     if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['objectChange']) {
       this.defaultOptions.transformControls['objectChange'](event)
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   control.addEventListener('dragging-changed', function (event) {
     if (this.orbitControls) { this.orbitControls.enabled = ! event.value; }
     if (this.defaultOptions.transformControls && this.defaultOptions.transformControls['dragging_changed']) {
       this.defaultOptions.transformControls['dragging_changed'](event)
     }
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
   }.bind(this));
   control.addEventListener('worldPosition-changed', function (event) {
   }.bind(this));
@@ -799,14 +897,15 @@ hi3D.prototype.addTransformControls = function (mesh) {
 }
 hi3D.prototype.setTransformControlsMesh = function (mesh) {
   if (!mesh) {
-    this.transformControls.detach ()
+    if (this.transformControls) { this.transformControls.detach() }
     return false
   }
   if (!this.transformControls) {
     this.addTransformControls(mesh)
   }
   this.transformControls.attach(mesh);
-  this.renderer.render(this.scene, this.camera);
+  // this.renderer.render(this.scene, this.camera);
+  this.viewRender()
 }
 
 hi3D.prototype.disposeTransformControlsMesh = function (mesh) {
@@ -837,6 +936,12 @@ hi3D.prototype.removeAllCube = function (option) {
   }
 }
 
+hi3D.prototype.viewRender = function () {
+  this.renderer.render(this.scene, this.camera);
+  if (typeof this.defaultOptions.renderSetting.callback === 'function') {
+    this.defaultOptions.renderSetting.callback.call(this)
+  }
+}
 
 hi3D.prototype.animate = function () {
   // console.log(typeof this.animate, '-----------', this)
@@ -853,7 +958,8 @@ hi3D.prototype.animate = function () {
   // if(typeof this.theta === 'undefined') { this.theta = 0 }
   // else { this.theta = (this.theta + 1) % 360 }
   // this.camera.position.set(100 * Math.cos(this.theta * Math.PI / 180), 50, 100 * Math.sin(this.theta * Math.PI / 180))
-  this.renderer.render(this.scene, this.camera);
+  // this.renderer.render(this.scene, this.camera);
+  this.viewRender()
 };
 
 hi3D.prototype.mergeDeep = function (target, source) {
