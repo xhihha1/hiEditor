@@ -206,6 +206,11 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       }
     }
   }
+  this.scene.traverse(function (node) {
+    if (node instanceof THREE.SpotLightHelper) {
+      node.update();
+    }
+  })
   // this.addLine({points:[ [0,0,0], [5,5,5], [0,5,0] ]})
   this.renderer.render(this.scene, this.camera);
 }

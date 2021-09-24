@@ -115,10 +115,29 @@ hi3D.prototype.addscene = function () {
 }
 
 hi3D.prototype.addLight = function () {
-  var light = new THREE.DirectionalLight(0xffffff); //光源顏色
-  light.position.set(20, 10, 5); //光源位置
-  this.scene.add(light); //光源新增到場景中
+  var dirLight = new THREE.DirectionalLight(0xffffff); //光源顏色
+  dirLight.position.set(20, 10, 5); //光源位置
+  dirLight.castShadow = true;
+  dirLight.shadow.mapSize.width = 2048;
+  dirLight.shadow.mapSize.height = 2048;
+  const d = 50;
+  dirLight.shadow.camera.left = - d;
+  dirLight.shadow.camera.right = d;
+  dirLight.shadow.camera.top = d;
+  dirLight.shadow.camera.bottom = - d;
 
+  dirLight.shadow.camera.far = 3500;
+  dirLight.shadow.bias = - 0.0001;
+  this.scene.add(dirLight); //光源新增到場景中
+  this.directionalLight = dirLight
+  return this
+}
+
+hi3D.prototype.addLightHelper = function () {
+  if (!this.directionalLight) { this.addLight() }
+  const dirLightHelper = new THREE.DirectionalLightHelper( this.directionalLight, 10 );
+  this.scene.add( dirLightHelper );
+  this.dirLightHelper = dirLightHelper
   return this
 }
 
@@ -126,6 +145,7 @@ hi3D.prototype.addAmbientLight = function () {
   //添加环境光
   var ambientLight = new THREE.AmbientLight(0x0c0c0c);
   this.scene.add(ambientLight);
+  this.ambientLight = ambientLight
   return this
 }
 
@@ -148,18 +168,47 @@ hi3D.prototype.addSpotLight = function (option) {
 }
 
 hi3D.prototype.setSpotLight = function (spotLight, objOption) {
-  if (objOption.color) {}
+  if (objOption.color) {
+    console.log(objOption.color)
+    spotLight.color.set( objOption.color );
+  }
   if (objOption.position) {
     spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+}
+
+hi3D.prototype.addSpotLightHelper = function (option) {
+  const spotlights = []
+  this.scene.traverse(function (child) {
+    if (child instanceof THREE.SpotLight) {
+      spotlights.push(child)
+    }
+  })
+  for (var i = 0;i < spotlights.length;i++) {
+    if (!spotlights[i].helperHiId) {
+      const lightHelper = new THREE.SpotLightHelper( spotlights[i] );
+      lightHelper.hiId = (new Date().getTime()).toString() + '_' + spotlights[i].hiId
+      spotlights[i].helperHiId = lightHelper.hiId
+      this.scene.add(lightHelper);
+      lightHelper.update();
+    }
   }
 }
 
 hi3D.prototype.addHemisphereLight = function () {
   const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
   this.scene.add(light);
+  this.hemisphereLight = light
   return this
 }
 
+hi3D.prototype.addHemisphereLightHelper = function () {
+  if (!this.hemisphereLight) { this.addHemisphereLight() }
+  const hemiLightHelper = new THREE.HemisphereLightHelper( this.hemisphereLight, 10 );
+  this.scene.add( hemiLightHelper );
+  this.hemiLightHelper = hemiLightHelper
+  return this
+}
 
 hi3D.prototype.addCamera = function (option) {
   // fov : Number, aspect : Number, near : Number, far : Number
@@ -197,6 +246,9 @@ hi3D.prototype.setCamera = function (option) {
 hi3D.prototype.setRender = function () {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
   this.renderer = renderer
   return this
 }
@@ -205,7 +257,8 @@ hi3D.prototype.setGridHelper = function () {
   var gHelp = new THREE.GridHelper(1000, 300, 0x888888, 0x444444)
   // console.log(gHelp)
   this.scene.add(gHelp);
-  console.log(this.scene.children)
+  // console.log(this.scene.children)
+  this.gridHelper = gHelp
   return this
 }
 
@@ -268,6 +321,8 @@ hi3D.prototype.addCube = function (option) {
     color: objOption.color
   });
   const cube = new THREE.Mesh(geometry, material);
+  cube.castShadow = true;
+  cube.receiveShadow = true;
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   cube.hiId = objOption.hiId
   this.scene.add(cube);
@@ -523,6 +578,8 @@ hi3D.prototype.addObj = function (option) {
         // child.material.color.setHex(0x00FF00);
         // child.material.ambient.setHex(0xFF0000);
         child.material.color.set(objOption.color);
+        child.castShadow = true;
+        child.receiveShadow = true;
         // child.material.color.set('blue');
       }
       // console.log(child)
@@ -540,6 +597,9 @@ hi3D.prototype.addObj = function (option) {
       obj.source = {
         obj: objOption.source.obj
       }
+      obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      obj.castShadow = true;
+      obj.receiveShadow = true;
       this.scene.add(obj); //將匯入的模型新增到場景中
     }
     this.renderer.render(this.scene, this.camera);
@@ -610,6 +670,7 @@ hi3D.prototype.addCollada = function (option) {
       obj.source = {
         dae: objOption.source.dae
       }
+      obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
       this.scene.add(obj); //將匯入的模型新增到場景中
     }
     this.renderer.render(this.scene, this.camera);
@@ -640,10 +701,30 @@ hi3D.prototype.setCollada = function (node, objOption) {
   }
 }
 
+hi3D.prototype.addGroundPlane = function (option) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [1, 1, 1]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  const groundGeo = new THREE.PlaneGeometry( 10000, 10000 );
+  const groundMat = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+  groundMat.color.setHSL( 0.095, 1, 0.75 );
+  const ground = new THREE.Mesh( groundGeo, groundMat );
+  ground.position.y = 0;
+  ground.rotation.x = - Math.PI / 2;
+  ground.receiveShadow = true;
+  this.ground = ground
+  this.scene.add( ground );
+  return this
+}
+
 hi3D.prototype.addAxesHelper = function (option) {
   // new THREE.AxesHelper( 50 )
-  // const axesHelper = new THREE.AxesHelper( 500 );
-  this.scene.add(new THREE.AxesHelper(500));
+  const axesHelper = new THREE.AxesHelper( 500 );
+  this.scene.add(axesHelper);
+  this.axesHelper = axesHelper
   // this.renderer.render(this.scene, this.camera);
   return this
 }
