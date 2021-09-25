@@ -700,6 +700,9 @@ hi3D.prototype.addCollada = function (option) {
         dae: objOption.source.dae
       }
       obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      // var box = obj.geometry.boundingBox;
+      // var box1 = new THREE.Box3().setFromObject( obj );
+      // console.log('stl boundingBox', box1)
       this.scene.add(obj); //將匯入的模型新增到場景中
     }
     // this.renderer.render(this.scene, this.camera);
@@ -762,6 +765,9 @@ hi3D.prototype.addSTL = function (option) {
         stl: objOption.source.stl
       }
       mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      // var box = geometry.boundingBox;
+      // var box1 = new THREE.Box3().setFromObject( mesh );
+      // console.log('stl boundingBox', box, box1)
       this.scene.add(mesh); //將匯入的模型新增到場景中
     }
     // this.renderer.render(this.scene, this.camera);
@@ -997,3 +1003,6 @@ hi3D.prototype.mergeDeep = function (target, source) {
 // 物件bounding box THREE.BoxHelper
 
 // 控制物件  https://threejs.org/examples/#misc_controls_transform
+
+// 回設 3d模型 size
+// https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object

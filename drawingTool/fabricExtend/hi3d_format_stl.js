@@ -141,6 +141,8 @@ hiDraw.prototype.HiFormatSTL = (function () {
             height: 100,
             top: origY,
             left: origX,
+            originX: 'center',
+            originY: 'center',
             // selectable: false,
             hasBorders: true,
             hasControls: true,

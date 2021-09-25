@@ -106,6 +106,15 @@ function initCanvas(canvasId, canvasViewId) {
 
   edit.canvasOption = objOption
 
+  // 移動 (0, 0) 至中心
+  var canvasZoom = edit.canvasView.getZoom();
+  var shiftX = edit.canvasView.width/2 / canvasZoom;
+  var shiftY = edit.canvasView.height/2 / canvasZoom;
+  edit.canvasView.absolutePan({
+    x: -1 * shiftX,
+    y: -1 * shiftY
+  })
+
   return edit;
 }
 

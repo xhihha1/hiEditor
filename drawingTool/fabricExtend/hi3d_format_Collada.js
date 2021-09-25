@@ -40,6 +40,12 @@ fabric.HiFormatCollada.fromObject = function (object, callback) {
 
 fabric.HiFormatCollada.async = true;
 
+// ---------------------------------------
+    // var upIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG9SURBVGhD7ZctTwNBEIaPD4lAIEhAIJFIBAKJRCCQCH4AEolHIPgJSEwTJAbCH8AACQgwfH+FAIIAgfelM8n20sLd3t6x18yTPJltk+7NXNuducQwDMPoVgbgKhz9eVVTWMQe/IKXcBzWjmF4BFnEh0QWMwVrA+/8KWTy9xIvJD7DWhQzCXnnmfSVRPVc4jucg9EyA3nHmax+A2m1SBazCKNjHjI5JtmpCPXOWS/BaGAymti1s/7NJ6iHAI/nf4dJaHKPzjqrnxLXYT+sHF50A7rJ+PomcRNWWgwb3RZ0kyiq7rMNuX/pDEHt1npChVL34/6DsDTcbv0gMbTaQHkdXi847NbaA9zjswy1mBMYdD7jSKEnUrpbl6VeJ9iwOQv/6tZlqb+AwvPZAtRufSixao8lshiOQLlZhulNO3nT5r088vOvkP+9tPqt0NzDJkcOjuFZO/VBm/fymPfzweezFciNQxWyBscy2kKvxFjgIHmW0RZiK8QbKyQ2rJDYsEJiwwqJDSskNrqmkD6JvkyLHPk58N16+gJH4C7cgZXDsTs9khfR+zmjR6IvfJ6faC6D0ID7zaVhGIYRPUnyDe15w+jjPoVKAAAAAElFTkSuQmCC';
+    // var imgUp = document.createElement('img');
+    // imgUp.src = upIcon;
+// ---------------------------------------
+
 
 hiDraw.prototype.HiFormatCollada = (function () {
 
@@ -141,6 +147,8 @@ hiDraw.prototype.HiFormatCollada = (function () {
             height: 100,
             top: origY,
             left: origX,
+            originX: 'center',
+            originY: 'center',
             // selectable: false,
             hasBorders: true,
             hasControls: true,

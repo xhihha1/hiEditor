@@ -217,55 +217,75 @@ function editorEvent(edit, objOption) {
 
   var showaxis = false
   $('#axis').click(function (e) {
-    showaxis = !showaxis
-    if (showaxis) {
-      var canvasTemplate
-      if (document.getElementById('tempaxis')) {
-        canvasTemplate = document.getElementById('tempaxis')
-      } else {
-        canvasTemplate = document.createElement('canvas')
-        canvasTemplate.id = 'tempaxis'
-        document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
-      }
-      canvasTemplate.style.position = 'absolute'
-      canvasTemplate.style.top = '0px'
-      canvasTemplate.style.left = '0px'
-      canvasTemplate.style.zIndex = '-100'
-      canvasTemplate.style.pointerEvents = 'none'
-      canvasTemplate.width = document.getElementById(edit.defaultOptions.canvasViewId).width
-      canvasTemplate.height = document.getElementById(edit.defaultOptions.canvasViewId).height
-      var ctx = canvasTemplate.getContext("2d");
-      var canvas = edit.canvasView;
-      var canvasZoom = canvas.getZoom();
-      var lt = fabric.util.transformPoint({
-        x: 0,
-        y: 0
-      }, fabric.util.invertTransform(canvas.viewportTransform))
-      var x = 0,
-        y = 0;
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(200,200,200, 0.9)'
-      while (x < canvasTemplate.width) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvasTemplate.height);
-        ctx.stroke();
-        x += (10 * canvasZoom)
-      }
-      while (y < canvasTemplate.height) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvasTemplate.width, y);
-        ctx.stroke();
-        y += (10 * canvasZoom)
-      }
-    } else {
-      var canvasTemplate = document.getElementById('tempaxis')
-      if (canvasTemplate) {
-        var ctx = canvasTemplate.getContext("2d");
-        ctx.clearRect(0, 0, canvasTemplate.width, canvasTemplate.height);
-      }
-    }
+    console.log('A click')
+    edit.BgGrid()
+
+    // showaxis = !showaxis
+    // if (showaxis) {
+    //   var canvasTemplate
+    //   if (document.getElementById('tempaxis')) {
+    //     canvasTemplate = document.getElementById('tempaxis')
+    //   } else {
+    //     canvasTemplate = document.createElement('canvas')
+    //     canvasTemplate.id = 'tempaxis'
+    //     document.getElementById(edit.defaultOptions.canvasViewId).parentNode.appendChild(canvasTemplate)
+    //   }
+    //   canvasTemplate.style.position = 'absolute'
+    //   canvasTemplate.style.top = '0px'
+    //   canvasTemplate.style.left = '0px'
+    //   canvasTemplate.style.zIndex = '-100'
+    //   canvasTemplate.style.pointerEvents = 'none'
+    //   canvasTemplate.width = document.getElementById(edit.defaultOptions.canvasViewId).width
+    //   canvasTemplate.height = document.getElementById(edit.defaultOptions.canvasViewId).height
+    //   var ctx = canvasTemplate.getContext("2d");
+    //   var canvas = edit.canvasView;
+    //   var canvasZoom = canvas.getZoom();
+    //   var lt = fabric.util.transformPoint({
+    //     x: 0,
+    //     y: 0
+    //   }, fabric.util.invertTransform(canvas.viewportTransform))
+    //   var unitWidth = canvasZoom
+    //   var shiftUnitX = (lt.x % 10) < 0 ? Math.abs(lt.x % 10) : -1 * Math.abs(lt.x % 10);
+    //   var shiftPixelX = shiftUnitX * unitWidth
+    //   var shiftUnitY = (lt.y % 10) < 0 ? Math.abs(lt.y % 10) : -1 * Math.abs(lt.y % 10);
+    //   var shiftPixelY = shiftUnitY * unitWidth
+    //   var x = shiftPixelX,
+    //     y = shiftPixelY;
+    //   ctx.lineWidth = 1;
+    //   ctx.strokeStyle = 'rgba(200,200,200, 0.9)'
+    //   while (x < canvasTemplate.width) {
+    //     var p = fabric.util.transformPoint({
+    //       x: x,
+    //       y: 0
+    //     }, fabric.util.invertTransform(canvas.viewportTransform))
+    //     if (p.x === 0) { ctx.lineWidth = 2; }
+    //     else { ctx.lineWidth = 1; }
+    //     ctx.beginPath();
+    //     ctx.moveTo(x, 0);
+    //     ctx.lineTo(x, canvasTemplate.height);
+    //     ctx.stroke();
+    //     x += (10 * canvasZoom)
+    //   }
+    //   while (y < canvasTemplate.height) {
+    //     var p = fabric.util.transformPoint({
+    //       x: 0,
+    //       y: y
+    //     }, fabric.util.invertTransform(canvas.viewportTransform))
+    //     if (p.y === 0) { ctx.lineWidth = 2; }
+    //     else { ctx.lineWidth = 1; }
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, y);
+    //     ctx.lineTo(canvasTemplate.width, y);
+    //     ctx.stroke();
+    //     y += (10 * canvasZoom)
+    //   }
+    // } else {
+    //   var canvasTemplate = document.getElementById('tempaxis')
+    //   if (canvasTemplate) {
+    //     var ctx = canvasTemplate.getContext("2d");
+    //     ctx.clearRect(0, 0, canvasTemplate.width, canvasTemplate.height);
+    //   }
+    // }
   })
 
   var oX, endX, oXo, endXo

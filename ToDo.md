@@ -9,14 +9,15 @@
 7. group  
 8. add spot light icon 控制 (OK)  
 9. remove spot light  
-10. 使用 transform control的 object change 反向控制 fabric 物件位置  
+10. 使用 transform control的 object change 反向控制 fabric 物件位置  (OK)  
 11. transform control切換模式  
 12. 添加 `helper`
 13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、PointLightHelper、SpotLightHelper  
 14. 將fabric繪的2D圖進行貼皮 (功能 OK，未封裝，圖片下載可能非同步)  
 15. 數據資料綁訂  
-16. 添加陰影shadow顯示  
-17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  
+16. 添加陰影shadow顯示 (ok)  
+17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  (OK)  
+18. boxhelper
 
 ## bug  
 

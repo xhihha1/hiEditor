@@ -76,6 +76,7 @@ hiDraw.prototype.viewEvent = (function () {
             // that.canvasView.forEachObject(function(o) {
             //     o.setCoords();
             // });
+            if (that.defaultOptions.showGridAxis) { that.BgGrid(true) }
             opt.e.preventDefault();
             opt.e.stopPropagation();
             // that.canvasView.renderAll();
@@ -110,6 +111,7 @@ hiDraw.prototype.viewEvent = (function () {
                     // updateMiniMapVP();
                     this.lastPosX = e.clientX;
                     this.lastPosY = e.clientY;
+                    if (that.defaultOptions.showGridAxis) { that.BgGrid(true) }
                 }
             }
             // canvas coordinate 

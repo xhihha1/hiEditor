@@ -22,6 +22,10 @@ function hiDraw(options) {
         activeJsonTextId: 'hiActiveJsonArea',
         canvasWidth: 500,
         canvasHeight: 500,
+        showGridAxis: false,
+        gridAxis: {
+            canvasId: 'tempaxis'
+        },
         objectDefault: {
             fillColor: 'rgba(0,0,0,0)',
             strokeColor: 'rgba(51,51,51,1)',

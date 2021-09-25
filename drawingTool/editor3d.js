@@ -37,6 +37,18 @@ function initCanvas3D(edit, objOption) {
                 obj2d.left = node.position.x
                 obj2d.altitude = node.position.y
                 obj2d.top = node.position.z
+                if (obj2d.type === 'hiFormatObj' ||
+                  obj2d.type === 'hiFormatCollada' ||
+                  obj2d.type === 'hiFormatSTL') {
+                  var box1 = new THREE.Box3().setFromObject( node );
+                  console.log('boundingBox', box1)
+                  var width = Math.abs(box1.max.x - box1.min.x)
+                  var depth = Math.abs(box1.max.y - box1.min.y)
+                  var height = Math.abs(box1.max.z - box1.min.z)
+                  obj2d.set('width', width)
+                  obj2d.set('depth', depth)
+                  obj2d.set('height', height)
+                }
               }
             })
             edit.canvasView.renderAll();
