@@ -505,8 +505,8 @@ hiDraw.prototype.Polygon = (function () {
   Polygon.prototype.addPoint = function (options) {
     var inst = this;
     var pointer = inst.canvas.getPointer(options.e);
-    var random = Math.floor(Math.random() * (inst.max - inst.min + 1)) + inst.min;
-    var id = new Date().getTime() + random;
+    // var random = Math.floor(Math.random() * (inst.max - inst.min + 1)) + inst.min;
+    var id = hiDraw.prototype.uniqueIdGenerater();
     var zoom = inst.canvas.getZoom() || 1;
     var circle = new fabric.Circle({
       tempDrawShape: true,

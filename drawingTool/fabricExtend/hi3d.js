@@ -152,7 +152,7 @@ hi3D.prototype.addAmbientLight = function () {
 
 hi3D.prototype.addSpotLight = function (option) {
   var objOption = {
-    hiId: new Date().getTime(),
+    hiId: hi3D.prototype.uniqueIdGenerater(),
     color: '#F00',
     position: [0, 0, 0]
   }
@@ -187,7 +187,7 @@ hi3D.prototype.addSpotLightHelper = function (option) {
   for (var i = 0;i < spotlights.length;i++) {
     if (!spotlights[i].helperHiId) {
       const lightHelper = new THREE.SpotLightHelper( spotlights[i] );
-      lightHelper.hiId = (new Date().getTime()).toString() + '_' + spotlights[i].hiId
+      lightHelper.hiId = hi3D.prototype.uniqueIdGenerater()
       spotlights[i].helperHiId = lightHelper.hiId
       this.scene.add(lightHelper);
       lightHelper.update();
@@ -273,7 +273,7 @@ hi3D.prototype.setGridHelper = function () {
 
 hi3D.prototype.addSphere = function (option) {
   var objOption = {
-    hiId: new Date().getTime,
+    hiId: hi3D.prototype.uniqueIdGenerater(),
     color: '#F00',
     position: [0, 0, 0],
     radius: 5,
@@ -884,6 +884,71 @@ hi3D.prototype.set3ds = function (node, objOption) {
   }
 }
 
+hi3D.prototype.addgltf = function (option) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    source: { gltfPath: '', gltf: '' }
+  }
+  objOption = this.mergeDeep(objOption, option)
+  //3ds files dont store normal maps
+  let normal
+  if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
+  // const loader = new THREE.TDSLoader();
+  // loader.setResourcePath( objOption.source.f_3dsTextures );
+  // loader.load( objOption.source.f_3ds, function ( object ) {
+  const loader = new THREE.GLTFLoader().setPath( objOption.source.gltfPath );
+  loader.load( objOption.source.gltf, function ( object ) {
+    // object.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    var mesh = object.scene
+    let objExist = false
+    this.scene.traverse(function (child) {
+      if (child.hiId === objOption.hiId) {
+        objExist = true
+      }
+    })
+    if (!objExist) {
+      mesh.hiId = objOption.hiId
+      mesh.source = {
+        f_3ds: objOption.source.f_3ds
+      }
+      // console.log('object--', mesh)
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      object.scene.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      this.scene.add(object.scene); //將匯入的模型新增到場景中
+    }
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
+  }.bind(this) );
+  return this
+}
+
+hi3D.prototype.setgltf = function (node, objOption) {
+  if (objOption.position) {
+    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+  if (objOption.color) {
+  }
+  if (objOption.source && objOption.source.gltf !== node.source.gltf) {
+    console.log('--- change gltf source ---')
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+    // node.traverse( function ( child ) {
+    //   if ( child.isMesh ) {
+    //     child.material.specular.setScalar( objOption.scale[0] );
+    //   }
+    // } );
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+}
+
 hi3D.prototype.addGroundPlane = function (option) {
   var objOption = {
     color: '#F00',
@@ -1027,6 +1092,16 @@ hi3D.prototype.removeAllCube = function (option) {
   }
 }
 
+
+hi3D.prototype.addBoxHelper = function () {
+  this.scene.traverse(function (node) {
+    if (node.geometry) {
+      const box = new THREE.BoxHelper( node, 0xffff00 );
+      this.scene.add( box );
+    }
+  }.bind(this));
+}
+
 hi3D.prototype.viewRender = function () {
   this.renderer.render(this.scene, this.camera);
   if (typeof this.defaultOptions.renderSetting.callback === 'function') {
@@ -1077,6 +1152,25 @@ hi3D.prototype.mergeDeep = function (target, source) {
     }
   }
   return target;
+}
+
+hi3D.prototype.uniqueIdGenerater = function (action) {
+  if (hiMathUtil) {
+    return hiMathUtil.generateUUID()
+  } else {
+    var u = '',
+      m = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx',
+      i = 0,
+      rb = Math.random() * 0xffffffff | 0;
+    while (i++ < 36) {
+      var c = m[i - 1],
+        r = rb & 0xf,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      u += (c == '-' || c == '4') ? c : v.toString(16);
+      rb = i % 8 == 0 ? Math.random() * 0xffffffff | 0 : rb >> 4
+    }
+    return u
+  }
 }
 
 // https://threejs.org/docs/#api/en/geometries/TubeGeometry

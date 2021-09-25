@@ -400,7 +400,8 @@ hiDraw.prototype.HiCube = (function () {
         for (var prop in inst.otherProps) {
             rect[prop] = inst.otherProps[prop];
         }
-        rect.hiId = new Date().getTime()
+        rect.hiId = hiDraw.prototype.uniqueIdGenerater()
+        console.log(rect.hiId)
         rect.altitude = 0
         rect.depth = 1
         inst.canvas.add(rect).setActiveObject(rect);

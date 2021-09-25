@@ -4,14 +4,14 @@
   
     var fabric = global.fabric || (global.fabric = { });
   
-    if (fabric.HiFormatSTL) {
-      fabric.warn('fabric.HiFormatSTL is already defined');
+    if (fabric.HiFormatGLTF) {
+      fabric.warn('fabric.HiFormatGLTF is already defined');
       return;
     }
 
-fabric.HiFormatSTL = fabric.util.createClass(fabric.Rect, {
+fabric.HiFormatGLTF = fabric.util.createClass(fabric.Rect, {
 
-    type: 'hiFormatSTL',
+    type: 'hiFormatGLTF',
 
     initialize: function (element, options) {
         // console.log(this) // 屬性都寫在 this 中
@@ -39,15 +39,15 @@ fabric.HiFormatSTL = fabric.util.createClass(fabric.Rect, {
     }
 });
 
-fabric.HiFormatSTL.fromObject = function (object, callback) {
-    callback && callback(new fabric.HiFormatSTL(object));
+fabric.HiFormatGLTF.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiFormatGLTF(object));
 };
 
-fabric.HiFormatSTL.async = true;
+fabric.HiFormatGLTF.async = true;
 
   // ---------------------------------------
-  fabric.HiFormatSTL.prototype.controls = {}
-  fabric.HiFormatSTL.prototype.controls.tl = new fabric.Control({
+  fabric.HiFormatGLTF.prototype.controls = {}
+  fabric.HiFormatGLTF.prototype.controls.tl = new fabric.Control({
     x: -0.5,
     y: -0.5,
     // cursorStyleHandler: scaleStyleHandler,
@@ -55,7 +55,7 @@ fabric.HiFormatSTL.async = true;
     actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
   });
 
-  fabric.HiFormatSTL.prototype.controls.tr = new fabric.Control({
+  fabric.HiFormatGLTF.prototype.controls.tr = new fabric.Control({
     x: 0.5,
     y: -0.5,
     // cursorStyleHandler: scaleStyleHandler,
@@ -63,7 +63,7 @@ fabric.HiFormatSTL.async = true;
     actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
   });
 
-  fabric.HiFormatSTL.prototype.controls.bl = new fabric.Control({
+  fabric.HiFormatGLTF.prototype.controls.bl = new fabric.Control({
     x: -0.5,
     y: 0.5,
     // cursorStyleHandler: scaleStyleHandler,
@@ -71,7 +71,7 @@ fabric.HiFormatSTL.async = true;
     actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
   });
 
-  fabric.HiFormatSTL.prototype.controls.br = new fabric.Control({
+  fabric.HiFormatGLTF.prototype.controls.br = new fabric.Control({
     x: 0.5,
     y: 0.5,
     // cursorStyleHandler: scaleStyleHandler,
@@ -79,7 +79,7 @@ fabric.HiFormatSTL.async = true;
     actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
   });
 
-  fabric.HiFormatSTL.prototype.controls.mtr = new fabric.Control({
+  fabric.HiFormatGLTF.prototype.controls.mtr = new fabric.Control({
     x: 0,
     y: -0.5,
     actionHandler: fabric.controlsUtils.rotationWithSnapping,
@@ -91,14 +91,14 @@ fabric.HiFormatSTL.async = true;
   // ------------------------------------------
 
 
-hiDraw.prototype.HiFormatSTL = (function () {
+hiDraw.prototype.HiFormatGLTF = (function () {
 
     function Circle(canvasItem, options, otherProps) {
         this.canvasItem = canvasItem;
         this.canvas = canvasItem.canvasView;
         this.options = options;
         this.otherProps = otherProps;
-        this.className = 'HiFormatSTL';
+        this.className = 'HiFormatGLTF';
         this.isDrawing = false;
         this.tempPointsArray = new Array();
         this.bindEvents();
@@ -199,7 +199,7 @@ hiDraw.prototype.HiFormatSTL = (function () {
             strokeUniform: true
         }, this.otherProps)
         // this.source = {}  // obj: url
-        var ellipse = new fabric.HiFormatSTL(prop)
+        var ellipse = new fabric.HiFormatGLTF(prop)
 
         // ellipse.on('selected', function () {
         //     console.log('selected a Circle');

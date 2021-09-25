@@ -428,7 +428,7 @@ hiDraw.prototype.Polyline = (function () {
         var inst = this;
         var pointer = inst.canvas.getPointer(options.e);
         var random = Math.floor(Math.random() * (inst.max - inst.min + 1)) + inst.min;
-        var id = new Date().getTime() + random;
+        var id = hiDraw.prototype.uniqueIdGenerater();
         var zoom = inst.canvas.getZoom() || 1;
         var circle = new fabric.Circle({
             tempDrawShape: true,

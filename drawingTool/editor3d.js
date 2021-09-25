@@ -3,7 +3,7 @@ function initCanvas3D(edit, objOption) {
   edit.hi3d = new hi3D({
     transformControls: {
       objectChange: function (event) {
-        if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
+        // if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
       }.bind(edit.hi3d)
     },
     orbitControls: {
@@ -34,9 +34,10 @@ function initCanvas3D(edit, objOption) {
             // console.log('render', node.position)
             edit.canvasView.forEachObject(function(obj2d){
               if (obj2d.hiId === node.hiId) {
-                obj2d.left = node.position.x
-                obj2d.altitude = node.position.y
-                obj2d.top = node.position.z
+                // 這裡校正 left top 會導致 2D group 移動會出錯 (urgent)
+                // obj2d.left = node.position.x
+                // obj2d.altitude = node.position.y
+                // obj2d.top = node.position.z
                 if (obj2d.type === 'hiFormatObj' ||
                   obj2d.type === 'hiFormatCollada' ||
                   obj2d.type === 'hiFormatSTL') {

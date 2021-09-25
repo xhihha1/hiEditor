@@ -12,7 +12,6 @@
 
 hiDraw.prototype.viewEvent = (function () {
     var viewEvent = function () {
-        
         // object:removed
         var that = this;
         this.canvasView.off('object:added');
@@ -28,6 +27,7 @@ hiDraw.prototype.viewEvent = (function () {
                 that.defaultOptions.event['object_added'](opt)
             }
         });
+        
         this.canvasView.off('object:modified');
         this.canvasView.on('object:modified', function (opt) {
             if(that.defaultOptions.openEventHistory &&
@@ -37,6 +37,7 @@ hiDraw.prototype.viewEvent = (function () {
                 that.defaultOptions.event['object_modified'](opt)
             }
         });
+
         this.canvasView.off('object:removed');
         this.canvasView.on('object:removed', function (opt) {
             if(that.defaultOptions.openEventHistory &&
@@ -137,11 +138,11 @@ hiDraw.prototype.viewEvent = (function () {
         this.canvasView.on('selection:created', function (opt) {
             // console.log('selection:created',opt.target? opt.target.get('type'): opt)
             if (opt.target) {
-                // 與群組選擇有關
-                if(opt.target.get('type') === 'activeSelection') {
-                    that.canvasView.discardActiveObject();
-                    return 
-                }
+                // 與群組選擇有關 (urgent)
+                // if(opt.target.get('type') === 'activeSelection') {
+                //     that.canvasView.discardActiveObject();
+                //     return 
+                // }
                 if (checkDrawingType(opt.target.get('type'))) {
                     // console.log(
                     //     opt.target.get('type'),
@@ -188,7 +189,6 @@ hiDraw.prototype.viewEvent = (function () {
                 that.defaultOptions.event['selection_cleared'](opt)
             }
         });
-
 
         document.onkeydown = function (event) {
             if(!that || !that.canvasView){

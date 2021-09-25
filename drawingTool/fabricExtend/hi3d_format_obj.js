@@ -210,7 +210,7 @@
       // });
       ellipse.altitude = 0
       ellipse.scaleZ = 1
-      ellipse.hiId = new Date().getTime()
+      ellipse.hiId = hiDraw.prototype.uniqueIdGenerater()
       inst.canvas.add(ellipse).setActiveObject(ellipse);
       ellipse.canvasItem = inst.canvasItem;
     };

@@ -398,7 +398,7 @@ hiDraw.prototype.HiSphere = (function () {
         }
 
         inst.shape = ellipse;
-        ellipse.hiId = new Date().getTime()
+        ellipse.hiId = hiDraw.prototype.uniqueIdGenerater()
         ellipse.altitude = 0
         inst.canvas.add(ellipse).setActiveObject(ellipse);
         ellipse.canvasItem = inst.canvasItem;
