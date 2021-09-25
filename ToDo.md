@@ -29,3 +29,5 @@
 1. editor 移除多於物件可能導致`helper`參考線一併被移除，所以先不移除。  
 
 2. Image plane textture (OK)  
+
+3. 添加新屬性改 `hiDraw.prototype.toFabricJson`，還要在對應的 `fabric.HiXXX` 的toObject 添加輸出屬性

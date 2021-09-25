@@ -119,7 +119,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
         color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
         position: [item["left"], item['altitude'], item["top"]],
-        size: [item["width"], depth, item["height"]]
+        size: [item["width"], depth, item["height"]],
+        angle: item['angle']
       }
       if (itemExist) {
         // console.log('exist cube', objNode, opt)
@@ -138,7 +139,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         position: [item["left"], item['altitude'], item["top"]],
         radius: item["radius"],
         widthSegments: item["width"],
-        heightSegments: item["height"]
+        heightSegments: item["height"],
+        angle: item['angle']
       }
       if (itemExist) {
         this.setSphere(objNode, opt)
@@ -177,7 +179,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         widthSegments: item["width"],
         heightSegments: item["height"],
         source: item.source,
-        scale: [item["scaleX"], 1, item["scaleY"]]
+        scale: [item["scaleX"], 1, item["scaleY"]],
+        angle: item['angle']
       }
       if (itemExist) {
         // console.log('set setObj', opt)
@@ -196,7 +199,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         widthSegments: item["width"],
         heightSegments: item["height"],
         source: item.source,
-        scale: [item["scaleX"], 1, item["scaleY"]]
+        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+        angle: item['angle']
       }
       if (itemExist) {
         // console.log('set setObj', opt)
@@ -215,7 +219,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         widthSegments: item["width"],
         heightSegments: item["height"],
         source: item.source,
-        scale: [item["scaleX"], 1, item["scaleY"]]
+        scale: [item["scaleX"], 1, item["scaleY"]],
+        angle: item['angle']
       }
       if (itemExist) {
         // console.log('set setObj', opt)

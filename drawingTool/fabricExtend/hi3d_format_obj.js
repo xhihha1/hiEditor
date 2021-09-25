@@ -20,7 +20,12 @@ fabric.HiFormatObj = fabric.util.createClass(fabric.Rect, {
     },
 
     toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude, source: this.source });
+        return fabric.util.object.extend(this.callSuper('toObject'), {
+            hiId: this.hiId,
+            altitude: this.altitude,
+            source: this.source,
+            scaleZ: this.scaleZ
+        });
     },
 
     _render: function (ctx) {
@@ -159,6 +164,7 @@ hiDraw.prototype.HiFormatObj = (function () {
         //     console.log('mousedown a Circle');
         // });
         ellipse.altitude = 0
+        ellipse.scaleZ = 1
         ellipse.hiId = new Date().getTime()
         inst.canvas.add(ellipse).setActiveObject(ellipse);
         ellipse.canvasItem = inst.canvasItem;

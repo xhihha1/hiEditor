@@ -427,7 +427,8 @@ hiDraw.prototype.rgba2hex = function (orig) {
 
 hiDraw.prototype.toFabricJson = function () {
     if (this.canvasView) {
-        return this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
+        // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
+        return this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']);
     } else {
         return {}
     }

@@ -327,6 +327,9 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
   if (objOption.color) {
     sphere.material.color = new THREE.Color(objOption.color)
   }
+  if (objOption.angle) {
+    node.rotation.y = objOption.angle / 180 * Math.PI;
+  }
 }
 
 hi3D.prototype.addCube = function (option) {
@@ -371,6 +374,9 @@ hi3D.prototype.setCube = function (cube, objOption) {
     cube.scale.x = objOption.scale[0];
     cube.scale.y = objOption.scale[1];
     cube.scale.z = objOption.scale[2];
+  }
+  if (objOption.angle) {
+    node.rotation.y = objOption.angle / 180 * Math.PI;
   }
 }
 
@@ -657,6 +663,9 @@ hi3D.prototype.setObj = function (node, objOption) {
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
   }
+  if (objOption.angle) {
+    node.rotation.y = objOption.angle / 180 * Math.PI;
+  }
 }
 
 hi3D.prototype.addCollada = function (option) {
@@ -732,6 +741,9 @@ hi3D.prototype.setCollada = function (node, objOption) {
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
   }
+  if (objOption.angle) {
+    node.rotation.z = objOption.angle / 180 * Math.PI;
+  }
 }
 
 hi3D.prototype.addSTL = function (option) {
@@ -796,6 +808,9 @@ hi3D.prototype.setSTL = function (node, objOption) {
     node.scale.x = objOption.scale[0];
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
+  }
+  if (objOption.angle) {
+    node.rotation.y = objOption.angle / 180 * Math.PI;
   }
 }
 
