@@ -210,6 +210,8 @@
         radius: 10,
         top: origY,
         left: origX,
+        originX: 'center',
+        originY: 'center',
         // selectable: false,
         hasBorders: false,
         hasControls: true,

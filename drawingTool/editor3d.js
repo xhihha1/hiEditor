@@ -8,7 +8,7 @@ function initCanvas3D(edit, objOption) {
     },
     orbitControls: {
       change: function (event) {
-        console.log(edit.hi3d.camera)
+        // console.log(edit.hi3d.camera)
         edit.hi3d.camera.position
         edit.canvasView.forEachObject(function(obj2d){
           if (obj2d.hiId === edit.hi3d.camera.hiId) {
@@ -31,7 +31,7 @@ function initCanvas3D(edit, objOption) {
       callback: function (event) {
         edit.hi3d.scene.traverse(function (node) {
           if (node.hiId) {
-            console.log('render', node.position)
+            // console.log('render', node.position)
             edit.canvasView.forEachObject(function(obj2d){
               if (obj2d.hiId === node.hiId) {
                 obj2d.left = node.position.x
@@ -41,7 +41,7 @@ function initCanvas3D(edit, objOption) {
                   obj2d.type === 'hiFormatCollada' ||
                   obj2d.type === 'hiFormatSTL') {
                   var box1 = new THREE.Box3().setFromObject( node );
-                  console.log('boundingBox', box1)
+                  // console.log('boundingBox', box1)
                   var width = Math.abs(box1.max.x - box1.min.x)
                   var depth = Math.abs(box1.max.y - box1.min.y)
                   var height = Math.abs(box1.max.z - box1.min.z)

@@ -45,22 +45,40 @@ function editorEvent3D(edit, objOption) {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
-    var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: './assets/male02.obj'}});
+    var model = $('#sourceObjVal').val()
+    var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: model}});
   });
 
   $("#draw3dHiFormatCollada").click(function () {
-    console.log('load Collada')
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
-    var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: './assets/elf/elf.dae'}});
+    var model = $('#sourceDaeVal').val()
+    var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: model}});
   });
 
   $("#draw3dHiFormatSTL").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
-    var polyline = new edit.HiFormatSTL(edit, objOption, { source: { stl: './assets/slotted_disk.stl'}});
+    var model = $('#sourceStlVal').val()
+    var polyline = new edit.HiFormatSTL(edit, objOption, { source: { stl: model}});
+  });
+
+  $("#draw3dHiFormat3DS").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var model = $('#source3dsVal').val()
+    var textures = $('#source3dsTexturesVal').val()
+    var normalMap = $('#source3dsNormalMapVal').val()
+    var polyline = new edit.HiFormat3ds(edit, objOption, {
+      source: {
+        f_3ds: model,
+        f_3dsTextures: textures,
+        f_3dsNormalMap: normalMap
+      }
+    });
   });
 
   $('#draw3dPlane').click(function(){

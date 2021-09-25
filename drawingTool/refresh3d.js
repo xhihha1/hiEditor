@@ -179,7 +179,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         widthSegments: item["width"],
         heightSegments: item["height"],
         source: item.source,
-        scale: [item["scaleX"], 1, item["scaleY"]],
+        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
         angle: item['angle']
       }
       if (itemExist) {
@@ -219,7 +219,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         widthSegments: item["width"],
         heightSegments: item["height"],
         source: item.source,
-        scale: [item["scaleX"], 1, item["scaleY"]],
+        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
         angle: item['angle']
       }
       if (itemExist) {
@@ -228,6 +228,26 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       } else {
         // console.log('add addObj', opt)
         this.addSTL(opt)
+      }
+    }
+    if (item["type"] == "hiFormat3ds") {
+      var opt = {
+        hiId: item.hiId,
+        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        position: [item["left"], item['altitude'], item["top"]],
+        widthSegments: item["width"],
+        heightSegments: item["height"],
+        source: item.source,
+        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+        angle: item['angle']
+      }
+      if (itemExist) {
+        // console.log('set setObj', opt)
+        this.set3ds(objNode, opt)
+      } else {
+        // console.log('add addObj', opt)
+        this.add3ds(opt)
       }
     }
   }

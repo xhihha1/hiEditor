@@ -45,6 +45,51 @@ fabric.HiFormatSTL.fromObject = function (object, callback) {
 
 fabric.HiFormatSTL.async = true;
 
+  // ---------------------------------------
+  fabric.HiFormatSTL.prototype.controls = {}
+  fabric.HiFormatSTL.prototype.controls.tl = new fabric.Control({
+    x: -0.5,
+    y: -0.5,
+    // cursorStyleHandler: scaleStyleHandler,
+    // actionHandler: wrapWithFireEvent('scaling', wrapWithFixedAnchor( scaleObject))
+    actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
+  });
+
+  fabric.HiFormatSTL.prototype.controls.tr = new fabric.Control({
+    x: 0.5,
+    y: -0.5,
+    // cursorStyleHandler: scaleStyleHandler,
+    // actionHandler: wrapWithFireEvent('scaling', wrapWithFixedAnchor( scaleObject))
+    actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
+  });
+
+  fabric.HiFormatSTL.prototype.controls.bl = new fabric.Control({
+    x: -0.5,
+    y: 0.5,
+    // cursorStyleHandler: scaleStyleHandler,
+    // actionHandler: wrapWithFireEvent('scaling', wrapWithFixedAnchor( scaleObject))
+    actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
+  });
+
+  fabric.HiFormatSTL.prototype.controls.br = new fabric.Control({
+    x: 0.5,
+    y: 0.5,
+    // cursorStyleHandler: scaleStyleHandler,
+    // actionHandler: wrapWithFireEvent('scaling', wrapWithFixedAnchor( scaleObject))
+    actionHandler: hiDraw.prototype.HiFormatControlUtil.scalingEqually
+  });
+
+  fabric.HiFormatSTL.prototype.controls.mtr = new fabric.Control({
+    x: 0,
+    y: -0.5,
+    actionHandler: fabric.controlsUtils.rotationWithSnapping,
+    cursorStyleHandler: fabric.controlsUtils.rotationStyleHandler,
+    offsetY: -40,
+    withConnection: true,
+    actionName: 'rotate',
+  });
+  // ------------------------------------------
+
 
 hiDraw.prototype.HiFormatSTL = (function () {
 

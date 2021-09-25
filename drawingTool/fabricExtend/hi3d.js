@@ -664,7 +664,7 @@ hi3D.prototype.setObj = function (node, objOption) {
     node.scale.z = objOption.scale[2];
   }
   if (objOption.angle) {
-    node.rotation.y = objOption.angle / 180 * Math.PI;
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
 }
 
@@ -742,7 +742,7 @@ hi3D.prototype.setCollada = function (node, objOption) {
     node.scale.z = objOption.scale[2];
   }
   if (objOption.angle) {
-    node.rotation.z = objOption.angle / 180 * Math.PI;
+    node.rotation.z = -1 * objOption.angle / 180 * Math.PI;
   }
 }
 
@@ -810,7 +810,77 @@ hi3D.prototype.setSTL = function (node, objOption) {
     node.scale.z = objOption.scale[2];
   }
   if (objOption.angle) {
-    node.rotation.y = objOption.angle / 180 * Math.PI;
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+}
+
+hi3D.prototype.add3ds = function (option) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    source: { f_3ds: '', f_3dsTextures: '', f_3dsNormalMap: '' }
+  }
+  objOption = this.mergeDeep(objOption, option)
+  //3ds files dont store normal maps
+  let normal
+  if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
+  const loader = new THREE.TDSLoader();
+  loader.setResourcePath( objOption.source.f_3dsTextures );
+  loader.load( objOption.source.f_3ds, function ( object ) {
+    object.traverse( function ( child ) {
+      if ( child.isMesh ) {
+        // child.material.specular.setScalar( 0.1 );
+        if (normal) { child.material.normalMap = normal; }
+      }
+    } );
+    object.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    object.castShadow = true;
+    object.receiveShadow = true;
+    // this.scene.add( object );
+
+
+    let objExist = false
+    this.scene.traverse(function (child) {
+      if (child.hiId === objOption.hiId) {
+        objExist = true
+      }
+    })
+    if (!objExist) {
+      object.hiId = objOption.hiId
+      object.source = {
+        f_3ds: objOption.source.f_3ds
+      }
+      object.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      this.scene.add(object); //將匯入的模型新增到場景中
+    }
+    // this.renderer.render(this.scene, this.camera);
+    this.viewRender()
+  }.bind(this) );
+  return this
+}
+
+hi3D.prototype.set3ds = function (node, objOption) {
+  if (objOption.position) {
+    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+  if (objOption.color) {
+  }
+  if (objOption.source && objOption.source.f_3ds !== node.source.f_3ds) {
+    console.log('--- change f_3ds source ---')
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+    // node.traverse( function ( child ) {
+    //   if ( child.isMesh ) {
+    //     child.material.specular.setScalar( objOption.scale[0] );
+    //   }
+    // } );
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
 }
 
