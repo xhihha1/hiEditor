@@ -15,21 +15,8 @@ function initCanvas3D(edit, objOption) {
     position: [0, 50, 100]
   })
 
-  edit.hi3d.addCube()
-  edit.hi3d.addCube({
-    position: [5, 0, 0],
-    color: '#F00'
-  })
-  edit.hi3d.addCube({
-    position: [0, 5, 0],
-    color: '#0F0'
-  })
-  edit.hi3d.addCube({
-    position: [0, 0, 5],
-    color: '#00F'
-  })
   // edit.hi3d.addObj()
-  edit.hi3d.addAxesHelper()
+  // edit.hi3d.addAxesHelper()
   edit.hi3d.addOrbitControls()
   // edit.hi3d.addTransformControls()
   // edit.hi3d.animate()

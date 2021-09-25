@@ -932,7 +932,6 @@ hi3D.prototype.setgltf = function (node, objOption) {
   if (objOption.color) {
   }
   if (objOption.source && objOption.source.gltf !== node.source.gltf) {
-    console.log('--- change gltf source ---')
   }
   if (objOption.scale) {
     node.scale.x = objOption.scale[0];
