@@ -12,6 +12,7 @@
 
 hiDraw.prototype.viewEvent = (function () {
     var viewEvent = function () {
+        
         // object:removed
         var that = this;
         this.canvasView.off('object:added');
@@ -85,7 +86,7 @@ hiDraw.prototype.viewEvent = (function () {
             }
         });
 
-
+        
         this.canvasView.on('mouse:down', function (opt) {
             var evt = opt.e;
             if (evt.altKey === true || that.defaultOptions.panCanvas) {
@@ -132,9 +133,11 @@ hiDraw.prototype.viewEvent = (function () {
                 that.defaultOptions.event['mouse_up'](opt)
             }
         });
+        
         this.canvasView.on('selection:created', function (opt) {
             // console.log('selection:created',opt.target? opt.target.get('type'): opt)
             if (opt.target) {
+                // 與群組選擇有關
                 if(opt.target.get('type') === 'activeSelection') {
                     that.canvasView.discardActiveObject();
                     return 
@@ -158,6 +161,7 @@ hiDraw.prototype.viewEvent = (function () {
                 that.defaultOptions.event['selection_created'](opt)
             }
         });
+
         this.canvasView.on('selection:updated', function (opt) {
             if (opt.target) {
                 if (checkDrawingType(opt.target.get('type'))) {

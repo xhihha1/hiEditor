@@ -19,7 +19,7 @@
 17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  (OK)  
 18. boxhelper
 19. GLTF (webgl_animation_skinning_morph.html)
-20. fabric 多選 http://fabricjs.com/manage-selection
+20. fabric 多選 http://fabricjs.com/manage-selection   (hiDraw_Event.js 中 selection:created 的 discardActiveObject)
 
 ## bug  
 
