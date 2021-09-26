@@ -34,7 +34,7 @@
       // do not render if width/height are zeros or object is not visible
       if (this.width === 0 || this.height === 0 || !this.visible) return;
       ctx.font = "16px Arial";
-      ctx.fillText("Obj", 0, 0);
+      ctx.fillText("dae", 0, 0);
 
     }
   });
