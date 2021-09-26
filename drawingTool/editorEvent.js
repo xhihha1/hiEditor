@@ -436,15 +436,15 @@ function editorEvent(edit, objOption) {
     })
   })
 
-  $('#add3dObj').click(function (e) {
-    edit.hi3d.addObj()
-    edit.hi3d.refreshByFabricJson(edit);
+  $('#drawGroup').click(function (e) {
+    console.log('draw group')
+    edit.addGroupSelection()
   })
 
-  $('#addAxesHelper').click(function (e) {
-    edit.hi3d.addAxesHelper()
-    edit.hi3d.refreshByFabricJson(edit);
+  $('#drawUngroup').click(function (e) {
+    edit.unGroupSelection()
   })
+
 
   function pointsArrayToObjs(array) {
     var newPoints = []

@@ -283,6 +283,29 @@
     // }
   }
 
+  hiDraw.prototype.addGroupSelection = function () {
+    if (!this.canvasView.getActiveObject()) {
+      return;
+    }
+    if (this.canvasView.getActiveObject().type !== 'activeSelection') {
+      return;
+    }
+    var newGroup = this.canvasView.getActiveObject().toGroup()
+    newGroup.hiId = this.uniqueIdGenerater()
+    this.canvasView.requestRenderAll();
+  }
+
+  hiDraw.prototype.unGroupSelection = function () {
+    if (!this.canvasView.getActiveObject()) {
+      return;
+    }
+    if (this.canvasView.getActiveObject().type !== 'group') {
+      return;
+    }
+    this.canvasView.getActiveObject().toActiveSelection();
+    this.canvasView.requestRenderAll();
+  }
+
   hiDraw.prototype.deselectPolygons = function (selectedObj) {
     var that = this;
     if (selectedObj && selectedObj.type === 'activeSelection') {

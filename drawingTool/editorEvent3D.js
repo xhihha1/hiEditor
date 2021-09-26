@@ -41,6 +41,17 @@ function editorEvent3D(edit, objOption) {
     var polyline = new edit.Hi3DPolyline(edit, objOption);
   });
 
+  
+  $('#add3dObj').click(function (e) {
+    edit.hi3d.addObj()
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+
+  $('#addAxesHelper').click(function (e) {
+    edit.hi3d.addAxesHelper()
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+
   $("#draw3dHiFormatObj").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
