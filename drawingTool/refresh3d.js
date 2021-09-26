@@ -112,163 +112,168 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         this.addSpotLight(opt)
       }
     }
-    if (item["type"] == "hiCube") {
-      var depth = item["depth"] || 1
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        size: [item["width"], depth, item["height"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('exist cube', objNode, opt)
-        this.setCube(objNode, opt)
-      } else {
-        // console.log('add cube', opt)
-        this.addCube(opt)
-      }
-    }
-    if (item["type"] == "hiSphere") {
-      // console.log('r:', item["radius"])
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        radius: item["radius"],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        this.setSphere(objNode, opt)
-      } else {
-        // console.log('add Sphere', opt)
-        this.addSphere(opt)
-      }
-    }
-    if (item["type"] == "hi3DPolyline") {
-      var points = []
-      for (var j = 0; j < item['points'].length; j++) {
-        points.push([item['points'][j].x, 0, item['points'][j].y])
-      }
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["stroke"]) || '#FF0000',
-        points: points
-      }
-      if (itemExist) {
-        // console.log('set hi3DPolyline', opt)
-        // this.setLine(objNode, opt)
-        this.setLine2(objNode, opt)
-      } else {
-        // console.log('add hi3DPolyline', opt)
-        // this.addLine(opt)
-        this.addLine2(opt)
-      }
-    }
-    if (item["type"] == "hiFormatObj") {
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        source: item.source,
-        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('set setObj', opt)
-        this.setObj(objNode, opt)
-      } else {
-        // console.log('add addObj', opt)
-        this.addObj(opt)
-      }
-    }
-    if (item["type"] == "hiFormatCollada") {
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        source: item.source,
-        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('set setObj', opt)
-        this.setCollada(objNode, opt)
-      } else {
-        // console.log('add addObj', opt)
-        this.addCollada(opt)
-      }
-    }
-    if (item["type"] == "hiFormatSTL") {
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        source: item.source,
-        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('set setObj', opt)
-        this.setSTL(objNode, opt)
-      } else {
-        // console.log('add addObj', opt)
-        this.addSTL(opt)
-      }
-    }
-    if (item["type"] == "hiFormat3ds") {
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        source: item.source,
-        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('set setObj', opt)
-        this.set3ds(objNode, opt)
-      } else {
-        // console.log('add addObj', opt)
-        this.add3ds(opt)
-      }
-    }
-    if (item["type"] == "hiFormatGLTF") {
-      var opt = {
-        hiId: item.hiId,
-        // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-        widthSegments: item["width"],
-        heightSegments: item["height"],
-        source: item.source,
-        scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-        angle: item['angle']
-      }
-      if (itemExist) {
-        // console.log('set setObj', opt)
-        this.setgltf(objNode, opt)
-      } else {
-        // console.log('add addObj', opt)
-        this.addgltf(opt)
-      }
+    // if (item["type"] == "hiCube") {
+    //   var depth = item["depth"] || 1
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     size: [item["width"], depth, item["height"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('exist cube', objNode, opt)
+    //     this.setCube(objNode, opt)
+    //   } else {
+    //     // console.log('add cube', opt)
+    //     this.addCube(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiSphere") {
+    //   // console.log('r:', item["radius"])
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     radius: item["radius"],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     this.setSphere(objNode, opt)
+    //   } else {
+    //     // console.log('add Sphere', opt)
+    //     this.addSphere(opt)
+    //   }
+    // }
+    // if (item["type"] == "hi3DPolyline") {
+    //   var points = []
+    //   for (var j = 0; j < item['points'].length; j++) {
+    //     points.push([item['points'][j].x, 0, item['points'][j].y])
+    //   }
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     points: points
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set hi3DPolyline', opt)
+    //     // this.setLine(objNode, opt)
+    //     this.setLine2(objNode, opt)
+    //   } else {
+    //     // console.log('add hi3DPolyline', opt)
+    //     // this.addLine(opt)
+    //     this.addLine2(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiFormatObj") {
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     source: item.source,
+    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set setObj', opt)
+    //     this.setObj(objNode, opt)
+    //   } else {
+    //     // console.log('add addObj', opt)
+    //     this.addObj(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiFormatCollada") {
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     source: item.source,
+    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set setObj', opt)
+    //     this.setCollada(objNode, opt)
+    //   } else {
+    //     // console.log('add addObj', opt)
+    //     this.addCollada(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiFormatSTL") {
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     source: item.source,
+    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set setObj', opt)
+    //     this.setSTL(objNode, opt)
+    //   } else {
+    //     // console.log('add addObj', opt)
+    //     this.addSTL(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiFormat3ds") {
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     source: item.source,
+    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set setObj', opt)
+    //     this.set3ds(objNode, opt)
+    //   } else {
+    //     // console.log('add addObj', opt)
+    //     this.add3ds(opt)
+    //   }
+    // }
+    // if (item["type"] == "hiFormatGLTF") {
+    //   var opt = {
+    //     hiId: item.hiId,
+    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+    //     position: [item["left"], item['altitude'], item["top"]],
+    //     widthSegments: item["width"],
+    //     heightSegments: item["height"],
+    //     source: item.source,
+    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+    //     angle: item['angle']
+    //   }
+    //   if (itemExist) {
+    //     // console.log('set setObj', opt)
+    //     this.setgltf(objNode, opt)
+    //   } else {
+    //     // console.log('add addObj', opt)
+    //     this.addgltf(opt)
+    //   }
+    // }
+    if (item.objects && item.objects.length > 0) {
+      this.addGroupObject(edit, item, itemExist, objNode)
+    } else {
+      this.addSingleObject(edit, item, itemExist, objNode)
     }
   }
   this.scene.traverse(function (node) {
@@ -282,4 +287,220 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
   // this.addLine({points:[ [0,0,0], [5,5,5], [0,5,0] ]})
   // this.renderer.render(this.scene, this.camera);
   this.viewRender()
+}
+
+hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, parentGroup) {
+  if (item["type"] == "hiCube") {
+    var depth = item["depth"] || 1
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      size: [item["width"], depth, item["height"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('exist cube', objNode, opt)
+      this.setCube(objNode, opt)
+    } else {
+      // console.log('add cube', opt)
+      this.addCube(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiSphere") {
+    // console.log('r:', item["radius"])
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      radius: item["radius"],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      this.setSphere(objNode, opt)
+    } else {
+      // console.log('add Sphere', opt)
+      this.addSphere(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hi3DPolyline") {
+    var points = []
+    for (var j = 0; j < item['points'].length; j++) {
+      points.push([item['points'][j].x, 0, item['points'][j].y])
+    }
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["stroke"]) || '#FF0000',
+      points: points
+    }
+    if (itemExist) {
+      // console.log('set hi3DPolyline', opt)
+      // this.setLine(objNode, opt)
+      this.setLine2(objNode, opt)
+    } else {
+      // console.log('add hi3DPolyline', opt)
+      // this.addLine(opt)
+      this.addLine2(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormatObj") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.setObj(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.addObj(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormatCollada") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.setCollada(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.addCollada(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormatSTL") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.setSTL(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.addSTL(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormat3ds") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.set3ds(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.add3ds(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormatGLTF") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.setgltf(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.addgltf(opt, parentGroup)
+    }
+  }
+}
+hi3D.prototype.addGroupObject = function (edit, groupItem, itemExist, objNode, parentGroup) {
+  var objOption = {
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    source: { gltfPath: '', gltf: '' },
+    scale: [1, 1, 1],
+    angle: 0
+  }
+  const option = {
+    hiId: groupItem.hiId,
+    position: [groupItem["left"], groupItem['altitude'], groupItem["top"]],
+    scale: [groupItem["scaleX"], groupItem["scaleZ"], groupItem["scaleY"]],
+    angle: groupItem['angle']
+  }
+  objOption = this.mergeDeep(objOption, option)
+
+  let group = null
+  if (itemExist) {
+    group = objNode
+    // set item property
+  } else {
+    group = new THREE.Group();
+    group.hiId = objOption.hiId
+    this.scene.add( group );
+    // set item property
+  }
+  // -------------------------
+  group.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  group.scale.x = objOption.scale[0];
+  group.scale.y = objOption.scale[1];
+  group.scale.z = objOption.scale[2];
+  group.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  // -------------------------
+  if (parentGroup) {
+    parentGroup.add( group );
+  }
+  for (var i = 0; i < groupItem["objects"].length; i++) {
+    var item = groupItem["objects"][i];
+    var itemExist = false
+    var objNode = null
+    // console.log(item.hiId, item["type"])
+    this.scene.traverse(function (node) {
+      if (item.hiId && item.hiId === node.hiId) {
+        itemExist = true
+        objNode = node
+        // console.log('exist cube id:', node.hiId)
+      }
+    });
+    if (item.objects && item.objects.length > 0) {
+      this.addGroupObject(edit, item, itemExist, objNode, group)
+    } else {
+      this.addSingleObject(edit, item, itemExist, objNode, group)
+    }
+  }
 }

@@ -437,7 +437,6 @@ function editorEvent(edit, objOption) {
   })
 
   $('#drawGroup').click(function (e) {
-    console.log('draw group')
     edit.addGroupSelection()
   })
 

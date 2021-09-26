@@ -290,8 +290,10 @@
     if (this.canvasView.getActiveObject().type !== 'activeSelection') {
       return;
     }
-    var newGroup = this.canvasView.getActiveObject().toGroup()
+    var newGroup = this.canvasView.getActiveObject().toHiGroup()
     newGroup.hiId = this.uniqueIdGenerater()
+    newGroup.scaleZ = 1
+    newGroup.altitude = 0
     this.canvasView.requestRenderAll();
   }
 
@@ -299,7 +301,8 @@
     if (!this.canvasView.getActiveObject()) {
       return;
     }
-    if (this.canvasView.getActiveObject().type !== 'group') {
+    if (this.canvasView.getActiveObject().type !== 'group' &&
+    this.canvasView.getActiveObject().type !== 'hiGroup') {
       return;
     }
     this.canvasView.getActiveObject().toActiveSelection();

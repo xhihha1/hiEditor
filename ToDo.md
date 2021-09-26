@@ -6,7 +6,7 @@
 4. 針對 `2d Chart` 寫 hiDraw prototype (OK)  
 5. edit.hi3d.addObj  寫 hiDraw prototype (先添加到2D，再由fabric json更新到3D) (OK)  
 6. grid helper (OK)  
-7. group (http://fabricjs.com/manage-selection)  
+7. group (http://fabricjs.com/manage-selection) (OK)   
 8. add spot light icon 控制 (OK)  
 9. remove spot light (OK)  
 10. 使用 transform control的 object change 反向控制 fabric 物件位置  (OK)  
@@ -23,8 +23,9 @@
 21. copy & paste (OK)  
 22. PointLight & PointLightHelper
 23. transform control無法控制group(obj, 3ds, gltf...etc)
+24. group copy & past
 
-# group  
+# group (OK)  
 fabric  
 1. group object (http://fabricjs.com/manage-selection)  
 
@@ -41,7 +42,8 @@ Three
 
 ## bug  
 
-1. 2d viewer can't show video
+1. 2d viewer can't show video  
+2. copy past 時，3D物件位置會跑掉  
 
 
 ## note  

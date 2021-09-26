@@ -271,7 +271,7 @@ hi3D.prototype.setGridHelper = function () {
 
 
 
-hi3D.prototype.addSphere = function (option) {
+hi3D.prototype.addSphere = function (option, parentGroup) {
   var objOption = {
     hiId: hi3D.prototype.uniqueIdGenerater(),
     color: '#F00',
@@ -301,8 +301,13 @@ hi3D.prototype.addSphere = function (option) {
   const sphere = new THREE.Mesh(geometry, material);
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   sphere.hiId = objOption.hiId
-  this.scene.add(sphere);
-  return this
+  if (parentGroup) {
+    console.log('add to group')
+    parentGroup.add( sphere );
+  } else {
+    this.scene.add(sphere);
+  }
+  return sphere
 }
 
 hi3D.prototype.setSphere = function (sphere, objOption) {
@@ -328,11 +333,12 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
     sphere.material.color = new THREE.Color(objOption.color)
   }
   if (objOption.angle) {
-    node.rotation.y = objOption.angle / 180 * Math.PI;
+    sphere.rotation.y = objOption.angle / 180 * Math.PI;
   }
+  return sphere
 }
 
-hi3D.prototype.addCube = function (option) {
+hi3D.prototype.addCube = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
@@ -354,8 +360,12 @@ hi3D.prototype.addCube = function (option) {
   cube.receiveShadow = true;
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   cube.hiId = objOption.hiId
-  this.scene.add(cube);
-  return this
+  if (parentGroup) {
+    parentGroup.add( cube );
+  } else {
+    this.scene.add(cube);
+  }
+  return cube
 }
 
 hi3D.prototype.setCube = function (cube, objOption) {
@@ -376,12 +386,13 @@ hi3D.prototype.setCube = function (cube, objOption) {
     cube.scale.z = objOption.scale[2];
   }
   if (objOption.angle) {
-    node.rotation.y = objOption.angle / 180 * Math.PI;
+    cube.rotation.y = objOption.angle / 180 * Math.PI;
   }
+  return cube
 }
 
 
-hi3D.prototype.addPlane = function (option) {
+hi3D.prototype.addPlane = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
@@ -415,8 +426,12 @@ hi3D.prototype.addPlane = function (option) {
   plane.visible = true;
   plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   plane.hiId = objOption.hiId
-  this.scene.add(plane);
-  return this
+  if (parentGroup) {
+    parentGroup.add( plane );
+  } else {
+    this.scene.add(plane);
+  }
+  return plane
 
   // width — Width along the X axis. Default is 1.
   // height — Height along the Y axis. Default is 1.
@@ -424,7 +439,7 @@ hi3D.prototype.addPlane = function (option) {
   // heightSegments — Optional. Default is 1.
 }
 
-hi3D.prototype.addLine = function (option) {
+hi3D.prototype.addLine = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     points: [],
@@ -449,8 +464,12 @@ hi3D.prototype.addLine = function (option) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const line = new THREE.Line(geometry, material);
   line.hiId = objOption.hiId
-  this.scene.add(line);
-  return this
+  if (parentGroup) {
+    parentGroup.add( line );
+  } else {
+    this.scene.add(line);
+  }
+  return line
 }
 
 hi3D.prototype.setLine = function (line, objOption) {
@@ -484,8 +503,9 @@ hi3D.prototype.setLine = function (line, objOption) {
   if (objOption.linewidth) {
     line.material.linewidth = objOption.linewidth
   }
+  return line
 }
-hi3D.prototype.addLine2 = function (option) {
+hi3D.prototype.addLine2 = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     points: [],
@@ -563,9 +583,13 @@ hi3D.prototype.addLine2 = function (option) {
   // line.computeLineDistances();
   line.scale.set(1, 1, 1);
   line.hiId = objOption.hiId
-  this.scene.add(line);
+  if (parentGroup) {
+    parentGroup.add( line );
+  } else {
+    this.scene.add(line);
+  }
 
-  return this
+  return line
 }
 hi3D.prototype.setLine2 = function (line, objOption) {
   if (objOption.points) {
@@ -589,13 +613,16 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   if (objOption.linewidth) {
     line.material.linewidth = objOption.linewidth
   }
+  return line
 }
 
-hi3D.prototype.addObj = function (option) {
+hi3D.prototype.addObj = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
-    size: [1, 1, 1]
+    size: [1, 1, 1],
+    scale: [1, 1, 1],
+    angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
   // const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
@@ -632,9 +659,16 @@ hi3D.prototype.addObj = function (option) {
         obj: objOption.source.obj
       }
       obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      obj.scale.x = objOption.scale[0];
+      obj.scale.y = objOption.scale[1];
+      obj.scale.z = objOption.scale[2];
       obj.castShadow = true;
       obj.receiveShadow = true;
-      this.scene.add(obj); //將匯入的模型新增到場景中
+      if (parentGroup) {
+        parentGroup.add( obj );
+      } else {
+        this.scene.add(obj); //將匯入的模型新增到場景中
+      }
     }
     // this.renderer.render(this.scene, this.camera);
     this.viewRender()
@@ -668,11 +702,13 @@ hi3D.prototype.setObj = function (node, objOption) {
   }
 }
 
-hi3D.prototype.addCollada = function (option) {
+hi3D.prototype.addCollada = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
-    size: [1, 1, 1]
+    size: [1, 1, 1],
+    scale: [1, 1, 1],
+    angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
   // const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
@@ -709,10 +745,17 @@ hi3D.prototype.addCollada = function (option) {
         dae: objOption.source.dae
       }
       obj.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      obj.scale.x = objOption.scale[0];
+      obj.scale.y = objOption.scale[1];
+      obj.scale.z = objOption.scale[2];
       // var box = obj.geometry.boundingBox;
       // var box1 = new THREE.Box3().setFromObject( obj );
       // console.log('stl boundingBox', box1)
-      this.scene.add(obj); //將匯入的模型新增到場景中
+      if (parentGroup) {
+        parentGroup.add( obj );
+      } else {
+        this.scene.add(obj); //將匯入的模型新增到場景中
+      }
     }
     // this.renderer.render(this.scene, this.camera);
     this.viewRender()
@@ -746,11 +789,13 @@ hi3D.prototype.setCollada = function (node, objOption) {
   }
 }
 
-hi3D.prototype.addSTL = function (option) {
+hi3D.prototype.addSTL = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
-    size: [1, 1, 1]
+    size: [1, 1, 1],
+    scale: [1, 1, 1],
+    angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
   const loader = new THREE.STLLoader();
@@ -777,10 +822,17 @@ hi3D.prototype.addSTL = function (option) {
         stl: objOption.source.stl
       }
       mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      mesh.scale.x = objOption.scale[0];
+      mesh.scale.y = objOption.scale[1];
+      mesh.scale.z = objOption.scale[2];
       // var box = geometry.boundingBox;
       // var box1 = new THREE.Box3().setFromObject( mesh );
       // console.log('stl boundingBox', box, box1)
-      this.scene.add(mesh); //將匯入的模型新增到場景中
+      if (parentGroup) {
+        parentGroup.add( mesh );
+      } else {
+        this.scene.add(mesh); //將匯入的模型新增到場景中
+      }
     }
     // this.renderer.render(this.scene, this.camera);
     this.viewRender()
@@ -814,12 +866,14 @@ hi3D.prototype.setSTL = function (node, objOption) {
   }
 }
 
-hi3D.prototype.add3ds = function (option) {
+hi3D.prototype.add3ds = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
     size: [1, 1, 1],
-    source: { f_3ds: '', f_3dsTextures: '', f_3dsNormalMap: '' }
+    source: { f_3ds: '', f_3dsTextures: '', f_3dsNormalMap: '' },
+    scale: [1, 1, 1],
+    angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
   //3ds files dont store normal maps
@@ -852,7 +906,14 @@ hi3D.prototype.add3ds = function (option) {
         f_3ds: objOption.source.f_3ds
       }
       object.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
-      this.scene.add(object); //將匯入的模型新增到場景中
+      object.scale.x = objOption.scale[0];
+      object.scale.y = objOption.scale[1];
+      object.scale.z = objOption.scale[2];
+      if (parentGroup) {
+        parentGroup.add( object );
+      } else {
+        this.scene.add(object); //將匯入的模型新增到場景中
+      }
     }
     // this.renderer.render(this.scene, this.camera);
     this.viewRender()
@@ -884,12 +945,14 @@ hi3D.prototype.set3ds = function (node, objOption) {
   }
 }
 
-hi3D.prototype.addgltf = function (option) {
+hi3D.prototype.addgltf = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
     size: [1, 1, 1],
-    source: { gltfPath: '', gltf: '' }
+    source: { gltfPath: '', gltf: '' },
+    scale: [1, 1, 1],
+    angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
   //3ds files dont store normal maps
@@ -916,8 +979,15 @@ hi3D.prototype.addgltf = function (option) {
       // console.log('object--', mesh)
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+      object.scale.x = objOption.scale[0];
+      object.scale.y = objOption.scale[1];
+      object.scale.z = objOption.scale[2];
       object.scene.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
-      this.scene.add(object.scene); //將匯入的模型新增到場景中
+      if (parentGroup) {
+        parentGroup.add( object.scene );
+      } else {
+        this.scene.add(object.scene); //將匯入的模型新增到場景中
+      }
     }
     // this.renderer.render(this.scene, this.camera);
     this.viewRender()
