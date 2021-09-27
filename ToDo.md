@@ -24,6 +24,9 @@
 22. PointLight & PointLightHelper
 23. transform control無法控制group(obj, 3ds, gltf...etc)
 24. group copy & past
+25. 六面體不同面貼不同圖 (https://opentechlovers.wordpress.com/2014/09/22/wrap-different-images-on-different-faces-of-a-cube/)  
+26. 六面體不同面貼不同顏色 (https://discourse.threejs.org/t/changing-face-color-of-cube/26509)  
+27. THREE.CanvasTexture(canvas)  
 
 # group (OK)  
 fabric  
