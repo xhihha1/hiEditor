@@ -118,9 +118,9 @@ hi3D.prototype.addLight = function () {
   var dirLight = new THREE.DirectionalLight(0xffffff); //光源顏色
   dirLight.position.set(20, 10, 5); //光源位置
   dirLight.castShadow = true;
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
-  const d = 50;
+  dirLight.shadow.mapSize.width = 5000;
+  dirLight.shadow.mapSize.height = 5000;
+  const d = 100;
   dirLight.shadow.camera.left = - d;
   dirLight.shadow.camera.right = d;
   dirLight.shadow.camera.top = d;
@@ -160,6 +160,12 @@ hi3D.prototype.addSpotLight = function (option) {
   //添加聚光灯光源
   var spotLight = new THREE.SpotLight(objOption.color);
   spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  //Set up shadow properties for the light
+  spotLight.shadow.mapSize.width = 512; // default
+  spotLight.shadow.mapSize.height = 512; // default
+  spotLight.shadow.camera.near = 0.5; // default
+  spotLight.shadow.camera.far = 500; // default
+  spotLight.shadow.focus = 1; // default
   spotLight.castShadow = true;
   spotLight.hiId = objOption.hiId
   this.scene.add(spotLight);
@@ -295,12 +301,17 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
     objOption.thetaStart,
     objOption.thetaLength
   );
-  const material = new THREE.MeshBasicMaterial({
+  // const material = new THREE.MeshBasicMaterial({
+  //   color: objOption.color
+  // });
+  const material = new THREE.MeshLambertMaterial({
     color: objOption.color
   });
   const sphere = new THREE.Mesh(geometry, material);
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   sphere.hiId = objOption.hiId
+  sphere.castShadow = true;
+  sphere.receiveShadow = true;
   if (parentGroup) {
     console.log('add to group')
     parentGroup.add( sphere );
@@ -583,6 +594,7 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   // line.computeLineDistances();
   line.scale.set(1, 1, 1);
   line.hiId = objOption.hiId
+  line.castShadow = true;
   if (parentGroup) {
     parentGroup.add( line );
   } else {
