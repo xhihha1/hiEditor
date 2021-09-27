@@ -63,6 +63,12 @@ function editorEvent(edit, objOption) {
     var line = new edit.DivHtml(edit, objOption);
   });
 
+  $('#panCanvas').click(function(){
+    const panCanvas = !edit.defaultOptions.panCanvas
+    edit.changeSelectableStatus(!panCanvas)
+    edit.changeStatus({ panCanvas: panCanvas })
+  })
+
   $("#zoomIn").click(function () {
     var zoom = edit.canvasView.getZoom() * 1.1
     if (zoom > 20) zoom = 20

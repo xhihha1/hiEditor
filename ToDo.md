@@ -47,6 +47,7 @@ Three
 
 1. 2d viewer can't show video  
 2. copy past 時，3D物件位置會跑掉  
+3. 3d polyline 會造成當掉  
 
 
 ## note  
@@ -60,3 +61,5 @@ Three
 4. `urgent` note，一些不知道為何發生的錯誤
 
 5. 添加新`format`，新增 hi3d_format_XXX.js, hi3d.js, refresh3d.js, 最後在編輯器校正大小修改 editor3d.js
+
+6. [icon](https://www.flaticon.com/free-icon/move-object_14296#)

@@ -20,7 +20,12 @@
       },
 
       toObject: function (propertiesToInclude) {
-        return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
+        return fabric.util.object.extend(this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude)), {
+          hiId: this.hiId,
+          altitude: this.altitude,
+          source: this.source,
+          scaleZ: this.scaleZ
+        });
       },
   
       _render: function (ctx) {

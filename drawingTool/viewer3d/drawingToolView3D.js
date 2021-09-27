@@ -6,7 +6,7 @@ var dataStructure = {
 
 function initCanvas3D(edit, objOption) {
 
-  edit.hi3d = new hi3D()
+  edit.hi3d = new hi3D({container: {enableDefaultMouse: false}})
   edit.hi3d.addscene()
   edit.hi3d.addCamera()
   edit.hi3d.addLight()

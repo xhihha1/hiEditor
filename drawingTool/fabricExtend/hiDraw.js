@@ -176,6 +176,7 @@
     if (this.canvasView.getActiveObject()) {
       var object = fabric.util.object.clone(this.canvasView.getActiveObject());
       this.copiedObject = object;
+      console.log('clone', object)
       this.copyCloneTempObjs = new Array();
     }
   }

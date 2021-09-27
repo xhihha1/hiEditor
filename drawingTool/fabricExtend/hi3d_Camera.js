@@ -18,8 +18,10 @@
       this.callSuper('initialize', element, options);
     },
 
-    toObject: function(propertiesToInclude) {
-      return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
+    toObject: function (propertiesToInclude) {
+      return fabric.util.object.extend(this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude)), {
+        altitude: this.altitude
+      });
     },
 
     _render: function (ctx) {
