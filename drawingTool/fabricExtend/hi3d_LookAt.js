@@ -1,42 +1,42 @@
-(function(global) {
+(function (global) {
 
-    // 'use strict';
-  
-    var fabric = global.fabric || (global.fabric = { });
-  
-    if (fabric.HiLookAt) {
-      fabric.warn('fabric.HiLookAt is already defined');
-      return;
-    }
+  // 'use strict';
 
-fabric.HiLookAt = fabric.util.createClass(fabric.Circle, {
+  var fabric = global.fabric || (global.fabric = {});
+
+  if (fabric.HiLookAt) {
+    fabric.warn('fabric.HiLookAt is already defined');
+    return;
+  }
+
+  fabric.HiLookAt = fabric.util.createClass(fabric.Circle, {
 
     type: 'hiLookAt',
 
     initialize: function (element, options) {
-        options || (options = {});
-        this.callSuper('initialize', element, options);
+      options || (options = {});
+      this.callSuper('initialize', element, options);
     },
 
-    toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude });
+    toObject: function (propertiesToInclude) {
+      return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
     },
 
     _render: function (ctx) {
-        this.callSuper('_render', ctx);
-        // this.perPixelTargetFind = true;
-        // do not render if width/height are zeros or object is not visible
-        if (this.width === 0 || this.height === 0 || !this.visible) return;
-        ctx.font = "16px Arial";
-        ctx.fillText("LookAt", 0, 0);
+      this.callSuper('_render', ctx);
+      // this.perPixelTargetFind = true;
+      // do not render if width/height are zeros or object is not visible
+      if (this.width === 0 || this.height === 0 || !this.visible) return;
+      ctx.font = "16px Arial";
+      ctx.fillText("LookAt", 0, 0);
     }
-});
+  });
 
-fabric.HiLookAt.fromObject = function (object, callback) {
+  fabric.HiLookAt.fromObject = function (object, callback) {
     callback && callback(new fabric.HiLookAt(object));
-};
+  };
 
-fabric.HiLookAt.async = true;
+  fabric.HiLookAt.async = true;
 
   // -----------------------------------------------------
   var upIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG9SURBVGhD7ZctTwNBEIaPD4lAIEhAIJFIBAKJRCCQCH4AEolHIPgJSEwTJAbCH8AACQgwfH+FAIIAgfelM8n20sLd3t6x18yTPJltk+7NXNuducQwDMPoVgbgKhz9eVVTWMQe/IKXcBzWjmF4BFnEh0QWMwVrA+/8KWTy9xIvJD7DWhQzCXnnmfSVRPVc4jucg9EyA3nHmax+A2m1SBazCKNjHjI5JtmpCPXOWS/BaGAymti1s/7NJ6iHAI/nf4dJaHKPzjqrnxLXYT+sHF50A7rJ+PomcRNWWgwb3RZ0kyiq7rMNuX/pDEHt1npChVL34/6DsDTcbv0gMbTaQHkdXi847NbaA9zjswy1mBMYdD7jSKEnUrpbl6VeJ9iwOQv/6tZlqb+AwvPZAtRufSixao8lshiOQLlZhulNO3nT5r088vOvkP+9tPqt0NzDJkcOjuFZO/VBm/fymPfzweezFciNQxWyBscy2kKvxFjgIHmW0RZiK8QbKyQ2rJDYsEJiwwqJDSskNrqmkD6JvkyLHPk58N16+gJH4C7cgZXDsTs9khfR+zmjR6IvfJ6faC6D0ID7zaVhGIYRPUnyDe15w+jjPoVKAAAAAElFTkSuQmCC';
@@ -47,8 +47,8 @@ fabric.HiLookAt.async = true;
   imgDown.src = downIcon;
 
   fabric.HiLookAt.prototype.transparentCorners = false;
-//   fabric.HiLookAt.prototype.cornerColor = 'blue';
-//   fabric.HiLookAt.prototype.cornerStyle = 'circle';
+  //   fabric.HiLookAt.prototype.cornerColor = 'blue';
+  //   fabric.HiLookAt.prototype.cornerStyle = 'circle';
 
   fabric.HiLookAt.prototype.controls = {}
   fabric.HiLookAt.prototype.controls.upControl = new fabric.Control({
@@ -107,143 +107,143 @@ fabric.HiLookAt.async = true;
 
   // -----------------------------------------------------
 
-hiDraw.prototype.HiLookAt = (function () {
+  hiDraw.prototype.HiLookAt = (function () {
 
     function Circle(canvasItem, options, otherProps) {
-        this.canvasItem = canvasItem;
-        this.canvas = canvasItem.canvasView;
-        this.options = options;
-        this.otherProps = otherProps;
-        this.className = 'Circle';
-        this.isDrawing = false;
-        this.tempPointsArray = new Array();
-        this.bindEvents();
+      this.canvasItem = canvasItem;
+      this.canvas = canvasItem.canvasView;
+      this.options = options;
+      this.otherProps = otherProps;
+      this.className = 'Circle';
+      this.isDrawing = false;
+      this.tempPointsArray = new Array();
+      this.bindEvents();
     }
 
     Circle.prototype.bindEvents = function () {
-        var inst = this;
-        inst.canvas.on('mouse:down', function (o) {
-            inst.onMouseDown(o);
-        });
-        inst.canvas.on('mouse:move', function (o) {
-            inst.onMouseMove(o);
-        });
-        inst.canvas.on('mouse:up', function (o) {
-            inst.onMouseUp(o);
-        });
-        inst.canvas.on('object:moving', function (o) {
-            inst.disable();
-        })
-        // inst.canvas.on('mouse:down', inst.onMouseDown);
-        // inst.canvas.on('mouse:move', inst.onMouseMove);
-        // inst.canvas.on('mouse:up', inst.onMouseUp);
-        // inst.canvas.on('object:moving', inst.disable)
+      var inst = this;
+      inst.canvas.on('mouse:down', function (o) {
+        inst.onMouseDown(o);
+      });
+      inst.canvas.on('mouse:move', function (o) {
+        inst.onMouseMove(o);
+      });
+      inst.canvas.on('mouse:up', function (o) {
+        inst.onMouseUp(o);
+      });
+      inst.canvas.on('object:moving', function (o) {
+        inst.disable();
+      })
+      // inst.canvas.on('mouse:down', inst.onMouseDown);
+      // inst.canvas.on('mouse:move', inst.onMouseMove);
+      // inst.canvas.on('mouse:up', inst.onMouseUp);
+      // inst.canvas.on('object:moving', inst.disable)
     }
 
     Circle.prototype.unbindEvents = function () {
-        var inst = this;
-        // inst.canvas.off('mouse:down', inst.onMouseDown);
-        // inst.canvas.off('mouse:move', inst.onMouseMove);
-        // inst.canvas.off('mouse:up', inst.onMouseUp);
-        // inst.canvas.off('object:moving', inst.disable)
-        inst.canvas.off('mouse:down');
-        inst.canvas.off('mouse:move');
-        inst.canvas.off('mouse:up');
-        inst.canvas.off('object:added');
-        inst.canvas.off('object:modified');
-        inst.canvas.off('object:removed');
-        inst.canvas.off('object:moving');
-        inst.canvas.off('after:render');
-        inst.canvas.off('mouse:wheel');
-        inst.canvas.off('selection:created');
-        inst.canvas.off('selection:updated');
-        inst.canvas.off('selection:cleared');
+      var inst = this;
+      // inst.canvas.off('mouse:down', inst.onMouseDown);
+      // inst.canvas.off('mouse:move', inst.onMouseMove);
+      // inst.canvas.off('mouse:up', inst.onMouseUp);
+      // inst.canvas.off('object:moving', inst.disable)
+      inst.canvas.off('mouse:down');
+      inst.canvas.off('mouse:move');
+      inst.canvas.off('mouse:up');
+      inst.canvas.off('object:added');
+      inst.canvas.off('object:modified');
+      inst.canvas.off('object:removed');
+      inst.canvas.off('object:moving');
+      inst.canvas.off('after:render');
+      inst.canvas.off('mouse:wheel');
+      inst.canvas.off('selection:created');
+      inst.canvas.off('selection:updated');
+      inst.canvas.off('selection:cleared');
     }
 
     Circle.prototype.onMouseUp = function (o) {
-        var inst = this;
-        inst.disable();
+      var inst = this;
+      inst.disable();
     };
 
     Circle.prototype.onMouseMove = function (o) {
-        var inst = this;
+      var inst = this;
 
-        inst.canvas.renderAll();
+      inst.canvas.renderAll();
     };
 
     Circle.prototype.onMouseDown = function (o) {
-        var inst = this;
+      var inst = this;
 
-        // var pointer = inst.canvas.getPointer(o.e);
-            // inst.disable();
-        //     inst.generateCircle();
+      // var pointer = inst.canvas.getPointer(o.e);
+      // inst.disable();
+      //     inst.generateCircle();
 
 
-        var pointer = inst.canvas.getPointer(o.e);
-        origX = pointer.x;
-        origY = pointer.y;
+      var pointer = inst.canvas.getPointer(o.e);
+      origX = pointer.x;
+      origY = pointer.y;
 
-        // var ellipse = new fabric.Ellipse({
-        //     top: origY,
-        //     left: origX,
-        //     rx: 0,
-        //     ry: 0,
-        //     stroke: '#333333',
-        //     strokeWidth: 2,
-        //     fill: 'rgba(0,0,0,0)',
-        //     opacity: 1,
-        //     selectable: false,
-        //     hasBorders: true,
-        //     hasControls: true,
-        //     strokeUniform: true
-        // });
-        var ellipse = new fabric.HiLookAt({
-            stroke: '#333333',
-            strokeWidth: 2,
-            fill: 'rgba(50,50,50,0.7)',
-            opacity: 1,
-            radius: 10,
-            top: origY,
-            left: origX,
-            originX: 'center',
-            originY: 'center',
-            // selectable: false,
-            hasBorders: false,
-            hasControls: true,
-            strokeUniform: true
-        })
+      // var ellipse = new fabric.Ellipse({
+      //     top: origY,
+      //     left: origX,
+      //     rx: 0,
+      //     ry: 0,
+      //     stroke: '#333333',
+      //     strokeWidth: 2,
+      //     fill: 'rgba(0,0,0,0)',
+      //     opacity: 1,
+      //     selectable: false,
+      //     hasBorders: true,
+      //     hasControls: true,
+      //     strokeUniform: true
+      // });
+      var ellipse = new fabric.HiLookAt({
+        stroke: '#333333',
+        strokeWidth: 2,
+        fill: 'rgba(50,50,50,0.7)',
+        opacity: 1,
+        radius: 10,
+        top: origY,
+        left: origX,
+        originX: 'center',
+        originY: 'center',
+        // selectable: false,
+        hasBorders: false,
+        hasControls: true,
+        strokeUniform: true
+      })
 
-        // ellipse.on('selected', function () {
-        //     console.log('selected a Circle');
-        //     // inst.enable();
-        // });
-        // ellipse.on('mousedown', function () {
-        //     console.log('mousedown a Circle');
-        // });
-        ellipse.altitude = 0
-        inst.canvas.add(ellipse).setActiveObject(ellipse);
-        ellipse.canvasItem = inst.canvasItem;
+      // ellipse.on('selected', function () {
+      //     console.log('selected a Circle');
+      //     // inst.enable();
+      // });
+      // ellipse.on('mousedown', function () {
+      //     console.log('mousedown a Circle');
+      // });
+      ellipse.altitude = 0
+      inst.canvas.add(ellipse).setActiveObject(ellipse);
+      ellipse.canvasItem = inst.canvasItem;
     };
 
     Circle.prototype.isEnable = function () {
-        return this.isDrawing;
+      return this.isDrawing;
     }
 
     Circle.prototype.enable = function () {
-        this.isDrawing = true;
+      this.isDrawing = true;
     }
 
     Circle.prototype.disable = function () {
-        this.isDrawing = false;
-        this.unbindEvents();
-        if (this.options && this.options.endDraw) {
-            this.options.endDraw();
-        }
+      this.isDrawing = false;
+      this.unbindEvents();
+      if (this.options && this.options.endDraw) {
+        this.options.endDraw();
+      }
     }
 
 
     return Circle;
-}(this));
+  }(this));
 
 
 })(typeof exports !== 'undefined' ? exports : this);

@@ -18,8 +18,8 @@ fabric.HiPolygon = fabric.util.createClass(fabric.Polygon, {
     this.callSuper('initialize', element, options);
   },
 
-  toObject: function () {
-    return fabric.util.object.extend(this.callSuper('toObject'));
+  toObject: function (propertiesToInclude) {
+    return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
   },
 
   _render: function (ctx) {

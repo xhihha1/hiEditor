@@ -17,6 +17,10 @@
       // this.height = height || 100
       // this.width = width || 100
     },
+
+    toObject: function (propertiesToInclude) {
+      return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
+    },
     getArea() {
       return this.height * this.width
     },

@@ -19,6 +19,9 @@ fabric.PolarChart = fabric.util.createClass(fabric.Rect, {
     // this.width = width || 100
     this.dataSets = dataSets;
   },
+  toObject: function (propertiesToInclude) {
+    return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
+  },
   getArea() {
     return this.height * this.width
   },

@@ -991,14 +991,14 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
       // console.log('object--', mesh)
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-      object.scale.x = objOption.scale[0];
-      object.scale.y = objOption.scale[1];
-      object.scale.z = objOption.scale[2];
-      object.scene.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      mesh.scale.x = objOption.scale[0];
+      mesh.scale.y = objOption.scale[1];
+      mesh.scale.z = objOption.scale[2];
+      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
       if (parentGroup) {
-        parentGroup.add( object.scene );
+        parentGroup.add( mesh );
       } else {
-        this.scene.add(object.scene); //將匯入的模型新增到場景中
+        this.scene.add(mesh); //將匯入的模型新增到場景中
       }
     }
     // this.renderer.render(this.scene, this.camera);

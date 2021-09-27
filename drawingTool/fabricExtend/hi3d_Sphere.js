@@ -18,8 +18,12 @@ fabric.HiSphere = fabric.util.createClass(fabric.Circle, {
         this.callSuper('initialize', element, options);
     },
 
-    toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude });
+    // toObject: function () {
+    //     return fabric.util.object.extend(this.callSuper('toObject'), { hiId: this.hiId, altitude: this.altitude });
+    // },
+
+    toObject: function(propertiesToInclude) {
+        return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
     },
 
     _render: function (ctx) {
@@ -400,6 +404,7 @@ hiDraw.prototype.HiSphere = (function () {
         inst.shape = ellipse;
         ellipse.hiId = hiDraw.prototype.uniqueIdGenerater()
         ellipse.altitude = 0
+        ellipse.scaleZ = 1
         inst.canvas.add(ellipse).setActiveObject(ellipse);
         ellipse.canvasItem = inst.canvasItem;
 

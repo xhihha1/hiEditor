@@ -19,13 +19,8 @@ fabric.HiFormatSTL = fabric.util.createClass(fabric.Rect, {
         this.callSuper('initialize', element, options);
     },
 
-    toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), {
-            hiId: this.hiId,
-            altitude: this.altitude,
-            source: this.source,
-            scaleZ: this.scaleZ
-        });
+    toObject: function (propertiesToInclude) {
+      return this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude));
     },
 
     _render: function (ctx) {
