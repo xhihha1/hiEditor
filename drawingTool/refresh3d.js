@@ -112,164 +112,6 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
         this.addSpotLight(opt)
       }
     }
-    // if (item["type"] == "hiCube") {
-    //   var depth = item["depth"] || 1
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     size: [item["width"], depth, item["height"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('exist cube', objNode, opt)
-    //     this.setCube(objNode, opt)
-    //   } else {
-    //     // console.log('add cube', opt)
-    //     this.addCube(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiSphere") {
-    //   // console.log('r:', item["radius"])
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     radius: item["radius"],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     this.setSphere(objNode, opt)
-    //   } else {
-    //     // console.log('add Sphere', opt)
-    //     this.addSphere(opt)
-    //   }
-    // }
-    // if (item["type"] == "hi3DPolyline") {
-    //   var points = []
-    //   for (var j = 0; j < item['points'].length; j++) {
-    //     points.push([item['points'][j].x, 0, item['points'][j].y])
-    //   }
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     points: points
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set hi3DPolyline', opt)
-    //     // this.setLine(objNode, opt)
-    //     this.setLine2(objNode, opt)
-    //   } else {
-    //     // console.log('add hi3DPolyline', opt)
-    //     // this.addLine(opt)
-    //     this.addLine2(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiFormatObj") {
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     source: item.source,
-    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set setObj', opt)
-    //     this.setObj(objNode, opt)
-    //   } else {
-    //     // console.log('add addObj', opt)
-    //     this.addObj(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiFormatCollada") {
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     source: item.source,
-    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set setObj', opt)
-    //     this.setCollada(objNode, opt)
-    //   } else {
-    //     // console.log('add addObj', opt)
-    //     this.addCollada(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiFormatSTL") {
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     source: item.source,
-    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set setObj', opt)
-    //     this.setSTL(objNode, opt)
-    //   } else {
-    //     // console.log('add addObj', opt)
-    //     this.addSTL(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiFormat3ds") {
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     source: item.source,
-    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set setObj', opt)
-    //     this.set3ds(objNode, opt)
-    //   } else {
-    //     // console.log('add addObj', opt)
-    //     this.add3ds(opt)
-    //   }
-    // }
-    // if (item["type"] == "hiFormatGLTF") {
-    //   var opt = {
-    //     hiId: item.hiId,
-    //     // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-    //     color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
-    //     position: [item["left"], item['altitude'], item["top"]],
-    //     widthSegments: item["width"],
-    //     heightSegments: item["height"],
-    //     source: item.source,
-    //     scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-    //     angle: item['angle']
-    //   }
-    //   if (itemExist) {
-    //     // console.log('set setObj', opt)
-    //     this.setgltf(objNode, opt)
-    //   } else {
-    //     // console.log('add addObj', opt)
-    //     this.addgltf(opt)
-    //   }
-    // }
     if (item.objects && item.objects.length > 0) {
       this.addGroupObject(edit, item, itemExist, objNode)
     } else {
@@ -446,6 +288,26 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     } else {
       // console.log('add addObj', opt)
       this.addgltf(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiFormatNrrd") {
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      position: [item["left"], item['altitude'], item["top"]],
+      widthSegments: item["width"],
+      heightSegments: item["height"],
+      source: item.source,
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
+      angle: item['angle']
+    }
+    if (itemExist) {
+      // console.log('set setObj', opt)
+      this.setnrrd(objNode, opt)
+    } else {
+      // console.log('add addObj', opt)
+      this.addnrrd(opt, parentGroup)
     }
   }
 }

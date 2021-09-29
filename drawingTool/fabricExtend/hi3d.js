@@ -634,6 +634,7 @@ hi3D.prototype.addObj = function (option, parentGroup) {
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
+    source: { obj: '' },
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
@@ -720,6 +721,7 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
+    source: { dae: '' },
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
@@ -807,6 +809,7 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
+    source: { stl: '' },
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
@@ -986,7 +989,8 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
     if (!objExist) {
       mesh.hiId = objOption.hiId
       mesh.source = {
-        f_3ds: objOption.source.f_3ds
+        gltfPath: objOption.source.gltfPath,
+        gltf: objOption.source.gltf
       }
       // console.log('object--', mesh)
       mesh.castShadow = true;
@@ -1008,6 +1012,114 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
 }
 
 hi3D.prototype.setgltf = function (node, objOption) {
+  if (objOption.position) {
+    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+  if (objOption.color) {
+  }
+  if (objOption.source && objOption.source.gltf !== node.source.gltf) {
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+    // node.traverse( function ( child ) {
+    //   if ( child.isMesh ) {
+    //     child.material.specular.setScalar( objOption.scale[0] );
+    //   }
+    // } );
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+}
+
+hi3D.prototype.addnrrd = function (option, parentGroup) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    source: { nrrd: '' },
+    scale: [1, 1, 1],
+    angle: 0
+  }
+  objOption = this.mergeDeep(objOption, option)
+  //3ds files dont store normal maps
+  let normal
+  if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
+  // const loader = new THREE.TDSLoader();
+  // loader.setResourcePath( objOption.source.f_3dsTextures );
+  // loader.load( objOption.source.f_3ds, function ( object ) {
+
+  const loader = new THREE.NRRDLoader();
+  loader.load( objOption.source.nrrd, function ( volume ) {
+    const geometry = new THREE.BoxBufferGeometry( volume.xLength, volume.yLength, volume.zLength );
+    const material = new THREE.MeshBasicMaterial( { color: objOption.color } );
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.visible = false;
+    let objExist = false
+    this.scene.traverse(function (child) {
+      if (child.hiId === objOption.hiId) {
+        objExist = true
+      }
+    })
+    if (!objExist) {
+      // let nrrdGroup = new THREE.Group();
+      // nrrdGroup.hiId = objOption.hiId
+      
+
+      mesh.hiId = objOption.hiId
+      mesh.source = {
+        nrrd: objOption.source.nrrd
+      }
+      mesh.scale.x = objOption.scale[0];
+      mesh.scale.y = objOption.scale[1];
+      mesh.scale.z = objOption.scale[2];
+      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+
+      //z plane
+      const sliceZ = volume.extractSlice( 'z', Math.floor( volume.RASDimensions[ 2 ] / 4 ) );
+      sliceZ.mesh.hiId = objOption.hiId + '_z'
+      sliceZ.mesh.scale.x = objOption.scale[0];
+      sliceZ.mesh.scale.y = objOption.scale[1];
+      sliceZ.mesh.scale.z = objOption.scale[2];
+      sliceZ.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+
+      //y plane
+      const sliceY = volume.extractSlice( 'y', Math.floor( volume.RASDimensions[ 1 ] / 2 ) );
+      sliceY.mesh.hiId = objOption.hiId + '_y'
+      mesh.scale.x = objOption.scale[0];
+      mesh.scale.y = objOption.scale[1];
+      mesh.scale.z = objOption.scale[2];
+      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+
+      //x plane
+      const sliceX = volume.extractSlice( 'x', Math.floor( volume.RASDimensions[ 0 ] / 2 ) );
+      sliceX.mesh.hiId = objOption.hiId + '_x'
+      sliceX.mesh.scale.x = objOption.scale[0];
+      sliceX.mesh.scale.y = objOption.scale[1];
+      sliceX.mesh.scale.z = objOption.scale[2];
+      sliceX.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+
+      
+      if (parentGroup) {
+        parentGroup.add( mesh );
+        parentGroup.add( sliceZ.mesh );
+        parentGroup.add( sliceY.mesh );
+        parentGroup.add( sliceX.mesh );
+      } else {
+        this.scene.add(mesh); //將匯入的模型新增到場景中
+        this.scene.add( sliceZ.mesh );
+        this.scene.add( sliceY.mesh );
+        this.scene.add( sliceX.mesh );
+      }
+      this.viewRender()
+    }
+  }.bind(this))
+  return this
+}
+
+hi3D.prototype.setnrrd = function (node, objOption) {
   if (objOption.position) {
     node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   }

@@ -107,6 +107,20 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
+  
+  $("#draw3dHiFormatNRRD").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var model = $('#sourceNrrd').val()
+    // assets\gltf\DamagedHelmet
+    var polyline = new edit.HiFormatNrrd(edit, objOption, {
+      source: {
+        nrrd: model
+      }
+    });
+  });
+
   $('#draw3dPlane').click(function(){
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);

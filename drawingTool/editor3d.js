@@ -1,6 +1,9 @@
 function initCanvas3D(edit, objOption) {
 
   edit.hi3d = new hi3D({
+    container: {
+      enableDefaultMouse: false
+    },
     transformControls: {
       objectChange: function (event) {
         // if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
@@ -103,7 +106,13 @@ function initCanvas3D(edit, objOption) {
     edit.hi3d.refreshByFabricJson(edit, objOption)
     edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     // requestAnimationFrame(animateA); // 自動更新 刷新
-    // ----------------
+    // ------------------------------------------------
+    const loader = new THREE.NRRDLoader();
+    console.log('nrrd', '-----------------------A')
+    loader.load( "./assets/nrrd/stent.nrrd", function ( volume ) {
+      console.log('nrrd', '-----------------------B')
+    })
+    // ------------------------------------------------
   }
   animateA()
   // animate();
