@@ -1064,54 +1064,59 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
       }
     })
     if (!objExist) {
-      // let nrrdGroup = new THREE.Group();
-      // nrrdGroup.hiId = objOption.hiId
-      
+      let nrrdGroup = new THREE.Group();
+      nrrdGroup.hiId = objOption.hiId
 
-      mesh.hiId = objOption.hiId
-      mesh.source = {
+      nrrdGroup.hiId = objOption.hiId
+      nrrdGroup.source = {
         nrrd: objOption.source.nrrd
       }
-      mesh.scale.x = objOption.scale[0];
-      mesh.scale.y = objOption.scale[1];
-      mesh.scale.z = objOption.scale[2];
-      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+
+      nrrdGroup.scale.x = objOption.scale[0];
+      nrrdGroup.scale.y = objOption.scale[1];
+      nrrdGroup.scale.z = objOption.scale[2];
+      nrrdGroup.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
 
       //z plane
       const sliceZ = volume.extractSlice( 'z', Math.floor( volume.RASDimensions[ 2 ] / 4 ) );
-      sliceZ.mesh.hiId = objOption.hiId + '_z'
-      sliceZ.mesh.scale.x = objOption.scale[0];
-      sliceZ.mesh.scale.y = objOption.scale[1];
-      sliceZ.mesh.scale.z = objOption.scale[2];
-      sliceZ.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      // sliceZ.mesh.hiId = objOption.hiId + '_z'
+      // sliceZ.mesh.scale.x = objOption.scale[0];
+      // sliceZ.mesh.scale.y = objOption.scale[1];
+      // sliceZ.mesh.scale.z = objOption.scale[2];
+      // sliceZ.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
 
       //y plane
       const sliceY = volume.extractSlice( 'y', Math.floor( volume.RASDimensions[ 1 ] / 2 ) );
-      sliceY.mesh.hiId = objOption.hiId + '_y'
-      mesh.scale.x = objOption.scale[0];
-      mesh.scale.y = objOption.scale[1];
-      mesh.scale.z = objOption.scale[2];
-      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      // sliceY.mesh.hiId = objOption.hiId + '_y'
+      // mesh.scale.x = objOption.scale[0];
+      // mesh.scale.y = objOption.scale[1];
+      // mesh.scale.z = objOption.scale[2];
+      // mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
 
       //x plane
       const sliceX = volume.extractSlice( 'x', Math.floor( volume.RASDimensions[ 0 ] / 2 ) );
-      sliceX.mesh.hiId = objOption.hiId + '_x'
-      sliceX.mesh.scale.x = objOption.scale[0];
-      sliceX.mesh.scale.y = objOption.scale[1];
-      sliceX.mesh.scale.z = objOption.scale[2];
-      sliceX.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      // sliceX.mesh.hiId = objOption.hiId + '_x'
+      // sliceX.mesh.scale.x = objOption.scale[0];
+      // sliceX.mesh.scale.y = objOption.scale[1];
+      // sliceX.mesh.scale.z = objOption.scale[2];
+      // sliceX.mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
 
-      
+      nrrdGroup.add( mesh );
+      nrrdGroup.add( sliceZ.mesh );
+      nrrdGroup.add( sliceY.mesh );
+      nrrdGroup.add( sliceX.mesh );
       if (parentGroup) {
-        parentGroup.add( mesh );
-        parentGroup.add( sliceZ.mesh );
-        parentGroup.add( sliceY.mesh );
-        parentGroup.add( sliceX.mesh );
+        parentGroup.add( nrrdGroup );
+        // parentGroup.add( mesh );
+        // parentGroup.add( sliceZ.mesh );
+        // parentGroup.add( sliceY.mesh );
+        // parentGroup.add( sliceX.mesh );
       } else {
-        this.scene.add(mesh); //將匯入的模型新增到場景中
-        this.scene.add( sliceZ.mesh );
-        this.scene.add( sliceY.mesh );
-        this.scene.add( sliceX.mesh );
+        this.scene.add( nrrdGroup );
+        // this.scene.add(mesh); //將匯入的模型新增到場景中
+        // this.scene.add( sliceZ.mesh );
+        // this.scene.add( sliceY.mesh );
+        // this.scene.add( sliceX.mesh );
       }
       this.viewRender()
     }
