@@ -1266,7 +1266,9 @@ hi3D.prototype.disposeTransformControlsMesh = function (mesh) {
   if (this.transformControls) {
     this.transformControls.detach()
     this.transformControls.dispose()
+    this.scene.remove(this.transformControls)
     this.transformControls = null
+    this.viewRender()
   }
 }
 

@@ -252,4 +252,52 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
+  $('#tc_enable').click(function(){
+    var checked = $(this).prop("checked");
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.enabled = checked;
+    } else {
+      $(this).prop("checked", true);
+    }
+  })
+  $('#tc_translate').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.setMode( 'translate' );
+    }
+  })
+  $('#tc_rotate').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.setMode( 'rotate' );
+    }
+  })
+  $('#tc_scale').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.setMode( 'scale' );
+    }
+  })
+  $('#tc_sizePlus').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.setSize( edit.hi3d.transformControls.size + 0.1 );
+    }
+  })
+  $('#tc_sizeMinus').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.setSize( Math.max( edit.hi3d.transformControls.size - 0.1, 0.1 ) );
+    }
+  })
+  $('#tc_toggleX').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.showX =! edit.hi3d.transformControls.showX;
+    }
+  })
+  $('#tc_toggleY').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.showY =! edit.hi3d.transformControls.showY;
+    }
+  })
+  $('#tc_toggleZ').click(function(){
+    if (edit.hi3d.transformControls) {
+      edit.hi3d.transformControls.showZ =! edit.hi3d.transformControls.showZ;
+    }
+  })
 }
