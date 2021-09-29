@@ -55,8 +55,16 @@ function initCanvas(canvasId, canvasViewId) {
           if(opt.target.get('source')){$('#objPropSourceObj').val(opt.target.get('source').obj)}
           $('#newPropStroke').val(opt.target.get('stroke'))
           $('#newPropFill').val(opt.target.get('fill'))
-          $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
           $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
+          $('#newRotateX').val(parseInt(opt.target.get('rotateX')) || 0)
+          $('#newRotateY').val(parseInt(opt.target.get('angle')) || 0)
+          $('#newRotateZ').val(parseInt(opt.target.get('rotateZ')) || 0)
+          $('#newpositionX').val(parseInt(opt.target.get('left')) || 0)
+          $('#newpositionY').val(parseInt(opt.target.get('altitude')) || 0)
+          $('#newpositionZ').val(parseInt(opt.target.get('top')) || 0)
+          $('#newsizeX').val(parseInt(opt.target.get('width')) || 0)
+          $('#newsizeY').val(parseInt(opt.target.get('depth')) || 0)
+          $('#newsizeZ').val(parseInt(opt.target.get('height')) || 0)
           if (opt.target.hiId) {
             edit.hi3d.scene.traverse(function (node) {
               if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
@@ -137,23 +145,108 @@ function objectPropertyChange(edit, objOption) {
     edit.canvasView.renderAll();
     edit.hi3d.refreshByFabricJson(edit);
   })
-  $('#propChangeAltitude').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        altitude: $('#newPropAltitude').val()
-      });
-    }
-    edit.canvasView.renderAll();
-    edit.hi3d.refreshByFabricJson(edit);
-  })
   $('#propChangeDepth').click(function () {
 
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
       activeObj.set({
         depth: $('#newPropDepth').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newRotateX').get(0).min = $('#newRotateY').get(0).min = $('#newRotateZ').get(0).min = -180
+  $('#newRotateX').get(0).max = $('#newRotateY').get(0).max = $('#newRotateZ').get(0).max = 180
+  $('#newRotateX').get(0).step = $('#newRotateY').get(0).step = $('#newRotateZ').get(0).step = 0.1
+  $('#newRotateX').val(0)
+  $('#newRotateY').val(0)
+  $('#newRotateZ').val(0)
+  $('#newRotateX').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        rotateX: $('#newRotateX').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newRotateY').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        angle: $('#newRotateY').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newRotateZ').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        rotateZ: $('#newRotateZ').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newpositionX').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        left: $('#newpositionX').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newpositionY').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        altitude: $('#newpositionY').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newpositionZ').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        top: $('#newpositionZ').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newsizeX').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        width: $('#newsizeX').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newsizeY').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        depth: $('#newsizeY').val()
+      });
+    }
+    edit.canvasView.renderAll();
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#newsizeZ').change(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        height: $('#newsizeZ').val()
       });
     }
     edit.canvasView.renderAll();

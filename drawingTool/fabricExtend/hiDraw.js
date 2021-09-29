@@ -467,7 +467,9 @@
   hiDraw.prototype.toFabricJson = function () {
     if (this.canvasView) {
       // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
-      return this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']);
+      return this.canvasView.toJSON([
+        'label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ'
+      ]);
     } else {
       return {}
     }
