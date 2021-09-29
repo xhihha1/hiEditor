@@ -7,26 +7,52 @@ function initCanvas3D(edit, objOption) {
     transformControls: {
       objectChange: function (event) {
         // if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
+        if (event.target) {
+          var node = event.target.object
+          var activeObj = edit.canvasView.getActiveObject();
+          if (activeObj) {
+            var box1 = new THREE.Box3().setFromObject( node );
+            // console.log('boundingBox', box1)
+            var width = Math.abs(box1.max.x - box1.min.x)
+            var depth = Math.abs(box1.max.y - box1.min.y)
+            var height = Math.abs(box1.max.z - box1.min.z)
+             activeObj.set({
+              rotateX: node.rotation.x * 180 / Math.PI,
+              angle: node.rotation.y * 180 / Math.PI,
+              rotateZ: node.rotation.z * 180 / Math.PI,
+              left: node.position.x,
+              altitude: node.position.y,
+              top: node.position.z,
+              // width: width,
+              // depth: depth,
+              // height: height
+            });
+            console.log('activeObj', 'set')
+          }
+          edit.canvasView.renderAll();
+        }
       }.bind(edit.hi3d)
     },
     orbitControls: {
       change: function (event) {
         // console.log(edit.hi3d.camera)
-        edit.hi3d.camera.position
-        edit.canvasView.forEachObject(function(obj2d){
-          if (obj2d.hiId === edit.hi3d.camera.hiId) {
-            obj2d.left = edit.hi3d.camera.position.x
-            obj2d.altitude = edit.hi3d.camera.position.y
-            obj2d.top = edit.hi3d.camera.position.z
-          }
-          if (obj2d.type === 'hiLookAt') {
-            var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
-            obj2d.left = lookAtVector.x
-            obj2d.altitude = lookAtVector.y
-            obj2d.top = lookAtVector.z
-          }
-          // var lookAtVector = new THREE.Vector3(cam.matrix[8], cam.matrix[9], cam.matrix[10]);
-        })
+        // edit.hi3d.camera.position
+        if(edit.hi3d && edit.hi3d.camera) {
+          edit.canvasView.forEachObject(function(obj2d){
+            if (obj2d.hiId === edit.hi3d.camera.hiId) {
+              obj2d.left = edit.hi3d.camera.position.x
+              obj2d.altitude = edit.hi3d.camera.position.y
+              obj2d.top = edit.hi3d.camera.position.z
+            }
+            if (obj2d.type === 'hiLookAt') {
+              var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
+              obj2d.left = lookAtVector.x
+              obj2d.altitude = lookAtVector.y
+              obj2d.top = lookAtVector.z
+            }
+            // var lookAtVector = new THREE.Vector3(cam.matrix[8], cam.matrix[9], cam.matrix[10]);
+          })
+        }
         edit.canvasView.renderAll();
       }
     },
@@ -118,3 +144,30 @@ function initCanvas3D(edit, objOption) {
   animateA()
   // animate();
 }
+
+
+/*
+        if (event.target) {
+          var node = event.target
+          var activeObj = edit.canvasView.getActiveObject();
+          if (activeObj) {
+            var box1 = new THREE.Box3().setFromObject( node );
+            // console.log('boundingBox', box1)
+            var width = Math.abs(box1.max.x - box1.min.x)
+            var depth = Math.abs(box1.max.y - box1.min.y)
+            var height = Math.abs(box1.max.z - box1.min.z)
+             activeObj.set({
+              rotateX: node.rotation.x,
+              angle: node.rotation.y,
+              rotateZ: node.rotation.z,
+              left: node.position.x,
+              altitude: node.position.y,
+              top: node.position.z,
+              // width: width,
+              // depth: depth,
+              // height: height
+            });
+          }
+          edit.canvasView.renderAll();
+        }
+*/
