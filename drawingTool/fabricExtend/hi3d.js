@@ -267,7 +267,7 @@ hi3D.prototype.setRender = function () {
 }
 
 hi3D.prototype.setGridHelper = function () {
-  var gHelp = new THREE.GridHelper(1000, 300, 0x888888, 0x444444)
+  var gHelp = new THREE.GridHelper(1000, 100, 0x888888, 0x444444)
   // console.log(gHelp)
   this.scene.add(gHelp);
   // console.log(this.scene.children)

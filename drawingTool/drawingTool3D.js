@@ -67,7 +67,8 @@ function initCanvas(canvasId, canvasViewId) {
           $('#newsizeZ').val(parseInt(opt.target.get('height')) || 0)
           if (opt.target.hiId) {
             edit.hi3d.scene.traverse(function (node) {
-              if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
+              if ( (node instanceof THREE.Mesh || node instanceof THREE.Group) &&
+                node.hiId === opt.target.hiId) {
                 edit.hi3d.setTransformControlsMesh(node)
                 // edit.hi3d.refreshByFabricJson(edit);
               }
