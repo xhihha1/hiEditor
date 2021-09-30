@@ -42,135 +42,137 @@
 
   fabric.HiCube.async = true;
 
-  fabric.HiCube.prototype.controls = {
-    lt: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        var finalPoint = {
-          x: fabricObject.left - fabricObject.width / 2,
-          y: fabricObject.top - fabricObject.height / 2
-        }
-        return fabric.util.transformPoint(
-          finalPoint,
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var fabricObject = target;
-        fabricObject.rb = {
-          x: fabricObject.left + fabricObject.width / 2,
-          y: fabricObject.top + fabricObject.height / 2
-        }
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.left = (x + polygon.rb.x) / 2;
-        polygon.top = (y + polygon.rb.y) / 2;
-        polygon.width = Math.abs(x - polygon.rb.x);
-        polygon.height = Math.abs(y - polygon.rb.y);
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    }),
-    lb: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        var finalPoint = {
-          x: fabricObject.left - fabricObject.width / 2,
-          y: fabricObject.top + fabricObject.height / 2
-        }
-        return fabric.util.transformPoint(
-          finalPoint,
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var fabricObject = target;
-        fabricObject.rt = {
-          x: fabricObject.left + fabricObject.width / 2,
-          y: fabricObject.top - fabricObject.height / 2
-        }
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.left = (x + polygon.rt.x) / 2;
-        polygon.top = (y + polygon.rt.y) / 2;
-        polygon.width = Math.abs(x - polygon.rt.x);
-        polygon.height = Math.abs(y - polygon.rt.y);
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    }),
-    rt: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        var finalPoint = {
-          x: fabricObject.left + fabricObject.width / 2,
-          y: fabricObject.top - fabricObject.height / 2
-        }
-        return fabric.util.transformPoint(
-          finalPoint,
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var fabricObject = target;
-        fabricObject.lb = {
-          x: fabricObject.left - fabricObject.width / 2,
-          y: fabricObject.top + fabricObject.height / 2
-        }
-      },
-      mouseUpHandler: function (eventData, target) {
+  // fabric.HiCube.prototype.controls = {
+  //   lt: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       var finalPoint = {
+  //         x: fabricObject.left - fabricObject.width / 2,
+  //         y: fabricObject.top - fabricObject.height / 2
+  //       }
+  //       return fabric.util.transformPoint(
+  //         finalPoint,
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var fabricObject = target;
+  //       fabricObject.rb = {
+  //         x: fabricObject.left + fabricObject.width / 2,
+  //         y: fabricObject.top + fabricObject.height / 2
+  //       }
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.left = (x + polygon.rb.x) / 2;
+  //       polygon.top = (y + polygon.rb.y) / 2;
+  //       polygon.width = Math.abs(x - polygon.rb.x);
+  //       polygon.height = Math.abs(y - polygon.rb.y);
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   }),
+  //   lb: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       var finalPoint = {
+  //         x: fabricObject.left - fabricObject.width / 2,
+  //         y: fabricObject.top + fabricObject.height / 2
+  //       }
+  //       return fabric.util.transformPoint(
+  //         finalPoint,
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var fabricObject = target;
+  //       fabricObject.rt = {
+  //         x: fabricObject.left + fabricObject.width / 2,
+  //         y: fabricObject.top - fabricObject.height / 2
+  //       }
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.left = (x + polygon.rt.x) / 2;
+  //       polygon.top = (y + polygon.rt.y) / 2;
+  //       polygon.width = Math.abs(x - polygon.rt.x);
+  //       polygon.height = Math.abs(y - polygon.rt.y);
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   }),
+  //   rt: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       var finalPoint = {
+  //         x: fabricObject.left + fabricObject.width / 2,
+  //         y: fabricObject.top - fabricObject.height / 2
+  //       }
+  //       return fabric.util.transformPoint(
+  //         finalPoint,
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var fabricObject = target;
+  //       fabricObject.lb = {
+  //         x: fabricObject.left - fabricObject.width / 2,
+  //         y: fabricObject.top + fabricObject.height / 2
+  //       }
+  //     },
+  //     mouseUpHandler: function (eventData, target) {
 
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.left = (x + polygon.lb.x) / 2;
-        polygon.top = (y + polygon.lb.y) / 2;
-        polygon.width = Math.abs(x - polygon.lb.x);
-        polygon.height = Math.abs(y - polygon.lb.y);
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    }),
-    rb: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        var finalPoint = {
-          x: fabricObject.left + fabricObject.width / 2,
-          y: fabricObject.top + fabricObject.height / 2
-        }
-        return fabric.util.transformPoint(
-          finalPoint,
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var fabricObject = target;
-        fabricObject.lt = {
-          x: fabricObject.left - fabricObject.width / 2,
-          y: fabricObject.top - fabricObject.height / 2
-        }
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.left = (x + polygon.lb.x) / 2;
+  //       polygon.top = (y + polygon.lb.y) / 2;
+  //       polygon.width = Math.abs(x - polygon.lb.x);
+  //       polygon.height = Math.abs(y - polygon.lb.y);
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   }),
+  //   rb: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       var finalPoint = {
+  //         x: fabricObject.left + fabricObject.width / 2,
+  //         y: fabricObject.top + fabricObject.height / 2
+  //       }
+  //       return fabric.util.transformPoint(
+  //         finalPoint,
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var fabricObject = target;
+  //       fabricObject.lt = {
+  //         x: fabricObject.left - fabricObject.width / 2,
+  //         y: fabricObject.top - fabricObject.height / 2
+  //       }
 
-      },
-      mouseUpHandler: function (eventData, target) {
+  //     },
+  //     mouseUpHandler: function (eventData, target) {
 
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.left = (x + polygon.lt.x) / 2;
-        polygon.top = (y + polygon.lt.y) / 2;
-        polygon.width = Math.abs(x - polygon.lt.x);
-        polygon.height = Math.abs(y - polygon.lt.y);
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    })
-  }
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.left = (x + polygon.lt.x) / 2;
+  //       polygon.top = (y + polygon.lt.y) / 2;
+  //       polygon.width = Math.abs(x - polygon.lt.x);
+  //       polygon.height = Math.abs(y - polygon.lt.y);
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   })
+  // }
+  // urgent
+  fabric.HiCube.prototype.controls = fabric.Object.prototype.controls;
 
 
   hiDraw.prototype.HiCube = (function () {

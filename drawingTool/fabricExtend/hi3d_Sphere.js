@@ -46,104 +46,104 @@
 
   fabric.HiSphere.async = true;
 
-  fabric.HiSphere.prototype.controls = {
-    centerControl: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        fabricObject.centerX = fabricObject.left;
-        fabricObject.centerY = fabricObject.top;
-        // return {
-        //     x: fabricObject.centerX,
-        //     y: fabricObject.centerY
-        // }
-        return fabric.util.transformPoint({
-            x: fabricObject.centerX,
-            y: fabricObject.centerY
-          },
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var polygon = target;
-        polygon.centerX = polygon.left;
-        polygon.centerY = polygon.top;
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.left = x;
-        polygon.top = y;
-        polygon.centerX = x;
-        polygon.centerY = y;
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    }),
-    borderControl: new fabric.Control({
-      positionHandler: function (dim, finalMatrix, fabricObject) {
-        if (fabricObject.borderPoint && fabricObject.borderPointTheta) {
-          if (fabricObject.borderPointTheta) {
-            fabricObject.borderPoint.x = fabricObject.centerX + fabricObject.radius * Math.cos(parseFloat(fabricObject.borderPointTheta))
-            fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius * Math.sin(parseFloat(fabricObject.borderPointTheta))
-          } else {
-            fabricObject.borderPoint.x = fabricObject.centerX;
-            fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius;
-          }
-        } else {
-          fabricObject.borderPoint = {
-            x: fabricObject.left,
-            y: fabricObject.top + fabricObject.radius
-          }
-        }
-        // return fabricObject.borderPoint;
-        return fabric.util.transformPoint(
-          fabricObject.borderPoint,
-          fabricObject.canvas.viewportTransform
-        );
-      },
-      mouseDownHandler: function (eventData, target) {
-        var polygon = target;
-        polygon.centerX = polygon.left;
-        polygon.centerY = polygon.top;
+  // fabric.HiSphere.prototype.controls = {
+  //   centerControl: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       fabricObject.centerX = fabricObject.left;
+  //       fabricObject.centerY = fabricObject.top;
+  //       // return {
+  //       //     x: fabricObject.centerX,
+  //       //     y: fabricObject.centerY
+  //       // }
+  //       return fabric.util.transformPoint({
+  //           x: fabricObject.centerX,
+  //           y: fabricObject.centerY
+  //         },
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var polygon = target;
+  //       polygon.centerX = polygon.left;
+  //       polygon.centerY = polygon.top;
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.left = x;
+  //       polygon.top = y;
+  //       polygon.centerX = x;
+  //       polygon.centerY = y;
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   }),
+  //   borderControl: new fabric.Control({
+  //     positionHandler: function (dim, finalMatrix, fabricObject) {
+  //       if (fabricObject.borderPoint && fabricObject.borderPointTheta) {
+  //         if (fabricObject.borderPointTheta) {
+  //           fabricObject.borderPoint.x = fabricObject.centerX + fabricObject.radius * Math.cos(parseFloat(fabricObject.borderPointTheta))
+  //           fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius * Math.sin(parseFloat(fabricObject.borderPointTheta))
+  //         } else {
+  //           fabricObject.borderPoint.x = fabricObject.centerX;
+  //           fabricObject.borderPoint.y = fabricObject.centerY + fabricObject.radius;
+  //         }
+  //       } else {
+  //         fabricObject.borderPoint = {
+  //           x: fabricObject.left,
+  //           y: fabricObject.top + fabricObject.radius
+  //         }
+  //       }
+  //       // return fabricObject.borderPoint;
+  //       return fabric.util.transformPoint(
+  //         fabricObject.borderPoint,
+  //         fabricObject.canvas.viewportTransform
+  //       );
+  //     },
+  //     mouseDownHandler: function (eventData, target) {
+  //       var polygon = target;
+  //       polygon.centerX = polygon.left;
+  //       polygon.centerY = polygon.top;
 
-        var distC = Math.sqrt(Math.pow(polygon.borderPoint.x - polygon.centerX - polygon.radius, 2) + Math.pow(polygon.borderPoint.y - polygon.centerY, 2))
-        cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
-        if (polygon.borderPoint.y - polygon.centerY > 0) {
-          polygon.borderPointTheta = Math.acos(cosTheta);
-        } else {
-          polygon.borderPointTheta = Math.acos(cosTheta) * -1;
-        }
-      },
-      mouseUpHandler: function (eventData, target) {
+  //       var distC = Math.sqrt(Math.pow(polygon.borderPoint.x - polygon.centerX - polygon.radius, 2) + Math.pow(polygon.borderPoint.y - polygon.centerY, 2))
+  //       cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
+  //       if (polygon.borderPoint.y - polygon.centerY > 0) {
+  //         polygon.borderPointTheta = Math.acos(cosTheta);
+  //       } else {
+  //         polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+  //       }
+  //     },
+  //     mouseUpHandler: function (eventData, target) {
 
-      },
-      actionHandler: function (eventData, transform, x, y) {
-        var polygon = transform.target;
-        polygon.radius = Math.sqrt((polygon.centerX - x) * (polygon.centerX - x) + (polygon.centerY - y) * (polygon.centerY - y))
-        polygon.left = polygon.centerX;
-        polygon.top = polygon.centerY;
-        polygon.width = polygon.radius * 2;
-        polygon.height = polygon.radius * 2;
-        polygon.borderPoint = {
-          x: x,
-          y: y
-        }
-        var distC = Math.sqrt(Math.pow(x - polygon.centerX - polygon.radius, 2) + Math.pow(y - polygon.centerY, 2))
-        cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
-        if (polygon.borderPoint.y - polygon.centerY > 0) {
-          polygon.borderPointTheta = Math.acos(cosTheta);
-        } else {
-          polygon.borderPointTheta = Math.acos(cosTheta) * -1;
-        }
-        return true;
-      },
-      cursorStyle: 'pointer',
-      // render: renderIcon,
-      cornerSize: 5
-    })
-  }
+  //     },
+  //     actionHandler: function (eventData, transform, x, y) {
+  //       var polygon = transform.target;
+  //       polygon.radius = Math.sqrt((polygon.centerX - x) * (polygon.centerX - x) + (polygon.centerY - y) * (polygon.centerY - y))
+  //       polygon.left = polygon.centerX;
+  //       polygon.top = polygon.centerY;
+  //       polygon.width = polygon.radius * 2;
+  //       polygon.height = polygon.radius * 2;
+  //       polygon.borderPoint = {
+  //         x: x,
+  //         y: y
+  //       }
+  //       var distC = Math.sqrt(Math.pow(x - polygon.centerX - polygon.radius, 2) + Math.pow(y - polygon.centerY, 2))
+  //       cosTheta = (2 * Math.pow(polygon.radius, 2) - Math.pow(distC, 2)) / (2 * Math.pow(polygon.radius, 2))
+  //       if (polygon.borderPoint.y - polygon.centerY > 0) {
+  //         polygon.borderPointTheta = Math.acos(cosTheta);
+  //       } else {
+  //         polygon.borderPointTheta = Math.acos(cosTheta) * -1;
+  //       }
+  //       return true;
+  //     },
+  //     cursorStyle: 'pointer',
+  //     // render: renderIcon,
+  //     cornerSize: 5
+  //   })
+  // }
 
-
+  fabric.HiSphere.prototype.controls = fabric.Object.prototype.controls;
 
   hiDraw.prototype.HiSphere = (function () {
 
