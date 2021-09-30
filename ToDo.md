@@ -10,7 +10,7 @@
 8. add spot light icon 控制 (OK)  
 9. remove spot light (OK)  
 10. 使用 transform control的 object change 反向控制 fabric 物件位置  (OK)  
-11. transform control切換模式  
+11. transform control切換模式 (OK)  
 12. 添加 `helper` (OK)
 13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、SpotLightHelper (OK)  
 14. 將fabric繪的2D圖進行貼皮 (功能 OK，未封裝，圖片下載可能非同步)  
@@ -22,11 +22,14 @@
 20. fabric 多選 http://fabricjs.com/manage-selection   (hiDraw_Event.js 中 selection:created 的 discardActiveObject) (OK)  
 21. copy & paste (OK)  
 22. PointLight & PointLightHelper
-23. transform control無法控制group(obj, 3ds, gltf...etc)
-24. group copy & past
+23. transform control無法控制group(obj, 3ds, gltf...etc) (OK)
+24. group copy & past (OK)
 25. 六面體不同面貼不同圖 (https://opentechlovers.wordpress.com/2014/09/22/wrap-different-images-on-different-faces-of-a-cube/)  
 26. 六面體不同面貼不同顏色 (https://discourse.threejs.org/t/changing-face-color-of-cube/26509)  
 27. THREE.CanvasTexture(canvas)  
+28. 燈光屬性  
+29. 相機屬性  
+30. grid屬性  
 
 # group (OK)  
 fabric  
