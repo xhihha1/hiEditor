@@ -291,7 +291,8 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
     phiStart: 0,
     phiLength: Math.PI * 2,
     thetaStart: 0,
-    thetaLength: Math.PI
+    thetaLength: Math.PI,
+    scale: [1, 1, 1]
   }
   objOption = this.mergeDeep(objOption, option)
 
@@ -312,6 +313,7 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   });
   const sphere = new THREE.Mesh(geometry, material);
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  sphere.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   sphere.hiId = objOption.hiId
   sphere.castShadow = true;
   sphere.receiveShadow = true;
@@ -347,7 +349,12 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
     sphere.material.color = new THREE.Color(objOption.color)
   }
   if (objOption.angle) {
-    sphere.rotation.y = objOption.angle / 180 * Math.PI;
+    sphere.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+  if (objOption.scale) {
+    sphere.scale.x = objOption.scale[0];
+    sphere.scale.y = objOption.scale[1];
+    sphere.scale.z = objOption.scale[2];
   }
   return sphere
 }
@@ -373,6 +380,7 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   cube.castShadow = true;
   cube.receiveShadow = true;
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  cube.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   cube.hiId = objOption.hiId
   if (parentGroup) {
     parentGroup.add( cube );
@@ -400,7 +408,7 @@ hi3D.prototype.setCube = function (cube, objOption) {
     cube.scale.z = objOption.scale[2];
   }
   if (objOption.angle) {
-    cube.rotation.y = objOption.angle / 180 * Math.PI;
+    cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
   return cube
 }

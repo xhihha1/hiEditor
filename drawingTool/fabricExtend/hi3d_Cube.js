@@ -408,9 +408,11 @@
         rect[prop] = inst.otherProps[prop];
       }
       rect.hiId = hiDraw.prototype.uniqueIdGenerater()
-      console.log(rect.hiId)
       rect.altitude = 0
       rect.depth = 1
+      rect.scaleZ = 1
+      ellipse.rotateX = 0
+      ellipse.rotateZ = 0
       inst.canvas.add(rect).setActiveObject(rect);
       rect.canvasItem = inst.canvasItem;
 

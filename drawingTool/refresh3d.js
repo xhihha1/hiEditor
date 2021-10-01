@@ -152,7 +152,8 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       size: [item["width"], depth, item["height"]],
-      angle: item['angle']
+      angle: item['angle'],
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
     }
     if (itemExist) {
       // console.log('exist cube', objNode, opt)
@@ -172,7 +173,8 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       radius: item["radius"],
       widthSegments: item["width"],
       heightSegments: item["height"],
-      angle: item['angle']
+      angle: item['angle'],
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
     }
     if (itemExist) {
       this.setSphere(objNode, opt)

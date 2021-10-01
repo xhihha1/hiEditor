@@ -62,9 +62,12 @@ function initCanvas(canvasId, canvasViewId) {
           $('#newpositionX').val(parseInt(opt.target.get('left')) || 0)
           $('#newpositionY').val(parseInt(opt.target.get('altitude')) || 0)
           $('#newpositionZ').val(parseInt(opt.target.get('top')) || 0)
-          $('#newsizeX').val(parseInt(opt.target.get('width')) || 0)
-          $('#newsizeY').val(parseInt(opt.target.get('depth')) || 0)
-          $('#newsizeZ').val(parseInt(opt.target.get('height')) || 0)
+          $('#newsizeX').val(parseFloat(opt.target.get('width')) || 1)
+          $('#newsizeY').val(parseFloat(opt.target.get('depth')) || 1)
+          $('#newsizeZ').val(parseFloat(opt.target.get('height')) || 1)
+          $('#newscaleX').val(parseFloat(opt.target.get('scaleX')) || 1)
+          $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
+          $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
           if (opt.target.hiId) {
             edit.hi3d.scene.traverse(function (node) {
               if ( (node instanceof THREE.Mesh || node instanceof THREE.Group) &&

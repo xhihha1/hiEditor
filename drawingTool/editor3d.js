@@ -18,18 +18,22 @@ function initCanvas3D(edit, objOption) {
             var height = Math.abs(box1.max.z - box1.min.z)
              activeObj.set({
               rotateX: node.rotation.x * 180 / Math.PI,
-              angle: node.rotation.y * 180 / Math.PI,
+              angle: -1 * node.rotation.y * 180 / Math.PI,
               rotateZ: node.rotation.z * 180 / Math.PI,
               left: node.position.x,
               altitude: node.position.y,
               top: node.position.z,
               // width: width,
               // depth: depth,
-              // height: height
+              // height: height,
+              scaleX: node.scale.x,
+              scaleY: node.scale.z,
+              scaleZ: node.scale.y
             });
             console.log('activeObj', 'set')
           }
-          edit.canvasView.renderAll();
+          // edit.canvasView.renderAll();
+          edit.canvasView.renderAndResetBound();
         }
       }.bind(edit.hi3d)
     },

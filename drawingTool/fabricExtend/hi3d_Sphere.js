@@ -410,6 +410,9 @@
       ellipse.hiId = hiDraw.prototype.uniqueIdGenerater()
       ellipse.altitude = 0
       ellipse.scaleZ = 1
+      ellipse.depth = 1
+      ellipse.rotateX = 0
+      ellipse.rotateZ = 0
       inst.canvas.add(ellipse).setActiveObject(ellipse);
       ellipse.canvasItem = inst.canvasItem;
 
