@@ -93,10 +93,22 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
     });
     // if (!objNode) { continue }
     if (item["type"] == "hiCamera") {
-      this.camera.position.set(item["left"], item['altitude'], item["top"]);
+      const far = item.camera && item.camera.far ? item.camera.far : 2000
+      const near = item.camera && item.camera.near ? item.camera.near : 0.1
+      var opt = {
+        far: far,
+        near: near,
+        position: [item["left"], item['altitude'], item["top"]]
+      }
+      // this.camera.position.set(item["left"], item['altitude'], item["top"]);
+      this.setCamera(opt)
     }
     if (item["type"] == "hiLookAt") {
-      this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
+      var opt = {
+        targetPoint: [item["left"], item['altitude'], item["top"]]
+      }
+      // this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
+      this.setCamera(opt)
     }
     if (item["type"] == "hiSpotLight") {
       var opt = {

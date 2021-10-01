@@ -243,9 +243,12 @@ hi3D.prototype.setCamera = function (option) {
   this.cameraOption = this.mergeDeep(this.cameraOption, option)
   const cameraOption = this.cameraOption
   const camera = this.camera
+  camera.far = parseFloat(cameraOption.far)
+  camera.near = parseFloat(cameraOption.near)
   camera.position.set(cameraOption.position[0], cameraOption.position[1], cameraOption.position[2]); // Set position like this
   // camera.position.set.apply(null , cameraOption.position )
   camera.lookAt(new THREE.Vector3(cameraOption.targetPoint[0], cameraOption.targetPoint[1], cameraOption.targetPoint[2])); // Set look at coordinate like this
+  camera.updateProjectionMatrix ()
   return this
 }
 

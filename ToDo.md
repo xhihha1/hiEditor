@@ -66,3 +66,5 @@ Three
 5. 添加新`format`，新增 hi3d_format_XXX.js, hi3d.js, refresh3d.js, 最後在編輯器校正大小修改 editor3d.js
 
 6. [icon](https://www.flaticon.com/free-icon/move-object_14296#)
+
+7. [3D模型](https://free3d.com/3d-models/)  

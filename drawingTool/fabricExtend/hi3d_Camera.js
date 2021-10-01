@@ -20,6 +20,7 @@
 
     toObject: function (propertiesToInclude) {
       return fabric.util.object.extend(this.callSuper('toObject', ['radius', 'startAngle', 'endAngle'].concat(propertiesToInclude)), {
+        camera: this.camera,
         altitude: this.altitude
       });
     },

@@ -300,4 +300,27 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.transformControls.showZ =! edit.hi3d.transformControls.showZ;
     }
   })
+  $('#cameraNear').on('change', function(){
+    console.log('cameraNear')
+    var near = $(this).val()
+    edit.canvasView.forEachObject(function (obj) {
+      if (obj.type == 'hiCamera') {
+        obj.camera = obj.camera || {}
+        obj.camera.near = parseFloat(near)
+      }
+    })
+    edit.hi3d.setCamera({ near: near })
+    edit.hi3d.viewRender()
+  })
+  $('#cameraFar').on('change', function(){
+    var far = $(this).val()
+    edit.canvasView.forEachObject(function (obj) {
+      if (obj.type == 'hiCamera') {
+        obj.camera = obj.camera || {}
+        obj.camera.far = parseFloat(far)
+      }
+    })
+    edit.hi3d.setCamera({ far: far })
+    edit.hi3d.viewRender()
+  })
 }
