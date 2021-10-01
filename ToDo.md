@@ -27,9 +27,12 @@
 25. 六面體不同面貼不同圖 (https://opentechlovers.wordpress.com/2014/09/22/wrap-different-images-on-different-faces-of-a-cube/)  
 26. 六面體不同面貼不同顏色 (https://discourse.threejs.org/t/changing-face-color-of-cube/26509)  
 27. THREE.CanvasTexture(canvas)  
-28. 燈光屬性  
-29. 相機屬性  
+28. 燈光屬性 (OK)  
+29. 相機屬性 (OK)  
 30. grid屬性  
+31. fabric renderAll() 改 renderAndResetBound() requestRenderAllBound()  
+32. 相機延管線移動 https://threejs.org/examples/#webgl_geometry_extrude_splines  
+33. 鍵盤操作 misc_controls_pointerlock.html
 
 # group (OK)  
 fabric  
@@ -68,3 +71,5 @@ Three
 6. [icon](https://www.flaticon.com/free-icon/move-object_14296#)
 
 7. [3D模型](https://free3d.com/3d-models/)  
+
+8. https://www.thingjs.com/guide/platform/

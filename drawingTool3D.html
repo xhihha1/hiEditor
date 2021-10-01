@@ -159,21 +159,24 @@
         </li>
         <li class="prop-title">camera</li>
         <li class="prop-content">
+          <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
           <div><input type="text" id="cameraNear" placeholder="near" value="0.1"></div>
           <div><input type="text" id="cameraFar" placeholder="far" value="2000"></div>
+        </li>
+        <li class="prop-title">Grid</li>
+        <li class="prop-content">
+          <div><label><input name="" id="btnGridHelper" type="checkbox" value="1" checked> GridHelper</label></div>
+          <div><input type="text" id="gridSize" placeholder="gridSize" value="1000"></div>
+          <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100"></div>
+          <div><span>colorCenter: </span><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
+          <div><span>colorGrid: </span><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
+          <div><button id="submitGrid">submit</button></div>
         </li>
         <li class="prop-title">Scene</li>
         <li class="prop-content">
           <div><label><input name="" id="btnGround" type="checkbox" value="1"> Ground</label></div>
-          <div><label><input name="" id="btnGridHelper" type="checkbox" value="1"> GridHelper</label></div>
-          <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1"> AxesHelper</label></div>
-          <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
-          <div><label><input name="" id="btnLightHelper" type="checkbox">Light Helper</label></div>
-          <div><label><input name="" id="btnHemisphereLight" type="checkbox" checked> HemisphereLight</label></div>
-          <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
-          <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
-          <div><label><input name="" id="btnSpotLightHelper" type="checkbox" checked> SpotLight Helper</label></div>
-          <div><label><input name="" id="btnCameraHelper" type="checkbox" checked> Camera Helper</label></div>
+          <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1" checked> AxesHelper</label></div>
+          <div><label><input name="" id="btnSpotLightHelper" type="checkbox" > SpotLight Helper</label></div>
           <div><label><input name="" id="btnBoxHelper" type="checkbox">Box Helper</label></div>
         </li>
         <li class="prop-title">tranform control</li>
@@ -270,7 +273,28 @@
         </li>
         <li class="prop-title">Directional Light</li>
         <li class="prop-content">
+          <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
+          <div><label><input name="" id="btnLightHelper" type="checkbox">Light Helper</label></div>
+          <div><span>color: </span><input type="color" id="light_color" name="" value="#FFFFFF"></div>
+          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="light_intensity" name="intensity"></div>
           <div><label><input name="" id="light_castShadow" type="checkbox" checked>castShadow</label></div>
+          <div><button id="submitLight">submit</button></div>
+        </li>
+        <li class="prop-title">HemisphereLight Light</li>
+        <li class="prop-content">
+          <div><label><input name="" id="btnHemisphereLight" type="checkbox" checked> HemisphereLight</label></div>
+          <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
+          <div><span>skyColor: </span><input type="color" id="hemisphereLight_color" name="" value="#FFFFFF"></div>
+          <div><span>groundColor: </span><input type="color" id="hemisphereLight_groundColor" name="" value="#FFFFFF"></div>
+          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="hemisphereLight_intensity" name="intensity"></div>
+          <div><button id="submitHemisphereLight">submit</button></div>
+        </li>
+        <li class="prop-title">AmbientLight Light</li>
+        <li class="prop-content">
+          <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
+          <div><span>Color: </span><input type="color" id="ambientLight_color" name="" value="#FFFFFF"></div>
+          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity"></div>
+          <div><button id="submitAmbientLight">submit</button></div>
         </li>
         <li class="prop-title">Obj propy change</li>
         <li class="prop-content">

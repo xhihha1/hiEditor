@@ -26,7 +26,39 @@ function hi3D(options) {
     scene: {
       background: '#F0F0F0'
     },
-    light: [{
+    grid: {
+      size: 1000,
+      divisions: 100,
+      colorCenterLine: '#444444',
+      colorGrid: '#888888'
+    },
+    light: {
+      DirectionalLight: {
+        color: 0xffffff,
+        position: [20, 10, 5],
+        castShadow: true,
+        intensity: 1,
+        shadow: {
+          mapSize: {
+            width: 5000,
+            height: 5000
+          }
+        }
+      },
+      HemisphereLight: {
+        position: [0, 1, 0],
+        color: '#FFFFBB',
+        groundColor: '#080820',
+        intensity: 1,
+        castShadow: false
+      },
+      AmbientLight: {
+        color: '#0C0C0C',
+        intensity: 1,
+        castShadow: true  
+      }
+    },
+    lights: [{
       type: 'DirectionalLight',
       color: 0xffffff,
       position: [20, 10, 5],
@@ -115,11 +147,12 @@ hi3D.prototype.addscene = function () {
 }
 
 hi3D.prototype.addLight = function () {
-  var dirLight = new THREE.DirectionalLight(0xffffff); //光源顏色
-  dirLight.position.set(20, 10, 5); //光源位置
-  dirLight.castShadow = true;
-  dirLight.shadow.mapSize.width = 5000;
-  dirLight.shadow.mapSize.height = 5000;
+  var option = this.defaultOptions.light.DirectionalLight
+  var dirLight = new THREE.DirectionalLight(new THREE.Color(option.color)); //光源顏色
+  dirLight.position.set(option.position[0], option.position[1], option.position[2]); //光源位置
+  dirLight.castShadow = option.castShadow;
+  dirLight.shadow.mapSize.width = option.shadow.mapSize.width;
+  dirLight.shadow.mapSize.height = option.shadow.mapSize.height;
   const d = 100;
   dirLight.shadow.camera.left = - d;
   dirLight.shadow.camera.right = d;
@@ -133,6 +166,24 @@ hi3D.prototype.addLight = function () {
   return this
 }
 
+hi3D.prototype.setLight = function (option) {
+  this.defaultOptions.light.DirectionalLight = this.mergeDeep(this.defaultOptions.light.DirectionalLight, option)
+  if (this.directionalLight) {
+    if (option.color) {
+      this.directionalLight.color = new THREE.Color(option.color)
+    }
+    if (option.intensity) {
+      this.directionalLight.intensity = parseFloat(option.intensity)
+    }
+    if (option.position) {
+      this.directionalLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+    }
+    if (typeof option.castShadow === 'boolean' ) {
+      this.directionalLight.castShadow = option.castShadow
+    }
+  }
+}
+
 hi3D.prototype.addLightHelper = function () {
   if (!this.directionalLight) { this.addLight() }
   const dirLightHelper = new THREE.DirectionalLightHelper( this.directionalLight, 10 );
@@ -142,11 +193,27 @@ hi3D.prototype.addLightHelper = function () {
 }
 
 hi3D.prototype.addAmbientLight = function () {
+  var option = this.defaultOptions.light.AmbientLight
   //添加环境光
-  var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+  var ambientLight = new THREE.AmbientLight(new THREE.Color(option.color));
   this.scene.add(ambientLight);
   this.ambientLight = ambientLight
   return this
+}
+
+hi3D.prototype.setAmbientLight = function (option) {
+  this.defaultOptions.light.AmbientLight = this.mergeDeep(this.defaultOptions.light.AmbientLight, option)
+  if (this.ambientLight) {
+    if (option.color) {
+      this.ambientLight.color = new THREE.Color(option.color)
+    }
+    if (option.intensity) {
+      this.ambientLight.intensity = parseFloat(option.intensity)
+    }
+    if (typeof option.castShadow === 'boolean' ) {
+      this.ambientLight.castShadow = option.castShadow
+    }
+  }
 }
 
 
@@ -202,10 +269,36 @@ hi3D.prototype.addSpotLightHelper = function (option) {
 }
 
 hi3D.prototype.addHemisphereLight = function () {
-  const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+  var option = this.defaultOptions.light.HemisphereLight
+  var color = new THREE.Color(option.color)
+  var groundColor = new THREE.Color(option.groundColor)
+  var intensity = option.intensity
+  const light = new THREE.HemisphereLight(color, groundColor, intensity);
+  light.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
   this.scene.add(light);
   this.hemisphereLight = light
   return this
+}
+
+hi3D.prototype.setHemisphereLight = function (option) {
+  this.defaultOptions.light.HemisphereLight = this.mergeDeep(this.defaultOptions.light.HemisphereLight, option)
+  if (this.hemisphereLight) {
+    if (option.color) {
+      this.hemisphereLight.color = new THREE.Color(option.color)
+    }
+    if (option.groundColor) {
+      this.hemisphereLight.groundColor = new THREE.Color(option.groundColor)
+    }
+    if (option.intensity) {
+      this.hemisphereLight.intensity = parseFloat(option.intensity)
+    }
+    if (option.position) {
+      this.hemisphereLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+    }
+    if (typeof option.castShadow === 'boolean' ) {
+      this.hemisphereLight.castShadow = option.castShadow
+    }
+  }
 }
 
 hi3D.prototype.addHemisphereLightHelper = function () {
@@ -269,12 +362,24 @@ hi3D.prototype.setRender = function () {
   return this
 }
 
-hi3D.prototype.setGridHelper = function () {
-  var gHelp = new THREE.GridHelper(1000, 100, 0x888888, 0x444444)
-  // console.log(gHelp)
+hi3D.prototype.setGridHelper = function (opt) {
+  var needReset = true
+  if(opt) {
+    this.defaultOptions.grid = this.mergeDeep(this.defaultOptions.grid, opt)
+  }
+  var option = this.defaultOptions.grid
+  var size = parseInt(option.size)
+  var divisions = parseInt(option.divisions)
+  var colorCenterLine = new THREE.Color(option.colorCenterLine)
+  var colorGrid = new THREE.Color(option.colorGrid)
+  if (this.gridHelper) {
+    this.gridHelper.geometry.dispose()
+    this.scene.remove(this.gridHelper)
+  }
+  var gHelp = new THREE.GridHelper(size, divisions, colorCenterLine, colorGrid)
   this.scene.add(gHelp);
-  // console.log(this.scene.children)
   this.gridHelper = gHelp
+  
   return this
 }
 

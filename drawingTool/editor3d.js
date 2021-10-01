@@ -138,11 +138,7 @@ function initCanvas3D(edit, objOption) {
     edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     // requestAnimationFrame(animateA); // 自動更新 刷新
     // ------------------------------------------------
-    const loader = new THREE.NRRDLoader();
-    console.log('nrrd', '-----------------------A')
-    loader.load( "./assets/nrrd/stent.nrrd", function ( volume ) {
-      console.log('nrrd', '-----------------------B')
-    })
+
     // ------------------------------------------------
   }
   animateA()

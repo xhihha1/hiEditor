@@ -323,4 +323,70 @@ function editorEvent3D(edit, objOption) {
     edit.hi3d.setCamera({ far: far })
     edit.hi3d.viewRender()
   })
+  $('#submitLight').click(function(){
+    var color = $('#light_color').val()
+    var intensity = parseFloat($('#light_intensity').val())
+    var shadowEnable = $('#light_castShadow').prop("checked");
+    console.log('shadowEnable', shadowEnable)
+    if (edit.hi3d.directionalLight) {
+      edit.hi3d.setLight({
+        color: color,
+        intensity: intensity,
+        castShadow: shadowEnable
+      })
+      edit.hi3d.viewRender()
+    }
+  })
+  $('#submitLight').click(function(){
+    var color = $('#light_color').val()
+    var intensity = parseFloat($('#light_intensity').val())
+    var shadowEnable = $('#light_castShadow').prop("checked");
+    if (edit.hi3d.directionalLight) {
+      edit.hi3d.setLight({
+        color: color,
+        intensity: intensity,
+        castShadow: shadowEnable
+      })
+      edit.hi3d.viewRender()
+    }
+  })
+  $('#submitHemisphereLight').click(function(){
+    var color = $('#hemisphereLight_color').val()
+    var groundColor = $('#hemisphereLight_groundColor').val()
+    var intensity = parseFloat($('#hemisphereLight_intensity').val())
+    if (edit.hi3d.hemisphereLight) {
+      edit.hi3d.setHemisphereLight({
+        color: color,
+        groundColor: groundColor,
+        intensity: intensity
+      })
+      edit.hi3d.viewRender()
+    }
+  })
+  $('#submitAmbientLight').click(function(){
+    var color = $('#ambientLight_color').val()
+    var intensity = parseFloat($('#ambientLight_intensity').val())
+    if (edit.hi3d.hemisphereLight) {
+      edit.hi3d.setAmbientLight({
+        color: color,
+        intensity: intensity
+      })
+      edit.hi3d.viewRender()
+    }
+  })
+  $('#submitGrid').click(function(){
+    var size = parseInt($('#gridSize').val())
+    var divisions = parseInt($('#gridDivisions').val())
+    var colorCenterLine = $('#grid_colorCenter').val()
+    var colorGrid = $('#grid_colorGrid').val()
+    if (edit.hi3d.gridHelper) {
+      edit.hi3d.setGridHelper({
+        size: size,
+        divisions: divisions,
+        colorCenterLine: colorCenterLine,
+        colorGrid: colorGrid
+      })
+      edit.hi3d.viewRender()
+    }
+  })
 }
