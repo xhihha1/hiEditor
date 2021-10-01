@@ -58,7 +58,7 @@ function importJson(edit, objOption) {
 }
 
 function viewerRefresh (edit, objOption) {
-  edit.canvasView.forEachObject(function(i){ i.set('fill', 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')')})
+  // edit.canvasView.forEachObject(function(i){ i.set('fill', 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')')})
 }
 
 (function () {
