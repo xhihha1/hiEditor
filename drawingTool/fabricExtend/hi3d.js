@@ -268,6 +268,42 @@ hi3D.prototype.addSpotLightHelper = function (option) {
   }
 }
 
+
+hi3D.prototype.addPointLight = function (option) {
+  var objOption = {
+    hiId: hi3D.prototype.uniqueIdGenerater(),
+    color: '#FF0000',
+    intensity: 1,
+    distance: 0,
+    decay: 2,
+    position: [10, 0, 0]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  //添加聚光灯光源
+  var light = new THREE.PointLight(objOption.color, objOption.intensity, objOption.distance, objOption.decay);
+  light.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  //Set up shadow properties for the light
+  light.shadow.mapSize.width = 512; // default
+  light.shadow.mapSize.height = 512; // default
+  light.shadow.camera.near = 0.5; // default
+  light.shadow.camera.far = 500; // default
+  light.shadow.focus = 1; // default
+  light.castShadow = true;
+  light.hiId = objOption.hiId
+  this.scene.add(light);
+
+  return this
+}
+
+hi3D.prototype.setPointLight = function (light, objOption) {
+  if (objOption.color) {
+    light.color.set( objOption.color );
+  }
+  if (objOption.position) {
+    light.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+}
+
 hi3D.prototype.addHemisphereLight = function () {
   var option = this.defaultOptions.light.HemisphereLight
   var color = new THREE.Color(option.color)

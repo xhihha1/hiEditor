@@ -21,7 +21,7 @@
 19. GLTF (webgl_animation_skinning_morph.html) (OK)  
 20. fabric 多選 http://fabricjs.com/manage-selection   (hiDraw_Event.js 中 selection:created 的 discardActiveObject) (OK)  
 21. copy & paste (OK)  
-22. PointLight & PointLightHelper
+22. PointLight (OK)
 23. transform control無法控制group(obj, 3ds, gltf...etc) (OK)
 24. group copy & past (OK)
 25. 六面體不同面貼不同圖 (https://opentechlovers.wordpress.com/2014/09/22/wrap-different-images-on-different-faces-of-a-cube/)  
@@ -29,10 +29,11 @@
 27. THREE.CanvasTexture(canvas)  
 28. 燈光屬性 (OK)  
 29. 相機屬性 (OK)  
-30. grid屬性  
+30. grid屬性 (OK)  
 31. fabric renderAll() 改 renderAndResetBound() requestRenderAllBound()  
 32. 相機延管線移動 https://threejs.org/examples/#webgl_geometry_extrude_splines  
 33. 鍵盤操作 misc_controls_pointerlock.html
+34. PointLightHelper  
 
 # group (OK)  
 fabric  

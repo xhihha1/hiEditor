@@ -22,6 +22,12 @@ function editorEvent3D(edit, objOption) {
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiSpotLight(edit, objOption);
   });
+  $("#drawPointLight").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var circle = new edit.HiPointLight(edit, objOption);
+  });
   $("#drawCube").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);

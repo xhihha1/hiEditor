@@ -29,7 +29,8 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
     }
     if (node instanceof THREE.Line ||
       node instanceof THREE.Line2 ||
-      node instanceof THREE.SpotLight) {
+      node instanceof THREE.SpotLight ||
+      node instanceof THREE.PointLight) {
       var nodeIdExist = false
       for (var i = 0; i < fabricJson["objects"].length; i++) {
         var itemId = fabricJson["objects"][i].hiId;
@@ -57,7 +58,10 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
   // 先不移除多餘物件
   for (var i = removeNodes.length - 1; i >= 0; i--) {
     if (removeNodes[i] instanceof THREE.SpotLight && removeNodes[i].hiId) {
-      console.log('remove spotlight')
+      this.scene.remove(removeNodes[i]);
+    }
+    if (removeNodes[i] instanceof THREE.PointLight && removeNodes[i].hiId) {
+      console.log('remove PointLight')
       this.scene.remove(removeNodes[i]);
     }
     if ((removeNodes[i] instanceof THREE.Line ||
@@ -122,6 +126,18 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       } else {
         // console.log('add SpotLight', opt)
         this.addSpotLight(opt)
+      }
+    }
+    if (item["type"] == "hiPointLight") {
+      var opt = {
+        hiId: item.hiId,
+        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        position: [item["left"], item['altitude'], item["top"]],
+      }
+      if (itemExist) {
+        this.setPointLight(objNode, opt)
+      } else {
+        this.addPointLight(opt)
       }
     }
     if (item.objects && item.objects.length > 0) {
