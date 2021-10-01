@@ -33,7 +33,9 @@
         fillAlpha: 0,
         eventCtrl: {
           mouse_wheel_default_behavior: true,
+          mouse_down_default_behavior: true,
           mouse_move_default_behavior: true,
+          mouse_up_default_behavior: true,
           zoomMax: 32,
           zoomMin: 0.01
         }

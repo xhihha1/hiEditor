@@ -90,14 +90,16 @@ hiDraw.prototype.viewEvent = (function () {
         
         this.canvasView.on('mouse:down', function (opt) {
             var evt = opt.e;
-            if (evt.altKey === true || that.defaultOptions.panCanvas) {
-                this.isDragging = true;
-                this.selection = false;
-                this.lastPosX = evt.clientX;
-                this.lastPosY = evt.clientY;
+            if (that.defaultOptions.objectDefault.eventCtrl.mouse_down_default_behavior) {
+                if (evt.altKey === true || that.defaultOptions.panCanvas) {
+                    this.isDragging = true;
+                    this.selection = false;
+                    this.lastPosX = evt.clientX;
+                    this.lastPosY = evt.clientY;
+                }
+                // console.log('mouse down',opt.target? opt.target.get('type'): opt)
+                that.deselectPolygons(opt.target)
             }
-            // console.log('mouse down',opt.target? opt.target.get('type'): opt)
-            that.deselectPolygons(opt.target)
             if (that.defaultOptions.event && that.defaultOptions.event['mouse_down']) {
                 that.defaultOptions.event['mouse_down'](opt)
             }
@@ -126,9 +128,11 @@ hiDraw.prototype.viewEvent = (function () {
             }
         });
         this.canvasView.on('mouse:up', function (opt) {
-            this.setViewportTransform(this.viewportTransform);
-            this.isDragging = false;
-            this.selection = true;
+            if (that.defaultOptions.objectDefault.eventCtrl.mouse_up_default_behavior) {
+                this.setViewportTransform(this.viewportTransform);
+                this.isDragging = false;
+                this.selection = true;
+            }
             // that.defaultOptions.panCanvas = false;
             if (that.defaultOptions.event && that.defaultOptions.event['mouse_up']) {
                 that.defaultOptions.event['mouse_up'](opt)
