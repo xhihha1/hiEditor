@@ -52,23 +52,8 @@ function initCanvas(canvasId, canvasViewId) {
           $('#objPropName').val(opt.target.get('name'))
           $('#objPropLabel').val(opt.target.get('label'))
           $('#objPropStroke').val(opt.target.get('stroke'))
-          if(opt.target.get('source')){$('#objPropSourceObj').val(opt.target.get('source').obj)}
-          $('#newPropStroke').val(opt.target.get('stroke'))
-          $('#newPropFill').val(opt.target.get('fill'))
-          $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
-          $('#newRotateX').val(parseInt(opt.target.get('rotateX')) || 0)
-          $('#newRotateY').val(parseInt(opt.target.get('angle')) || 0)
-          $('#newRotateZ').val(parseInt(opt.target.get('rotateZ')) || 0)
-          $('#newpositionX').val(parseInt(opt.target.get('left')) || 0)
-          $('#newpositionY').val(parseInt(opt.target.get('altitude')) || 0)
-          $('#newpositionZ').val(parseInt(opt.target.get('top')) || 0)
-          $('#newsizeX').val(parseFloat(opt.target.get('width')) || 1)
-          $('#newsizeY').val(parseFloat(opt.target.get('depth')) || 1)
-          $('#newsizeZ').val(parseFloat(opt.target.get('height')) || 1)
-          $('#newscaleX').val(parseFloat(opt.target.get('scaleX')) || 1)
-          $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
-          $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
           if (opt.target.hiId) {
+            showObjPropChange(opt)
             edit.hi3d.scene.traverse(function (node) {
               if ( (node instanceof THREE.Mesh || node instanceof THREE.Group) &&
                 node.hiId === opt.target.hiId) {
@@ -83,6 +68,7 @@ function initCanvas(canvasId, canvasViewId) {
       },
       selection_updated: function (opt) {
         if (opt.target.hiId) {
+          showObjPropChange(opt)
           edit.hi3d.scene.traverse(function (node) {
             if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
               edit.hi3d.setTransformControlsMesh(node)
@@ -128,6 +114,27 @@ function initCanvas(canvasId, canvasViewId) {
   })
 
   return edit;
+}
+
+function showObjPropChange (opt) {
+  if(opt.target.get('source')){$('#objPropSourceObj').val(opt.target.get('source').obj)}
+  $('#newPropHiId').val(opt.target.get('hiId'))
+  $('#newPropType').val(opt.target.get('type'))
+  $('#newPropStroke').val(opt.target.get('stroke'))
+  $('#newPropFill').val(opt.target.get('fill'))
+  $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
+  $('#newRotateX').val(parseInt(opt.target.get('rotateX')) || 0)
+  $('#newRotateY').val(parseInt(opt.target.get('angle')) || 0)
+  $('#newRotateZ').val(parseInt(opt.target.get('rotateZ')) || 0)
+  $('#newpositionX').val(parseInt(opt.target.get('left')) || 0)
+  $('#newpositionY').val(parseInt(opt.target.get('altitude')) || 0)
+  $('#newpositionZ').val(parseInt(opt.target.get('top')) || 0)
+  $('#newsizeX').val(parseFloat(opt.target.get('width')) || 1)
+  $('#newsizeY').val(parseFloat(opt.target.get('depth')) || 1)
+  $('#newsizeZ').val(parseFloat(opt.target.get('height')) || 1)
+  $('#newscaleX').val(parseFloat(opt.target.get('scaleX')) || 1)
+  $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
+  $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
 }
 
 function objectPropertyChange(edit, objOption) {

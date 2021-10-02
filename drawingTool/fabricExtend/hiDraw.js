@@ -512,7 +512,11 @@
 
   }
 
-
+  // reverse string to functionn
+  hiDraw.prototype.functionGenerator = function (func) {
+    return new Function("return " + func)();
+    // var C = new Function("return " + B)()
+  }
 
   global.hiDraw = hiDraw
 
