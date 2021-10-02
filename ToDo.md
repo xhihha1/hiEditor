@@ -30,7 +30,7 @@
 28. 燈光屬性 (OK)  
 29. 相機屬性 (OK)  
 30. grid屬性 (OK)  
-31. fabric renderAll() 改 renderAndResetBound() requestRenderAllBound()  
+31. fabric renderAll() 改 renderAndResetBound() requestRenderAllBound()  (OK)  
 32. 相機延管線移動 https://threejs.org/examples/#webgl_geometry_extrude_splines  
 33. 鍵盤操作 misc_controls_pointerlock.html
 34. PointLightHelper  

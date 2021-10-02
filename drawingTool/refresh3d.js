@@ -118,7 +118,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
     if (item["type"] == "hiSpotLight") {
       var opt = {
         hiId: item.hiId,
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        color: item["fill"] || item["stroke"] || '#FF0000',
         position: [item["left"], item['altitude'], item["top"]],
       }
       if (itemExist) {
@@ -132,7 +132,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
     if (item["type"] == "hiPointLight") {
       var opt = {
         hiId: item.hiId,
-        color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+        color: item["fill"] || item["stroke"] || '#FF0000',
         position: [item["left"], item['altitude'], item["top"]],
       }
       if (itemExist) {
@@ -166,7 +166,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       size: [item["width"], depth, item["height"]],
       angle: item['angle'],
@@ -185,7 +185,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       radius: item["radius"],
       widthSegments: item["width"],
@@ -231,7 +231,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
@@ -251,7 +251,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
@@ -271,7 +271,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
@@ -291,7 +291,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
@@ -311,7 +311,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
@@ -331,7 +331,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["fill"]) || this.rgba2hex(item["stroke"]) || '#FF0000',
+      color: item["fill"] || item["stroke"] || '#FF0000',
       position: [item["left"], item['altitude'], item["top"]],
       widthSegments: item["width"],
       heightSegments: item["height"],
