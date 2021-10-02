@@ -34,7 +34,8 @@
 32. 相機延管線移動 https://threejs.org/examples/#webgl_geometry_extrude_splines  
 33. 鍵盤操作 misc_controls_pointerlock.html
 34. PointLightHelper  
-35. 數據資料綁定測試完成，參考refresh3d hiSphere，需要修正 set 驗證 undefined 機制
+35. 數據資料綁定測試完成，參考refresh3d hiSphere，需要修正 set 驗證 undefined 機制  
+36. viewer 讀取場景光線等屬性，添加 json 設定  
 
 # group (OK)  
 fabric  
