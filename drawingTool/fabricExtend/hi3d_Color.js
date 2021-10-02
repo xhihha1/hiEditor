@@ -19,3 +19,8 @@ hi3D.prototype.rgba2hex = function (orig) {
 
     return (hex).substring(0,7);
 }
+
+
+hi3D.prototype.randomHexColor = function () {
+  return '#' + Math.floor(Math.random()*16777215).toString(16);
+}

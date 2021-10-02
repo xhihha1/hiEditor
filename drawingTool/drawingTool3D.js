@@ -135,6 +135,16 @@ function showObjPropChange (opt) {
   $('#newscaleX').val(parseFloat(opt.target.get('scaleX')) || 1)
   $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
   $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
+  
+  var dataBinding = {
+    fill:{
+      advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
+    },
+    stroke:{
+      advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
+    }
+  }
+  $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
 }
 
 function objectPropertyChange(edit, objOption) {
@@ -269,6 +279,18 @@ function objectPropertyChange(edit, objOption) {
     if (activeObj) {
       activeObj.set({
         height: $('#newsizeZ').val()
+      });
+    }
+    // edit.canvasView.renderAll();
+    edit.viewRender()
+    edit.hi3d.refreshByFabricJson(edit);
+  })
+  $('#propChangeDataBinding').click(function () {
+
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set({
+        dataBinding: JSON.stringify($('#newPropDataBinding').val())
       });
     }
     // edit.canvasView.renderAll();

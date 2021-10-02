@@ -14,7 +14,7 @@
 12. 添加 `helper` (OK)
 13. CameraHelper、DirectionalLightHelper、HemisphereLightHelper、SpotLightHelper (OK)  
 14. 將fabric繪的2D圖進行貼皮 (功能 OK，未封裝，圖片下載可能非同步)  
-15. 數據資料綁訂  
+15. 數據資料綁訂 (OK)  
 16. 添加陰影shadow顯示 (ok)  
 17. 添加obj模型檔時，重設 2D方塊大小 (https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object)  (OK)  
 18. boxhelper (OK)
@@ -34,6 +34,7 @@
 32. 相機延管線移動 https://threejs.org/examples/#webgl_geometry_extrude_splines  
 33. 鍵盤操作 misc_controls_pointerlock.html
 34. PointLightHelper  
+35. 數據資料綁定測試完成，參考refresh3d hiSphere，需要修正 set 驗證 undefined 機制
 
 # group (OK)  
 fabric  

@@ -498,25 +498,25 @@
     // this.canvasView.requestRenderAllBound();
   }
 
+  // reverse string to functionn
+  hiDraw.prototype.functionGenerator = function (func) {
+    return new Function("return " + func)();
+    // var C = new Function("return " + B)()
+  }
+
   hiDraw.prototype.toFabricJson = function () {
     if (this.canvasView) {
       // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
       return this.canvasView.toJSON([
         'label', 'uniqueIndex', 'hiId', 'altitude',
         'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
-        'camera'
+        'camera', 'dataBinding'
       ]);
     } else {
       return {}
     }
-
   }
 
-  // reverse string to functionn
-  hiDraw.prototype.functionGenerator = function (func) {
-    return new Function("return " + func)();
-    // var C = new Function("return " + B)()
-  }
 
   global.hiDraw = hiDraw
 

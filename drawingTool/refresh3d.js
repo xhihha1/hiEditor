@@ -1,4 +1,6 @@
-hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
+hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetting) {
+  var setting = { needRemove: true }
+  if (otherSetting) { setting = this.mergeDeep(setting, otherSetting) }
   console.log('refresh')
 // return false
   var fabricJson = null
@@ -56,31 +58,34 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
       }
     }
   }.bind(this));
-  // 先不移除多餘物件
-  for (var i = removeNodes.length - 1; i >= 0; i--) {
-    if (removeNodes[i] instanceof THREE.SpotLight && removeNodes[i].hiId) {
-      this.scene.remove(removeNodes[i]);
-    }
-    if (removeNodes[i] instanceof THREE.PointLight && removeNodes[i].hiId) {
-      console.log('remove PointLight')
-      this.scene.remove(removeNodes[i]);
-    }
-    if ((removeNodes[i] instanceof THREE.Line ||
-      removeNodes[i] instanceof THREE.Mesh) &&
-      removeNodes[i].hiId) {
-      if (removeNodes[i].geometry) {
-        removeNodes[i].geometry.dispose();
+  // 透過設定決定是否刪除物件  
+  if (setting.needRemove) {
+    // 先不移除多餘物件
+    for (var i = removeNodes.length - 1; i >= 0; i--) {
+      if (removeNodes[i] instanceof THREE.SpotLight && removeNodes[i].hiId) {
+        this.scene.remove(removeNodes[i]);
       }
-      if (removeNodes[i].material) {
-        removeNodes[i].material.dispose();
+      if (removeNodes[i] instanceof THREE.PointLight && removeNodes[i].hiId) {
+        console.log('remove PointLight')
+        this.scene.remove(removeNodes[i]);
       }
-      this.scene.remove(removeNodes[i]);
-    }
-    if (removeNodes[i] instanceof THREE.Group &&
-      removeNodes[i].hiId) {
-      removeNodes[i].traverse(function (node) {
-        this.scene.remove(node);
-      }.bind(this))
+      if ((removeNodes[i] instanceof THREE.Line ||
+        removeNodes[i] instanceof THREE.Mesh) &&
+        removeNodes[i].hiId) {
+        if (removeNodes[i].geometry) {
+          removeNodes[i].geometry.dispose();
+        }
+        if (removeNodes[i].material) {
+          removeNodes[i].material.dispose();
+        }
+        this.scene.remove(removeNodes[i]);
+      }
+      if (removeNodes[i] instanceof THREE.Group &&
+        removeNodes[i].hiId) {
+        removeNodes[i].traverse(function (node) {
+          this.scene.remove(node);
+        }.bind(this))
+      }
     }
   }
   // 添加或修改 id 
@@ -181,22 +186,31 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiSphere") {
+    console.log('hiSphere')
     // console.log('r:', item["radius"])
+    var color = item["fill"] || item["stroke"] || '#FF0000';
+    var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
+    var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
+    var widthSegments = typeof item["width"] !== 'undefined' ? item["width"] : undefined
+    var heightSegments = typeof item["height"] !== 'undefined' ? item["height"] : undefined
+    var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
+    var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      radius: item["radius"],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      angle: item['angle'],
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
+      color: color,
+      position: position,
+      radius: radius,
+      widthSegments: widthSegments,
+      heightSegments: heightSegments,
+      angle: angle,
+      scale: scale
     }
     if (itemExist) {
+      console.log('set Sphere', opt)
       this.setSphere(objNode, opt)
     } else {
-      // console.log('add Sphere', opt)
+      console.log('add Sphere', opt)
       this.addSphere(opt, parentGroup)
     }
   }

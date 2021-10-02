@@ -58,12 +58,41 @@ function viewerRefresh(edit, objOption, fabricJson) {
   }
 }
 
+function dataRefresh (edit, objOption) {
+  var fabricJson = JSON.parse(localStorage.getItem('viewJson3D'))
+  var updateView = { objects: [] }
+  for(var i = 0; i < fabricJson.objects.length; i++) {
+    if (fabricJson.objects[i].dataBinding) {
+      var updateObjProp = {}
+      updateObjProp.hiId = fabricJson.objects[i].hiId
+      updateObjProp.type = fabricJson.objects[i].type
+      var dataBinding = JSON.parse(JSON.parse(fabricJson.objects[i].dataBinding))
+      var needChange = false
+      console.log('dataBinding', dataBinding)
+      for(var k in dataBinding) {
+        if (dataBinding[k].advanced) {
+          var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
+          updateObjProp[k] = advancedFunc()
+          needChange = true;
+        }
+      }
+      if (needChange) { updateView.objects.push(updateObjProp) }
+    }
+  }
+  if (updateView) {
+    edit.hi3d.refreshByFabricJson(edit, objOption, updateView, { needRemove: false })
+  }
+  return setTimeout(function(){
+    dataRefresh(edit, objOption)
+  },1000)
+}
 
 (function () {
   dataStructure.viewer.push({})
   dataStructure.viewer[0] = initCanvas3D(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   importJson(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   viewerRefresh(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+  dataRefresh (dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   // dataStructure.viewer[0].heatmapInstance = heatmapCreate(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   // window.requestAnimationFrame(() => {
   //   heatmapSetData(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
