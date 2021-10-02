@@ -91,7 +91,8 @@ function objectPropertyChange(edit, objOption) {
     activeObj.set({
       stroke: $('#newPropStroke').val()
     });
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
   })
   $('#propChangeFill').click(function () {
 
@@ -99,7 +100,8 @@ function objectPropertyChange(edit, objOption) {
     activeObj.set({
       fill: $('#newPropFill').val()
     });
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
   })
   $('#propChangeAltitude').click(function () {
 
@@ -109,7 +111,8 @@ function objectPropertyChange(edit, objOption) {
         altitude: $('#newPropAltitude').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
   })
 }
 

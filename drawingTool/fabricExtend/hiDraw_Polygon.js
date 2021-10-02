@@ -1050,7 +1050,8 @@ hiDraw.prototype.renderPolygonLayer = function (canvasView) {
   ary.forEach(function (obj) {
     canvasView.sendToBack(obj)
   })
-  canvasView.renderAll()
+  // canvasView.renderAll()
+  canvasView.renderAndResetBound()
 }
 
 

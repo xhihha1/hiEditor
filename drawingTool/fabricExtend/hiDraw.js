@@ -144,7 +144,8 @@
         obj.set(key, options[key]);
       }
     })
-    this.canvasView.renderAll();
+    // this.canvasView.renderAll();
+    this.viewRender()
   }
 
   hiDraw.prototype.changeSelectableStatus = function (val) {
@@ -154,7 +155,8 @@
     this.canvasView.forEachObject(function (obj) {
       obj.selectable = val;
     })
-    this.canvasView.renderAll();
+    // this.canvasView.renderAll();
+    this.viewRender()
   }
 
   hiDraw.prototype.removeCanvasEvents = function () {
@@ -196,7 +198,8 @@
         this.canvasView.add(this.copyCloneTempObjs[i]);
         this.canvasView.item(this.canvasView.size() - 1).hasControls = true;
       }
-      this.canvasView.renderAll();
+      // this.canvasView.renderAll();
+      this.viewRender()
     } else if (this.copiedObject) {
       // this.copiedObject = fabric.util.object.clone(this.copiedObject);
       // if (this.copiedObject.get('type') == 'activeSelection') {
@@ -305,34 +308,56 @@
       return;
     }
     if (this.canvasView.getActiveObject().type !== 'group' &&
-    this.canvasView.getActiveObject().type !== 'hiGroup') {
+      this.canvasView.getActiveObject().type !== 'hiGroup') {
       return;
     }
     this.canvasView.getActiveObject().toActiveSelection();
     this.canvasView.requestRenderAll();
   }
 
+  hiDraw.prototype.removePolygonsTempShapes = function (obj) {
+    var that = this;
+    if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+      if (obj.tempPoints) {
+        obj.tempPoints.forEach(function (circle, index) {
+          that.canvasView.remove(circle);
+        })
+      }
+      if (obj.tempLines) {
+        obj.tempLines.forEach(function (line, index) {
+          that.canvasView.remove(line);
+        })
+      }
+      obj.controls = fabric.Object.prototype.controls;
+      obj.selectable = obj.editShape ? true : obj.get('selectable');
+      obj.hasBorders = true;
+      obj.hasControls = true;
+      obj.editShape = false;
+    }
+  }
+
   hiDraw.prototype.deselectPolygons = function (selectedObj) {
     var that = this;
     if (selectedObj && selectedObj.type === 'activeSelection') {
       this.canvasView.forEachObject(function (obj) {
-        if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'hiPolyline') {
-          if (obj.tempPoints) {
-            obj.tempPoints.forEach(function (circle, index) {
-              that.canvasView.remove(circle);
-            })
-          }
-          if (obj.tempLines) {
-            obj.tempLines.forEach(function (line, index) {
-              that.canvasView.remove(line);
-            })
-          }
-          obj.controls = fabric.Object.prototype.controls;
-          obj.selectable = obj.editShape ? true : obj.get('selectable');
-          obj.hasBorders = true;
-          obj.hasControls = true;
-          obj.editShape = false;
-        }
+        that.removePolygonsTempShapes(obj)
+      //   if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+      //     if (obj.tempPoints) {
+      //       obj.tempPoints.forEach(function (circle, index) {
+      //         that.canvasView.remove(circle);
+      //       })
+      //     }
+      //     if (obj.tempLines) {
+      //       obj.tempLines.forEach(function (line, index) {
+      //         that.canvasView.remove(line);
+      //       })
+      //     }
+      //     obj.controls = fabric.Object.prototype.controls;
+      //     obj.selectable = obj.editShape ? true : obj.get('selectable');
+      //     obj.hasBorders = true;
+      //     obj.hasControls = true;
+      //     obj.editShape = false;
+      //   }
       })
     } else {
       if (selectedObj && selectedObj.tempLines) {
@@ -359,22 +384,23 @@
                 })
               }
             }
-          } else if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'hiPolyline') {
-            if (obj.tempPoints) {
-              obj.tempPoints.forEach(function (circle, index) {
-                that.canvasView.remove(circle);
-              })
-            }
-            if (obj.tempLines) {
-              obj.tempLines.forEach(function (line, index) {
-                that.canvasView.remove(line);
-              })
-            }
-            obj.controls = fabric.Object.prototype.controls;
-            obj.selectable = obj.editShape ? true : obj.get('selectable');
-            obj.hasBorders = true;
-            obj.hasControls = true;
-            obj.editShape = false;
+          } else if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+            that.removePolygonsTempShapes(obj)
+            // if (obj.tempPoints) {
+            //   obj.tempPoints.forEach(function (circle, index) {
+            //     that.canvasView.remove(circle);
+            //   })
+            // }
+            // if (obj.tempLines) {
+            //   obj.tempLines.forEach(function (line, index) {
+            //     that.canvasView.remove(line);
+            //   })
+            // }
+            // obj.controls = fabric.Object.prototype.controls;
+            // obj.selectable = obj.editShape ? true : obj.get('selectable');
+            // obj.hasBorders = true;
+            // obj.hasControls = true;
+            // obj.editShape = false;
           }
         })
       }
@@ -466,6 +492,12 @@
     return (hex).substring(0, 7);
   }
 
+  hiDraw.prototype.viewRender = function () {
+    // this.canvasView.renderAll();
+    this.canvasView.renderAndResetBound();
+    // this.canvasView.requestRenderAllBound();
+  }
+
   hiDraw.prototype.toFabricJson = function () {
     if (this.canvasView) {
       // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
@@ -479,6 +511,8 @@
     }
 
   }
+
+
 
   global.hiDraw = hiDraw
 

@@ -73,7 +73,8 @@ function viewerRefresh (edit, objOption) {
 
   // 影片如果要自動撥放需要持續更新
   fabric.util.requestAnimFrame(function render() {
-    dataStructure.viewer[0].canvasView.renderAll();
+    // dataStructure.viewer[0].canvasView.renderAll();
+    dataStructure.viewer[0].viewRender()
     viewerRefresh(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
     fabric.util.requestAnimFrame(render);
   });

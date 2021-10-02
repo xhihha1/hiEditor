@@ -1,4 +1,5 @@
 hi3D.prototype.refreshByFabricJson = function (edit, objOption, json) {
+  console.log('refresh')
 // return false
   var fabricJson = null
   if (edit.canvasView) {
@@ -201,21 +202,27 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
   }
   if (item["type"] == "hi3DPolyline") {
     var points = []
+    console.log('points length', item['points'].length)
     for (var j = 0; j < item['points'].length; j++) {
-      points.push([item['points'][j].x, 0, item['points'][j].y])
+      var pointZ = item['points'][j].z || 0
+      points.push([item['points'][j].x, pointZ, item['points'][j].y])
     }
     var opt = {
       hiId: item.hiId,
       // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: this.rgba2hex(item["stroke"]) || '#FF0000',
-      points: points
+      color: item["stroke"] || '#FF0000',
+      points: points,
+      position: [item["left"], item['altitude'], item["top"]],
+      size: [item["width"], depth, item["height"]],
+      angle: item['angle'],
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
     }
     if (itemExist) {
-      // console.log('set hi3DPolyline', opt)
+      console.log('set hi3DPolyline', opt)
       // this.setLine(objNode, opt)
       this.setLine2(objNode, opt)
     } else {
-      // console.log('add hi3DPolyline', opt)
+      console.log('add hi3DPolyline', opt)
       // this.addLine(opt)
       this.addLine2(opt, parentGroup)
     }

@@ -182,7 +182,8 @@ function editorEvent(edit, objOption) {
         // edit.canvasView.add(image)
         // edit.canvasView.sendToBack(image)
         edit.canvasView.setBackgroundImage(image)
-        edit.canvasView.renderAll()
+        // edit.canvasView.renderAll()
+        edit.viewRender()
       }
     }
   });

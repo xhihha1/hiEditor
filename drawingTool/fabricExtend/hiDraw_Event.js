@@ -97,7 +97,7 @@ hiDraw.prototype.viewEvent = (function () {
                     this.lastPosX = evt.clientX;
                     this.lastPosY = evt.clientY;
                 }
-                // console.log('mouse down',opt.target? opt.target.get('type'): opt)
+                console.log('mouse down',opt.target? opt.target.get('type'): opt)
                 that.deselectPolygons(opt.target)
             }
             if (that.defaultOptions.event && that.defaultOptions.event['mouse_down']) {
@@ -214,7 +214,8 @@ hiDraw.prototype.viewEvent = (function () {
                         that.canvasView.remove(obj)
                     }
                 })
-                that.canvasView.renderAll();
+                // that.canvasView.renderAll();
+                that.viewRender()
                 that.removeCanvasEvents();
                 that.changeCanvasProperty(true, false);
                 that.changeSelectableStatus(true);

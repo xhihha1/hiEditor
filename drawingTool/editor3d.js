@@ -33,7 +33,7 @@ function initCanvas3D(edit, objOption) {
             console.log('activeObj', 'set')
           }
           // edit.canvasView.renderAll();
-          edit.canvasView.renderAndResetBound();
+          edit.viewRender()
         }
       }.bind(edit.hi3d)
     },
@@ -57,7 +57,8 @@ function initCanvas3D(edit, objOption) {
             // var lookAtVector = new THREE.Vector3(cam.matrix[8], cam.matrix[9], cam.matrix[10]);
           })
         }
-        edit.canvasView.renderAll();
+        // edit.canvasView.renderAll();
+        edit.viewRender()
       }
     },
     renderSetting: {
@@ -88,7 +89,8 @@ function initCanvas3D(edit, objOption) {
                 }
               }
             })
-            edit.canvasView.renderAll();
+            // edit.canvasView.renderAll();
+            edit.viewRender()
           }
         })
       }.bind(edit.hi3d)

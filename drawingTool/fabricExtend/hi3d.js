@@ -672,7 +672,10 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     points: [],
-    linewidth: 10
+    linewidth: 10,
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    scale: [1, 1, 1]
   }
   objOption = this.mergeDeep(objOption, option)
   console.log(objOption.hiId)
@@ -726,13 +729,14 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
     colorArr.push(1, 0, 0)
   }
   var geometry = new THREE.LineGeometry();
+  geometry.pointsLength = objOption.points.length
   // 几何体传入顶点坐标
   geometry.setPositions(pointArr);
   // 设定每个顶点对应的颜色值
   geometry.setColors(colorArr);
   // 自定义的材质
   var material = new THREE.LineMaterial({
-    color: 0xdd2222,
+    color: objOption.color,
     // 线宽度
     linewidth: 5,
     // vertexColors: true,
@@ -744,7 +748,10 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   material.resolution.set(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
   var line = new THREE.Line2(geometry, material);
   // line.computeLineDistances();
-  line.scale.set(1, 1, 1);
+  // line.scale.set(1, 1, 1);
+  // line本身位置會造成座標錯誤
+  // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  line.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   line.hiId = objOption.hiId
   line.castShadow = true;
   if (parentGroup) {
@@ -768,11 +775,27 @@ hi3D.prototype.setLine2 = function (line, objOption) {
       );
       colorArr.push(1, 0, 0)
     }
-    line.geometry.setPositions(pointArr)
-    line.geometry.setColors(colorArr);
+    if (line.geometry.pointsLength !== objOption.points.length) {
+      line.geometry.dispose()
+      var geometry = new THREE.LineGeometry();
+      geometry.pointsLength = objOption.points.length
+      geometry.setPositions(pointArr);
+      geometry.setColors(colorArr);
+      line.geometry = geometry;
+    } else {
+      line.geometry.setPositions(pointArr)
+      line.geometry.setColors(colorArr);
+    }
+  }
+  if (objOption.position) {
+    // line本身位置會造成座標錯誤
+    // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   }
   if (objOption.color) {
     line.material.color = new THREE.Color(objOption.color)
+  }
+  if (objOption.angle) {
+    line.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
   if (objOption.linewidth) {
     line.material.linewidth = objOption.linewidth

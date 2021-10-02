@@ -585,7 +585,9 @@
       var Polyline = new fabric.Hi3DPolyline(points, {
         // stroke: '#333333',
         // strokeWidth: 1,
-        stroke: '#7B7B7B',
+        // stroke: '#7B7B7B',
+        originX: 'center',
+        originY: 'center',
         opacity: 1,
         hasBorders: true,
         hasControls: true,
@@ -617,6 +619,10 @@
       Polyline.hiId = hiDraw.prototype.uniqueIdGenerater()
       Polyline.altitude = 0
       Polyline.scaleZ = 1
+      Polyline.scaleZ = 1
+      Polyline.depth = 1
+      Polyline.rotateX = 0
+      Polyline.rotateZ = 0
       inst.canvas.add(Polyline).setActiveObject(Polyline);
       Polyline.canvasItem = inst.canvasItem;
 

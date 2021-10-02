@@ -22,9 +22,9 @@ function initCanvas(canvasId, canvasViewId) {
       strokeColor: 'rgba(51, 51, 51, 1)'
     },
     event: {
-      object_added: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
-      object_modified: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
-      object_removed: function (opt) { edit.hi3d.refreshByFabricJson(edit); },
+      object_added: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
+      object_modified: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
+      object_removed: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
       after_render: function (opt) {
         // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
         var fabricJson = edit.toFabricJson()
@@ -137,7 +137,8 @@ function objectPropertyChange(edit, objOption) {
     activeObj.set({
       stroke: $('#newPropStroke').val()
     });
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#propChangeFill').click(function () {
@@ -146,7 +147,8 @@ function objectPropertyChange(edit, objOption) {
     activeObj.set({
       fill: $('#newPropFill').val()
     });
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#propChangeDepth').click(function () {
@@ -157,7 +159,8 @@ function objectPropertyChange(edit, objOption) {
         depth: $('#newPropDepth').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newRotateX').get(0).min = $('#newRotateY').get(0).min = $('#newRotateZ').get(0).min = -180
@@ -173,7 +176,8 @@ function objectPropertyChange(edit, objOption) {
         rotateX: $('#newRotateX').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newRotateY').change(function () {
@@ -183,7 +187,8 @@ function objectPropertyChange(edit, objOption) {
         angle: $('#newRotateY').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newRotateZ').change(function () {
@@ -193,7 +198,8 @@ function objectPropertyChange(edit, objOption) {
         rotateZ: $('#newRotateZ').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newpositionX').change(function () {
@@ -203,7 +209,8 @@ function objectPropertyChange(edit, objOption) {
         left: $('#newpositionX').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newpositionY').change(function () {
@@ -213,7 +220,8 @@ function objectPropertyChange(edit, objOption) {
         altitude: $('#newpositionY').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newpositionZ').change(function () {
@@ -223,7 +231,8 @@ function objectPropertyChange(edit, objOption) {
         top: $('#newpositionZ').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newsizeX').change(function () {
@@ -233,7 +242,8 @@ function objectPropertyChange(edit, objOption) {
         width: $('#newsizeX').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newsizeY').change(function () {
@@ -243,7 +253,8 @@ function objectPropertyChange(edit, objOption) {
         depth: $('#newsizeY').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
   $('#newsizeZ').change(function () {
@@ -253,7 +264,8 @@ function objectPropertyChange(edit, objOption) {
         height: $('#newsizeZ').val()
       });
     }
-    edit.canvasView.renderAll();
+    // edit.canvasView.renderAll();
+    edit.viewRender()
     edit.hi3d.refreshByFabricJson(edit);
   })
 }
