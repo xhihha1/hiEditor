@@ -1,6 +1,6 @@
 # hiEditor 2D & 3D 視覺化圖像控制編輯器  
 
-![01](./readme/hiEditor_02.png)
+![01](./readme/hiEditor_03.jpg)
 
 hiEditor為純前端繪圖軟體，整合 2D `fabric.js` 繪圖套件及 3D `three.js` 繪圖套件。  
 基礎介面以 JQuery 搭配 html, css實作功能操作，用戶可參考每個功能按鈕進行介面客製化重新設計。  

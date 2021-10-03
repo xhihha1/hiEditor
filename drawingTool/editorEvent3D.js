@@ -59,6 +59,7 @@ function editorEvent3D(edit, objOption) {
   })
 
   $("#draw3dHiFormatObj").click(function () {
+    console.log('click obj')
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);

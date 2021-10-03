@@ -25,7 +25,7 @@
       canvasTemplate.style.position = 'absolute'
       canvasTemplate.style.top = '0px'
       canvasTemplate.style.left = '0px'
-      canvasTemplate.style.zIndex = '-100'
+      canvasTemplate.style.zIndex = '-10'
       canvasTemplate.style.pointerEvents = 'none'
       canvasTemplate.width = document.getElementById(this.defaultOptions.canvasViewId).width
       canvasTemplate.height = document.getElementById(this.defaultOptions.canvasViewId).height
