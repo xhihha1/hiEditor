@@ -80,3 +80,9 @@ Three
 7. [3D模型](https://free3d.com/3d-models/)  
 
 8. https://www.thingjs.com/guide/platform/
+
+9. 模型拆解爆炸效果 https://www.pianshen.com/article/5966103298/  
+
+10. 使用threejs实现辉光(曝光效果) https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html
+    https://threejs.org/examples/webgl_postprocessing_unreal_bloom_selective.html  
+
