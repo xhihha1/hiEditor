@@ -167,16 +167,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
 
 hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, parentGroup) {
   if (item["type"] == "hiCube") {
-    var depth = item["depth"] || 1
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      size: [item["width"], depth, item["height"]],
-      angle: item['angle'],
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('exist cube', objNode, opt)
       this.setCube(objNode, opt)
@@ -186,26 +177,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiSphere") {
-    console.log('hiSphere')
-    // console.log('r:', item["radius"])
-    var color = item["fill"] || item["stroke"] || '#FF0000';
-    var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
-    var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
-    var widthSegments = typeof item["width"] !== 'undefined' ? item["width"] : undefined
-    var heightSegments = typeof item["height"] !== 'undefined' ? item["height"] : undefined
-    var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
-    var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: color,
-      position: position,
-      radius: radius,
-      widthSegments: widthSegments,
-      heightSegments: heightSegments,
-      angle: angle,
-      scale: scale
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       console.log('set Sphere', opt)
       this.setSphere(objNode, opt)
@@ -215,22 +187,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hi3DPolyline") {
-    var points = []
-    console.log('points length', item['points'].length)
-    for (var j = 0; j < item['points'].length; j++) {
-      var pointZ = item['points'][j].z || 0
-      points.push([item['points'][j].x, pointZ, item['points'][j].y])
-    }
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["stroke"] || '#FF0000',
-      points: points,
-      position: [item["left"], item['altitude'], item["top"]],
-      size: [item["width"], depth, item["height"]],
-      angle: item['angle'],
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       console.log('set hi3DPolyline', opt)
       // this.setLine(objNode, opt)
@@ -242,22 +199,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hi3DPolygon") {
-    var points = []
-    console.log('points length', item['points'].length)
-    for (var j = 0; j < item['points'].length; j++) {
-      var pointZ = item['points'][j].z || 0
-      points.push([item['points'][j].x, pointZ, item['points'][j].y])
-    }
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["stroke"] || '#FF0000',
-      points: points,
-      position: [item["left"], item['altitude'], item["top"]],
-      size: [item["width"], depth, item["height"]],
-      angle: item['angle'],
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       console.log('set hi3DPolygon', opt)
       // this.setLine(objNode, opt)
@@ -269,17 +211,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatObj") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.setObj(objNode, opt)
@@ -289,17 +221,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatCollada") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.setCollada(objNode, opt)
@@ -309,17 +231,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatSTL") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.setSTL(objNode, opt)
@@ -329,17 +241,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormat3ds") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.set3ds(objNode, opt)
@@ -349,17 +251,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatGLTF") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.setgltf(objNode, opt)
@@ -369,17 +261,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatNrrd") {
-    var opt = {
-      hiId: item.hiId,
-      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
-      color: item["fill"] || item["stroke"] || '#FF0000',
-      position: [item["left"], item['altitude'], item["top"]],
-      widthSegments: item["width"],
-      heightSegments: item["height"],
-      source: item.source,
-      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]],
-      angle: item['angle']
-    }
+    var opt = this.getItemOption(item)
     if (itemExist) {
       // console.log('set setObj', opt)
       this.setnrrd(objNode, opt)
@@ -442,5 +324,36 @@ hi3D.prototype.addGroupObject = function (edit, groupItem, itemExist, objNode, p
     } else {
       this.addSingleObject(edit, item, itemExist, objNode, group)
     }
+  }
+}
+
+hi3D.prototype.getItemOption = function (item) {
+  var points = []
+  for (var j = 0;item['points'] && j < item['points'].length; j++) {
+    var pointZ = item['points'][j].z || 0
+    points.push([item['points'][j].x, pointZ, item['points'][j].y])
+  }
+  var color = item["fill"] || item["stroke"] || '#FF0000';
+  var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
+  var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
+  var widthSegments = typeof item["width"] !== 'undefined' ? item["width"] : undefined
+  var heightSegments = typeof item["height"] !== 'undefined' ? item["height"] : undefined
+  var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
+  var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
+  var depth = item["depth"] || 1
+  var size = typeof item["width"] !== 'undefined' ? [item["width"], depth, item["height"]] : undefined
+  var source = typeof item.source !== 'undefined' ? item.source : undefined
+  return {
+    hiId: item.hiId,
+    color: color,
+    points: points,
+    position: position,
+    source: source,
+    radius: radius,
+    widthSegments: widthSegments,
+    heightSegments: heightSegments,
+    size: size,
+    angle: angle,
+    scale: scale
   }
 }

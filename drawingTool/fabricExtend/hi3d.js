@@ -789,7 +789,7 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   }
   if (objOption.position) {
     // line本身位置會造成座標錯誤
-    // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   }
   if (objOption.color) {
     line.material.color = new THREE.Color(objOption.color)
@@ -812,7 +812,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     scale: [1, 1, 1]
   }
   objOption = this.mergeDeep(objOption, option)
-  console.log(objOption.hiId)
+  // console.log(objOption.hiId)
   if (!objOption.hiId) {
     return false
   }
@@ -831,16 +831,18 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     closed: true
   };
   const material = new THREE.MeshLambertMaterial( { color: objOption.color } );
-	const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
+	// const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
   const sampleClosedSpline = new THREE.CatmullRomCurve3( pointArr );
   tubeGeometry = new THREE.TubeGeometry( sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed );
 
-  sampleClosedSpline.curveType = 'catmullrom';
+  sampleClosedSpline.curveType = 'centripetal';
   sampleClosedSpline.closed = true;
   var mesh = new THREE.Mesh( tubeGeometry, material );
-	const wireframe = new THREE.Mesh( tubeGeometry, wireframeMaterial );
-	mesh.add( wireframe );
+	// const wireframe = new THREE.Mesh( tubeGeometry, wireframeMaterial );
+	// mesh.add( wireframe );
   mesh.scale.set( objOption.scale[0], objOption.scale[1], objOption.scale[2] );
+  mesh.hiId = objOption.hiId
+  mesh.castShadow = true;
   if (parentGroup) {
     parentGroup.add( mesh );
   } else {
@@ -848,7 +850,44 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   }
   return mesh
 }
-hi3D.prototype.setClosedCurve = function (line, objOption) {}
+hi3D.prototype.setClosedCurve = function (mesh, objOption) {
+  const params = {
+    scale: 4,
+    extrusionSegments: 100,
+    radiusSegments: 3,
+    closed: true
+  };
+  var pointArr = []
+  if (objOption.points) {
+    var pointArr = []
+    for (var i = 0; i < objOption.points.length; i++) {
+      pointArr.push(new THREE.Vector3(
+        objOption.points[i][0],
+        objOption.points[i][1],
+        objOption.points[i][2]
+      ));
+    }
+    // mesh.children[0].geometry.setFromPoints(pointArr)
+    mesh.geometry.dispose()
+    // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
+    const sampleClosedSpline = new THREE.CatmullRomCurve3( pointArr );
+    tubeGeometry = new THREE.TubeGeometry( sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed );
+    sampleClosedSpline.curveType = 'centripetal';
+    sampleClosedSpline.closed = true;
+    mesh.geometry = tubeGeometry
+  }
+  if (objOption.position) {
+    // line本身位置會造成座標錯誤
+    mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  }
+  if (objOption.color) {
+    mesh.material.color = new THREE.Color(objOption.color)
+  }
+  if (objOption.angle) {
+    mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+  return mesh
+}
 
 hi3D.prototype.addObj = function (option, parentGroup) {
   var objOption = {
