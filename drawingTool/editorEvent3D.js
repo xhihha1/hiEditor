@@ -47,6 +47,13 @@ function editorEvent3D(edit, objOption) {
     var polyline = new edit.Hi3DPolyline(edit, objOption);
   });
 
+  $("#draw3dPolygon").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var polyline = new edit.Hi3DPolygon(edit, objOption);
+  });
+
   
   $('#add3dObj').click(function (e) {
     edit.hi3d.addObj()

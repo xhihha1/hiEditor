@@ -241,6 +241,33 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       this.addLine2(opt, parentGroup)
     }
   }
+  if (item["type"] == "hi3DPolygon") {
+    var points = []
+    console.log('points length', item['points'].length)
+    for (var j = 0; j < item['points'].length; j++) {
+      var pointZ = item['points'][j].z || 0
+      points.push([item['points'][j].x, pointZ, item['points'][j].y])
+    }
+    var opt = {
+      hiId: item.hiId,
+      // color: 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+      color: item["stroke"] || '#FF0000',
+      points: points,
+      position: [item["left"], item['altitude'], item["top"]],
+      size: [item["width"], depth, item["height"]],
+      angle: item['angle'],
+      scale: [item["scaleX"], item["scaleZ"], item["scaleY"]]
+    }
+    if (itemExist) {
+      console.log('set hi3DPolygon', opt)
+      // this.setLine(objNode, opt)
+      this.setClosedCurve(objNode, opt)
+    } else {
+      console.log('add hi3DPolygon', opt)
+      // this.addLine(opt)
+      this.addClosedCurve(opt, parentGroup)
+    }
+  }
   if (item["type"] == "hiFormatObj") {
     var opt = {
       hiId: item.hiId,

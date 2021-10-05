@@ -317,7 +317,8 @@
 
   hiDraw.prototype.removePolygonsTempShapes = function (obj) {
     var that = this;
-    if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+    if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' ||
+      obj.get('type') === 'hi3DPolyline' || obj.get('type') === 'hi3DPolygon') {
       if (obj.tempPoints) {
         obj.tempPoints.forEach(function (circle, index) {
           that.canvasView.remove(circle);
@@ -341,7 +342,7 @@
     if (selectedObj && selectedObj.type === 'activeSelection') {
       this.canvasView.forEachObject(function (obj) {
         that.removePolygonsTempShapes(obj)
-      //   if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+      //   if (obj.get('type') === 'hiPolygon' || obj.get('type') === 'hiPolyline' || obj.get('type') === 'hi3DPolyline' || obj.get('type') === 'hi3DPolygon') {
       //     if (obj.tempPoints) {
       //       obj.tempPoints.forEach(function (circle, index) {
       //         that.canvasView.remove(circle);
@@ -384,7 +385,8 @@
                 })
               }
             }
-          } else if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'hiPolyline' || obj.get('type') === 'hi3DPolyline') {
+          } else if (obj.get('type') == 'hiPolygon' || obj.get('type') == 'hiPolyline' ||
+            obj.get('type') === 'hi3DPolyline' || obj.get('type') === 'hi3DPolygon') {
             that.removePolygonsTempShapes(obj)
             // if (obj.tempPoints) {
             //   obj.tempPoints.forEach(function (circle, index) {

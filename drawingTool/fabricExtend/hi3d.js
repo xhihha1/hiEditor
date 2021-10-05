@@ -802,6 +802,53 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   }
   return line
 }
+hi3D.prototype.addClosedCurve = function (option, parentGroup) {
+  var objOption = {
+    color: '#F00',
+    points: [],
+    linewidth: 10,
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    scale: [1, 1, 1]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  console.log(objOption.hiId)
+  if (!objOption.hiId) {
+    return false
+  }
+  var pointArr = []
+  for (var i = 0; i < objOption.points.length; i++) {
+    pointArr.push(new THREE.Vector3(
+      objOption.points[i][0],
+      objOption.points[i][1],
+      objOption.points[i][2]
+    ));
+  }
+  const params = {
+    scale: 4,
+    extrusionSegments: 100,
+    radiusSegments: 3,
+    closed: true
+  };
+  const material = new THREE.MeshLambertMaterial( { color: objOption.color } );
+	const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
+  const sampleClosedSpline = new THREE.CatmullRomCurve3( pointArr );
+  tubeGeometry = new THREE.TubeGeometry( sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed );
+
+  sampleClosedSpline.curveType = 'catmullrom';
+  sampleClosedSpline.closed = true;
+  var mesh = new THREE.Mesh( tubeGeometry, material );
+	const wireframe = new THREE.Mesh( tubeGeometry, wireframeMaterial );
+	mesh.add( wireframe );
+  mesh.scale.set( objOption.scale[0], objOption.scale[1], objOption.scale[2] );
+  if (parentGroup) {
+    parentGroup.add( mesh );
+  } else {
+    this.scene.add(mesh);
+  }
+  return mesh
+}
+hi3D.prototype.setClosedCurve = function (line, objOption) {}
 
 hi3D.prototype.addObj = function (option, parentGroup) {
   var objOption = {
