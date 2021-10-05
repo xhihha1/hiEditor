@@ -834,7 +834,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
 	// const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
   const sampleClosedSpline = new THREE.CatmullRomCurve3( pointArr );
   tubeGeometry = new THREE.TubeGeometry( sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed );
-
+  window.tubeGeometry = tubeGeometry
   sampleClosedSpline.curveType = 'centripetal';
   sampleClosedSpline.closed = true;
   var mesh = new THREE.Mesh( tubeGeometry, material );
@@ -848,6 +848,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   } else {
     this.scene.add(mesh);
   }
+  
   return mesh
 }
 hi3D.prototype.setClosedCurve = function (mesh, objOption) {

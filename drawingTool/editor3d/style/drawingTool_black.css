@@ -341,3 +341,12 @@ body {
   background: rgb(70,130,180);
   cursor: pointer;
 }
+
+/* */
+#property .prop_input{
+  width: 90%;
+  height: 25px;
+  outline: none;
+  border: 0;
+  padding: 0;
+}

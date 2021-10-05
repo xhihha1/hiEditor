@@ -196,16 +196,22 @@
             <li class="prop-title">camera</li>
             <li class="prop-content">
               <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
-              <div><input type="text" id="cameraNear" placeholder="near" value="0.1"></div>
-              <div><input type="text" id="cameraFar" placeholder="far" value="2000"></div>
+              <div><span>near</span></div>
+              <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
+              <div><span>far</span></div>
+              <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
             </li>
             <li class="prop-title">Grid</li>
             <li class="prop-content">
               <div><label><input name="" id="btnGridHelper" type="checkbox" value="1" checked> GridHelper</label></div>
-              <div><input type="text" id="gridSize" placeholder="gridSize" value="1000"></div>
-              <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100"></div>
-              <div><span>colorCenter: </span><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
-              <div><span>colorGrid: </span><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
+              <div><span>size</span></div>
+              <div><input type="text" id="gridSize" placeholder="gridSize" value="1000" class="prop_input"></div>
+              <div><span>division</span></div>
+              <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100" class="prop_input"></div>
+              <div><span>colorCenter: </span></div>
+              <div><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
+              <div><span>colorGrid: </span></div>
+              <div><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
               <div><button id="submitGrid">submit</button></div>
             </li>
             <li class="prop-title">Scene</li>
@@ -229,15 +235,24 @@
             </li>
             <li class="prop-title">3d obj source</li>
             <li class="prop-content">
-              <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj"></div>
-              <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae"></div>
-              <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl"></div>
-              <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/"></div>
-              <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg"></div>
-              <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds"></div>
-              <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/"></div>
-              <div><input type="text" id="sourceGltf" placeholder="gltf" value="DamagedHelmet.gltf"></div>
-              <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd"></div>
+              <div><span>obj</span></div>
+              <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
+              <div><span>dae</span></div>
+              <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
+              <div><span>stl</span></div>
+              <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
+              <div><span>3ds textures</span></div>
+              <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
+              <div><span>3ds normal map</span></div>
+              <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
+              <div><span>3ds</span></div>
+              <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
+              <div><span>gltf path</span></div>
+              <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
+              <div><span>gltf</span></div>
+              <div><input type="text" id="sourceGltf" placeholder="gltf" value="DamagedHelmet.gltf" class="prop_input"></div>
+              <div><span>nrrd</span></div>
+              <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
             </li>
             <li class="prop-title">hichart</li>
             <li class="prop-content">
@@ -295,18 +310,6 @@
               <div><button id="goRight">right</button></div>
               <div><button id="goLeft">left</button></div>
             </li>
-            <!-- Object property -->
-            <li class="prop-title">Object property</li>
-            <li class="prop-content">
-              <div><span>type</span><input type="text" id="objPropType" /></div>
-              <div><span>name</span><input type="text" id="objPropName" /></div>
-              <div><span>label</span><input type="text" id="objPropLabel" /></div>
-              <div><span>stroke</span><input type="text" id="objPropStroke" /></div>
-            </li>
-            <li class="prop-title">3D Object property</li>
-            <li class="prop-content">
-              <div><span>obj</span><input type="text" id="objPropSourceObj" /></div>
-            </li>
             <li class="prop-title">Directional Light</li>
             <li class="prop-content">
               <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
@@ -335,37 +338,67 @@
               <div><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity" class="prop-slider"></div>
               <div><button id="submitAmbientLight">submit</button></div>
             </li>
+            <!-- Object property -->
+            <li class="prop-title">Object property</li>
+            <li class="prop-content">
+              <div><span>type</span></div>
+              <div><input type="text" id="objPropType"  class="prop_input"/></div>
+              <div><span>name</span></div>
+              <div><input type="text" id="objPropName"  class="prop_input"/></div>
+              <div><span>label</span></div>
+              <div><input type="text" id="objPropLabel"  class="prop_input"/></div>
+              <div><span>stroke</span></div>
+              <div><input type="text" id="objPropStroke"  class="prop_input"/></div>
+            </li>
             <li class="prop-title">Obj propy change</li>
             <li class="prop-content">
-              <div><span>ID: </span><input type="text" id="newPropHiId" name="" value="0" disabled></div>
-              <div><span>Type: </span><input type="text" id="newPropType" name="" value="0" disabled></div>
-              <div><span>stroke: </span><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button id="propChange">submit</button></div>
-              <div><span>Fill: </span><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button id="propChangeFill">submit</button></div>
+              <div><span>ID: </span></div>
+              <div><input type="text" id="newPropHiId" name="" value="0" disabled class="prop_input"></div>
+              <div><span>Type: </span></div>
+              <div><input type="text" id="newPropType" name="" value="0" disabled class="prop_input"></div>
+              <div><span>stroke: </span></div>
+              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button id="propChange">submit</button></div>
+              <div><span>Fill: </span></div>
+              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button id="propChangeFill">submit</button></div>
               <!-- <div><span>altitude: </span><input type="number" id="newPropAltitude" name="PropAltitude" value="0"><button id="propChangeAltitude">submit</button></div> -->
-              <div><span>depth: </span><input type="number" id="newPropDepth" name="PropDepth" value="0"><button id="propChangeDepth">submit</button></div>
+              <div><span>depth: </span></div>
+              <div><input type="number" id="newPropDepth" name="PropDepth" value="0" class="prop_input"></div>
+              <div><button id="propChangeDepth">submit depth</button></div>
               <div><span>rotate X: </span></div>
               <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div>
               <div><span>rotate Y(angle): </span></div>
               <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateY"></div>
               <div><span>rotate Z: </span></div>
               <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateZ"></div>
-              <div><span>positionX(left): </span><input type="number" id="newpositionX" name="positionX" value="0"></div>
-              <div><span>positionY(altitude): </span><input type="number" id="newpositionY" name="positionY" value="0"></div>
-              <div><span>positionZ(top): </span><input type="number" id="newpositionZ" name="positionZ" value="0"></div>
-              <div><span>sizeX(width): </span><input type="number" id="newsizeX" name="sizeX" value="0" disabled></div>
-              <div><span>sizeY(depth): </span><input type="number" id="newsizeY" name="sizeY" value="0" disabled></div>
-              <div><span>sizeZ(height): </span><input type="number" id="newsizeZ" name="sizeZ" value="0" disabled></div>
-              <div><span>scaleX: </span><input type="number" id="newscaleX" name="scaleX" value="0" disabled></div>
-              <div><span>scaleY: </span><input type="number" id="newscaleY" name="scaleY" value="0" disabled></div>
-              <div><span>scaleZ: </span><input type="number" id="newscaleZ" name="scaleZ" value="0" disabled></div>
-              <div><span>data binding: </span><button id="propChangeDataBinding">submit</button></div>
+              <div><span>positionX(left): </span></div>
+              <div><input type="number" id="newpositionX" name="positionX" value="0" class="prop_input"></div>
+              <div><span>positionY(altitude): </span></div>
+              <div><input type="number" id="newpositionY" name="positionY" value="0" class="prop_input"></div>
+              <div><span>positionZ(top): </span></div>
+              <div><input type="number" id="newpositionZ" name="positionZ" value="0" class="prop_input"></div>
+              <div><span>sizeX(width): </span></div>
+              <div><input type="number" id="newsizeX" name="sizeX" value="0" disabled class="prop_input"></div>
+              <div><span>sizeY(depth): </span></div>
+              <div><input type="number" id="newsizeY" name="sizeY" value="0" disabled class="prop_input"></div>
+              <div><span>sizeZ(height): </span></div>
+              <div><input type="number" id="newsizeZ" name="sizeZ" value="0" disabled class="prop_input"></div>
+              <div><span>scaleX: </span></div>
+              <div><input type="number" id="newscaleX" name="scaleX" value="0" disabled class="prop_input"></div>
+              <div><span>scaleY: </span></div>
+              <div><input type="number" id="newscaleY" name="scaleY" value="0" disabled class="prop_input"></div>
+              <div><span>scaleZ: </span></div>
+              <div><input type="number" id="newscaleZ" name="scaleZ" value="0" disabled class="prop_input"></div>
+              <div><span>data binding: </span></div>
+              <div><button id="propChangeDataBinding">submit</button></div>
               <div><textarea id="newPropDataBinding">
               </textarea></div>
             </li>
             <li class="prop-title">heatmap</li>
             <li class="prop-content">
-              <div><span>radius: </span><input type="number" id="newheatmapradius" value="10"></div>
-              <div><span>max: </span><input type="number" id="newheatmapmax" value="100"></div>
+              <div><span>radius: </span></div>
+              <div><input type="number" id="newheatmapradius" value="10" class="prop_input"></div>
+              <div><span>max: </span></div>
+              <div><input type="number" id="newheatmapmax" value="100" class="prop_input"></div>
               <div><button id="propheatmapChange">submit</button></div>
             </li>
             <li class="prop-title">3D obj</li>

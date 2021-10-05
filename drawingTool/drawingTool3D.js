@@ -117,7 +117,6 @@ function initCanvas(canvasId, canvasViewId) {
 }
 
 function showObjPropChange (opt) {
-  if(opt.target.get('source')){$('#objPropSourceObj').val(opt.target.get('source').obj)}
   $('#newPropHiId').val(opt.target.get('hiId'))
   $('#newPropType').val(opt.target.get('type'))
   $('#newPropStroke').val(opt.target.get('stroke'))
