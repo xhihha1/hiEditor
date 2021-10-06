@@ -22,9 +22,24 @@ function initCanvas(canvasId, canvasViewId) {
       strokeColor: 'rgba(51, 51, 51, 1)'
     },
     event: {
-      object_added: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
-      object_modified: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
-      object_removed: function (opt) { if(opt.target.hiId){ edit.hi3d.refreshByFabricJson(edit); } },
+      object_added: function (opt) {
+        if(opt.target.hiId){
+          showObjPropChange(opt);
+          edit.hi3d.refreshByFabricJson(edit);
+        }
+      },
+      object_modified: function (opt) {
+        if(opt.target.hiId){
+          showObjPropChange(opt);
+          edit.hi3d.refreshByFabricJson(edit);
+        }
+      },
+      object_removed: function (opt) {
+        if(opt.target.hiId){
+          showObjPropChange(opt);
+          edit.hi3d.refreshByFabricJson(edit); 
+        }
+      },
       after_render: function (opt) {
         // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
         var fabricJson = edit.toFabricJson()
@@ -119,8 +134,8 @@ function initCanvas(canvasId, canvasViewId) {
 function showObjPropChange (opt) {
   $('#newPropHiId').val(opt.target.get('hiId'))
   $('#newPropType').val(opt.target.get('type'))
-  $('#newPropStroke').val(opt.target.get('stroke'))
-  $('#newPropFill').val(opt.target.get('fill'))
+  $('#newPropStroke').val(hiDraw.prototype.colorToHex(opt.target.get('stroke')))
+  $('#newPropFill').val(hiDraw.prototype.colorToHex(opt.target.get('fill')))
   $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
   $('#newRotateX').val(parseInt(opt.target.get('rotateX')) || 0)
   $('#newRotateY').val(parseInt(opt.target.get('angle')) || 0)
@@ -135,167 +150,112 @@ function showObjPropChange (opt) {
   $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
   $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
   
-  var dataBinding = {
+  var dataBinding = opt.target.get('dataBinding') || {
     fill:{
-      advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
-    },
-    stroke:{
       advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
     }
   }
-  $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+  // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+  $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+}
+
+function setObjPropChange () {
+  // $('#newPropHiId').val()
+  // $('#newPropType').val()
+  var stroke = $('#newPropStroke').val()
+  var fill = $('#newPropFill').val()
+  var rotateX = parseInt($('#newRotateX').val())
+  var angle = parseInt($('#newRotateY').val())
+  var rotateZ = parseInt($('#newRotateZ').val())
+  var left = parseInt($('#newpositionX').val())
+  var altitude = parseInt($('#newpositionY').val())
+  var top = parseInt($('#newpositionZ').val())
+  var width = parseFloat($('#newsizeX').val())
+  var depth = parseFloat($('#newsizeY').val())
+  var height = parseFloat($('#newsizeZ').val())
+  var scaleX = parseFloat($('#newscaleX').val())
+  var scaleY = parseFloat($('#newscaleY').val())
+  var scaleZ = parseFloat($('#newscaleZ').val())
+  var dataBinding = JSON.stringify($('#newPropDataBinding').val())
+  return {
+    stroke: hiDraw.prototype.colorToHex(stroke),
+    fill: hiDraw.prototype.colorToHex(fill),
+    rotateX: rotateX,
+    angle: angle,
+    rotateZ: rotateZ,
+    left: left,
+    altitude: altitude,
+    top: top,
+    width: width,
+    depth: depth,
+    height: height,
+    scaleX: scaleX,
+    scaleY: scaleY,
+    scaleZ: scaleZ,
+    dataBinding: dataBinding
+  }
 }
 
 function objectPropertyChange(edit, objOption) {
-  $('#propChange').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    activeObj.set({
-      stroke: $('#newPropStroke').val()
-    });
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#propChangeFill').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    activeObj.set({
-      fill: $('#newPropFill').val()
-    });
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#propChangeDepth').click(function () {
-
+  $('#propApply').click(function () {
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
-      activeObj.set({
-        depth: $('#newPropDepth').val()
-      });
+      activeObj.set(setObjPropChange ());
+      edit.viewRender()
+      edit.hi3d.refreshByFabricJson(edit);
     }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
   })
-  $('#newRotateX').get(0).min = $('#newRotateY').get(0).min = $('#newRotateZ').get(0).min = -180
-  $('#newRotateX').get(0).max = $('#newRotateY').get(0).max = $('#newRotateZ').get(0).max = 180
+  $('#newRotateX').get(0).min = $('#newRotateY').get(0).min = $('#newRotateZ').get(0).min = 0
+  $('#newRotateX').get(0).max = $('#newRotateY').get(0).max = $('#newRotateZ').get(0).max = 360
   $('#newRotateX').get(0).step = $('#newRotateY').get(0).step = $('#newRotateZ').get(0).step = 0.1
   $('#newRotateX').val(0)
   $('#newRotateY').val(0)
   $('#newRotateZ').val(0)
-  $('#newRotateX').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        rotateX: $('#newRotateX').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newRotateY').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        angle: $('#newRotateY').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newRotateZ').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        rotateZ: $('#newRotateZ').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newpositionX').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        left: $('#newpositionX').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newpositionY').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        altitude: $('#newpositionY').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newpositionZ').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        top: $('#newpositionZ').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newsizeX').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        width: $('#newsizeX').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newsizeY').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        depth: $('#newsizeY').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#newsizeZ').change(function () {
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        height: $('#newsizeZ').val()
-      });
-    }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
-  })
-  $('#propChangeDataBinding').click(function () {
 
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        dataBinding: JSON.stringify($('#newPropDataBinding').val())
-      });
+  $('#openDataBinding').click(function () {
+    $('#dataBindingDialog').css('display', 'block')
+    var dataBinding = JSON.parse($('#newPropDataBinding').val())
+    $('.dbPropCard').remove()
+    var str = ''
+    for(var key in dataBinding) {
+      str += '<div class="dataBindingDialogCard dbPropCard">'
+      str += '  <div><span>property name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="'+key+'" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">'+dataBinding[key].advanced+'</textarea></div>'
+      str += '</div>'
     }
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-    edit.hi3d.refreshByFabricJson(edit);
+    $('#dataBindingDialogContent').append(str)
   })
+  $('#dataBindingDialogClose').click(function () {
+    $('#dataBindingDialog').css('display', 'none')
+    var dataBinding = {}
+    $('.dbPropCard').each(function(){
+      var key = $(this).find('.dbPropName').val()
+      var advanced = $(this).find('.dbPropFunc').val()
+      dataBinding[key] = {}
+      dataBinding[key].advanced = advanced
+    })
+    // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+    $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  })
+  $('#dataBindingDialogContent').click(function (e) {
+    var target = e.target
+    if ($(target).attr('id') === 'addDbPropName') {
+      var key = $(target).parents('#dataBindingDialogCardNew').find('.dbPropName').val()
+      var advanced = $(target).parents('#dataBindingDialogCardNew').find('.dbPropFunc').val()
+      var str = ''
+      str += '<div class="dataBindingDialogCard dbPropCard">'
+      str += '  <div><span>property name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="' + key + '" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">' + advanced + '</textarea></div>'
+      str += '</div>'
+      $(target).parents('#dataBindingDialogCardNew').after(str)
+    }
+    if ($(target).hasClass('removeDbPropName')) {
+      $(target).parents('.dbPropCard').remove()
+    }
+  })
+  
 }
 
 

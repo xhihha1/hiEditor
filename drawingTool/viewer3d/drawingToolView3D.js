@@ -80,6 +80,7 @@ function dataRefresh (edit, objOption) {
     }
   }
   if (updateView) {
+    console.log('updateView', updateView)
     edit.hi3d.refreshByFabricJson(edit, objOption, updateView, { needRemove: false })
   }
   return setTimeout(function(){

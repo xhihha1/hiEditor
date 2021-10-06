@@ -472,26 +472,41 @@
     }
   }
 
-  hiDraw.prototype.rgba2hex = function (orig) {
-    var a, isPercent,
-      rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-      alpha = (rgb && rgb[4] || "").trim(),
-      hex = rgb ?
-      (rgb[1] | 1 << 8).toString(16).slice(1) +
-      (rgb[2] | 1 << 8).toString(16).slice(1) +
-      (rgb[3] | 1 << 8).toString(16).slice(1) : orig;
-    if (alpha !== "") {
-      a = alpha;
+  hiDraw.prototype.colorToHex = function (color) {
+    let r
+    let g
+    let b
+    if (color.indexOf('#') === 0) {
+      return color
+    } else if (color.indexOf('rgba(') === 0) {
+      color = color.substr(5).split(')')[0].split(',');
+      r = (+color[0]).toString(16),
+      g = (+color[1]).toString(16),
+      b = (+color[2]).toString(16);
+      if (r.length == 1)
+        r = "0" + r;
+      if (g.length == 1)
+        g = "0" + g;
+      if (b.length == 1)
+        b = "0" + b;
+      
+      return "#" + r + g + b;
+    } else if (color.indexOf('rgb(') === 0) {
+      color = color.substr(4).split(')')[0].split(',');
+      r = (+color[0]).toString(16),
+      g = (+color[1]).toString(16),
+      b = (+color[2]).toString(16);
+      if (r.length == 1)
+        r = "0" + r;
+      if (g.length == 1)
+        g = "0" + g;
+      if (b.length == 1)
+        b = "0" + b;
+      
+      return "#" + r + g + b;
     } else {
-      a = 01;
+      color
     }
-
-    a = Math.round(a * 100) / 100;
-    var alpha = Math.round(a * 255);
-    var hexAlpha = (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
-    hex = hex + hexAlpha;
-
-    return (hex).substring(0, 7);
   }
 
   hiDraw.prototype.viewRender = function () {

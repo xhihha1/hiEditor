@@ -1,7 +1,7 @@
 hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetting) {
   var setting = { needRemove: true }
   if (otherSetting) { setting = this.mergeDeep(setting, otherSetting) }
-  console.log('refresh')
+  // console.log('refresh')
 // return false
   var fabricJson = null
   if (edit.canvasView) {
@@ -66,7 +66,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
         this.scene.remove(removeNodes[i]);
       }
       if (removeNodes[i] instanceof THREE.PointLight && removeNodes[i].hiId) {
-        console.log('remove PointLight')
+        // console.log('remove PointLight')
         this.scene.remove(removeNodes[i]);
       }
       if ((removeNodes[i] instanceof THREE.Line ||
@@ -179,21 +179,21 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
   if (item["type"] == "hiSphere") {
     var opt = this.getItemOption(item)
     if (itemExist) {
-      console.log('set Sphere', opt)
+      // console.log('set Sphere', opt)
       this.setSphere(objNode, opt)
     } else {
-      console.log('add Sphere', opt)
+      // console.log('add Sphere', opt)
       this.addSphere(opt, parentGroup)
     }
   }
   if (item["type"] == "hi3DPolyline") {
     var opt = this.getItemOption(item)
     if (itemExist) {
-      console.log('set hi3DPolyline', opt)
+      // console.log('set hi3DPolyline', opt)
       // this.setLine(objNode, opt)
       this.setLine2(objNode, opt)
     } else {
-      console.log('add hi3DPolyline', opt)
+      // console.log('add hi3DPolyline', opt)
       // this.addLine(opt)
       this.addLine2(opt, parentGroup)
     }
@@ -201,11 +201,11 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
   if (item["type"] == "hi3DPolygon") {
     var opt = this.getItemOption(item)
     if (itemExist) {
-      console.log('set hi3DPolygon', opt)
+      // console.log('set hi3DPolygon', opt)
       // this.setLine(objNode, opt)
       this.setClosedCurve(objNode, opt)
     } else {
-      console.log('add hi3DPolygon', opt)
+      // console.log('add hi3DPolygon', opt)
       // this.addLine(opt)
       this.addClosedCurve(opt, parentGroup)
     }
@@ -298,11 +298,18 @@ hi3D.prototype.addGroupObject = function (edit, groupItem, itemExist, objNode, p
     // set item property
   }
   // -------------------------
-  group.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
-  group.scale.x = objOption.scale[0];
-  group.scale.y = objOption.scale[1];
-  group.scale.z = objOption.scale[2];
-  group.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  // group.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  if(typeof objOption.position[0] !== 'undefined') { group.position.x = objOption.position[0]; }
+  if(typeof objOption.position[1] !== 'undefined') { group.position.y = objOption.position[1]; }
+  if(typeof objOption.position[2] !== 'undefined') { group.position.z = objOption.position[2]; }
+  if(typeof objOption.scale[0] !== 'undefined') { group.scale.z = objOption.scale[0]; }
+  if(typeof objOption.scale[1] !== 'undefined') { group.scale.z = objOption.scale[1]; }
+  if(typeof objOption.scale[2] !== 'undefined') { group.scale.z = objOption.scale[2]; }
+  // group.scale.x = objOption.scale[0];
+  // group.scale.y = objOption.scale[1];
+  // group.scale.z = objOption.scale[2];
+  if(typeof objOption.angle !== 'undefined') { group.rotation.y = -1 * objOption.angle / 180 * Math.PI; }
+  // group.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   // -------------------------
   if (parentGroup) {
     parentGroup.add( group );
@@ -334,7 +341,8 @@ hi3D.prototype.getItemOption = function (item) {
     points.push([item['points'][j].x, pointZ, item['points'][j].y])
   }
   var color = item["fill"] || item["stroke"] || '#FF0000';
-  var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
+  // var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
+  var position = [item["left"], item['altitude'], item["top"]]
   var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
   var widthSegments = typeof item["width"] !== 'undefined' ? item["width"] : undefined
   var heightSegments = typeof item["height"] !== 'undefined' ? item["height"] : undefined

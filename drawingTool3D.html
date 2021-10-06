@@ -357,13 +357,9 @@
               <div><span>Type: </span></div>
               <div><input type="text" id="newPropType" name="" value="0" disabled class="prop_input"></div>
               <div><span>stroke: </span></div>
-              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button id="propChange">submit</button></div>
+              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
               <div><span>Fill: </span></div>
-              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button id="propChangeFill">submit</button></div>
-              <!-- <div><span>altitude: </span><input type="number" id="newPropAltitude" name="PropAltitude" value="0"><button id="propChangeAltitude">submit</button></div> -->
-              <div><span>depth: </span></div>
-              <div><input type="number" id="newPropDepth" name="PropDepth" value="0" class="prop_input"></div>
-              <div><button id="propChangeDepth">submit depth</button></div>
+              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
               <div><span>rotate X: </span></div>
               <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div>
               <div><span>rotate Y(angle): </span></div>
@@ -388,10 +384,9 @@
               <div><input type="number" id="newscaleY" name="scaleY" value="0" disabled class="prop_input"></div>
               <div><span>scaleZ: </span></div>
               <div><input type="number" id="newscaleZ" name="scaleZ" value="0" disabled class="prop_input"></div>
-              <div><span>data binding: </span></div>
-              <div><button id="propChangeDataBinding">submit</button></div>
-              <div><textarea id="newPropDataBinding">
-              </textarea></div>
+              <div><span>data binding: </span><button id="openDataBinding">open</button></div>
+              <div><textarea id="newPropDataBinding"></textarea></div>
+              <div><button id="propApply">apply property</button></div>
             </li>
             <li class="prop-title">heatmap</li>
             <li class="prop-content">
@@ -410,248 +405,23 @@
       <div class="clearBoth"></div>
     </div>
   </div>
-  <!-- <div id="main"> -->
-    <!-- <div id="menu">
-      <ul>
-        <li class="menuTitle">3D</li>
-        <li id="render3D">3d render</li>
-        <li id="drawCamera">Camera</li>
-        <li id="drawLookAt">LookAt</li>
-        <li id="drawSpotLight">spot</li>
-        <li id="drawPointLight">pLight</li>
-        <li id="drawCube">cube</li>
-        <li id="drawSphere">sphere</li>
-        <li id="draw3dPolyline">polyline</li>
-        <li id="draw3dHiFormatObj">obj</li>
-        <li id="draw3dHiFormatCollada">Collada</li>
-        <li id="draw3dHiFormatSTL">STL</li>
-        <li id="draw3dHiFormat3DS">3DS</li>
-        <li id="draw3dHiFormatGLTF">gltf</li>
-        <li id="draw3dHiFormatNRRD">nrrd</li>
-        <li id="draw3dPlane">Plane</li>
-        <li class="menuTitle">Group</li>
-        <li id="drawGroup"><img src="icon/group.png"></li>
-        <li id="drawUngroup"><img src="icon/ungroup.png"></li>
-        <li class="menuTitle">2D_Shape</li>
-        <li id="drawRect"><img src="icon/rectangle.png"></li>
-        <li id="drawCircle"><img src="icon/ellipse.png"></li>
-        <li id="drawPolygon"><img src="icon/polygon.png"></li>
-        <li id="drawLine"><img src="icon/line.png"></li>
-        <li id="drawPolyline"><img src="icon/polyline.png"></li>
-        <li id="drawPath"><img src="icon/path.png"></li>
-        <li id="drawHeatmapPoint"><img src="icon/heatmap.png"></li>
-        <li id="drawDiv">Div</li>
-        <li class="menuTitle">View</li>
-        <li id="panCanvas"><img src="icon/move.png"></li>
-        <li id="zoomIn"><img src="icon/zoom-in.png"></li>
-        <li id="zoomOut"><img src="icon/zoom-out.png"></li>
-        <li id="selectArea"><img src="icon/selectArea.png"></li>
-        <li id="resize"><img src="icon/resize.png"></li>
-        <li class="menuTitle">File</li>
-        <li id="export"><img src="icon/export-file.png"></li>
-        <li id="exportFabric"><img src="icon/export-file-f.png"></li>
-        <li id="import"><img src="icon/import-file.png"></li>
-        <li id="importFabric"><img src="icon/import-file-f.png"></li>
-        <li class="menuTitle">Setting</li>
-        <li id="axis"><img src="icon/axis.png"></li>
-        <li id="simple">S</li>
-        <li id="opCV">opCV</li>
-      </ul>
-    </div> -->
-    <!-- <div id="content">
-      <canvas id="mainEditor"></canvas>
+  <div id="dataBindingDialog">
+    <div id="dataBindingDialogPage">
+      <div id="dataBindingDialogTitle">DataBinding<div id="dataBindingDialogClose"></div></div>
+      <div id="dataBindingDialogContent">
+        <div class="dataBindingDialogCard" id="dataBindingDialogCardNew">
+          <div><span>property name:</span><button id="addDbPropName">add</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+        <div class="dataBindingDialogCard dbPropCard">
+          <div><span>property name:</span><button class="removeDbPropName">remove</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+      </div>
     </div>
-    <div id="content3D"></div> -->
-    <!-- <div id="property">
-      <ul>
-        <li class="prop-title">Title</li>
-        <li class="prop-content">content</li>
-        <li class="prop-title">Series Page</li>
-        <li class="prop-content">
-          <div><a target="_blank" href="drawingTool.html">3D Editor</a></div>
-          <div><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
-          <div><a id="saveFabricLocalStorage3D">3D viewer</a></div>
-          <div><a id="saveFabricLocalStorage2D">2D viewer</a></div>
-          <div><a id="saveFabricImage2D">To 2D image</a></div>
-        </li>
-        <li class="prop-title">object List</li>
-        <li class="prop-content">
-          <div>
-            <ul id="objlist">
-              <li></li>
-            </ul>
-          </div>
-        </li>
-        <li class="prop-title">camera</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
-          <div><input type="text" id="cameraNear" placeholder="near" value="0.1"></div>
-          <div><input type="text" id="cameraFar" placeholder="far" value="2000"></div>
-        </li>
-        <li class="prop-title">Grid</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnGridHelper" type="checkbox" value="1" checked> GridHelper</label></div>
-          <div><input type="text" id="gridSize" placeholder="gridSize" value="1000"></div>
-          <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100"></div>
-          <div><span>colorCenter: </span><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
-          <div><span>colorGrid: </span><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
-          <div><button id="submitGrid">submit</button></div>
-        </li>
-        <li class="prop-title">Scene</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnGround" type="checkbox" value="1"> Ground</label></div>
-          <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1" checked> AxesHelper</label></div>
-          <div><label><input name="" id="btnSpotLightHelper" type="checkbox" > SpotLight Helper</label></div>
-          <div><label><input name="" id="btnBoxHelper" type="checkbox">Box Helper</label></div>
-        </li>
-        <li class="prop-title">tranform control</li>
-        <li class="prop-content">
-          <div><label><input name="" id="tc_enable" type="checkbox" value="1" checked>Enable</label></div>
-          <div><button id="tc_translate">translate</button></div>
-          <div><button id="tc_rotate">rotate</button></div>
-          <div><button id="tc_scale">scale</button></div>
-          <div><button id="tc_sizePlus">ctrl size +</button></div>
-          <div><button id="tc_sizeMinus">ctrl size -</button></div>
-          <div><button id="tc_toggleX">toggle x</button></div>
-          <div><button id="tc_toggleY">toggle y</button></div>
-          <div><button id="tc_toggleZ">toggle z</button></div>
-        </li>
-        <li class="prop-title">3d obj source</li>
-        <li class="prop-content">
-          <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj"></div>
-          <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae"></div>
-          <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl"></div>
-          <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/"></div>
-          <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg"></div>
-          <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds"></div>
-          <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/"></div>
-          <div><input type="text" id="sourceGltf" placeholder="gltf" value="DamagedHelmet.gltf"></div>
-          <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd"></div>
-        </li>
-        <li class="prop-title">hichart</li>
-        <li class="prop-content">
-          <div>
-            <ul id="hichartIconArea">
-              <li class="hichartIcon" id="addHichartArea"><img src="readme/area.jpg"></li>
-              <li class="hichartIcon" id="addHichartBasicPie"><img src="readme/basicPie.jpg"></li>
-              <li class="hichartIcon" id="addHichartPie"><img src="readme/pie.jpg"></li>
-              <li class="hichartIcon" id="addHichartDoughnutPie"><img src="readme/doughnutPie.jpg"></li>
-              <li class="hichartIcon" id="addHichartBar"><img src="readme/bar.jpg"></li>
-              <li class="hichartIcon" id="addHichartLine"><img src="readme/bzLine.jpg"></li>
-              <li class="hichartIcon" id="addHichartPolar"><img src="readme/polar.jpg"></li>
-              <li class="hichartIcon" id="addHichartRadar"><img src="readme/radar.jpg"></li>
-            </ul>
-          </div>
-        </li>
-
-        <li class="prop-title">image</li>
-        <li class="prop-content">
-          <div>
-            <ul id="imageIconArea">
-              <li class="imageIcon"><img src="assets/brainstorming.png"></li>
-              <li class="imageIcon"><img src="assets/business.png"></li>
-              <li class="imageIcon"><img src="assets/investor.png"></li>
-            </ul>
-          </div>
-        </li>
-        <li class="prop-title">Video</li>
-        <li class="prop-content">
-          <button id="video">Video</button>
-        </li>
-        <li class="prop-title">Export fabric Json</li>
-        <li class="prop-content">
-          <textarea id="currentJson"></textarea>
-        </li>
-        <li class="prop-title">Export Labelme Json</li>
-        <li class="prop-content">
-          <textarea id="exportJson"></textarea>
-        </li>
-        <li class="prop-title">Import fabric Json</li>
-        <li class="prop-content">
-          <textarea id="importfabricJson"></textarea>
-        </li>
-        <li class="prop-title">Import Labelme Json</li>
-        <li class="prop-content">
-          <textarea id="importJson"></textarea>
-        </li>
-        <li class="prop-title">Pan control</li>
-        <li class="prop-content">
-          <div><button id="goUp">up</button></div>
-          <div><button id="goDown">down</button></div>
-          <div><button id="goRight">right</button></div>
-          <div><button id="goLeft">left</button></div>
-        </li>
-        <li class="prop-title">Object property</li>
-        <li class="prop-content">
-          <div><span>type</span><input type="text" id="objPropType" /></div>
-          <div><span>name</span><input type="text" id="objPropName" /></div>
-          <div><span>label</span><input type="text" id="objPropLabel" /></div>
-          <div><span>stroke</span><input type="text" id="objPropStroke" /></div>
-        </li>
-        <li class="prop-title">3D Object property</li>
-        <li class="prop-content">
-          <div><span>obj</span><input type="text" id="objPropSourceObj" /></div>
-        </li>
-        <li class="prop-title">Directional Light</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
-          <div><label><input name="" id="btnLightHelper" type="checkbox">Light Helper</label></div>
-          <div><span>color: </span><input type="color" id="light_color" name="" value="#FFFFFF"></div>
-          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="light_intensity" name="intensity"></div>
-          <div><label><input name="" id="light_castShadow" type="checkbox" checked>castShadow</label></div>
-          <div><button id="submitLight">submit</button></div>
-        </li>
-        <li class="prop-title">HemisphereLight Light</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnHemisphereLight" type="checkbox" checked> HemisphereLight</label></div>
-          <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
-          <div><span>skyColor: </span><input type="color" id="hemisphereLight_color" name="" value="#FFFFFF"></div>
-          <div><span>groundColor: </span><input type="color" id="hemisphereLight_groundColor" name="" value="#FFFFFF"></div>
-          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="hemisphereLight_intensity" name="intensity"></div>
-          <div><button id="submitHemisphereLight">submit</button></div>
-        </li>
-        <li class="prop-title">AmbientLight Light</li>
-        <li class="prop-content">
-          <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
-          <div><span>Color: </span><input type="color" id="ambientLight_color" name="" value="#FFFFFF"></div>
-          <div><span>intensity: </span><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity"></div>
-          <div><button id="submitAmbientLight">submit</button></div>
-        </li>
-        <li class="prop-title">Obj propy change</li>
-        <li class="prop-content">
-          <div><span>ID: </span><input type="text" id="newPropHiId" name="" value="0" disabled></div>
-          <div><span>Type: </span><input type="text" id="newPropType" name="" value="0" disabled></div>
-          <div><span>stroke: </span><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button id="propChange">submit</button></div>
-          <div><span>Fill: </span><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button id="propChangeFill">submit</button></div>
-          <div><span>depth: </span><input type="number" id="newPropDepth" name="PropDepth" value="0"><button id="propChangeDepth">submit</button></div>
-          <div><span>rotate X: </span><input type="range" min="0" max="0" value="0" class="slider" id="newRotateX"></div>
-          <div><span>rotate Y(angle): </span><input type="range" min="0" max="0" value="0" class="slider" id="newRotateY"></div>
-          <div><span>rotate Z: </span><input type="range" min="0" max="0" value="0" class="slider" id="newRotateZ"></div>
-          <div><span>positionX(left): </span><input type="number" id="newpositionX" name="positionX" value="0"></div>
-          <div><span>positionY(altitude): </span><input type="number" id="newpositionY" name="positionY" value="0"></div>
-          <div><span>positionZ(top): </span><input type="number" id="newpositionZ" name="positionZ" value="0"></div>
-          <div><span>sizeX(width): </span><input type="number" id="newsizeX" name="sizeX" value="0" disabled></div>
-          <div><span>sizeY(depth): </span><input type="number" id="newsizeY" name="sizeY" value="0" disabled></div>
-          <div><span>sizeZ(height): </span><input type="number" id="newsizeZ" name="sizeZ" value="0" disabled></div>
-          <div><span>scaleX: </span><input type="number" id="newscaleX" name="scaleX" value="0" disabled></div>
-          <div><span>scaleY: </span><input type="number" id="newscaleY" name="scaleY" value="0" disabled></div>
-          <div><span>scaleZ: </span><input type="number" id="newscaleZ" name="scaleZ" value="0" disabled></div>
-          <div><span>data binding: </span><button id="propChangeDataBinding">submit</button></div>
-          <div><textarea id="newPropDataBinding">
-          </textarea></div>
-        </li>
-        <li class="prop-title">heatmap</li>
-        <li class="prop-content">
-          <div><span>radius: </span><input type="number" id="newheatmapradius" value="10"></div>
-          <div><span>max: </span><input type="number" id="newheatmapmax" value="100"></div>
-          <div><button id="propheatmapChange">submit</button></div>
-        </li>
-        <li class="prop-title">3D obj</li>
-        <li class="prop-content">
-        </li>
-      </ul>
-    </div> -->
-  <!-- </div> -->
+  </div>
   
   <script src="drawingTool/fabricExtend/hi3d.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Color.js"></script>

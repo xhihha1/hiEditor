@@ -470,7 +470,10 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
 hi3D.prototype.setSphere = function (sphere, objOption) {
   // material
   if (objOption.position) {
-    sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { sphere.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { sphere.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { sphere.position.z = objOption.position[2]; }
   }
   if (objOption.radius) {
     sphere.radius = objOption.color;
@@ -533,7 +536,10 @@ hi3D.prototype.addCube = function (option, parentGroup) {
 
 hi3D.prototype.setCube = function (cube, objOption) {
   if (objOption.position) {
-    cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { cube.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { cube.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { cube.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     cube.material.color = new THREE.Color(objOption.color)
@@ -789,7 +795,10 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   }
   if (objOption.position) {
     // line本身位置會造成座標錯誤
-    line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { line.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { line.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { line.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     line.material.color = new THREE.Color(objOption.color)
@@ -879,7 +888,10 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
   }
   if (objOption.position) {
     // line本身位置會造成座標錯誤
-    mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { mesh.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { mesh.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { mesh.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     mesh.material.color = new THREE.Color(objOption.color)
@@ -905,7 +917,7 @@ hi3D.prototype.addObj = function (option, parentGroup) {
   // const cube = new THREE.Mesh( geometry, material );
   // cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   // this.scene.add( cube );
-
+  if (!objOption.source || !objOption.source.obj) { return false }
   var loader = new THREE.OBJLoader(); //在init函式中，建立loader變數，用於匯入模型
   loader.load(objOption.source.obj, function (obj) { //第一個表示模型路徑，第二個表示完成匯入後的回撥函式，一般我們需要在這個回撥函式中將匯入的模型新增到場景中
     obj.traverse(function (child) {
@@ -953,7 +965,10 @@ hi3D.prototype.addObj = function (option, parentGroup) {
 
 hi3D.prototype.setObj = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     // node.material.color = new THREE.Color(objOption.color)
@@ -993,7 +1008,7 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
   // cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   // this.scene.add( cube );
 
-
+  if (!objOption.source || !objOption.source.dae) { return false }
   var loader = new THREE.ColladaLoader(); //在init函式中，建立loader變數，用於匯入模型
   loader.load(objOption.source.dae, function (collada) { //第一個表示模型路徑，第二個表示完成匯入後的回撥函式，一般我們需要在這個回撥函式中將匯入的模型新增到場景中
     // collada.traverse(function (child) {
@@ -1041,7 +1056,10 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
 
 hi3D.prototype.setCollada = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     // node.material.color = new THREE.Color(objOption.color)
@@ -1075,6 +1093,7 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
+  if (!objOption.source || !objOption.source.stl) { return false }
   const loader = new THREE.STLLoader();
   loader.load( objOption.source.stl, function ( geometry ) {
 
@@ -1119,7 +1138,10 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
 
 hi3D.prototype.setSTL = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
     // node.material.color = new THREE.Color(objOption.color)
@@ -1154,6 +1176,7 @@ hi3D.prototype.add3ds = function (option, parentGroup) {
   }
   objOption = this.mergeDeep(objOption, option)
   //3ds files dont store normal maps
+  if (!objOption.source || !objOption.source.f_3ds) { return false }
   let normal
   if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
   const loader = new THREE.TDSLoader();
@@ -1200,7 +1223,10 @@ hi3D.prototype.add3ds = function (option, parentGroup) {
 
 hi3D.prototype.set3ds = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
   }
@@ -1232,6 +1258,7 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
+  if (!objOption.source || !objOption.source.gltf) { return false }
   //3ds files dont store normal maps
   let normal
   if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
@@ -1275,7 +1302,10 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
 
 hi3D.prototype.setgltf = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
   }
@@ -1306,6 +1336,7 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
     angle: 0
   }
   objOption = this.mergeDeep(objOption, option)
+  if (!objOption.source || !objOption.source.nrrd) { return false }
   //3ds files dont store normal maps
   let normal
   if (objOption.source.f_3dsNormalMap) { normal = new THREE.TextureLoader().load( objOption.source.f_3dsNormalMap );}
@@ -1388,7 +1419,10 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
 
 hi3D.prototype.setnrrd = function (node, objOption) {
   if (objOption.position) {
-    node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if(typeof objOption.position[0] !== 'undefined') { node.position.x = objOption.position[0]; }
+    if(typeof objOption.position[1] !== 'undefined') { node.position.y = objOption.position[1]; }
+    if(typeof objOption.position[2] !== 'undefined') { node.position.z = objOption.position[2]; }
   }
   if (objOption.color) {
   }
