@@ -351,6 +351,8 @@ hi3D.prototype.getItemOption = function (item) {
   var depth = item["depth"] || 1
   var size = typeof item["width"] !== 'undefined' ? [item["width"], depth, item["height"]] : undefined
   var source = typeof item.source !== 'undefined' ? item.source : undefined
+  var dataBinding = typeof item.dataBinding !== 'undefined' ? item.dataBinding : undefined
+  var eventBinding = typeof item.eventBinding !== 'undefined' ? item.eventBinding : undefined
   return {
     hiId: item.hiId,
     color: color,
@@ -362,6 +364,8 @@ hi3D.prototype.getItemOption = function (item) {
     heightSegments: heightSegments,
     size: size,
     angle: angle,
-    scale: scale
+    scale: scale,
+    dataBinding: dataBinding,
+    eventBinding: eventBinding
   }
 }

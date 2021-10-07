@@ -155,8 +155,12 @@ function showObjPropChange (opt) {
       advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
     }
   }
-  // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
-  $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+  // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  var eventBinding = opt.target.get('eventBinding') || {
+    click: 'function (value) { console.log("123456");}'
+  }
+  $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
 }
 
 function setObjPropChange () {
@@ -176,7 +180,14 @@ function setObjPropChange () {
   var scaleX = parseFloat($('#newscaleX').val())
   var scaleY = parseFloat($('#newscaleY').val())
   var scaleZ = parseFloat($('#newscaleZ').val())
-  var dataBinding = JSON.stringify($('#newPropDataBinding').val())
+  var bindingStr = $('#newPropDataBinding').val()
+  bindingStr = bindingStr.replace(/\r\n/g,"")
+  bindingStr = bindingStr.replace(/\n/g,"")
+  var dataBinding = JSON.stringify(bindingStr)
+  var eventbindingStr = $('#newPropEventBinding').val()
+  eventbindingStr = eventbindingStr.replace(/\r\n/g,"")
+  eventbindingStr = eventbindingStr.replace(/\n/g,"")
+  var eventBinding = JSON.stringify(eventbindingStr)
   return {
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
@@ -192,7 +203,8 @@ function setObjPropChange () {
     scaleX: scaleX,
     scaleY: scaleY,
     scaleZ: scaleZ,
-    dataBinding: dataBinding
+    dataBinding: dataBinding,
+    eventBinding: eventBinding
   }
 }
 
@@ -212,9 +224,14 @@ function objectPropertyChange(edit, objOption) {
   $('#newRotateY').val(0)
   $('#newRotateZ').val(0)
 
+  // ------------ data binding 
   $('#openDataBinding').click(function () {
     $('#dataBindingDialog').css('display', 'block')
-    var dataBinding = JSON.parse($('#newPropDataBinding').val())
+    var bindingStr = $('#newPropDataBinding').val()
+    //替换所有的换行符
+    bindingStr = bindingStr.replace(/\r\n/g,"")
+    bindingStr = bindingStr.replace(/\n/g,"");
+    var dataBinding = JSON.parse(bindingStr)
     $('.dbPropCard').remove()
     var str = ''
     for(var key in dataBinding) {
@@ -235,8 +252,8 @@ function objectPropertyChange(edit, objOption) {
       dataBinding[key] = {}
       dataBinding[key].advanced = advanced
     })
-    // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
-    $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+    $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+    // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
   })
   $('#dataBindingDialogContent').click(function (e) {
     var target = e.target
@@ -250,6 +267,55 @@ function objectPropertyChange(edit, objOption) {
       str += '  <div><textarea class="dbPropFunc">' + advanced + '</textarea></div>'
       str += '</div>'
       $(target).parents('#dataBindingDialogCardNew').after(str)
+    }
+    if ($(target).hasClass('removeDbPropName')) {
+      $(target).parents('.dbPropCard').remove()
+    }
+  })
+
+  // ------------ event binding 
+  $('#openEventBinding').click(function () {
+    $('#eventBindingDialog').css('display', 'block')
+    var eventFuncStr = $('#newPropEventBinding').val()
+    //替换所有的换行符
+    eventFuncStr = eventFuncStr.replace(/\r\n/g,"")
+    eventFuncStr = eventFuncStr.replace(/\n/g,"");
+    var eventBinding = JSON.parse(eventFuncStr)
+    $('.dbPropCard').remove()
+    var str = ''
+    for(var key in eventBinding) {
+      str += '<div class="eventBindingDialogCard dbPropCard">'
+      str += '  <div><span>event name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="'+key+'" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">'+eventBinding[key]+'</textarea></div>'
+      str += '</div>'
+    }
+    $('#eventBindingDialogContent').append(str)
+  })
+  $('#eventBindingDialogClose').click(function () {
+    $('#eventBindingDialog').css('display', 'none')
+    var eventBinding = {}
+    $('.dbPropCard').each(function(){
+      var key = $(this).find('.dbPropName').val()
+      var eventFuncStr = $(this).find('.dbPropFunc').val()
+      eventFuncStr = eventFuncStr.replace(/\r\n/g,"")
+      eventFuncStr = eventFuncStr.replace(/\n/g,"");
+      eventBinding[key] = eventFuncStr
+    })
+    $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  })
+  $('#eventBindingDialogContent').click(function (e) {
+    var target = e.target
+    if ($(target).attr('id') === 'addDbPropName') {
+      var key = $(target).parents('#eventBindingDialogCardNew').find('.dbPropName').val()
+      var eventFuncStr = $(target).parents('#eventBindingDialogCardNew').find('.dbPropFunc').val()
+      var str = ''
+      str += '<div class="eventBindingDialogCard dbPropCard">'
+      str += '  <div><span>event name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="' + key + '" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">' + eventFuncStr + '</textarea></div>'
+      str += '</div>'
+      $(target).parents('#eventBindingDialogCardNew').after(str)
     }
     if ($(target).hasClass('removeDbPropName')) {
       $(target).parents('.dbPropCard').remove()

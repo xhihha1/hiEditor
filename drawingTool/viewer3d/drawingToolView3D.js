@@ -6,7 +6,10 @@ var dataStructure = {
 
 function initCanvas3D(edit, objOption) {
 
-  edit.hi3d = new hi3D({container: {enableDefaultMouse: false}})
+  edit.hi3d = new hi3D({
+    parentId: 'content3D',
+    container: {enableDefaultMouse: false}
+  })
   edit.hi3d.addscene()
   edit.hi3d.addCamera()
   edit.hi3d.addLight()
@@ -14,6 +17,8 @@ function initCanvas3D(edit, objOption) {
   edit.hi3d.setCamera({
     position: [0, 50, 100]
   })
+  edit.hi3d.nodeEvnetBinding()
+
 
   // edit.hi3d.addObj()
   // edit.hi3d.addAxesHelper()
@@ -68,7 +73,7 @@ function dataRefresh (edit, objOption) {
       updateObjProp.type = fabricJson.objects[i].type
       var dataBinding = JSON.parse(JSON.parse(fabricJson.objects[i].dataBinding))
       var needChange = false
-      console.log('dataBinding', dataBinding)
+      // console.log('dataBinding', dataBinding)
       for(var k in dataBinding) {
         if (dataBinding[k].advanced) {
           var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
@@ -80,7 +85,7 @@ function dataRefresh (edit, objOption) {
     }
   }
   if (updateView) {
-    console.log('updateView', updateView)
+    // console.log('updateView', updateView)
     edit.hi3d.refreshByFabricJson(edit, objOption, updateView, { needRemove: false })
   }
   return setTimeout(function(){

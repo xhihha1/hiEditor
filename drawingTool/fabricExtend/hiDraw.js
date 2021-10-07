@@ -527,7 +527,7 @@
       return this.canvasView.toJSON([
         'label', 'uniqueIndex', 'hiId', 'altitude',
         'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
-        'camera', 'dataBinding'
+        'camera', 'dataBinding', 'eventBinding'
       ]);
     } else {
       return {}

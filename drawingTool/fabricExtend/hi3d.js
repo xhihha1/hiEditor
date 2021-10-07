@@ -456,6 +456,8 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   sphere.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   sphere.hiId = objOption.hiId
+  sphere.dataBinding = objOption.dataBinding
+  sphere.eventBinding = objOption.eventBinding
   sphere.castShadow = true;
   sphere.receiveShadow = true;
   if (parentGroup) {
@@ -526,6 +528,8 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   cube.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   cube.hiId = objOption.hiId
+  cube.dataBinding = objOption.dataBinding
+  cube.eventBinding = objOption.eventBinding
   if (parentGroup) {
     parentGroup.add( cube );
   } else {
@@ -595,6 +599,8 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   plane.visible = true;
   plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   plane.hiId = objOption.hiId
+  plane.dataBinding = objOption.dataBinding
+  plane.eventBinding = objOption.eventBinding
   if (parentGroup) {
     parentGroup.add( plane );
   } else {
@@ -633,6 +639,8 @@ hi3D.prototype.addLine = function (option, parentGroup) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const line = new THREE.Line(geometry, material);
   line.hiId = objOption.hiId
+  line.dataBinding = objOption.dataBinding
+  line.eventBinding = objOption.eventBinding
   if (parentGroup) {
     parentGroup.add( line );
   } else {
@@ -759,6 +767,8 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   line.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   line.hiId = objOption.hiId
+  line.dataBinding = objOption.dataBinding
+  line.eventBinding = objOption.eventBinding
   line.castShadow = true;
   if (parentGroup) {
     parentGroup.add( line );
@@ -851,6 +861,8 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
 	// mesh.add( wireframe );
   mesh.scale.set( objOption.scale[0], objOption.scale[1], objOption.scale[2] );
   mesh.hiId = objOption.hiId
+  mesh.dataBinding = objOption.dataBinding
+  mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
   if (parentGroup) {
     parentGroup.add( mesh );
@@ -942,6 +954,8 @@ hi3D.prototype.addObj = function (option, parentGroup) {
     })
     if (!objExist) {
       obj.hiId = objOption.hiId
+      obj.dataBinding = objOption.dataBinding
+      obj.eventBinding = objOption.eventBinding
       obj.source = {
         obj: objOption.source.obj
       }
@@ -1032,6 +1046,8 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
     var obj = collada.scene;
     if (!objExist) {
       obj.hiId = objOption.hiId
+      obj.dataBinding = objOption.dataBinding
+      obj.eventBinding = objOption.eventBinding
       obj.source = {
         dae: objOption.source.dae
       }
@@ -1114,6 +1130,8 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     })
     if (!objExist) {
       mesh.hiId = objOption.hiId
+      mesh.dataBinding = objOption.dataBinding
+      mesh.eventBinding = objOption.eventBinding
       mesh.source = {
         stl: objOption.source.stl
       }
@@ -1202,6 +1220,8 @@ hi3D.prototype.add3ds = function (option, parentGroup) {
     })
     if (!objExist) {
       object.hiId = objOption.hiId
+      object.dataBinding = objOption.dataBinding
+      object.eventBinding = objOption.eventBinding
       object.source = {
         f_3ds: objOption.source.f_3ds
       }
@@ -1277,6 +1297,8 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
     })
     if (!objExist) {
       mesh.hiId = objOption.hiId
+      mesh.dataBinding = objOption.dataBinding
+      mesh.eventBinding = objOption.eventBinding
       mesh.source = {
         gltfPath: objOption.source.gltfPath,
         gltf: objOption.source.gltf
@@ -1359,8 +1381,8 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
     if (!objExist) {
       let nrrdGroup = new THREE.Group();
       nrrdGroup.hiId = objOption.hiId
-
-      nrrdGroup.hiId = objOption.hiId
+      nrrdGroup.dataBinding = objOption.dataBinding
+      nrrdGroup.eventBinding = objOption.eventBinding
       nrrdGroup.source = {
         nrrd: objOption.source.nrrd
       }
@@ -1623,6 +1645,12 @@ hi3D.prototype.animate = function () {
   // this.renderer.render(this.scene, this.camera);
   this.viewRender()
 };
+
+// reverse string to functionn
+hi3D.prototype.functionGenerator = function (func) {
+  return new Function("return " + func)();
+  // var C = new Function("return " + B)()
+}
 
 hi3D.prototype.mergeDeep = function (target, source) {
   if (typeof target !== 'object' || typeof source !== 'object') return target;
