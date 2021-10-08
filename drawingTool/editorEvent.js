@@ -77,6 +77,7 @@ function editorEvent(edit, objOption) {
       x: edit.canvasView.width / 2,
       y: edit.canvasView.height / 2
     }, zoom)
+    edit.BgGrid(true)
   });
 
   $("#zoomOut").click(function () {
@@ -87,6 +88,7 @@ function editorEvent(edit, objOption) {
       x: edit.canvasView.width / 2,
       y: edit.canvasView.height / 2
     }, zoom)
+    edit.BgGrid(true)
   });
 
   $("#resize").click(function () {
@@ -480,7 +482,8 @@ function editorEvent(edit, objOption) {
     setTimeout(function () {
       edit.canvasView.setWidth(parseInt(elem.offsetWidth))
       edit.canvasView.setHeight(parseInt(elem.offsetHeight))
-      edit.canvasView.renderAll()
+      edit.BgGrid(true)
+      edit.viewRender()
     }, 300)
     // that.canvasView.renderAll()
   });

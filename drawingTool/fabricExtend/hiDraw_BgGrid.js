@@ -84,6 +84,7 @@
         ctx.clearRect(0, 0, canvasTemplate.width, canvasTemplate.height);
       }
     }
+    return this;
   }
 
 })(typeof exports !== 'undefined' ? exports : this);

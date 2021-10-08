@@ -224,6 +224,11 @@
       // });
       ellipse.altitude = 0
       ellipse.hiId = hiDraw.prototype.uniqueIdGenerater()
+      ellipse.intensity = 1
+      ellipse.distance = 200
+      ellipse.angle = Math.PI/2
+      ellipse.penumbra = 0.1
+      ellipse.decay = 2
       inst.canvas.add(ellipse).setActiveObject(ellipse);
       ellipse.canvasItem = inst.canvasItem;
     };

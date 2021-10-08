@@ -194,7 +194,7 @@ hiDraw.prototype.viewEvent = (function () {
             }
         });
 
-        document.onkeydown = function (event) {
+        document.getElementById(this.defaultOptions.canvasViewId).parentNode.parentNode.onkeydown = function (event) {
             if(!that || !that.canvasView){
                 return false
             }

@@ -71,7 +71,7 @@ hiDraw.prototype.fabricOverride = (function () {
             var canvas = this.canvas;
             canvas.add(newGroup);
             canvas._activeObject = newGroup;
-            newGroup.setCoords();
+            newGroup.setCoords(true);
             return newGroup;
         }
     }

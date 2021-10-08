@@ -164,7 +164,7 @@
       </div>
       <div id="mContain">
         <div class="area2D">
-          <div id="content">
+          <div id="content" tabindex="0">
             <canvas id="mainEditor"></canvas>
           </div>
         </div>
@@ -388,6 +388,17 @@
               <div><textarea id="newPropDataBinding"></textarea></div>
               <div><span>event binding: </span><button id="openEventBinding">open</button></div>
               <div><textarea id="newPropEventBinding"></textarea></div>
+              <div><hr></div>
+              <div><span>spotLight intensity:</span></div>
+              <div><input type="number" id="newSpotIntensity" name="intensity" value="1" class="prop_input"></div>
+              <div><span>spotLight distance:</span></div>
+              <div><input type="number" id="newSpotDistance" name="distance" value="200" class="prop_input"></div>
+              <div><span>spotLight angle:</span></div>
+              <div><input type="range" id="newSpotAngle" min="0" max="1.05" value="1.05" step="0.05" class="prop-slider" disabled></div>
+              <div><span>spotLight penumbra:</span></div>
+              <div><input type="range" id="newSpotPenumbra" min="0" max="1" value="0.1" step="0.1" class="prop-slider"></div>
+              <div><span>spotLight decay:</span></div>
+              <div><input type="number" id="newSpotDecay" name="decay" value="2" class="prop_input"></div>
               <div><button id="propApply">apply property</button></div>
             </li>
             <li class="prop-title">heatmap</li>

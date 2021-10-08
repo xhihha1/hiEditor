@@ -17,6 +17,7 @@
     if (this.historyInit) {
       this.historyInit()
     }
+    this.hiObjectList = {}
     this.defaultOptions = {
       canvasViewId: 'mainEditor',
       activeJsonTextId: 'hiActiveJsonArea',
@@ -232,6 +233,7 @@
           // this should solve the unselectability
           clonedObj.setCoords();
         } else {
+          clonedObj.hiId = hiDraw.prototype.uniqueIdGenerater()
           that.canvasView.add(clonedObj);
         }
         if (Array.isArray(that.defaultOptions.copyPropertiesToInclude)) {
@@ -240,7 +242,7 @@
             clonedObj[key] = that.copiedObject[key];
           }
         }
-        clonedObj.hiId = hiDraw.prototype.uniqueIdGenerater()
+        // clonedObj.hiId = hiDraw.prototype.uniqueIdGenerater()
         that.copiedObject.top += 10;
         that.copiedObject.left += 10;
         that.canvasView.setActiveObject(clonedObj);
@@ -297,10 +299,12 @@
       return;
     }
     var newGroup = this.canvasView.getActiveObject().toHiGroup()
+    // var newGroup = this.canvasView.getActiveObject().toGroup()
     newGroup.hiId = this.uniqueIdGenerater()
     newGroup.scaleZ = 1
     newGroup.altitude = 0
-    this.canvasView.requestRenderAll();
+    // this.canvasView.requestRenderAll();
+    this.viewRender()
   }
 
   hiDraw.prototype.unGroupSelection = function () {
@@ -312,7 +316,9 @@
       return;
     }
     this.canvasView.getActiveObject().toActiveSelection();
-    this.canvasView.requestRenderAll();
+    this.canvasView.getActiveObject().setCoords();
+    // this.canvasView.requestRenderAll();
+    this.viewRender()
   }
 
   hiDraw.prototype.removePolygonsTempShapes = function (obj) {
@@ -525,9 +531,11 @@
     if (this.canvasView) {
       // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
       return this.canvasView.toJSON([
-        'label', 'uniqueIndex', 'hiId', 'altitude',
+        'AAA', 'label', 'uniqueIndex', 'hiId', 'altitude',
         'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
-        'camera', 'dataBinding', 'eventBinding'
+        'camera', 'dataBinding', 'eventBinding',
+        'directionalLight', 'hemisphereLight', 'ambientLight',
+        'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay'
       ]);
     } else {
       return {}

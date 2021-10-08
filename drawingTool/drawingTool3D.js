@@ -23,25 +23,44 @@ function initCanvas(canvasId, canvasViewId) {
     },
     event: {
       object_added: function (opt) {
+        console.log('object_added')
         if(opt.target.hiId){
-          showObjPropChange(opt);
+          console.log('object_added', opt.target.hiId)
+          edit.viewRender()
+          showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit);
         }
       },
       object_modified: function (opt) {
+        console.log('object_modified')
         if(opt.target.hiId){
-          showObjPropChange(opt);
+          edit.viewRender()
+          showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit);
+        }
+        if(opt.target.get('type') === 'activeSelection') {
+          var needRefresh3d = false
+          opt.target.forEachObject(function(object) {
+            if (object.hiId) { needRefresh3d = true}
+          });
+          if (needRefresh3d) { edit.hi3d.refreshByFabricJson(edit); }
         }
       },
       object_removed: function (opt) {
+        console.log('object_removed')
         if(opt.target.hiId){
-          showObjPropChange(opt);
+          if (edit.hiObjectList[opt.target.hiId]) { edit.hiObjectList[opt.target.hiId] = null }
+          showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit); 
         }
       },
       after_render: function (opt) {
+        // console.log('after_render')
         // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
+        var activeObj = edit.canvasView.getActiveObject();
+        if(activeObj &&　activeObj.hiId){
+          showObjPropChange(activeObj);
+        }
         var fabricJson = edit.toFabricJson()
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
           if (!obj['tempDrawShape']) {
@@ -68,7 +87,7 @@ function initCanvas(canvasId, canvasViewId) {
           $('#objPropLabel').val(opt.target.get('label'))
           $('#objPropStroke').val(opt.target.get('stroke'))
           if (opt.target.hiId) {
-            showObjPropChange(opt)
+            showObjPropChange(opt.target)
             edit.hi3d.scene.traverse(function (node) {
               if ( (node instanceof THREE.Mesh || node instanceof THREE.Group) &&
                 node.hiId === opt.target.hiId) {
@@ -83,7 +102,7 @@ function initCanvas(canvasId, canvasViewId) {
       },
       selection_updated: function (opt) {
         if (opt.target.hiId) {
-          showObjPropChange(opt)
+          showObjPropChange(opt.target)
           edit.hi3d.scene.traverse(function (node) {
             if ( node instanceof THREE.Mesh && node.hiId === opt.target.hiId) {
               edit.hi3d.setTransformControlsMesh(node)
@@ -102,7 +121,7 @@ function initCanvas(canvasId, canvasViewId) {
 
       }
     }
-  }).createView().viewEvent();
+  }).createView().viewEvent().BgGrid(true);
 
 
   var objOption = {
@@ -131,36 +150,42 @@ function initCanvas(canvasId, canvasViewId) {
   return edit;
 }
 
-function showObjPropChange (opt) {
-  $('#newPropHiId').val(opt.target.get('hiId'))
-  $('#newPropType').val(opt.target.get('type'))
-  $('#newPropStroke').val(hiDraw.prototype.colorToHex(opt.target.get('stroke')))
-  $('#newPropFill').val(hiDraw.prototype.colorToHex(opt.target.get('fill')))
-  $('#newPropDepth').val(parseInt(opt.target.get('depth')) || 0)
-  $('#newRotateX').val(parseInt(opt.target.get('rotateX')) || 0)
-  $('#newRotateY').val(parseInt(opt.target.get('angle')) || 0)
-  $('#newRotateZ').val(parseInt(opt.target.get('rotateZ')) || 0)
-  $('#newpositionX').val(parseInt(opt.target.get('left')) || 0)
-  $('#newpositionY').val(parseInt(opt.target.get('altitude')) || 0)
-  $('#newpositionZ').val(parseInt(opt.target.get('top')) || 0)
-  $('#newsizeX').val(parseFloat(opt.target.get('width')) || 1)
-  $('#newsizeY').val(parseFloat(opt.target.get('depth')) || 1)
-  $('#newsizeZ').val(parseFloat(opt.target.get('height')) || 1)
-  $('#newscaleX').val(parseFloat(opt.target.get('scaleX')) || 1)
-  $('#newscaleY').val(parseFloat(opt.target.get('scaleY')) || 1)
-  $('#newscaleZ').val(parseFloat(opt.target.get('scaleZ')) || 1)
+function showObjPropChange (object) { // opt.target
+  $('#newPropHiId').val(object.get('hiId'))
+  $('#newPropType').val(object.get('type'))
+  $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
+  $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
+  $('#newPropDepth').val(parseInt(object.get('depth')) || 0)
+  $('#newRotateX').val(parseInt(object.get('rotateX')) || 0)
+  $('#newRotateY').val(parseInt(object.get('angle')) || 0)
+  $('#newRotateZ').val(parseInt(object.get('rotateZ')) || 0)
+  $('#newpositionX').val(parseInt(object.get('left')) || 0)
+  $('#newpositionY').val(parseInt(object.get('altitude')) || 0)
+  $('#newpositionZ').val(parseInt(object.get('top')) || 0)
+  $('#newsizeX').val(parseFloat(object.get('width')) || 1)
+  $('#newsizeY').val(parseFloat(object.get('depth')) || 1)
+  $('#newsizeZ').val(parseFloat(object.get('height')) || 1)
+  $('#newscaleX').val(parseFloat(object.get('scaleX')) || 1)
+  $('#newscaleY').val(parseFloat(object.get('scaleY')) || 1)
+  $('#newscaleZ').val(parseFloat(object.get('scaleZ')) || 1)
   
-  var dataBinding = opt.target.get('dataBinding') || {
+  var dataBinding = object.get('dataBinding') || {
     fill:{
       advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
     }
   }
   $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
   // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
-  var eventBinding = opt.target.get('eventBinding') || {
+  var eventBinding = object.get('eventBinding') || {
     click: 'function (value) { console.log("123456");}'
   }
   $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  // -------- spotLight ---------
+  $('#newSpotIntensity').val(parseFloat(object.get('intensity')) || 1)
+  $('#newSpotDistance').val(parseFloat(object.get('distance')) || 200)
+  $('#newSpotAngle').val(parseFloat(object.get('angle')) || 1.05)
+  $('#newSpotPenumbra').val(parseFloat(object.get('penumbra')) || 0.1)
+  $('#newSpotDecay').val(parseFloat(object.get('decay')) || 2)
 }
 
 function setObjPropChange () {
@@ -188,6 +213,10 @@ function setObjPropChange () {
   eventbindingStr = eventbindingStr.replace(/\r\n/g,"")
   eventbindingStr = eventbindingStr.replace(/\n/g,"")
   var eventBinding = JSON.stringify(eventbindingStr)
+  var intensity = parseFloat($('#newSpotIntensity').val())
+  var distance = parseFloat($('#newSpotDistance').val())
+  var penumbra = parseFloat($('#newSpotPenumbra').val())
+  var decay = parseFloat($('#newSpotDecay').val())
   return {
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
@@ -204,7 +233,11 @@ function setObjPropChange () {
     scaleY: scaleY,
     scaleZ: scaleZ,
     dataBinding: dataBinding,
-    eventBinding: eventBinding
+    eventBinding: eventBinding,
+    intensity: intensity,
+    distance: distance,
+    penumbra: penumbra,
+    decay: decay
   }
 }
 
