@@ -35,12 +35,13 @@
 33. 鍵盤操作 misc_controls_pointerlock.html
 34. PointLightHelper  
 35. 數據資料綁定測試完成，參考refresh3d hiSphere，需要修正 set 驗證 undefined 機制 (OK)  
-36. viewer 讀取場景光線等屬性，添加 json 設定  
+36. viewer 讀取場景光線等屬性，添加 json 設定同42  
 37. Image update runtime (https://stackoverflow.com/questions/16066448/three-js-texture-image-update-at-runtime)  
 38. Object click event (OK) (https://stackoverflow.com/questions/17638933/three-js-clickable-objects) (https://discourse.threejs.org/t/click-event-on-object/1320)  
 39. 在牆面上挖洞門窗 (https://discourse.threejs.org/t/how-to-create-window-and-door-openings-in-the-wall/20473/4)  (https://discourse.threejs.org/t/collection-of-examples-from-discourse-threejs-org/4315)  
 40. leaflet map image (https://github.com/mapbox/leaflet-image)  
-41. 把所有含 hiId的物件，放在一個列表，方便快速索引。  
+41. 把所有含 hiId的物件，放在一個列表，方便快速索引。 (XXX失敗) 
+42. 把燈光屬性加入到 view，同36  
 
 # group (OK)  
 fabric  
