@@ -2,6 +2,17 @@
 <html>
 
 <head>
+  <title>Hi 2D視覺化介面編輯器</title>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"
+    content="width=device-width,height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon-precomposed" href="icon/Key_logo.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="icon/Key_logo.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="icon/Key_logo.png" />
+  <link rel="SHORTCUT ICON" href="icon/Key_logo.png">
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.js"></script> -->
   <script src="drawingTool/common/script/hiMathUtil.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/three.js"></script>
@@ -41,7 +52,7 @@
   <script src="drawingTool/fabricExtend/hichart/hichart_doughnutPie.js"></script>
   <script src="drawingTool/fabricExtend/hichart/hiChart_line.js"></script>
   <script src="drawingTool/fabricExtend/hichart/hiChart_pie.js"></script>
-  
+
   <script src="drawingTool/fabricExtend/hichart/hiChart_bzLine.js"></script>
   <script src="drawingTool/fabricExtend/hichart/hiChart_stackedBar.js"></script>
   <script src="drawingTool/fabricExtend/hichart/hiChart_polar.js"></script>
@@ -64,157 +75,170 @@
 
   <!-- <script src="js/opencv.js" async onload="onOpenCvReady();" type="text/javascript"></script> -->
   <!-- <script src="js/simplify.js" type="text/javascript"></script> -->
-  <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool.css">
+  <!-- <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool.css"> -->
+  <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool_purple.css">
   <style>
   </style>
 </head>
 
 <body>
-  <div id="main">
-    <div id="menu">
-      <ul>
-        <li class="menuTitle">Shape</li>
-        <li id="drawRect"><img src="icon/rectangle.png"></li>
-        <li id="drawCircle"><img src="icon/ellipse.png"></li>
-        <li id="drawPolygon"><img src="icon/polygon.png"></li>
-        <li id="drawLine"><img src="icon/line.png"></li>
-        <li id="drawPolyline"><img src="icon/polyline.png"></li>
-        <li id="drawPath"><img src="icon/path.png"></li>
-        <li id="drawHeatmapPoint"><img src="icon/heatmap.png"></li>
-        <li id="drawDiv">Div</li>
-        <li class="menuTitle">View</li>
-        <li id="panCanvas"><img src="icon/move.png"></li>
-        <li id="zoomIn"><img src="icon/zoom-in.png"></li>
-        <li id="zoomOut"><img src="icon/zoom-out.png"></li>
-        <li id="selectArea"><img src="icon/selectArea.png"></li>
-        <li id="resize"><img src="icon/resize.png"></li>
-        <li class="menuTitle">File</li>
-        <li id="export"><img src="icon/export-file.png"></li>
-        <li id="exportFabric"><img src="icon/export-file-f.png"></li>
-        <li id="import"><img src="icon/import-file.png"></li>
-        <li id="importFabric"><img src="icon/import-file-f.png"></li>
-        <li class="menuTitle">Setting</li>
-        <li id="axis"><img src="icon/axis.png"></li>
-        <li id="simple">S</li>
-        <li id="opCV">opCV</li>
-        <!-- <li class="menuTitle">3D</li>
-        <li id="render3D">3d render</li>
-        <li id="drawCamera">Camera</li>
-        <li id="drawLookAt">LookAt</li>
-        <li id="drawCube">cube</li>
-        <li id="drawSphere">sphere</li>
-        <li id="draw3dPolyline">3D polyline</li> -->
-      </ul>
+  <div id="mainContain">
+    <div id="header">
+      <div id="titleArea">Hi Editor</div>
+      <div id="toolBarArea">
+        <ul>
+          <li id="export"><img src="./icon/export-file_w.png" class="tool-icon">export</li>
+          <li id="exportFabric"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</li>
+          <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">load Image</li>
+          <li id="importFabric"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</li>
+          <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li>
+          <!-- <li id=""><img src="./icon/rectangle_w.png" class="tool-icon"></li>
+          <li id=""><img src="./icon/ellipse_w.png" class="tool-icon"></li> -->
+        </ul>
+      </div>
     </div>
-    <div id="content" tabindex="0">
-      <canvas id="mainEditor"></canvas>
-    </div>
-    <!-- <div id="content3D"></div> -->
-    <div id="property">
-      <ul>
-        <li class="prop-title">Title</li>
-        <li class="prop-content">content</li>
-        <li class="prop-title">Series Page</li>
-        <li class="prop-content">
-          <div><a target="_blank" href="drawingTool3D.html">3D Editor</a></div>
-          <div><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
-          <div><a id="saveFabricLocalStorage3D">3D viewer</a></div>
-          <div><a id="saveFabricLocalStorage2D">2D viewer</a></div>
-          <div><a id="saveFabricImage2D">To 2D image</a></div>
-        </li>
-        <li class="prop-title">object List</li>
-        <li class="prop-content">
-          <div>
-            <ul id="objlist">
-              <li></li>
-            </ul>
-          </div>
-        </li>
-        <li class="prop-title">hichart</li>
-        <li class="prop-content">
-          <div>
-            <ul id="hichartIconArea">
-              <li class="hichartIcon" id="addHichartArea"><img src="readme/area.jpg"></li>
-              <li class="hichartIcon" id="addHichartBasicPie"><img src="readme/basicPie.jpg"></li>
-              <li class="hichartIcon" id="addHichartPie"><img src="readme/pie.jpg"></li>
-              <li class="hichartIcon" id="addHichartDoughnutPie"><img src="readme/doughnutPie.jpg"></li>
-              <li class="hichartIcon" id="addHichartBar"><img src="readme/bar.jpg"></li>
-              <li class="hichartIcon" id="addHichartLine"><img src="readme/bzLine.jpg"></li>
-              <li class="hichartIcon" id="addHichartPolar"><img src="readme/polar.jpg"></li>
-              <li class="hichartIcon" id="addHichartRadar"><img src="readme/radar.jpg"></li>
-            </ul>
-          </div>
-        </li>
-        <!-- image -->
-        <li class="prop-title">image</li>
-        <li class="prop-content">
-          <div>
-            <ul id="imageIconArea">
-              <li class="imageIcon"><img src="assets/brainstorming.png"></li>
-              <li class="imageIcon"><img src="assets/business.png"></li>
-              <li class="imageIcon"><img src="assets/investor.png"></li>
-            </ul>
-          </div>
-        </li>
-        <li class="prop-title">Video</li>
-        <li class="prop-content">
-          <button id="video">Video</button>
-        </li>
-        <!-- export -->
-        <li class="prop-title">Export fabric Json</li>
-        <li class="prop-content">
-          <textarea id="currentJson"></textarea>
-        </li>
-        <li class="prop-title">Export Labelme Json</li>
-        <li class="prop-content">
-          <textarea id="exportJson"></textarea>
-        </li>
-        <!-- Import -->
-        <li class="prop-title">Import fabric Json</li>
-        <li class="prop-content">
-          <textarea id="importfabricJson"></textarea>
-        </li>
-        <li class="prop-title">Import Labelme Json</li>
-        <li class="prop-content">
-          <textarea id="importJson"></textarea>
-        </li>
-        <!-- control -->
-        <li class="prop-title">Pan control</li>
-        <li class="prop-content">
-          <div><button id="goUp">up</button></div>
-          <div><button id="goDown">down</button></div>
-          <div><button id="goRight">right</button></div>
-          <div><button id="goLeft">left</button></div>
-        </li>
-        <!-- Object property -->
-        <li class="prop-title">Object property</li>
-        <li class="prop-content">
-          <div><span>type</span><input type="text" id="objPropType" /></div>
-          <div><span>name</span><input type="text" id="objPropName" /></div>
-          <div><span>label</span><input type="text" id="objPropLabel" /></div>
-          <div><span>stroke</span><input type="text" id="objPropStroke" /></div>
-        </li>
-        <li class="prop-title">Obj propy change</li>
-        <li class="prop-content">
-          <div><span>stroke: </span><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button id="propChange">submit</button></div>
-          <div><span>Fill: </span><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button id="propChangeFill">submit</button></div>
-          <div><span>altitude: </span><input type="number" id="newPropAltitude" name="PropAltitude" value="0"><button id="propChangeAltitude">submit</button></div>
-        </li>
-        <li class="prop-title">heatmap</li>
-        <li class="prop-content">
-          <div><span>radius: </span><input type="number" id="newheatmapradius" value="10"></div>
-          <div><span>max: </span><input type="number" id="newheatmapmax" value="100"></div>
-          <div><button id="propheatmapChange">submit</button></div>
-        </li>
-        <li class="prop-title">3D obj</li>
-        <li class="prop-content">
-          <div><button id="addAxesHelper">addAxesHelper</button> why?</div>
-          <div><button id="add3dObj">3dObj</button></div>
-        </li>
-      </ul>
+    <div id="mainPage">
+      <div id="lContain">
+        <div id="menu">
+          <ul>
+            <li class="menuTitle">Shape</li>
+            <li id="drawRect"><img src="icon/rectangle.png"></li>
+            <li id="drawCircle"><img src="icon/ellipse.png"></li>
+            <li id="drawPolygon"><img src="icon/polygon.png"></li>
+            <li id="drawLine"><img src="icon/line.png"></li>
+            <li id="drawPolyline"><img src="icon/polyline.png"></li>
+            <li id="drawPath"><img src="icon/path.png"></li>
+            <li id="drawHeatmapPoint"><img src="icon/heatmap.png"></li>
+            <li id="drawDiv">Div</li>
+            <li class="menuTitle">View</li>
+            <li id="panCanvas"><img src="icon/move.png"></li>
+            <li id="zoomIn"><img src="icon/zoom-in.png"></li>
+            <li id="zoomOut"><img src="icon/zoom-out.png"></li>
+            <li id="selectArea"><img src="icon/selectArea.png"></li>
+            <li id="resize"><img src="icon/resize.png"></li>
+            <li class="menuTitle">File</li>
+            <li id="export"><img src="icon/export-file.png"></li>
+            <li id="exportFabric"><img src="icon/export-file-f.png"></li>
+            <li id="import"><img src="icon/import-file.png"></li>
+            <li id="importFabric"><img src="icon/import-file-f.png"></li>
+            <li class="menuTitle">Setting</li>
+            <li id="axis"><img src="icon/axis.png"></li>
+          </ul>
+        </div>
+      </div>
+      <div id="mContain">
+        <div id="content" tabindex="0">
+          <canvas id="mainEditor"></canvas>
+        </div>
+      </div>
+      <div id="rContain">
+
+        <div id="property">
+          <ul>
+            <li class="prop-title">Title</li>
+            <li class="prop-content">content</li>
+            <li class="prop-title">Series Page</li>
+            <li class="prop-content">
+              <div><a target="_blank" href="drawingTool3D.html">3D Editor</a></div>
+              <div><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
+              <div><a id="saveFabricLocalStorage3D">3D viewer</a></div>
+              <div><a id="saveFabricLocalStorage2D">2D viewer</a></div>
+              <div><a id="saveFabricImage2D">To 2D image</a></div>
+            </li>
+            <li class="prop-title">object List</li>
+            <li class="prop-content">
+              <div>
+                <ul id="objlist">
+                  <li></li>
+                </ul>
+              </div>
+            </li>
+            <li class="prop-title">hichart</li>
+            <li class="prop-content">
+              <div>
+                <ul id="hichartIconArea">
+                  <li class="hichartIcon" id="addHichartArea"><img src="readme/area.jpg"></li>
+                  <li class="hichartIcon" id="addHichartBasicPie"><img src="readme/basicPie.jpg"></li>
+                  <li class="hichartIcon" id="addHichartPie"><img src="readme/pie.jpg"></li>
+                  <li class="hichartIcon" id="addHichartDoughnutPie"><img src="readme/doughnutPie.jpg"></li>
+                  <li class="hichartIcon" id="addHichartBar"><img src="readme/bar.jpg"></li>
+                  <li class="hichartIcon" id="addHichartLine"><img src="readme/bzLine.jpg"></li>
+                  <li class="hichartIcon" id="addHichartPolar"><img src="readme/polar.jpg"></li>
+                  <li class="hichartIcon" id="addHichartRadar"><img src="readme/radar.jpg"></li>
+                </ul>
+              </div>
+            </li>
+            <li class="prop-title">image</li>
+            <li class="prop-content">
+              <div>
+                <ul id="imageIconArea">
+                  <li class="imageIcon"><img src="assets/brainstorming.png"></li>
+                  <li class="imageIcon"><img src="assets/business.png"></li>
+                  <li class="imageIcon"><img src="assets/investor.png"></li>
+                </ul>
+              </div>
+            </li>
+            <li class="prop-title">Video</li>
+            <li class="prop-content">
+              <button id="video">Video</button>
+            </li>
+            <li class="prop-title">Export fabric Json</li>
+            <li class="prop-content">
+              <textarea id="currentJson"></textarea>
+            </li>
+            <li class="prop-title">Export Labelme Json</li>
+            <li class="prop-content">
+              <textarea id="exportJson"></textarea>
+            </li>
+            <li class="prop-title">Import fabric Json</li>
+            <li class="prop-content">
+              <textarea id="importfabricJson"></textarea>
+            </li>
+            <li class="prop-title">Import Labelme Json</li>
+            <li class="prop-content">
+              <textarea id="importJson"></textarea>
+            </li>
+            <li class="prop-title">Pan control</li>
+            <li class="prop-content">
+              <div><button id="goUp">up</button></div>
+              <div><button id="goDown">down</button></div>
+              <div><button id="goRight">right</button></div>
+              <div><button id="goLeft">left</button></div>
+            </li>
+            <li class="prop-title">Object property</li>
+            <li class="prop-content">
+              <div><span>type</span><input type="text" id="objPropType" /></div>
+              <div><span>name</span><input type="text" id="objPropName" /></div>
+              <div><span>label</span><input type="text" id="objPropLabel" /></div>
+              <div><span>stroke</span><input type="text" id="objPropStroke" /></div>
+            </li>
+            <li class="prop-title">Obj propy change</li>
+            <li class="prop-content">
+              <div><span>stroke: </span><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button
+                  id="propChange">submit</button></div>
+              <div><span>Fill: </span><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button
+                  id="propChangeFill">submit</button></div>
+              <div><span>altitude: </span><input type="number" id="newPropAltitude" name="PropAltitude"
+                  value="0"><button id="propChangeAltitude">submit</button></div>
+            </li>
+            <li class="prop-title">heatmap</li>
+            <li class="prop-content">
+              <div><span>radius: </span><input type="number" id="newheatmapradius" value="10"></div>
+              <div><span>max: </span><input type="number" id="newheatmapmax" value="100"></div>
+              <div><button id="propheatmapChange">submit</button></div>
+            </li>
+            <li class="prop-title">3D obj</li>
+            <li class="prop-content">
+              <div><button id="addAxesHelper">addAxesHelper</button> why?</div>
+              <div><button id="add3dObj">3dObj</button></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="clearBoth"></div>
     </div>
   </div>
-  
+
   <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_LookAt.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Cube.js"></script>
@@ -227,7 +251,7 @@
   <!-- <script src="drawingTool/editor3d.js"></script>
   <script src="drawingTool/refresh3d.js"></script> -->
   <script src="drawingTool/drawingTool2D.js"></script>
-  
+
   <script>
     $(document).ready(function () {
       console.log("ready!");
