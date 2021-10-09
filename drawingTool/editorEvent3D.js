@@ -338,12 +338,14 @@ function editorEvent3D(edit, objOption) {
     edit.hi3d.viewRender()
   })
   $('#submitLight').click(function(){
+    var visible = $('#btnLight').prop("checked");
     var color = $('#light_color').val()
     var intensity = parseFloat($('#light_intensity').val())
     var shadowEnable = $('#light_castShadow').prop("checked");
     console.log('shadowEnable', shadowEnable)
     if (edit.hi3d.directionalLight) {
       var opt = {
+        visible: visible,
         color: color,
         intensity: intensity,
         castShadow: shadowEnable
@@ -354,12 +356,15 @@ function editorEvent3D(edit, objOption) {
     }
   })
   $('#submitHemisphereLight').click(function(){
+    var visible = $('#btnHemisphereLight').prop("checked");
     var color = $('#hemisphereLight_color').val()
     var groundColor = $('#hemisphereLight_groundColor').val()
     var intensity = parseFloat($('#hemisphereLight_intensity').val())
     if (edit.hi3d.hemisphereLight) {
       var opt = {
+        visible: visible,
         color: color,
+        skyColor: color,
         groundColor: groundColor,
         intensity: intensity
       }
@@ -369,18 +374,17 @@ function editorEvent3D(edit, objOption) {
     }
   })
   $('#submitAmbientLight').click(function(){
+    var visible = $('#btnAmbientLight').prop("checked");
     var color = $('#ambientLight_color').val()
     var intensity = parseFloat($('#ambientLight_intensity').val())
     if (edit.hi3d.ambientLight) {
       var opt = {
+        visible: visible,
         color: color,
         intensity: intensity
       }
       edit.canvasView.ambientLight = JSON.stringify(opt)
-      edit.hi3d.setAmbientLight({
-        color: color,
-        intensity: intensity
-      })
+      edit.hi3d.setAmbientLight(opt)
       edit.hi3d.viewRender()
     }
   })

@@ -88,6 +88,45 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
       }
     }
   }
+  // 設定燈光參數
+  if (fabricJson.directionalLight) {
+    if (typeof fabricJson.directionalLight === 'string') {
+      fabricJson.directionalLight = JSON.parse(fabricJson.directionalLight)
+    }
+    var opt = this.getItemOption(fabricJson.directionalLight)
+    if (this.directionalLight) {
+      this.setLight(opt)
+    } else {
+      this.addLight(opt)
+    }
+  }
+  if (fabricJson.hemisphereLight) {
+    if (typeof fabricJson.hemisphereLight === 'string') {
+      fabricJson.hemisphereLight = JSON.parse(fabricJson.hemisphereLight)
+    }
+    var opt = this.getItemOption(fabricJson.hemisphereLight)
+    if (this.hemisphereLight) {
+      console.log('set', opt)
+      this.setHemisphereLight(opt)
+    } else {
+      console.log('add', opt)
+      this.addHemisphereLight(opt)
+    }
+  }
+  if (fabricJson.ambientLight) {
+    if (typeof fabricJson.ambientLight === 'string') {
+      fabricJson.ambientLight = JSON.parse(fabricJson.ambientLight)
+    }
+    var opt = this.getItemOption(fabricJson.ambientLight)
+    if (this.ambientLight) {
+      this.setAmbientLight(opt)
+    } else {
+      this.addAmbientLight(opt)
+    }
+  }
+  // this.addLight()
+  // this.addHemisphereLight()
+  // edit.hi3d.addAmbientLight()
   // 添加或修改 id 
   for (var i = 0; i < fabricJson["objects"].length; i++) {
     var item = fabricJson["objects"][i];
@@ -120,32 +159,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
       // this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
       this.setCamera(opt)
     }
-    if (item["type"] == "hiSpotLight") {
-      var opt = {
-        hiId: item.hiId,
-        color: item["fill"] || item["stroke"] || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-      }
-      if (itemExist) {
-        // console.log('exist SpotLight', objNode, opt)
-        this.setSpotLight(objNode, opt)
-      } else {
-        // console.log('add SpotLight', opt)
-        this.addSpotLight(opt)
-      }
-    }
-    if (item["type"] == "hiPointLight") {
-      var opt = {
-        hiId: item.hiId,
-        color: item["fill"] || item["stroke"] || '#FF0000',
-        position: [item["left"], item['altitude'], item["top"]],
-      }
-      if (itemExist) {
-        this.setPointLight(objNode, opt)
-      } else {
-        this.addPointLight(opt)
-      }
-    }
+    
     if (item.objects && item.objects.length > 0) {
       this.addGroupObject(edit, item, itemExist, objNode)
     } else {
@@ -166,6 +180,24 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
 }
 
 hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, parentGroup) {
+  if (item["type"] == "hiSpotLight") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      // console.log('exist SpotLight', objNode, opt)
+      this.setSpotLight(objNode, opt)
+    } else {
+      // console.log('add SpotLight', opt)
+      this.addSpotLight(opt)
+    }
+  }
+  if (item["type"] == "hiPointLight") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      this.setPointLight(objNode, opt)
+    } else {
+      this.addPointLight(opt)
+    }
+  }
   if (item["type"] == "hiCube") {
     var opt = this.getItemOption(item)
     if (itemExist) {
@@ -353,9 +385,17 @@ hi3D.prototype.getItemOption = function (item) {
   var source = typeof item.source !== 'undefined' ? item.source : undefined
   var dataBinding = typeof item.dataBinding !== 'undefined' ? item.dataBinding : undefined
   var eventBinding = typeof item.eventBinding !== 'undefined' ? item.eventBinding : undefined
+  var intensity = typeof item.intensity !== 'undefined' ? item.intensity : 1
+  var distance = typeof item.distance !== 'undefined' ? item.distance : 200
+  var penumbra = typeof item.penumbra !== 'undefined' ? item.penumbra : 0.1
+  var decay = typeof item.decay !== 'undefined' ? item.decay : 2
+  var visible = typeof item.visible === 'boolean' ? item.visible : true
+  var skyColor = typeof item.skyColor !== 'undefined' ? item.skyColor : color
+  var groundColor = typeof item.groundColor !== 'undefined' ? item.groundColor : color
   return {
     hiId: item.hiId,
-    color: color,
+    visible: visible,
+    color: this.colorToHex(color),
     points: points,
     position: position,
     source: source,
@@ -366,6 +406,12 @@ hi3D.prototype.getItemOption = function (item) {
     angle: angle,
     scale: scale,
     dataBinding: dataBinding,
-    eventBinding: eventBinding
+    eventBinding: eventBinding,
+    intensity: intensity,
+    distance: distance,
+    penumbra: penumbra,
+    decay: decay,
+    skyColor: this.colorToHex(skyColor),
+    groundColor: this.colorToHex(groundColor)
   }
 }

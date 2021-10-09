@@ -535,7 +535,8 @@
         'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
         'camera', 'dataBinding', 'eventBinding',
         'directionalLight', 'hemisphereLight', 'ambientLight',
-        'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay'
+        'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay',
+        'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow'
       ]);
     } else {
       return {}

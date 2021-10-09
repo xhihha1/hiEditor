@@ -34,6 +34,7 @@ function hi3D(options) {
     },
     light: {
       DirectionalLight: {
+        visible: true,
         color: 0xffffff,
         position: [20, 10, 5],
         castShadow: true,
@@ -46,13 +47,16 @@ function hi3D(options) {
         }
       },
       HemisphereLight: {
+        visible: true,
         position: [0, 1, 0],
         color: '#FFFFBB',
+        skyColor: '#FFFFBB',
         groundColor: '#080820',
         intensity: 1,
         castShadow: false
       },
       AmbientLight: {
+        visible: true,
         color: '#0C0C0C',
         intensity: 1,
         castShadow: true
@@ -146,13 +150,16 @@ hi3D.prototype.addscene = function () {
   return this
 }
 
-hi3D.prototype.addLight = function () {
-  var option = this.defaultOptions.light.DirectionalLight
-  var dirLight = new THREE.DirectionalLight(new THREE.Color(option.color)); //光源顏色
-  dirLight.position.set(option.position[0], option.position[1], option.position[2]); //光源位置
-  dirLight.castShadow = option.castShadow;
-  dirLight.shadow.mapSize.width = option.shadow.mapSize.width;
-  dirLight.shadow.mapSize.height = option.shadow.mapSize.height;
+hi3D.prototype.addLight = function (option) {
+  var objOption = this.defaultOptions.light.DirectionalLight
+  objOption = this.mergeDeep(objOption, option)
+  var dirLight = new THREE.DirectionalLight(new THREE.Color(objOption.color)); //光源顏色
+  dirLight.visible = objOption.visible
+  dirLight.intensity = objOption.intensity
+  dirLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]); //光源位置
+  dirLight.castShadow = objOption.castShadow;
+  dirLight.shadow.mapSize.width = objOption.shadow.mapSize.width;
+  dirLight.shadow.mapSize.height = objOption.shadow.mapSize.height;
   const d = 100;
   dirLight.shadow.camera.left = -d;
   dirLight.shadow.camera.right = d;
@@ -169,6 +176,9 @@ hi3D.prototype.addLight = function () {
 hi3D.prototype.setLight = function (option) {
   this.defaultOptions.light.DirectionalLight = this.mergeDeep(this.defaultOptions.light.DirectionalLight, option)
   if (this.directionalLight) {
+    if (typeof option.visible === 'boolean') {
+      this.directionalLight.visible = option.visible
+    }
     if (option.color) {
       this.directionalLight.color = new THREE.Color(option.color)
     }
@@ -176,7 +186,16 @@ hi3D.prototype.setLight = function (option) {
       this.directionalLight.intensity = parseFloat(option.intensity)
     }
     if (option.position) {
-      this.directionalLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+      // this.directionalLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+      if (typeof option.position[0] !== 'undefined') {
+        this.directionalLight.position.x = option.position[0];
+      }
+      if (typeof option.position[1] !== 'undefined') {
+        this.directionalLight.position.y = option.position[1];
+      }
+      if (typeof option.position[2] !== 'undefined') {
+        this.directionalLight.position.z = option.position[2];
+      }
     }
     if (typeof option.castShadow === 'boolean') {
       this.directionalLight.castShadow = option.castShadow
@@ -273,7 +292,16 @@ hi3D.prototype.setSpotLight = function (spotLight, objOption) {
     spotLight.decay = objOption.decay;
   }
   if (objOption.position) {
-    spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    // spotLight.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if (typeof objOption.position[0] !== 'undefined') {
+      spotLight.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      spotLight.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      spotLight.position.z = objOption.position[2];
+    }
   }
 }
 
@@ -331,13 +359,15 @@ hi3D.prototype.setPointLight = function (light, objOption) {
   }
 }
 
-hi3D.prototype.addHemisphereLight = function () {
-  var option = this.defaultOptions.light.HemisphereLight
-  var color = new THREE.Color(option.color)
-  var groundColor = new THREE.Color(option.groundColor)
-  var intensity = option.intensity
-  const light = new THREE.HemisphereLight(color, groundColor, intensity);
-  light.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+hi3D.prototype.addHemisphereLight = function (option) {
+  var objOption = this.defaultOptions.light.HemisphereLight
+  objOption = this.mergeDeep(objOption, option)
+  var skyColor = new THREE.Color(objOption.skyColor)
+  var groundColor = new THREE.Color(objOption.groundColor)
+  var intensity = objOption.intensity
+  const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+  light.visible = objOption.visible
+  light.position.set(objOption.position[0], objOption.position[1], objOption.position[2])
   this.scene.add(light);
   this.hemisphereLight = light
   return this
@@ -346,8 +376,11 @@ hi3D.prototype.addHemisphereLight = function () {
 hi3D.prototype.setHemisphereLight = function (option) {
   this.defaultOptions.light.HemisphereLight = this.mergeDeep(this.defaultOptions.light.HemisphereLight, option)
   if (this.hemisphereLight) {
-    if (option.color) {
-      this.hemisphereLight.color = new THREE.Color(option.color)
+    if (typeof option.visible === 'boolean') {
+      this.hemisphereLight.visible = option.visible
+    }
+    if (option.skyColor) {
+      this.hemisphereLight.color = new THREE.Color(option.skyColor)
     }
     if (option.groundColor) {
       this.hemisphereLight.groundColor = new THREE.Color(option.groundColor)
@@ -356,7 +389,16 @@ hi3D.prototype.setHemisphereLight = function (option) {
       this.hemisphereLight.intensity = parseFloat(option.intensity)
     }
     if (option.position) {
-      this.hemisphereLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+      // this.hemisphereLight.position = new THREE.Vector3(option.position[0], option.position[1], option.position[2])
+      if (typeof option.position[0] !== 'undefined') {
+        this.hemisphereLight.position.x = option.position[0];
+      }
+      if (typeof option.position[1] !== 'undefined') {
+        this.hemisphereLight.position.y = option.position[1];
+      }
+      if (typeof option.position[2] !== 'undefined') {
+        this.hemisphereLight.position.z = option.position[2];
+      }
     }
     if (typeof option.castShadow === 'boolean') {
       this.hemisphereLight.castShadow = option.castShadow

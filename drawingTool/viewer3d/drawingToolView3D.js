@@ -14,6 +14,7 @@ function initCanvas3D(edit, objOption) {
   edit.hi3d.addCamera()
   edit.hi3d.addLight()
   edit.hi3d.addHemisphereLight()
+  edit.hi3d.addAmbientLight()
   edit.hi3d.setCamera({
     position: [0, 50, 100]
   })
