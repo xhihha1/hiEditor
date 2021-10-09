@@ -206,12 +206,16 @@ function setObjPropChange () {
   var scaleY = parseFloat($('#newscaleY').val())
   var scaleZ = parseFloat($('#newscaleZ').val())
   var bindingStr = $('#newPropDataBinding').val()
+  bindingStr = bindingStr.trim()
   bindingStr = bindingStr.replace(/\r\n/g,"")
   bindingStr = bindingStr.replace(/\n/g,"")
+  bindingStr = bindingStr.trim()
   var dataBinding = JSON.stringify(bindingStr)
   var eventbindingStr = $('#newPropEventBinding').val()
+  eventbindingStr = eventbindingStr.trim()
   eventbindingStr = eventbindingStr.replace(/\r\n/g,"")
   eventbindingStr = eventbindingStr.replace(/\n/g,"")
+  eventbindingStr = eventbindingStr.trim()
   var eventBinding = JSON.stringify(eventbindingStr)
   var intensity = parseFloat($('#newSpotIntensity').val())
   var distance = parseFloat($('#newSpotDistance').val())
@@ -264,7 +268,11 @@ function objectPropertyChange(edit, objOption) {
     //替换所有的换行符
     bindingStr = bindingStr.replace(/\r\n/g,"")
     bindingStr = bindingStr.replace(/\n/g,"");
-    var dataBinding = JSON.parse(bindingStr)
+    // var dataBinding = JSON.parse(bindingStr)
+    while (typeof bindingStr === 'string') {
+      bindingStr = JSON.parse(bindingStr)
+    }
+    var dataBinding = bindingStr
     $('.dbPropCard').remove()
     var str = ''
     for(var key in dataBinding) {
@@ -313,7 +321,11 @@ function objectPropertyChange(edit, objOption) {
     //替换所有的换行符
     eventFuncStr = eventFuncStr.replace(/\r\n/g,"")
     eventFuncStr = eventFuncStr.replace(/\n/g,"");
-    var eventBinding = JSON.parse(eventFuncStr)
+    while (typeof eventFuncStr === 'string') {
+      eventFuncStr = JSON.parse(eventFuncStr)
+    }
+    var eventBinding = eventFuncStr
+    if (typeof eventBinding === 'string') {eventBinding = JSON.parse(eventBinding)}
     $('.dbPropCard').remove()
     var str = ''
     for(var key in eventBinding) {

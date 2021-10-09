@@ -3,15 +3,15 @@
 
   var fabric = global.fabric || (global.fabric = {});
 
-  if (fabric.HiCube) {
-    fabric.warn('fabric.HiCube is already defined');
+  if (fabric.HiPlane) {
+    fabric.warn('fabric.HiPlane is already defined');
     return;
   }
 
 
-  fabric.HiCube = fabric.util.createClass(fabric.Rect, {
+  fabric.HiPlane = fabric.util.createClass(fabric.Rect, {
 
-    type: 'hiCube',
+    type: 'hiPlane',
 
     initialize: function (element, options) {
       options || (options = {});
@@ -36,13 +36,13 @@
     }
   });
 
-  fabric.HiCube.fromObject = function (object, callback) {
-    callback && callback(new fabric.HiCube(object));
+  fabric.HiPlane.fromObject = function (object, callback) {
+    callback && callback(new fabric.HiPlane(object));
   };
 
-  fabric.HiCube.async = true;
+  fabric.HiPlane.async = true;
 
-  // fabric.HiCube.prototype.controls = {
+  // fabric.HiPlane.prototype.controls = {
   //   lt: new fabric.Control({
   //     positionHandler: function (dim, finalMatrix, fabricObject) {
   //       var finalPoint = {
@@ -172,10 +172,10 @@
   //   })
   // }
   // urgent
-  fabric.HiCube.prototype.controls = fabric.Object.prototype.controls;
+  fabric.HiPlane.prototype.controls = fabric.Object.prototype.controls;
 
 
-  hiDraw.prototype.HiCube = (function () {
+  hiDraw.prototype.HiPlane = (function () {
     function Rectangle(canvasItem, options, otherProps) {
       this.canvasItem = canvasItem;
       this.canvas = canvasItem.canvasView;
@@ -373,7 +373,7 @@
       midX = (inst.tempPointsArray[0].get('left') + inst.tempPointsArray[1].get('left')) / 2
       midY = (inst.tempPointsArray[0].get('top') + inst.tempPointsArray[1].get('top')) / 2
 
-      var rect = new fabric.HiCube({
+      var rect = new fabric.HiPlane({
         left: midX,
         top: midY,
         originX: 'center',
@@ -409,7 +409,7 @@
       }
       rect.hiId = hiDraw.prototype.uniqueIdGenerater()
       rect.altitude = 0
-      rect.depth = 10
+      rect.depth = 1
       rect.scaleZ = 1
       rect.rotateX = 0
       rect.rotateZ = 0

@@ -181,7 +181,6 @@
     if (this.canvasView.getActiveObject()) {
       var object = fabric.util.object.clone(this.canvasView.getActiveObject());
       this.copiedObject = object;
-      console.log('clone', object)
       this.copyCloneTempObjs = new Array();
     }
   }
@@ -248,7 +247,7 @@
         that.canvasView.setActiveObject(clonedObj);
         that.canvasView.requestRenderAll();
         // that.canvasView.discardActiveObject();
-      });
+      }, this.propertiesToInclude());
     }
 
   }
@@ -527,17 +526,29 @@
     // var C = new Function("return " + B)()
   }
 
+  hiDraw.prototype.propertiesToInclude = function () {
+    return [
+      'AAA', 'label', 'uniqueIndex', 'hiId', 'altitude',
+      'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
+      'camera', 'dataBinding', 'eventBinding',
+      'directionalLight', 'hemisphereLight', 'ambientLight',
+      'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay',
+      'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow'
+    ]
+  }
+
   hiDraw.prototype.toFabricJson = function () {
     if (this.canvasView) {
       // console.log('--- json ---', this.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'scaleZ', 'XscaleXZ', 'depth']))
-      return this.canvasView.toJSON([
-        'AAA', 'label', 'uniqueIndex', 'hiId', 'altitude',
-        'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
-        'camera', 'dataBinding', 'eventBinding',
-        'directionalLight', 'hemisphereLight', 'ambientLight',
-        'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay',
-        'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow'
-      ]);
+      // return this.canvasView.toJSON([
+      //   'AAA', 'label', 'uniqueIndex', 'hiId', 'altitude',
+      //   'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
+      //   'camera', 'dataBinding', 'eventBinding',
+      //   'directionalLight', 'hemisphereLight', 'ambientLight',
+      //   'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay',
+      //   'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow'
+      // ]);
+      return this.canvasView.toJSON(this.propertiesToInclude());
     } else {
       return {}
     }

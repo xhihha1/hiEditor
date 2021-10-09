@@ -64,7 +64,7 @@ function initCanvas(canvasId, canvasViewId) {
 
       }
     }
-  }).createView().viewEvent();
+  }).createView().viewEvent().BgGrid(true);
 
 
   var objOption = {

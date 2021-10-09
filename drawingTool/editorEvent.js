@@ -197,6 +197,11 @@ function editorEvent(edit, objOption) {
       edit.canvasView.loadFromJSON(json)
     }
   });
+  
+  $('#downloadJson').click(function () {
+    var filename = 'hiEditor_' + new Date().getTime()
+    edit.downloadObjectAsJson(edit.toFabricJson(), filename)
+  });
 
   $('#saveFabricImage2D').click(function() {
     let data = edit.canvasView.toDataURL();

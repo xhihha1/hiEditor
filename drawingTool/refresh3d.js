@@ -242,6 +242,26 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       this.addClosedCurve(opt, parentGroup)
     }
   }
+  if (item["type"] == "hiPlane") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      console.log('set hiPlane', opt)
+      this.setSphere(objNode, opt)
+    } else {
+      console.log('add hiPlane', opt)
+      this.addGroundPlane(opt, parentGroup)
+    }
+  }
+  if (item["type"] == "hiWall") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      // console.log('exist cube', objNode, opt)
+      this.setWall(objNode, opt)
+    } else {
+      // console.log('add cube', opt)
+      this.addWall(opt, parentGroup)
+    }
+  }
   if (item["type"] == "hiFormatObj") {
     var opt = this.getItemOption(item)
     if (itemExist) {
@@ -381,6 +401,7 @@ hi3D.prototype.getItemOption = function (item) {
   var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
   var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
   var depth = item["depth"] || 1
+  console.log('depth', item.hiId, item["depth"])
   var size = typeof item["width"] !== 'undefined' ? [item["width"], depth, item["height"]] : undefined
   var source = typeof item.source !== 'undefined' ? item.source : undefined
   var dataBinding = typeof item.dataBinding !== 'undefined' ? item.dataBinding : undefined

@@ -54,7 +54,20 @@ function editorEvent3D(edit, objOption) {
     var polyline = new edit.Hi3DPolygon(edit, objOption);
   });
 
+  $("#draw3dPlaneGround").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var HiPlane = new edit.HiPlane(edit, objOption);
+  });
   
+  $("#draw3dWall").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var HiPlane = new edit.HiWall(edit, objOption);
+  });
+
   $('#add3dObj').click(function (e) {
     edit.hi3d.addObj()
     edit.hi3d.refreshByFabricJson(edit);
@@ -187,12 +200,12 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnLight').click(function(){
-    var checked = $(this).prop("checked");
-    edit.hi3d.directionalLight.visible = checked;
-    // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
-    edit.hi3d.viewRender()
-  })
+  // $('#btnLight').click(function(){
+  //   var checked = $(this).prop("checked");
+  //   edit.hi3d.directionalLight.visible = checked;
+  //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+  //   edit.hi3d.viewRender()
+  // })
   $('#btnLightHelper').click(function(){
     var checked = $(this).prop("checked");
     if(!edit.hi3d.dirLightHelper) {
@@ -204,14 +217,14 @@ function editorEvent3D(edit, objOption) {
     edit.hi3d.viewRender()
   })
   
-  $('#btnHemisphereLight').click(function(){
-    var checked = $(this).prop("checked");
-    // edit.hi3d.directionalLight.visible = checked;
-    // edit.hi3d.ambientLight.visible = ! edit.hi3d.ambientLight.visible;
-    edit.hi3d.hemisphereLight.visible = checked;
-    // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
-    edit.hi3d.viewRender()
-  })
+  // $('#btnHemisphereLight').click(function(){
+  //   var checked = $(this).prop("checked");
+  //   // edit.hi3d.directionalLight.visible = checked;
+  //   // edit.hi3d.ambientLight.visible = ! edit.hi3d.ambientLight.visible;
+  //   edit.hi3d.hemisphereLight.visible = checked;
+  //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+  //   edit.hi3d.viewRender()
+  // })
   $('#btnHemisphereLightHelper').click(function(){
     var checked = $(this).prop("checked");
     if(!edit.hi3d.hemiLightHelper) {
@@ -222,12 +235,12 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnAmbientLight').click(function(){
-    var checked = $(this).prop("checked");
-    edit.hi3d.ambientLight.visible = checked;
-    // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
-    edit.hi3d.viewRender()
-  })
+  // $('#btnAmbientLight').click(function(){
+  //   var checked = $(this).prop("checked");
+  //   edit.hi3d.ambientLight.visible = checked;
+  //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+  //   edit.hi3d.viewRender()
+  // })
   $('#btnSpotLightHelper').click(function(){
     var checked = $(this).prop("checked");
     edit.hi3d.addSpotLightHelper()

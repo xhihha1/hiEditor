@@ -72,14 +72,19 @@ function dataRefresh (edit, objOption) {
       var updateObjProp = {}
       updateObjProp.hiId = fabricJson.objects[i].hiId
       updateObjProp.type = fabricJson.objects[i].type
-      var dataBinding = JSON.parse(JSON.parse(fabricJson.objects[i].dataBinding))
+      var dataBinding = fabricJson.objects[i].dataBinding
+      while (dataBinding && typeof dataBinding === 'string') {
+        dataBinding = JSON.parse(dataBinding)
+      }
       var needChange = false
       // console.log('dataBinding', dataBinding)
-      for(var k in dataBinding) {
-        if (dataBinding[k].advanced) {
-          var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
-          updateObjProp[k] = advancedFunc()
-          needChange = true;
+      if (dataBinding) {
+        for(var k in dataBinding) {
+          if (dataBinding[k].advanced) {
+            var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
+            updateObjProp[k] = advancedFunc()
+            needChange = true;
+          }
         }
       }
       if (needChange) { updateView.objects.push(updateObjProp) }

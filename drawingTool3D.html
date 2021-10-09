@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Hi 圖控介面編輯器</title>
+  <title>Hi 3D視覺化介面編輯器</title>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport"
@@ -105,8 +105,9 @@
         <ul>
           <li id="export"><img src="./icon/export-file_w.png" class="tool-icon">export</li>
           <li id="exportFabric"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</li>
-          <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">load Image</li>
+          <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">import</li>
           <li id="importFabric"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</li>
+          <li id="downloadJson"><img src="./icon/download_w.png" class="tool-icon">Download Json</li>
           <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li>
           <!-- <li id=""><img src="./icon/rectangle_w.png" class="tool-icon"></li>
           <li id=""><img src="./icon/ellipse_w.png" class="tool-icon"></li> -->
@@ -127,6 +128,8 @@
             <li id="drawSphere"><img src="icon/sphere_w.png" title="sphere"></li>
             <li id="draw3dPolyline"><img src="icon/polyline_w.png" title="line"></li>
             <li id="draw3dPolygon"><img src="icon/polygon_w.png" title="close curve"></li>
+            <li id="draw3dPlaneGround"><img src="icon/plane_w.png" title="plane"></li>
+            <li id="draw3dWall"><img src="icon/wall_w.png" title="wall"></li>
             <li id="draw3dHiFormatObj"><img src="icon/file_obj_w.png" title="obj"></li>
             <li id="draw3dHiFormatCollada"><img src="icon/file_collada_w.png" title="collada"></li>
             <li id="draw3dHiFormatSTL"><img src="icon/file_stl_w.png" title="stl"></li>
@@ -373,17 +376,17 @@
               <div><span>positionZ(top): </span></div>
               <div><input type="number" id="newpositionZ" name="positionZ" value="0" class="prop_input"></div>
               <div><span>sizeX(width): </span></div>
-              <div><input type="number" id="newsizeX" name="sizeX" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newsizeX" name="sizeX" value="0" class="prop_input"></div>
               <div><span>sizeY(depth): </span></div>
-              <div><input type="number" id="newsizeY" name="sizeY" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newsizeY" name="sizeY" value="0" class="prop_input"></div>
               <div><span>sizeZ(height): </span></div>
-              <div><input type="number" id="newsizeZ" name="sizeZ" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newsizeZ" name="sizeZ" value="0" class="prop_input"></div>
               <div><span>scaleX: </span></div>
-              <div><input type="number" id="newscaleX" name="scaleX" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newscaleX" name="scaleX" value="0" class="prop_input"></div>
               <div><span>scaleY: </span></div>
-              <div><input type="number" id="newscaleY" name="scaleY" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newscaleY" name="scaleY" value="0" class="prop_input"></div>
               <div><span>scaleZ: </span></div>
-              <div><input type="number" id="newscaleZ" name="scaleZ" value="0" disabled class="prop_input"></div>
+              <div><input type="number" id="newscaleZ" name="scaleZ" value="0" class="prop_input"></div>
               <div><span>data binding: </span><button id="openDataBinding">open</button></div>
               <div><textarea id="newPropDataBinding"></textarea></div>
               <div><span>event binding: </span><button id="openEventBinding">open</button></div>
@@ -465,6 +468,8 @@
   <script src="drawingTool/fabricExtend/hi3d_Sphere.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_3dPolyline.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_3dPolygon.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_Plane.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_Wall.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_controlUtil.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_obj.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_Collada.js"></script>

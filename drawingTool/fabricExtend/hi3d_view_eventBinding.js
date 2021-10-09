@@ -22,12 +22,15 @@
     const intersects = raycaster.intersectObjects(this.scene.children, true);
     if (intersects.length > 0 && intersects[0].object.hiId) {
       if (intersects[0].object.eventBinding) {
-        var eventBinding = JSON.parse(JSON.parse(intersects[0].object.eventBinding))
-        if (eventBinding.click) {
+        var eventBinding = intersects[0].object.eventBinding
+        while (eventBinding && typeof eventBinding === 'string') {
+          eventBinding = JSON.parse(eventBinding)
+        }
+        if (eventBinding && eventBinding.click) {
           var clickFunc = hi3D.prototype.functionGenerator(eventBinding.click);
           clickFunc()
         }
-        if (eventBinding.mousedown) {
+        if (eventBinding && eventBinding.mousedown) {
           var mousedownFunc = hi3D.prototype.functionGenerator(eventBinding.mousedown);
           mousedownFunc()
         }
@@ -47,8 +50,11 @@
     const intersects = raycaster.intersectObjects(this.scene.children, true);
     if (intersects.length > 0 && intersects[0].object.hiId) {
       if (intersects[0].object.eventBinding) {
-        var eventBinding = JSON.parse(JSON.parse(intersects[0].object.eventBinding))
-        if (eventBinding.mousemove) {
+        var eventBinding = intersects[0].object.eventBinding
+        while (eventBinding && typeof eventBinding === 'string') {
+          eventBinding = JSON.parse(eventBinding)
+        }
+        if (eventBinding && eventBinding.mousemove) {
           var mousemoveFunc = hi3D.prototype.functionGenerator(eventBinding.mousemove);
           mousemoveFunc()
         }
@@ -68,8 +74,11 @@
     const intersects = raycaster.intersectObjects(this.scene.children, true);
     if (intersects.length > 0 && intersects[0].object.hiId) {
       if (intersects[0].object.eventBinding) {
-        var eventBinding = JSON.parse(JSON.parse(intersects[0].object.eventBinding))
-        if (eventBinding.mouseup) {
+        var eventBinding = intersects[0].object.eventBinding
+        while (eventBinding && typeof eventBinding === 'string') {
+          eventBinding = JSON.parse(eventBinding)
+        }
+        if (eventBinding && eventBinding.mouseup) {
           var mouseupFunc = hi3D.prototype.functionGenerator(eventBinding.mouseup);
           mouseupFunc()
         }

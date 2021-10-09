@@ -213,10 +213,13 @@ hi3D.prototype.addLightHelper = function () {
   return this
 }
 
-hi3D.prototype.addAmbientLight = function () {
-  var option = this.defaultOptions.light.AmbientLight
+hi3D.prototype.addAmbientLight = function (option) {
+  var objOption = this.defaultOptions.light.AmbientLight
+  objOption = this.mergeDeep(objOption, option)
   //添加环境光
-  var ambientLight = new THREE.AmbientLight(new THREE.Color(option.color));
+  var ambientLight = new THREE.AmbientLight(new THREE.Color(objOption.color));
+  ambientLight.visible = objOption.visible
+  ambientLight.intensity = objOption.intensity
   this.scene.add(ambientLight);
   this.ambientLight = ambientLight
   return this
@@ -1159,6 +1162,13 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
       }
     })
     var obj = collada.scene;
+    obj.traverse( function ( child ) {
+      if ( child.isMesh ) {
+        // model does not have normals
+        child.material.flatShading = true;
+      }
+    } );
+    obj.updateMatrix();
     if (!objExist) {
       obj.hiId = objOption.hiId
       obj.dataBinding = objOption.dataBinding
@@ -1638,25 +1648,125 @@ hi3D.prototype.setnrrd = function (node, objOption) {
   }
 }
 
-hi3D.prototype.addGroundPlane = function (option) {
+hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
     position: [0, 0, 0],
-    size: [1, 1, 1]
+    size: [2000, 1, 2000]
   }
   objOption = this.mergeDeep(objOption, option)
-  const groundGeo = new THREE.PlaneGeometry(10000, 10000);
+  const groundGeo = new THREE.PlaneGeometry(objOption.size[0], objOption.size[2]);
   const groundMat = new THREE.MeshLambertMaterial({
-    color: 0xffffff
+    color: objOption.color
   });
-  groundMat.color.setHSL(0.095, 1, 0.75);
   const ground = new THREE.Mesh(groundGeo, groundMat);
-  ground.position.y = 0;
+  ground.position.x = objOption.position[0];
+  ground.position.y = objOption.position[1];
+  ground.position.z = objOption.position[2];
+  // ground.rotation.x = 0;
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
-  this.ground = ground
-  this.scene.add(ground);
+  ground.hiId = objOption.hiId
+  ground.dataBinding = objOption.dataBinding
+  ground.eventBinding = objOption.eventBinding
+  if (parentGroup) {
+    parentGroup.add(ground);
+  } else {
+    this.scene.add(ground);
+  }
   return this
+}
+
+hi3D.prototype.setGroundPlane = function (node, objOption) {
+  if (objOption.position) {
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if (typeof objOption.position[0] !== 'undefined') {
+      node.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      node.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      node.position.z = objOption.position[2];
+    }
+  }
+  if (objOption.color) {
+    node.material.color = new THREE.Color(objOption.color)
+  }
+  if (objOption.size) {
+    let new_geometry = new THREE.PlaneGeometry(objOption.size[0], objOption.size[2]);
+    node.geometry.dispose();
+    node.geometry = new_geometry;
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+}
+
+
+hi3D.prototype.addWall = function (option, parentGroup) {
+  var objOption = {
+    color: '#F00',
+    position: [0, 50, 0],
+    size: [1, 100, 1],
+    scale: [1, 1, 1]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
+  const material = new THREE.MeshStandardMaterial({
+    color: objOption.color
+  });
+  const cube = new THREE.Mesh(geometry, material);
+  cube.castShadow = true;
+  cube.receiveShadow = true;
+  cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  cube.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
+  cube.hiId = objOption.hiId
+  cube.dataBinding = objOption.dataBinding
+  cube.eventBinding = objOption.eventBinding
+  if (parentGroup) {
+    parentGroup.add(cube);
+  } else {
+    this.scene.add(cube);
+  }
+  return cube
+}
+
+hi3D.prototype.setWall = function (cube, objOption) {
+  if (objOption.position) {
+    // cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if (typeof objOption.position[0] !== 'undefined') {
+      cube.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      cube.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      cube.position.z = objOption.position[2];
+    }
+  }
+  if (objOption.color) {
+    cube.material.color = new THREE.Color(objOption.color)
+  }
+  if (objOption.size) {
+    let new_geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
+    cube.geometry.dispose();
+    cube.geometry = new_geometry;
+  }
+  if (objOption.scale) {
+    cube.scale.x = objOption.scale[0];
+    cube.scale.y = objOption.scale[1];
+    cube.scale.z = objOption.scale[2];
+  }
+  if (objOption.angle) {
+    cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+  return cube
 }
 
 hi3D.prototype.addAxesHelper = function (option) {
