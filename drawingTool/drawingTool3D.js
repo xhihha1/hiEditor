@@ -82,10 +82,6 @@ function initCanvas(canvasId, canvasViewId) {
       },
       selection_created: function (opt) {
         if (opt.target) {
-          $('#objPropType').val(opt.target.get('type'))
-          $('#objPropName').val(opt.target.get('name'))
-          $('#objPropLabel').val(opt.target.get('label'))
-          $('#objPropStroke').val(opt.target.get('stroke'))
           if (opt.target.hiId) {
             showObjPropChange(opt.target)
             edit.hi3d.scene.traverse(function (node) {
@@ -205,22 +201,20 @@ function setObjPropChange () {
   var scaleX = parseFloat($('#newscaleX').val())
   var scaleY = parseFloat($('#newscaleY').val())
   var scaleZ = parseFloat($('#newscaleZ').val())
-  var bindingStr = $('#newPropDataBinding').val()
-  bindingStr = bindingStr.trim()
-  bindingStr = bindingStr.replace(/\r\n/g,"")
-  bindingStr = bindingStr.replace(/\n/g,"")
-  bindingStr = bindingStr.trim()
-  var dataBinding = JSON.stringify(bindingStr)
-  var eventbindingStr = $('#newPropEventBinding').val()
-  eventbindingStr = eventbindingStr.trim()
-  eventbindingStr = eventbindingStr.replace(/\r\n/g,"")
-  eventbindingStr = eventbindingStr.replace(/\n/g,"")
-  eventbindingStr = eventbindingStr.trim()
-  var eventBinding = JSON.stringify(eventbindingStr)
+  var bindingStr = hiDraw.prototype.readTextareaFuncStr($('#newPropDataBinding').val())
+  var dataBinding = bindingStr
+  var eventbindingStr = hiDraw.prototype.readTextareaFuncStr($('#newPropEventBinding').val())
+  var eventBinding = eventbindingStr
   var intensity = parseFloat($('#newSpotIntensity').val())
   var distance = parseFloat($('#newSpotDistance').val())
   var penumbra = parseFloat($('#newSpotPenumbra').val())
   var decay = parseFloat($('#newSpotDecay').val())
+  var animationStr = $('#newPropAnimation').val()
+  animationStr = animationStr.trim()
+  animationStr = animationStr.replace(/\r\n/g,"")
+  animationStr = animationStr.replace(/\n/g,"")
+  animationStr = animationStr.trim()
+  var animation = animationStr
   return {
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
@@ -241,7 +235,8 @@ function setObjPropChange () {
     intensity: intensity,
     distance: distance,
     penumbra: penumbra,
-    decay: decay
+    decay: decay,
+    animation: animation
   }
 }
 

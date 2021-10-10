@@ -255,3 +255,14 @@ hiDraw.prototype.downloadObjectAsJson = function (exportObj, exportName) {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
 }
+
+hiDraw.prototype.readTextareaFuncStr = function (str) {
+    return str.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+}
+
+hiDraw.prototype.parseStrToObj = function (str) {
+    while (str && typeof str === 'string') {
+        str = JSON.parse(str)
+    }
+    return str
+}

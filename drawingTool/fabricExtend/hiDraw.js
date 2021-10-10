@@ -533,7 +533,8 @@
       'camera', 'dataBinding', 'eventBinding',
       'directionalLight', 'hemisphereLight', 'ambientLight',
       'color', 'intensity', 'distance', 'angle', 'penumbra', 'decay',
-      'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow'
+      'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow',
+      'animation', 'sceneProp'
     ]
   }
 

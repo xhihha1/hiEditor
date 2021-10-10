@@ -342,16 +342,15 @@
               <div><button id="submitAmbientLight">submit</button></div>
             </li>
             <!-- Object property -->
-            <li class="prop-title">Object property</li>
+            <li class="prop-title">Scene property</li>
             <li class="prop-content">
-              <div><span>type</span></div>
-              <div><input type="text" id="objPropType"  class="prop_input"/></div>
-              <div><span>name</span></div>
-              <div><input type="text" id="objPropName"  class="prop_input"/></div>
-              <div><span>label</span></div>
-              <div><input type="text" id="objPropLabel"  class="prop_input"/></div>
-              <div><span>stroke</span></div>
-              <div><input type="text" id="objPropStroke"  class="prop_input"/></div>
+              <div><span>before initial: </span></div>
+              <div><textarea id="newPropSceneBefInit"></textarea></div>
+              <div><span>after initial: </span></div>
+              <div><textarea id="newPropSceneAftInit"></textarea></div>
+              <div><span>animation: </span></div>
+              <div><textarea id="newPropSceneAnimation"></textarea></div>
+              <div><button id="submitSceneProp">submit</button></div>
             </li>
             <li class="prop-title">Obj propy change</li>
             <li class="prop-content">
@@ -391,6 +390,8 @@
               <div><textarea id="newPropDataBinding"></textarea></div>
               <div><span>event binding: </span><button id="openEventBinding">open</button></div>
               <div><textarea id="newPropEventBinding"></textarea></div>
+              <div><span>animation: </span></div>
+              <div><textarea id="newPropAnimation"></textarea></div>
               <div><hr></div>
               <div><span>spotLight intensity:</span></div>
               <div><input type="number" id="newSpotIntensity" name="intensity" value="1" class="prop_input"></div>

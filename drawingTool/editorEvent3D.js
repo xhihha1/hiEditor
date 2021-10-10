@@ -401,6 +401,23 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
+  $('#submitSceneProp').click(function(){
+    var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
+    // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+    var afterInitialStr = edit.readTextareaFuncStr($('#newPropSceneAftInit').val())
+    // afterInitialStr = afterInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+    var animationStr = edit.readTextareaFuncStr($('#newPropSceneAnimation').val())
+    // animationStr = animationStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+    var beforeInitial = JSON.stringify(beforeInitialStr)
+    var afterInitial = JSON.stringify(afterInitialStr)
+    var animation = JSON.stringify(animationStr)
+    var opt = {
+      beforeInitial: beforeInitial,
+      afterInitial: afterInitial,
+      animation: animation
+    }
+    edit.canvasView.sceneProp = JSON.stringify(opt)
+  })
   $('#submitGrid').click(function(){
     var size = parseInt($('#gridSize').val())
     var divisions = parseInt($('#gridDivisions').val())
