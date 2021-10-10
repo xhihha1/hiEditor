@@ -3,6 +3,8 @@
   let moveBackward = false;
   let moveLeft = false;
   let moveRight = false;
+  let moveTop = false;
+  let moveDown = false;
   let canJump = false;
 
   let prevTime = performance.now();
@@ -33,6 +35,14 @@
           moveRight = true;
           break;
 
+        case 'KeyQ':
+          moveTop = true;
+          break;
+
+        case 'KeyE':
+          moveDown = true;
+          break;
+
         case 'Space':
           if (canJump === true) velocity.y += 350;
           canJump = false;
@@ -43,7 +53,6 @@
     };
 
     const onKeyUp = function (event) {
-
       switch (event.code) {
 
         case 'ArrowUp':
@@ -66,6 +75,14 @@
           moveRight = false;
           break;
 
+        case 'KeyQ':
+          moveTop = false;
+          break;
+
+        case 'KeyE':
+          moveDown = false;
+          break;
+
       }
 
     };
@@ -81,20 +98,26 @@
 
     velocity.x -= velocity.x * 10.0 * delta;
     velocity.z -= velocity.z * 10.0 * delta;
-    velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+    velocity.y -= velocity.y * 10.0 * delta;
+    // velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
     direction.z = Number(moveForward) - Number(moveBackward);
     direction.x = Number(moveRight) - Number(moveLeft);
+    direction.y = Number(moveTop) - Number(moveDown);
     direction.normalize(); // this ensures consistent movements in all directions
 
     if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
     if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+    if (moveTop || moveDown) velocity.y -= direction.y * 400.0 * delta;
 
     _vector.setFromMatrixColumn( this.camera.matrix, 0 );
     _vector.crossVectors( this.camera.up, _vector );
     this.camera.position.addScaledVector( _vector, -velocity.z * delta );
     _vector.setFromMatrixColumn( this.camera.matrix, 0 );
     this.camera.position.addScaledVector( _vector, -velocity.x * delta );
+    _vector.setFromMatrixColumn( this.camera.matrix, 0 );
+    _vector.crossVectors( new THREE.Vector3(0, 0, 1), _vector );
+    this.camera.position.addScaledVector( _vector, -velocity.y * delta );
     // this.camera.position.y += (velocity.y * delta); // new behavior
     // if (this.camera.position.y < 10) {
     //   velocity.y = 0;

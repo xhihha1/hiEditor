@@ -408,9 +408,9 @@ function editorEvent3D(edit, objOption) {
     // afterInitialStr = afterInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
     var animationStr = edit.readTextareaFuncStr($('#newPropSceneAnimation').val())
     // animationStr = animationStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
-    var beforeInitial = JSON.stringify(beforeInitialStr)
-    var afterInitial = JSON.stringify(afterInitialStr)
-    var animation = JSON.stringify(animationStr)
+    var beforeInitial = beforeInitialStr
+    var afterInitial = afterInitialStr
+    var animation = animationStr
     var opt = {
       beforeInitial: beforeInitial,
       afterInitial: afterInitial,

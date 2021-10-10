@@ -393,13 +393,14 @@ hi3D.prototype.getItemOption = function (item) {
     points.push([item['points'][j].x, pointZ, item['points'][j].y])
   }
   var color = item["fill"] || item["stroke"];
-  console.log(item.hiId, color, item["fill"] , item["stroke"] , '#FF0000')
   // var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
   var position = [item["left"], item['altitude'], item["top"]]
   var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
   var widthSegments = typeof item["width"] !== 'undefined' ? item["width"] : undefined
   var heightSegments = typeof item["height"] !== 'undefined' ? item["height"] : undefined
   var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
+  var rotateX = typeof item["rotateX"] !== 'undefined' ? item["rotateX"] : undefined
+  var rotateZ = typeof item["rotateZ"] !== 'undefined' ? item["rotateZ"] : undefined
   var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
   var depth = item["depth"] || 1
   // console.log('depth', item.hiId, item["depth"])
@@ -425,6 +426,8 @@ hi3D.prototype.getItemOption = function (item) {
     widthSegments: widthSegments,
     heightSegments: heightSegments,
     size: size,
+    rotateX: rotateX,
+    rotateZ: rotateZ,
     angle: angle,
     scale: scale,
     dataBinding: dataBinding,

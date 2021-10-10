@@ -170,12 +170,24 @@ function showObjPropChange (object) { // opt.target
       advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
     }
   }
-  $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
-  // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+  if(typeof dataBinding === 'string') {
+    $('#newPropDataBinding').val(dataBinding)
+  } else {
+    $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+    // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  }
   var eventBinding = object.get('eventBinding') || {
     click: 'function (value) { console.log("123456");}'
   }
-  $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  // $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  // $('#newPropEventBinding').val(eventBinding)
+  if(typeof eventBinding === 'string') {
+    $('#newPropEventBinding').val(eventBinding)
+  } else {
+    $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+    // $('#newPropEventBinding').val(JSON.stringify(eventBinding))
+  }
   $('#newPropAnimation').val(object.get('animation'))
   // -------- spotLight ---------
   $('#newSpotIntensity').val(parseFloat(object.get('intensity')) || 1)
@@ -250,12 +262,6 @@ function objectPropertyChange(edit, objOption) {
       edit.hi3d.refreshByFabricJson(edit);
     }
   })
-  $('#newRotateX').get(0).min = $('#newRotateY').get(0).min = $('#newRotateZ').get(0).min = 0
-  $('#newRotateX').get(0).max = $('#newRotateY').get(0).max = $('#newRotateZ').get(0).max = 360
-  $('#newRotateX').get(0).step = $('#newRotateY').get(0).step = $('#newRotateZ').get(0).step = 0.1
-  $('#newRotateX').val(0)
-  $('#newRotateY').val(0)
-  $('#newRotateZ').val(0)
 
   // ------------ data binding 
   $('#openDataBinding').click(function () {

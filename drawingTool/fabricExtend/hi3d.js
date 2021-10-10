@@ -644,6 +644,12 @@ hi3D.prototype.setCube = function (cube, objOption) {
     cube.scale.y = objOption.scale[1];
     cube.scale.z = objOption.scale[2];
   }
+  if (objOption.rotateX) {
+    cube.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    cube.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -909,6 +915,12 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   if (objOption.color) {
     line.material.color = new THREE.Color(objOption.color)
   }
+  if (objOption.rotateX) {
+    line.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    line.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     line.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -1012,6 +1024,12 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
   if (objOption.color) {
     mesh.material.color = new THREE.Color(objOption.color)
   }
+  if (objOption.rotateX) {
+    mesh.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    mesh.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -1114,6 +1132,12 @@ hi3D.prototype.setObj = function (node, objOption) {
     node.scale.x = objOption.scale[0];
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
+  }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
   }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
@@ -1225,8 +1249,14 @@ hi3D.prototype.setCollada = function (node, objOption) {
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
   }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
-    node.rotation.z = -1 * objOption.angle / 180 * Math.PI;
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
 }
 
@@ -1278,6 +1308,16 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
       mesh.scale.x = objOption.scale[0];
       mesh.scale.y = objOption.scale[1];
       mesh.scale.z = objOption.scale[2];
+      console.log('objOption.rotateX', objOption.rotateX)
+      if (objOption.rotateX) {
+        mesh.rotation.x = objOption.rotateX ;
+      }
+      if (objOption.rotateZ) {
+        mesh.rotation.z = objOption.rotateZ;
+      }
+      if (objOption.angle) {
+        mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+      }
       // var box = geometry.boundingBox;
       // var box1 = new THREE.Box3().setFromObject( mesh );
       // console.log('stl boundingBox', box, box1)
@@ -1322,6 +1362,12 @@ hi3D.prototype.setSTL = function (node, objOption) {
     node.scale.x = objOption.scale[0];
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
+  }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
   }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
@@ -1423,6 +1469,12 @@ hi3D.prototype.set3ds = function (node, objOption) {
     //   }
     // } );
   }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -1513,6 +1565,12 @@ hi3D.prototype.setgltf = function (node, objOption) {
     //     child.material.specular.setScalar( objOption.scale[0] );
     //   }
     // } );
+  }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
   }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
@@ -1643,6 +1701,12 @@ hi3D.prototype.setnrrd = function (node, objOption) {
     //   }
     // } );
   }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -1703,6 +1767,12 @@ hi3D.prototype.setGroundPlane = function (node, objOption) {
     node.scale.y = objOption.scale[1];
     node.scale.z = objOption.scale[2];
   }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -1762,6 +1832,12 @@ hi3D.prototype.setWall = function (cube, objOption) {
     cube.scale.x = objOption.scale[0];
     cube.scale.y = objOption.scale[1];
     cube.scale.z = objOption.scale[2];
+  }
+  if (objOption.rotateX) {
+    cube.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    cube.rotation.z = objOption.rotateZ / 180 * Math.PI;
   }
   if (objOption.angle) {
     cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;

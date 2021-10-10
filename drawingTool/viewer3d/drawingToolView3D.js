@@ -53,10 +53,21 @@ function initCanvas3D(edit, objOption) {
 function importJson(edit, objOption) {
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
   var fabricJson = JSON.parse(localStorage.getItem('viewJson3D'))
-  // console.log(fabricJson)
+  // before init
+  
+  fabricJson.sceneProp = hiDraw.prototype.parseStrToObj(fabricJson.sceneProp)
+  if (fabricJson.sceneProp && fabricJson.sceneProp.beforeInitial) {
+    var beforeInitial = hiDraw.prototype.functionGenerator(fabricJson.sceneProp.beforeInitial);
+    beforeInitial()
+  }
   if (fabricJson) {
     edit.hi3d.refreshByFabricJson(edit, objOption, fabricJson)
   }
+  if (fabricJson.sceneProp && fabricJson.sceneProp.afterInitial) {
+    var afterInitial = hiDraw.prototype.functionGenerator(fabricJson.sceneProp.afterInitial);
+    afterInitial()
+  }
+  // after init
 }
 
 function viewerRefresh(edit, objOption, fabricJson) {
@@ -105,8 +116,17 @@ function dataRefresh (edit, objOption) {
 function viewerAnimation (edit, objOption) {
   // urgent 沒有處理 group
   var fabricJson = JSON.parse(localStorage.getItem('viewJson3D'))
+  if (fabricJson.sceneProp) {
+    fabricJson.sceneProp = hiDraw.prototype.parseStrToObj(fabricJson.sceneProp)
+    var sceneAnimation = hiDraw.prototype.functionGenerator(fabricJson.sceneProp.animation);
+    fabricJson.sceneProp.animation = sceneAnimation
+  }
+  
   requestAnimationFrame(animation);
   function animation () {
+    if (fabricJson.sceneProp && fabricJson.sceneProp.animation) {
+      fabricJson.sceneProp.animation()
+    }
     for (var i = 0; i < dataStructure.viewer.length; i++) {
       if (dataStructure.viewer[i].hi3d &&
         dataStructure.viewer[i].hi3d.scene) {
@@ -137,7 +157,6 @@ function viewerAnimation (edit, objOption) {
   dataStructure.viewer.push({})
   dataStructure.viewer[0] = initCanvas3D(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   importJson(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
-  viewerRefresh(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   dataRefresh (dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   viewerAnimation(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
   // dataStructure.viewer[0].heatmapInstance = heatmapCreate(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
