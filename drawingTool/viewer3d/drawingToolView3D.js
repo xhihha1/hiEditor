@@ -114,7 +114,7 @@ function viewerAnimation (edit, objOption) {
               for (var j = 0; j < fabricJson.objects.length; j++) {
                 if (node.hiId && node.hiId === fabricJson.objects[j].hiId) {
                   if (fabricJson.objects[j].animation) {
-                    var animationFunc = hiDraw.prototype.functionGenerator(JSON.parse(fabricJson.objects[j].animation));
+                    var animationFunc = hiDraw.prototype.functionGenerator(fabricJson.objects[j].animation);
                     animationFunc(node, edit);
                   }
                   return true
@@ -125,6 +125,7 @@ function viewerAnimation (edit, objOption) {
             }
           });
       }
+      dataStructure.viewer[i].hi3d.viewRender()
     }
     requestAnimationFrame(animation);
   }
