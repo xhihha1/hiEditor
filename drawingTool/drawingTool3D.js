@@ -176,6 +176,7 @@ function showObjPropChange (object) { // opt.target
     click: 'function (value) { console.log("123456");}'
   }
   $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  $('#newPropAnimation').val(object.get('animation'))
   // -------- spotLight ---------
   $('#newSpotIntensity').val(parseFloat(object.get('intensity')) || 1)
   $('#newSpotDistance').val(parseFloat(object.get('distance')) || 200)

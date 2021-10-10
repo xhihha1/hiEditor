@@ -392,7 +392,8 @@ hi3D.prototype.getItemOption = function (item) {
     var pointZ = item['points'][j].z || 0
     points.push([item['points'][j].x, pointZ, item['points'][j].y])
   }
-  var color = item["fill"] || item["stroke"] || '#FF0000';
+  var color = item["fill"] || item["stroke"];
+  console.log(item.hiId, color, item["fill"] , item["stroke"] , '#FF0000')
   // var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
   var position = [item["left"], item['altitude'], item["top"]]
   var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
@@ -401,7 +402,7 @@ hi3D.prototype.getItemOption = function (item) {
   var angle = typeof item["angle"] !== 'undefined' ? item["angle"] : undefined
   var scale = typeof item["scaleX"] !== 'undefined' ? [item["scaleX"], item["scaleZ"], item["scaleY"]] : undefined
   var depth = item["depth"] || 1
-  console.log('depth', item.hiId, item["depth"])
+  // console.log('depth', item.hiId, item["depth"])
   var size = typeof item["width"] !== 'undefined' ? [item["width"], depth, item["height"]] : undefined
   var source = typeof item.source !== 'undefined' ? item.source : undefined
   var dataBinding = typeof item.dataBinding !== 'undefined' ? item.dataBinding : undefined

@@ -2,7 +2,9 @@ hi3D.prototype.colorToHex = function (color) {
   let r
   let g
   let b
-  if (color.indexOf('#') === 0) {
+  if (!color) {
+    return undefined
+  } else if (color.indexOf('#') === 0) {
     return color
   } else if (color.indexOf('rgba(') === 0) {
     color = color.substr(5).split(')')[0].split(',');
@@ -31,7 +33,7 @@ hi3D.prototype.colorToHex = function (color) {
     
     return "#" + r + g + b;
   } else {
-    color
+    return color
   }
 }
 
