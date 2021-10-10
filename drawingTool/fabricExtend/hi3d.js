@@ -523,7 +523,7 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   // const material = new THREE.MeshBasicMaterial({
   //   color: objOption.color
   // });
-  const material = new THREE.MeshLambertMaterial({
+  const material = new THREE.MeshStandardMaterial({
     color: objOption.color
   });
   const sphere = new THREE.Mesh(geometry, material);
@@ -594,7 +594,7 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   }
   objOption = this.mergeDeep(objOption, option)
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
-  const material = new THREE.MeshBasicMaterial({
+  const material = new THREE.MeshStandardMaterial({
     color: objOption.color
   });
   // const material = new THREE.MeshPhongMaterial( {
@@ -683,7 +683,7 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
     var loader = new THREE.TextureLoader();
     var texture = loader.load(objOption.textureSource.url);
   }
-  const material = new THREE.MeshBasicMaterial({
+  const material = new THREE.MeshStandardMaterial({
     map: texture,
     opacity: 0.8,
     transparent: true
@@ -957,7 +957,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     radiusSegments: 3,
     closed: true
   };
-  const material = new THREE.MeshLambertMaterial({
+  const material = new THREE.MeshStandardMaterial({
     color: objOption.color
   });
   // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
@@ -1278,10 +1278,13 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
   const loader = new THREE.STLLoader();
   loader.load(objOption.source.stl, function (geometry) {
 
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xff5533,
-      specular: 0x111111,
-      shininess: 200
+    // const material = new THREE.MeshPhongMaterial({
+    //   color: 0xff5533,
+    //   specular: 0x111111,
+    //   shininess: 200
+    // });
+    const material = new THREE.MeshStandardMaterial({
+      color: objOption.color
     });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -1308,7 +1311,6 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
       mesh.scale.x = objOption.scale[0];
       mesh.scale.y = objOption.scale[1];
       mesh.scale.z = objOption.scale[2];
-      console.log('objOption.rotateX', objOption.rotateX)
       if (objOption.rotateX) {
         mesh.rotation.x = objOption.rotateX ;
       }

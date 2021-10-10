@@ -42,9 +42,10 @@
 40. leaflet map image (https://github.com/mapbox/leaflet-image)  
 41. 把所有含 hiId的物件，放在一個列表，方便快速索引。 (XXX失敗) 
 42. 把燈光屬性加入到 view，同36 (OK)  
-43. 物件添加 animation，類似資料綁定但是由 requestAnimationFrame 執行  
-43. 整體添加 animation，類似資料綁定但是由 requestAnimationFrame 執行  
+43. 物件添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
+43. 整體添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
 44. 添加圓柱 https://threejs.org/docs/?q=cylin#api/en/geometries/CylinderGeometry  
+45. 添加透明material  
 
 # group (OK)  
 fabric  
