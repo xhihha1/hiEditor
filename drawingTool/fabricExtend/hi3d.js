@@ -1780,6 +1780,7 @@ hi3D.prototype.addAxesHelper = function (option) {
 
 // 相機軌道控制
 hi3D.prototype.addOrbitControls = function () {
+  if (!THREE.OrbitControls) { return false; }
   const controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
   controls.minDistance = this.defaultOptions.orbitControls.minDistance;
   controls.maxDistance = this.defaultOptions.orbitControls.maxDistance;
@@ -1798,7 +1799,7 @@ hi3D.prototype.addOrbitControls = function () {
 }
 
 hi3D.prototype.addTransformControls = function (mesh) {
-  if (!mesh) {
+  if (!mesh || !THREE.TransformControls) {
     return false
   }
   const control = new THREE.TransformControls(this.camera, this.renderer.domElement);

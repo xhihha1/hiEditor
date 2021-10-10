@@ -89,10 +89,9 @@ function initCanvas3D(edit, objOption) {
                 }
               }
             })
-            // edit.canvasView.renderAll();
-            edit.viewRender()
           }
         })
+        edit.viewRender()
       }.bind(edit.hi3d)
     }
   })

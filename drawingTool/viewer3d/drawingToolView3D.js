@@ -12,7 +12,8 @@ function initCanvas3D(edit, objOption) {
   })
   edit.hi3d.addscene()
   edit.hi3d.addCamera()
-  edit.hi3d.addLight()
+  // edit.hi3d.addLight()
+  edit.hi3d.keyboradControlInit()
   edit.hi3d.addHemisphereLight()
   edit.hi3d.addAmbientLight()
   edit.hi3d.setCamera({
@@ -127,6 +128,7 @@ function viewerAnimation (edit, objOption) {
       }
       dataStructure.viewer[i].hi3d.viewRender()
     }
+    edit.hi3d.keyboradControlRender()
     requestAnimationFrame(animation);
   }
 }
