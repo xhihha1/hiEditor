@@ -143,11 +143,82 @@ function hi3D(options) {
 
 hi3D.prototype.addscene = function () {
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(this.defaultOptions.scene.background)
+  scene.background = new THREE.Color(this.defaultOptions.scene.background) // 顏色
   // scene.add( new THREE.AxesHelper(500));
   // scene.add( new THREE.GridHelper( 1000, 10, 0x888888, 0x444444 ) );
   this.scene = scene
+  // -----------------------------------------
+  // //cubemap
+  // const path = '../../assets/SwedishRoyalCastle/';
+  // const format = '.jpg';
+  // const urls = [
+  //   path + 'px' + format, path + 'nx' + format,
+  //   path + 'py' + format, path + 'ny' + format,
+  //   path + 'pz' + format, path + 'nz' + format
+  // ];
+  // const reflectionCube = new THREE.CubeTextureLoader().load( urls );
+  // scene.background = reflectionCube; // --- 方形
+  // const texture = new THREE.TextureLoader().load( '../../assets/SwedishRoyalCastle/px.jpg' );
+  // texture.wrapS = THREE.RepeatWrapping;
+  // texture.wrapT = THREE.RepeatWrapping;
+  // texture.repeat.set( 4, 4 );
+  // scene.background = texture; // --- 底圖
+  // const loader = new THREE.TextureLoader();
+  // const textureEquirectangular = loader.load(
+  //   // '../../assets/tears_of_steel_bridge_2k.jpg',
+  //   '../../assets/bergsjostolen.jpg',
+  //   function() {
+  //     const rt = new THREE.WebGLCubeRenderTarget(textureEquirectangular.image.height);
+  //     rt.fromEquirectangularTexture(this.renderer, textureEquirectangular);
+  //     this.scene.background = rt.texture; // 等距长方体
+  //   }.bind(this));
+  // -----------------------------------------
+
   return this
+}
+
+hi3D.prototype.setscene = function (option) {
+  var objOption = this.defaultOptions.sceneProp || {}
+  objOption = this.mergeDeep(objOption, option)
+  console.log('--', objOption.background)
+  if (objOption.background && objOption.background.type) {
+    var bgType = objOption.background.type
+    console.log('-**-', objOption.background.type)
+    if (bgType === 'Image') {
+      const texture = new THREE.TextureLoader().load( objOption.background.Image.url );
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set( 1, 1 );
+      this.scene.background = texture;
+    } else if (bgType === 'CubeTexture') {
+      const urls = [
+        objOption.background.CubeTexture.px,
+        objOption.background.CubeTexture.nx,
+        objOption.background.CubeTexture.py,
+        objOption.background.CubeTexture.ny,
+        objOption.background.CubeTexture.pz,
+        objOption.background.CubeTexture.nz
+      ];
+      const reflectionCube = new THREE.CubeTextureLoader().load( urls );
+      this.scene.background = reflectionCube; 
+    } else if (bgType === 'Equirectangular') {
+      const loader = new THREE.TextureLoader();
+      const textureEquirectangular = loader.load(
+        objOption.background.Equirectangular.url,
+        function() {
+          const rt = new THREE.WebGLCubeRenderTarget(textureEquirectangular.image.height);
+          rt.fromEquirectangularTexture(this.renderer, textureEquirectangular);
+          this.scene.background = rt.texture; // 等距长方体
+        }.bind(this)
+      );
+    } else {
+      var color = this.defaultOptions.scene.background
+      if (objOption.background.Color && objOption.background.Color.color) {
+        color = objOption.background.Color.color
+      }
+      this.scene.background = new THREE.Color(color)
+    }
+  }
 }
 
 hi3D.prototype.addLight = function (option) {
@@ -499,6 +570,8 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   var objOption = {
     hiId: hi3D.prototype.uniqueIdGenerater(),
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     radius: 5,
     widthSegments: 5, // Minimum value is 3, and the default is 32
@@ -524,7 +597,9 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   //   color: objOption.color
   // });
   const material = new THREE.MeshStandardMaterial({
-    color: objOption.color
+    color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity
   });
   const sphere = new THREE.Mesh(geometry, material);
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -574,6 +649,12 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
   if (objOption.color) {
     sphere.material.color = new THREE.Color(objOption.color)
   }
+  if (typeof objOption.transparent === 'boolean') {
+    sphere.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    sphere.material.opacity = objOption.opacity
+  }
   if (objOption.angle) {
     sphere.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
@@ -588,6 +669,8 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
 hi3D.prototype.addCube = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1]
@@ -595,7 +678,9 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   objOption = this.mergeDeep(objOption, option)
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
   const material = new THREE.MeshStandardMaterial({
-    color: objOption.color
+    color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity
   });
   // const material = new THREE.MeshPhongMaterial( {
   //   color: objOption.color,
@@ -633,6 +718,12 @@ hi3D.prototype.setCube = function (cube, objOption) {
   }
   if (objOption.color) {
     cube.material.color = new THREE.Color(objOption.color)
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    cube.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    cube.material.opacity = objOption.opacity
   }
   if (objOption.size) {
     let new_geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
@@ -713,6 +804,8 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
 hi3D.prototype.addLine = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     points: [],
     linewidth: 10
   }
@@ -781,6 +874,8 @@ hi3D.prototype.setLine = function (line, objOption) {
 hi3D.prototype.addLine2 = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     points: [],
     linewidth: 10,
     position: [0, 0, 0],
@@ -847,6 +942,8 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   // 自定义的材质
   var material = new THREE.LineMaterial({
     color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity,
     // 线宽度
     linewidth: 5,
     // vertexColors: true,
@@ -914,6 +1011,12 @@ hi3D.prototype.setLine2 = function (line, objOption) {
   }
   if (objOption.color) {
     line.material.color = new THREE.Color(objOption.color)
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    line.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    line.material.opacity = objOption.opacity
   }
   if (objOption.rotateX) {
     line.rotation.x = objOption.rotateX / 180 * Math.PI ;
@@ -1039,6 +1142,8 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
 hi3D.prototype.addObj = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
@@ -1064,6 +1169,8 @@ hi3D.prototype.addObj = function (option, parentGroup) {
         // child.material.color.setHex(0x00FF00);
         // child.material.ambient.setHex(0xFF0000);
         child.material.color.set(objOption.color);
+        child.material.transparent = objOption.transparent;
+        child.material.opacity = objOption.opacity;
         child.castShadow = true;
         child.receiveShadow = true;
         // child.material.color.set('blue');
@@ -1125,6 +1232,20 @@ hi3D.prototype.setObj = function (node, objOption) {
       // console.log(child)
     });
   }
+  if (typeof objOption.transparent === 'boolean') {
+    node.traverse(function (child) {
+      if (child instanceof THREE.Mesh) {
+        child.material.transparent = objOption.transparent;
+      }
+    });
+  }
+  if (typeof objOption.opacity === 'number') {
+    node.traverse(function (child) {
+      if (child instanceof THREE.Mesh) {
+        child.material.opacity = objOption.opacity;
+      }
+    });
+  }
   if (objOption.source && objOption.source.obj !== node.source.obj) {
     console.log('--- change obj source ---')
   }
@@ -1147,6 +1268,8 @@ hi3D.prototype.setObj = function (node, objOption) {
 hi3D.prototype.addCollada = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
@@ -1190,6 +1313,8 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
       if ( child.isMesh ) {
         // model does not have normals
         child.material.flatShading = true;
+        child.material.transparent = objOption.transparent
+        child.material.opacity = objOption.opacity
       }
     } );
     obj.updateMatrix();
@@ -1263,6 +1388,8 @@ hi3D.prototype.setCollada = function (node, objOption) {
 hi3D.prototype.addSTL = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     scale: [1, 1, 1],
@@ -1284,7 +1411,9 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     //   shininess: 200
     // });
     const material = new THREE.MeshStandardMaterial({
-      color: objOption.color
+      color: objOption.color,
+      transparent: objOption.transparent,
+      opacity: objOption.opacity
     });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -1349,13 +1478,19 @@ hi3D.prototype.setSTL = function (node, objOption) {
     }
   }
   if (objOption.color) {
-    // node.material.color = new THREE.Color(objOption.color)
+    node.material.color = new THREE.Color(objOption.color)
     // node.traverse(function (child) {
     //   if (child instanceof THREE.Mesh) {
     //     child.material.color.set(objOption.color);
     //   }
     //   // console.log(child)
     // });
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    node.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    node.material.opacity = objOption.opacity
   }
   if (objOption.source && objOption.source.stl !== node.source.stl) {
     console.log('--- change stl source ---')
@@ -1379,6 +1514,8 @@ hi3D.prototype.setSTL = function (node, objOption) {
 hi3D.prototype.add3ds = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     source: {
@@ -1485,6 +1622,8 @@ hi3D.prototype.set3ds = function (node, objOption) {
 hi3D.prototype.addgltf = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     source: {
@@ -1582,6 +1721,8 @@ hi3D.prototype.setgltf = function (node, objOption) {
 hi3D.prototype.addnrrd = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [1, 1, 1],
     source: {
@@ -1717,13 +1858,17 @@ hi3D.prototype.setnrrd = function (node, objOption) {
 hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 0, 0],
     size: [2000, 1, 2000]
   }
   objOption = this.mergeDeep(objOption, option)
   const groundGeo = new THREE.PlaneGeometry(objOption.size[0], objOption.size[2]);
-  const groundMat = new THREE.MeshLambertMaterial({
-    color: objOption.color
+  const groundMat = new THREE.MeshStandardMaterial({
+    color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity
   });
   const ground = new THREE.Mesh(groundGeo, groundMat);
   ground.position.x = objOption.position[0];
@@ -1759,6 +1904,12 @@ hi3D.prototype.setGroundPlane = function (node, objOption) {
   if (objOption.color) {
     node.material.color = new THREE.Color(objOption.color)
   }
+  if (typeof objOption.transparent === 'boolean') {
+    node.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    node.material.opacity = objOption.opacity
+  }
   if (objOption.size) {
     let new_geometry = new THREE.PlaneGeometry(objOption.size[0], objOption.size[2]);
     node.geometry.dispose();
@@ -1784,6 +1935,8 @@ hi3D.prototype.setGroundPlane = function (node, objOption) {
 hi3D.prototype.addWall = function (option, parentGroup) {
   var objOption = {
     color: '#F00',
+    transparent: false,
+    opacity: 1,
     position: [0, 50, 0],
     size: [1, 100, 1],
     scale: [1, 1, 1]
@@ -1791,7 +1944,9 @@ hi3D.prototype.addWall = function (option, parentGroup) {
   objOption = this.mergeDeep(objOption, option)
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
   const material = new THREE.MeshStandardMaterial({
-    color: objOption.color
+    color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity
   });
   const cube = new THREE.Mesh(geometry, material);
   cube.castShadow = true;
@@ -1824,6 +1979,12 @@ hi3D.prototype.setWall = function (cube, objOption) {
   }
   if (objOption.color) {
     cube.material.color = new THREE.Color(objOption.color)
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    cube.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    cube.material.opacity = objOption.opacity
   }
   if (objOption.size) {
     let new_geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);

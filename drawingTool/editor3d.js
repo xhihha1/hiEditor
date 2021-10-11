@@ -105,6 +105,7 @@ function initCanvas3D(edit, objOption) {
   edit.hi3d.setCamera({
     position: [0, 50, 100]
   })
+  edit.hi3d.viewRender()
 
   // edit.hi3d.addCube()
   // edit.hi3d.addCube({
@@ -137,6 +138,9 @@ function initCanvas3D(edit, objOption) {
     // edit.hi3d.addObj()
     edit.hi3d.refreshByFabricJson(edit, objOption)
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+    setInterval(function(){
+      edit.hi3d.viewRender()
+    }, 100)
     edit.hi3d.viewRender()
     // requestAnimationFrame(animate); // 自動更新 刷新
     // ------------------------------------------------

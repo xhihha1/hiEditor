@@ -151,6 +151,8 @@ function showObjPropChange (object) { // opt.target
   $('#newPropType').val(object.get('type'))
   $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
   $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
+  $('#newPropTransparent').prop("checked", Boolean(object.get('transparent')));
+  $('#newOpacity').val(parseFloat(object.get('opacity')) || 1)
   $('#newPropDepth').val(parseInt(object.get('depth')) || 0)
   $('#newRotateX').val(parseInt(object.get('rotateX')) || 0)
   $('#newRotateY').val(parseInt(object.get('angle')) || 0)
@@ -202,6 +204,8 @@ function setObjPropChange () {
   // $('#newPropType').val()
   var stroke = $('#newPropStroke').val()
   var fill = $('#newPropFill').val()
+  var transparent = Boolean($('#newPropTransparent').prop("checked"));
+  var opacity = parseFloat($('#newOpacity').val())
   var rotateX = parseInt($('#newRotateX').val())
   var angle = parseInt($('#newRotateY').val())
   var rotateZ = parseInt($('#newRotateZ').val())
@@ -231,6 +235,8 @@ function setObjPropChange () {
   return {
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
+    transparent: transparent,
+    opacity: opacity < 0 ? 0 : opacity > 1 ? 1 : opacity,
     rotateX: rotateX,
     angle: angle,
     rotateZ: rotateZ,

@@ -393,6 +393,8 @@ hi3D.prototype.getItemOption = function (item) {
     points.push([item['points'][j].x, pointZ, item['points'][j].y])
   }
   var color = item["fill"] || item["stroke"];
+  var transparent = item["transparent"];
+  var opacity = item["opacity"];
   // var position = typeof item["left"] !== 'undefined' ? [item["left"], item['altitude'], item["top"]] : undefined
   var position = [item["left"], item['altitude'], item["top"]]
   var radius = typeof item["radius"] !== 'undefined' ? item["radius"] : undefined
@@ -419,6 +421,8 @@ hi3D.prototype.getItemOption = function (item) {
     hiId: item.hiId,
     visible: visible,
     color: this.colorToHex(color),
+    transparent: transparent,
+    opacity: opacity,
     points: points,
     position: position,
     source: source,

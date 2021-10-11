@@ -5,12 +5,15 @@ var dataStructure = {
 
 
 function initCanvas3D(edit, objOption) {
-
+  var fabricJson = JSON.parse(localStorage.getItem('viewJson3D'))
+  console.log('fabricJson', fabricJson)
+  var sceneProp = JSON.parse(fabricJson.sceneProp)
   edit.hi3d = new hi3D({
     parentId: 'content3D',
     container: {enableDefaultMouse: false}
   })
   edit.hi3d.addscene()
+  edit.hi3d.setscene(sceneProp)
   edit.hi3d.addCamera()
   // edit.hi3d.addLight()
   edit.hi3d.keyboradControlInit()

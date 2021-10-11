@@ -350,6 +350,41 @@
               <div><textarea id="newPropSceneAftInit"></textarea></div>
               <div><span>animation: </span></div>
               <div><textarea id="newPropSceneAnimation"></textarea></div>
+              <div><span>background: </span></div>
+              <div>
+                <select name="cars" id="newPropBackgroundType" class="prop_input">
+                  <option value="Color" selected>Color</option>
+                  <option value="Image">Image</option>
+                  <option value="CubeTexture">CubeTexture</option>
+                  <option value="Equirectangular">Equirectangular</option>
+                </select>
+                <div id="newSceneBgAreaColor">
+                  <div><span>Color: </span></div>
+                  <div><input type="color" id="newPropSceneBgColor" name="PropFill" value="#F0F0F0"></div>
+                </div>
+                <div id="newSceneBgAreaImage">
+                  <div><span>Image: </span></div>
+                  <div><input type="text" id="newPropSceneBgImage" name="Image" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+                </div>
+                <div id="newSceneBgAreaCubeTexture">
+                  <div><span>pos-x: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+                  <div><span>neg-x: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubeNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
+                  <div><span>pos-y: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
+                  <div><span>neg-y: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubeNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
+                  <div><span>pos-z: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
+                  <div><span>neg-z: </span></div>
+                  <div><input type="text" id="newPropSceneBgCubeNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
+                </div>
+                <div id="newSceneBgAreaEquirectangular">
+                  <div><span>Equirectangular-img: </span></div>
+                  <div><input type="text" id="newPropSceneBgEquirectangularImage" name="rotateX" value="../../assets/bergsjostolen.jpg" class="prop_input"></div>
+                </div>
+              </div>
               <div><button id="submitSceneProp">submit</button></div>
             </li>
             <li class="prop-title">Obj propy change</li>
@@ -362,6 +397,9 @@
               <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
               <div><span>Fill: </span></div>
               <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
+              <div><label><input name="" id="newPropTransparent" type="checkbox" checked>transparent</label></div>
+              <div><span>opacity: </span></div>
+              <div><input type="number" id="newOpacity" name="positionX" value="0" class="prop_input"></div>
               <div><span>rotate X: </span></div>
               <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div> -->
               <div><input type="number" id="newRotateX" name="rotateX" value="0" class="prop_input"></div>

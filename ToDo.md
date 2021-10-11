@@ -45,7 +45,11 @@
 43. 物件添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
 43. 整體添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
 44. 添加圓柱 https://threejs.org/docs/?q=cylin#api/en/geometries/CylinderGeometry  
-45. 添加透明material  
+45. 添加透明material (OK)  
+46. 材質
+  - (https://www.itread01.com/content/1557943173.html)  
+  - (https://ithelp.ithome.com.tw/articles/10204201)  
+  - (https://ithelp.ithome.com.tw/articles/10204288)
 
 # group (OK)  
 fabric  
@@ -99,3 +103,5 @@ Three
 13. download json (https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser)  
 
 14. 下載模型 https://www.thingiverse.com/thing:34836  
+
+15. Cube environment (three scene equirectangular)

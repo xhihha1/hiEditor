@@ -401,6 +401,34 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
+  $('#newPropBackgroundType').on('change', function (){
+    var value = $(this).val()
+    if (value === 'Image') {
+      $('#newSceneBgAreaColor').hide()
+      $('#newSceneBgAreaImage').show()
+      $('#newSceneBgAreaCubeTexture').hide()
+      $('#newSceneBgAreaEquirectangular').hide()
+    } else if (value === 'CubeTexture') {
+      $('#newSceneBgAreaColor').hide()
+      $('#newSceneBgAreaImage').hide()
+      $('#newSceneBgAreaCubeTexture').show()
+      $('#newSceneBgAreaEquirectangular').hide()
+    } else if (value === 'Equirectangular') {
+      $('#newSceneBgAreaColor').hide()
+      $('#newSceneBgAreaImage').hide()
+      $('#newSceneBgAreaCubeTexture').hide()
+      $('#newSceneBgAreaEquirectangular').show()
+    } else {
+      $('#newSceneBgAreaColor').show()
+      $('#newSceneBgAreaImage').hide()
+      $('#newSceneBgAreaCubeTexture').hide()
+      $('#newSceneBgAreaEquirectangular').hide()
+    }
+  })
+  $('#newSceneBgAreaColor').show()
+  $('#newSceneBgAreaImage').hide()
+  $('#newSceneBgAreaCubeTexture').hide()
+  $('#newSceneBgAreaEquirectangular').hide()
   $('#submitSceneProp').click(function(){
     var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
     // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
@@ -411,12 +439,46 @@ function editorEvent3D(edit, objOption) {
     var beforeInitial = beforeInitialStr
     var afterInitial = afterInitialStr
     var animation = animationStr
+    // --- background ---
+    var bgType = $('#newPropBackgroundType').val()
+    var bgColor, ImageUrl, bgPx, bgPy, bgPz, bgNx, bgNy, bgNz, bgEquirectangular
+    if (bgType === 'Image') {
+      ImageUrl = $('#newPropSceneBgImage').val()
+    } else if (bgType === 'CubeTexture') {
+      bgPx = $('#newPropSceneBgCubePx').val()
+      bgPy = $('#newPropSceneBgCubePy').val()
+      bgPz = $('#newPropSceneBgCubePz').val()
+      bgNx = $('#newPropSceneBgCubeNx').val()
+      bgNy = $('#newPropSceneBgCubeNy').val()
+      bgNz = $('#newPropSceneBgCubeNz').val()
+    } else if (bgType === 'Equirectangular') {
+      bgEquirectangular = $('#newPropSceneBgEquirectangularImage').val()
+    } else {
+      bgColor = hiDraw.prototype.colorToHex($('#newPropSceneBgColor').val())
+    }
     var opt = {
       beforeInitial: beforeInitial,
       afterInitial: afterInitial,
-      animation: animation
+      animation: animation,
+      background: {
+        type: bgType,
+        Color: { color: bgColor },
+        Image: { url: ImageUrl },
+        CubeTexture: {
+          px: bgPx,
+          py: bgPy,
+          pz: bgPz,
+          nx: bgNx,
+          ny: bgNy,
+          nz: bgNz
+        },
+        Equirectangular: {
+          url: bgEquirectangular
+        }
+      }
     }
     edit.canvasView.sceneProp = JSON.stringify(opt)
+    edit.hi3d.setscene(opt)
   })
   $('#submitGrid').click(function(){
     var size = parseInt($('#gridSize').val())
