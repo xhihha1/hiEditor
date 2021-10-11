@@ -57,10 +57,11 @@ function initCanvas(canvasId, canvasViewId) {
       after_render: function (opt) {
         // console.log('after_render')
         // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
-        var activeObj = edit.canvasView.getActiveObject();
-        if(activeObj &&　activeObj.hiId){
-          showObjPropChange(activeObj);
-        }
+        // 暫時不更新 屬性，不然time interval 會造成無法改值
+        // var activeObj = edit.canvasView.getActiveObject();
+        // if(activeObj &&　activeObj.hiId){
+        //   showObjPropChange(activeObj);
+        // }
         var fabricJson = edit.toFabricJson()
         fabricJson["objects"] = fabricJson["objects"].filter(function (obj) {
           if (!obj['tempDrawShape']) {
