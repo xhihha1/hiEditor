@@ -180,10 +180,8 @@ hi3D.prototype.addscene = function () {
 hi3D.prototype.setscene = function (option) {
   var objOption = this.defaultOptions.sceneProp || {}
   objOption = this.mergeDeep(objOption, option)
-  console.log('--', objOption.background)
   if (objOption.background && objOption.background.type) {
     var bgType = objOption.background.type
-    console.log('-**-', objOption.background.type)
     if (bgType === 'Image') {
       const texture = new THREE.TextureLoader().load( objOption.background.Image.url );
       texture.wrapS = THREE.RepeatWrapping;
