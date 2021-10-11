@@ -105,3 +105,87 @@ Three
 14. 下載模型 https://www.thingiverse.com/thing:34836  
 
 15. Cube environment (three scene equirectangular)
+
+
+
+# Texture  
+
+參考:  
+
+  - (https://ithelp.ithome.com.tw/articles/10204201)  
+  - (https://ithelp.ithome.com.tw/articles/10204288)
+  - 官方設定  https://threejs.org/docs/?q=texture#api/en/constants/Textures
+
+一般顏色預設 `null`，可以同時設定圖跟顏色  
+
+    const material = new THREE.MeshStandardMaterial({
+        color: objOption.color,
+        transparent: objOption.transparent,
+        opacity: objOption.opacity
+    });
+
+添加圖片  
+
+    const headMap = new THREE.TextureLoader().load(
+        'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
+    )
+    cube.material.map = headMap // 可延續原本的顏色
+    cube.material.needsUpdate = true;
+
+每個面向設定不同的圖或顏色  
+
+    const skinMap = new THREE.TextureLoader().load(
+        'https://dl.dropboxusercontent.com/s/eev6wxdxfmukkt8/creeper_skin.png'
+    )
+    const headMaterials = []
+    for (let i = 0; i < 6; i++) {
+        let map
+
+        if (i === 4) map = '' // 圖留空會用預設顏色
+        else map = skinMap
+
+        headMaterials.push(new THREE.MeshStandardMaterial({ map: map, color: null })) // 顏色也可留空用預設  
+    }
+    cube.material = headMaterials
+    cube.material.needsUpdate = true;
+
+其他數設定  
+
+    const skinMat = new THREE.MeshStandardMaterial({
+        roughness: 0.3, // 粗糙度
+        metalness: 0.8, // 金屬感
+        transparent: true, // 透明與否
+        opacity: 0.9, // 透明度
+        side: THREE.DoubleSide, // 雙面材質
+        map: skinMap // 皮膚貼圖
+    })
+
+Wrapping Modes  
+
+    THREE.RepeatWrapping
+    THREE.ClampToEdgeWrapping
+    THREE.MirroredRepeatWrapping
+
+設定旋轉平移重複  
+
+    const texture = mesh.material.map;
+    texture.offset.set( API.offsetX, API.offsetY );
+    texture.repeat.set( API.repeatX, API.repeatY );
+    texture.center.set( API.centerX, API.centerY );
+    texture.rotation = API.rotation; // rotation is around [ 0.5, 0.5 ]
+
+球形貼皮  
+參考 webgl_materials_physical_clearcoat  
+
+canvas texture  
+webgl_materials_texture_canvas  
+
+reflectivity(反射率)  
+webgl_materials_variations_standard  
+
+# 沿著線移動  
+
+webgl_modifier_curve  
+
+閃電特效  
+webgl_lightningstrike

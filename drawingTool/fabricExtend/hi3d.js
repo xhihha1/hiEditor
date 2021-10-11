@@ -675,6 +675,8 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   }
   objOption = this.mergeDeep(objOption, option)
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
+  // -------------------------
+  // const geometry = new THREE.BoxGeometry(50, 50, 50);
   const material = new THREE.MeshStandardMaterial({
     color: objOption.color,
     transparent: objOption.transparent,
@@ -698,6 +700,29 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   } else {
     this.scene.add(cube);
   }
+  // ----------------------
+  // // single image
+  // const headMap = new THREE.TextureLoader().load(
+  //   'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
+  // )
+  // // cube.material.map = headMap // 可延續原本的顏色
+  // // cube.material.needsUpdate = true;
+  // // multi image
+  // const skinMap = new THREE.TextureLoader().load(
+  //   'https://dl.dropboxusercontent.com/s/eev6wxdxfmukkt8/creeper_skin.png'
+  // )
+  // const headMaterials = []
+  // for (let i = 0; i < 6; i++) {
+  //   let map
+
+  //   if (i === 4) map = '' // 
+  //   else map = skinMap
+
+  //   headMaterials.push(new THREE.MeshStandardMaterial({ map: map, color: null }))
+  // }
+  // cube.material = headMaterials
+  // cube.material.needsUpdate = true;
+  // ----------------------
   return cube
 }
 
@@ -1635,11 +1660,6 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
   if (!objOption.source || !objOption.source.gltf) {
     return false
   }
-  //3ds files dont store normal maps
-  let normal
-  if (objOption.source.f_3dsNormalMap) {
-    normal = new THREE.TextureLoader().load(objOption.source.f_3dsNormalMap);
-  }
   // const loader = new THREE.TDSLoader();
   // loader.setResourcePath( objOption.source.f_3dsTextures );
   // loader.load( objOption.source.f_3ds, function ( object ) {
@@ -1732,11 +1752,6 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
   objOption = this.mergeDeep(objOption, option)
   if (!objOption.source || !objOption.source.nrrd) {
     return false
-  }
-  //3ds files dont store normal maps
-  let normal
-  if (objOption.source.f_3dsNormalMap) {
-    normal = new THREE.TextureLoader().load(objOption.source.f_3dsNormalMap);
   }
   // const loader = new THREE.TDSLoader();
   // loader.setResourcePath( objOption.source.f_3dsTextures );
@@ -1883,6 +1898,14 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   } else {
     this.scene.add(ground);
   }
+  // -------------
+  const headMap = new THREE.TextureLoader().load(
+    'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
+  )
+  ground.material.map = headMap // 可延續原本的顏色
+  ground.material.needsUpdate = true;
+  ground.material.side = THREE.DoubleSide;
+  // -------------
   return this
 }
 
