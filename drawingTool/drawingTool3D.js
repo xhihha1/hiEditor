@@ -150,10 +150,6 @@ function initCanvas(canvasId, canvasViewId) {
 function showObjPropChange (object) { // opt.target
   $('#newPropHiId').val(object.get('hiId'))
   $('#newPropType').val(object.get('type'))
-  $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
-  $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
-  $('#newPropTransparent').prop("checked", Boolean(object.get('transparent')));
-  $('#newOpacity').val(parseFloat(object.get('opacity')) || 1)
   $('#newPropDepth').val(parseInt(object.get('depth')) || 0)
   $('#newRotateX').val(parseInt(object.get('rotateX')) || 0)
   $('#newRotateY').val(parseInt(object.get('angle')) || 0)
@@ -192,6 +188,21 @@ function showObjPropChange (object) { // opt.target
     // $('#newPropEventBinding').val(JSON.stringify(eventBinding))
   }
   $('#newPropAnimation').val(object.get('animation'))
+  // -------- Material ----------
+  $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
+  $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
+  $('#newPropTransparent').prop("checked", Boolean(object.get('transparent')));
+  $('#newOpacity').val(object.get('opacity') || 1)
+  var faceMaterial = object.get('faceMaterial') || {}
+  if(typeof faceMaterial === 'string') {
+    faceMaterial = JSON.parse(faceMaterial)
+  }
+  $('#newPropObjFacePx').val(faceMaterial.pxImg || '')
+  $('#newPropObjFaceNx').val(faceMaterial.nxImg || '')
+  $('#newPropObjFacePy').val(faceMaterial.pyImg || '')
+  $('#newPropObjFaceNy').val(faceMaterial.nyImg || '')
+  $('#newPropObjFacePz').val(faceMaterial.pzImg || '')
+  $('#newPropObjFaceNz').val(faceMaterial.nzImg || '')
   // -------- spotLight ---------
   $('#newSpotIntensity').val(parseFloat(object.get('intensity')) || 1)
   $('#newSpotDistance').val(parseFloat(object.get('distance')) || 200)
@@ -233,6 +244,15 @@ function setObjPropChange () {
   animationStr = animationStr.replace(/\n/g,"")
   animationStr = animationStr.trim()
   var animation = animationStr
+  // -------- Material ----------
+  var faceMaterial = {}
+  faceMaterial.pxImg = $('#newPropObjFacePx').val().trim()
+  faceMaterial.nxImg = $('#newPropObjFaceNx').val().trim()
+  faceMaterial.pyImg = $('#newPropObjFacePy').val().trim()
+  faceMaterial.nyImg = $('#newPropObjFaceNy').val().trim()
+  faceMaterial.pzImg = $('#newPropObjFacePz').val().trim()
+  faceMaterial.nzImg = $('#newPropObjFaceNz').val().trim()
+  var faceMaterialStr = JSON.stringify(faceMaterial)
   return {
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
@@ -256,7 +276,8 @@ function setObjPropChange () {
     distance: distance,
     penumbra: penumbra,
     decay: decay,
-    animation: animation
+    animation: animation,
+    faceMaterial: faceMaterialStr
   }
 }
 

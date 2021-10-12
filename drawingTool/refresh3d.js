@@ -201,10 +201,10 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
   if (item["type"] == "hiCube") {
     var opt = this.getItemOption(item)
     if (itemExist) {
-      // console.log('exist cube', objNode, opt)
+      console.log('exist cube', objNode, opt)
       this.setCube(objNode, opt)
     } else {
-      // console.log('add cube', opt)
+      console.log('add cube', opt)
       this.addCube(opt, parentGroup)
     }
   }
@@ -417,6 +417,9 @@ hi3D.prototype.getItemOption = function (item) {
   var visible = typeof item.visible === 'boolean' ? item.visible : true
   var skyColor = typeof item.skyColor !== 'undefined' ? item.skyColor : color
   var groundColor = typeof item.groundColor !== 'undefined' ? item.groundColor : color
+  console.log('item.faceMaterial', typeof item.faceMaterial, item.faceMaterial)
+  var faceMaterial = item.faceMaterial? JSON.parse(item.faceMaterial) : {}
+  console.log('faceMaterial', typeof faceMaterial, faceMaterial)
   return {
     hiId: item.hiId,
     visible: visible,
@@ -441,6 +444,7 @@ hi3D.prototype.getItemOption = function (item) {
     penumbra: penumbra,
     decay: decay,
     skyColor: this.colorToHex(skyColor),
-    groundColor: this.colorToHex(groundColor)
+    groundColor: this.colorToHex(groundColor),
+    faceMaterial: faceMaterial
   }
 }

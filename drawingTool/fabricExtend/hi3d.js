@@ -677,17 +677,37 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
   // -------------------------
   // const geometry = new THREE.BoxGeometry(50, 50, 50);
+  var transparent = objOption.transparent || false
   const material = new THREE.MeshStandardMaterial({
     color: objOption.color,
-    transparent: objOption.transparent,
+    transparent: transparent,
     opacity: objOption.opacity
   });
+  const faceMaterial = []
+  console.log('objOption.faceMaterial', typeof objOption.faceMaterial)
+  for (let i = 0; i < 6; i++) {
+    let map = null
+    if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}
+    if (i == 1 && objOption.faceMaterial.nxImg) { const nxImg = new THREE.TextureLoader().load(objOption.faceMaterial.nxImg); map = nxImg;}
+    if (i == 2 && objOption.faceMaterial.pyImg) { const pyImg = new THREE.TextureLoader().load(objOption.faceMaterial.pyImg); map = pyImg;}
+    if (i == 3 && objOption.faceMaterial.nyImg) { const nyImg = new THREE.TextureLoader().load(objOption.faceMaterial.nyImg); map = nyImg;}
+    if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
+    if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
+    faceMaterial.push(new THREE.MeshStandardMaterial({
+      map: map,
+      color: objOption.color ,
+      transparent: transparent,
+      opacity: objOption.opacity
+    }))
+  }
   // const material = new THREE.MeshPhongMaterial( {
   //   color: objOption.color,
   //   shininess: 0,
   //   specular: 0x222222
   // } );
   const cube = new THREE.Mesh(geometry, material);
+  cube.material = faceMaterial
+  cube.material.needsUpdate = true;
   cube.castShadow = true;
   cube.receiveShadow = true;
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -701,6 +721,12 @@ hi3D.prototype.addCube = function (option, parentGroup) {
     this.scene.add(cube);
   }
   // ----------------------
+  // // simple
+  // const material = new THREE.MeshStandardMaterial({
+  //   color: objOption.color,
+  //   transparent: objOption.transparent,
+  //   opacity: objOption.opacity
+  // });
   // // single image
   // const headMap = new THREE.TextureLoader().load(
   //   'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
@@ -767,6 +793,29 @@ hi3D.prototype.setCube = function (cube, objOption) {
   if (objOption.angle) {
     cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  if (objOption.faceMaterial) {
+    var transparent = objOption.transparent || false
+    var color = new THREE.Color(objOption.color)
+    const faceMaterial = []
+    for (let i = 0; i < 6; i++) {
+      let map = null
+      if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}
+      if (i == 1 && objOption.faceMaterial.nxImg) { const nxImg = new THREE.TextureLoader().load(objOption.faceMaterial.nxImg); map = nxImg;}
+      if (i == 2 && objOption.faceMaterial.pyImg) { const pyImg = new THREE.TextureLoader().load(objOption.faceMaterial.pyImg); map = pyImg;}
+      if (i == 3 && objOption.faceMaterial.nyImg) { const nyImg = new THREE.TextureLoader().load(objOption.faceMaterial.nyImg); map = nyImg;}
+      if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
+      if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
+      faceMaterial.push(new THREE.MeshStandardMaterial({
+        map: map,
+        color: color,
+        transparent: transparent,
+        opacity: objOption.opacity
+      }))
+    }
+    cube.material = faceMaterial
+    cube.material.needsUpdate = true;
+  }
+  
   return cube
 }
 
