@@ -594,12 +594,21 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   // const material = new THREE.MeshBasicMaterial({
   //   color: objOption.color
   // });
+  var map = null
+  var needsUpdate = false
+  if (objOption.faceMaterial && objOption.faceMaterial.image) {
+    map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+    needsUpdate = true;
+  }
   const material = new THREE.MeshStandardMaterial({
+    map: map,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
   });
+  
   const sphere = new THREE.Mesh(geometry, material);
+  sphere.material.needsUpdate = needsUpdate;
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   sphere.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   sphere.hiId = objOption.hiId
@@ -661,6 +670,16 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
     sphere.scale.y = objOption.scale[1];
     sphere.scale.z = objOption.scale[2];
   }
+  if (objOption.faceMaterial) {
+    var map = null
+    var needsUpdate = false
+    if (objOption.faceMaterial && objOption.faceMaterial.image) {
+      map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+      needsUpdate = true;
+    }
+    sphere.material.map = map;
+    sphere.material.needsUpdate = needsUpdate;
+  }
   return sphere
 }
 
@@ -684,7 +703,6 @@ hi3D.prototype.addCube = function (option, parentGroup) {
     opacity: objOption.opacity
   });
   const faceMaterial = []
-  console.log('objOption.faceMaterial', typeof objOption.faceMaterial)
   for (let i = 0; i < 6; i++) {
     let map = null
     if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}

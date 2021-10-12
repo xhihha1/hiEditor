@@ -197,6 +197,7 @@ function showObjPropChange (object) { // opt.target
   if(typeof faceMaterial === 'string') {
     faceMaterial = JSON.parse(faceMaterial)
   }
+  $('#newPropObjFaceImage').val(faceMaterial.image || '')
   $('#newPropObjFacePx').val(faceMaterial.pxImg || '')
   $('#newPropObjFaceNx').val(faceMaterial.nxImg || '')
   $('#newPropObjFacePy').val(faceMaterial.pyImg || '')
@@ -246,6 +247,7 @@ function setObjPropChange () {
   var animation = animationStr
   // -------- Material ----------
   var faceMaterial = {}
+  faceMaterial.image = $('#newPropObjFaceImage').val().trim()
   faceMaterial.pxImg = $('#newPropObjFacePx').val().trim()
   faceMaterial.nxImg = $('#newPropObjFaceNx').val().trim()
   faceMaterial.pyImg = $('#newPropObjFacePy').val().trim()
