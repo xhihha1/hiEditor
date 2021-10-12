@@ -44,12 +44,14 @@
 42. 把燈光屬性加入到 view，同36 (OK)  
 43. 物件添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
 43. 整體添加 animation，類似資料綁定但是由 requestAnimationFrame 執行 (OK)  
-44. 添加圓柱 https://threejs.org/docs/?q=cylin#api/en/geometries/CylinderGeometry  
+44. 添加圓柱 https://threejs.org/docs/?q=cylin#api/en/geometries/CylinderGeometry  (OK)  
 45. 添加透明material (OK)  
 46. 材質
   - (https://www.itread01.com/content/1557943173.html)  
   - (https://ithelp.ithome.com.tw/articles/10204201)  
   - (https://ithelp.ithome.com.tw/articles/10204288)
+  - cube (OK)  
+  - sphere (OK)  
 
 # group (OK)  
 fabric  

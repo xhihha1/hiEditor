@@ -40,6 +40,12 @@ function editorEvent3D(edit, objOption) {
     edit.changeCanvasProperty(false, false);
     var squrect = new edit.HiSphere(edit, objOption);
   });
+  $("#drawCylinder").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var squrect = new edit.HiCylinder(edit, objOption);
+  });
   $("#draw3dPolyline").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);

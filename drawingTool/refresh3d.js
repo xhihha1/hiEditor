@@ -218,6 +218,16 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       this.addSphere(opt, parentGroup)
     }
   }
+  if (item["type"] == "hiCylinder") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      // console.log('set Cylinder', opt)
+      this.setCylinder(objNode, opt)
+    } else {
+      // console.log('add Cylinder', opt)
+      this.addCylinder(opt, parentGroup)
+    }
+  }
   if (item["type"] == "hi3DPolyline") {
     var opt = this.getItemOption(item)
     if (itemExist) {

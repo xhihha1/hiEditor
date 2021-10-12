@@ -640,7 +640,7 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
     }
   }
   if (objOption.radius) {
-    sphere.radius = objOption.color;
+    // sphere.radius = objOption.color;
     let new_geometry = new THREE.SphereGeometry(
       objOption.radius,
       objOption.widthSegments,
@@ -835,6 +835,122 @@ hi3D.prototype.setCube = function (cube, objOption) {
   }
   
   return cube
+}
+
+hi3D.prototype.addCylinder = function (option, parentGroup) {
+  var objOption = {
+    hiId: hi3D.prototype.uniqueIdGenerater(),
+    color: '#F00',
+    transparent: false,
+    opacity: 1,
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    radius: 5, // radiusTop, radiusBottom
+    radialSegments: 16,
+    heightSegments: 1,
+    phiStart: 0,
+    phiLength: Math.PI * 2,
+    thetaStart: 0,
+    thetaLength: Math.PI,
+    scale: [1, 1, 1],
+    openEnded: false,
+    thetaStart: 0,
+    thetaLength: Math.PI * 2,
+  }
+  objOption = this.mergeDeep(objOption, option)
+  var map = null
+  var needsUpdate = false
+  if (objOption.faceMaterial && objOption.faceMaterial.image) {
+    map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+    needsUpdate = true;
+  }
+  const geometry = new THREE.CylinderGeometry(
+    objOption.radius,
+    objOption.radius,
+    objOption.size[1],
+    objOption.radialSegments,
+    objOption.heightSegments,
+    objOption.openEnded,
+    objOption.thetaStart,
+    objOption.thetaLength
+  );
+  const material = new THREE.MeshStandardMaterial({
+    map: map,
+    color: objOption.color,
+    transparent: objOption.transparent,
+    opacity: objOption.opacity
+  });
+  const node = new THREE.Mesh( geometry, material );
+  node.material.needsUpdate = needsUpdate;
+  node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  node.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
+  node.hiId = objOption.hiId
+  node.dataBinding = objOption.dataBinding
+  node.eventBinding = objOption.eventBinding
+  node.castShadow = true;
+  node.receiveShadow = true;
+  if (parentGroup) {
+    parentGroup.add(node);
+  } else {
+    this.scene.add(node);
+  }
+  return node
+}
+hi3D.prototype.setCylinder = function (node, objOption) {
+  if (objOption.position) {
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if (typeof objOption.position[0] !== 'undefined') {
+      node.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      node.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      node.position.z = objOption.position[2];
+    }
+  }
+  if (objOption.radius) {
+    let new_geometry = new THREE.CylinderGeometry(
+      objOption.radius,
+      objOption.radius,
+      objOption.size[1],
+      objOption.radialSegments,
+      objOption.heightSegments,
+      objOption.openEnded,
+      objOption.thetaStart,
+      objOption.thetaLength
+    );
+    node.geometry.dispose();
+    node.geometry = new_geometry;
+  }
+  if (objOption.color) {
+    node.material.color = new THREE.Color(objOption.color)
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    node.material.transparent = objOption.transparent
+  }
+  if (typeof objOption.opacity === 'number') {
+    node.material.opacity = objOption.opacity
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+  }
+  if (objOption.faceMaterial) {
+    var map = null
+    var needsUpdate = false
+    if (objOption.faceMaterial && objOption.faceMaterial.image) {
+      map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+      needsUpdate = true;
+    }
+    node.material.map = map;
+    node.material.needsUpdate = needsUpdate;
+  }
+  return node
 }
 
 
