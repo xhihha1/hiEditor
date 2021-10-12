@@ -51,7 +51,7 @@
   - (https://ithelp.ithome.com.tw/articles/10204201)  
   - (https://ithelp.ithome.com.tw/articles/10204288)
   - cube (OK)  
-  - sphere (OK)  
+  - sphere (OK)  (https://va3c.github.io/three.js/examples/canvas_geometry_earth.html)  
 
 # group (OK)  
 fabric  
