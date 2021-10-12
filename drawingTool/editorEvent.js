@@ -202,6 +202,22 @@ function editorEvent(edit, objOption) {
     var filename = 'hiEditor_' + new Date().getTime()
     edit.downloadObjectAsJson(edit.toFabricJson(), filename)
   });
+    
+  $('#uploadJson').on('change', function (e) {
+    var file = e.target.files[0];
+    if (file) {
+      var fileName = file.name;
+      var fileType = file.type;
+      if (fileType.match('application/json')) {
+        var reader = new FileReader();
+        reader.onload = function() {
+          // console.log(this.result)
+          edit.canvasView.loadFromJSON(this.result)
+        }
+        reader.readAsText(file);
+      }
+    }
+  });
 
   $('#saveFabricImage2D').click(function() {
     let data = edit.canvasView.toDataURL();
