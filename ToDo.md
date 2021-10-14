@@ -53,6 +53,8 @@
   - cube (OK)  
   - sphere (OK)  (https://va3c.github.io/three.js/examples/canvas_geometry_earth.html)  
 
+47. 添加 scene 數據綁訂 function  
+
 # group (OK)  
 fabric  
 1. group object (http://fabricjs.com/manage-selection)  
@@ -107,6 +109,12 @@ Three
 14. 下載模型 https://www.thingiverse.com/thing:34836  
 
 15. Cube environment (three scene equirectangular)
+
+# API 參考  
+
+1. scene.getObjectByProperty('uuid','14B0E24A-D794-48C2-B66B-BA1314305ADB')
+
+2. scene.getObjectById(12), scene.getObjectByName
 
 
 

@@ -608,6 +608,7 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   });
   
   const sphere = new THREE.Mesh(geometry, material);
+  sphere.name = objOption.name;
   sphere.material.needsUpdate = needsUpdate;
   sphere.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   sphere.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
@@ -731,6 +732,7 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   cube.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   cube.hiId = objOption.hiId
+  cube.name = objOption.name;
   cube.dataBinding = objOption.dataBinding
   cube.eventBinding = objOption.eventBinding
   if (parentGroup) {
@@ -885,6 +887,7 @@ hi3D.prototype.addCylinder = function (option, parentGroup) {
   node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   node.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   node.hiId = objOption.hiId
+  node.name = objOption.name;
   node.dataBinding = objOption.dataBinding
   node.eventBinding = objOption.eventBinding
   node.castShadow = true;
@@ -992,6 +995,7 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   plane.visible = true;
   plane.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   plane.hiId = objOption.hiId
+  plane.name = objOption.name;
   plane.dataBinding = objOption.dataBinding
   plane.eventBinding = objOption.eventBinding
   if (parentGroup) {
@@ -1034,6 +1038,7 @@ hi3D.prototype.addLine = function (option, parentGroup) {
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
   const line = new THREE.Line(geometry, material);
   line.hiId = objOption.hiId
+  line.name = objOption.name;
   line.dataBinding = objOption.dataBinding
   line.eventBinding = objOption.eventBinding
   if (parentGroup) {
@@ -1166,6 +1171,7 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   // line.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   line.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   line.hiId = objOption.hiId
+  line.name = objOption.name;
   line.dataBinding = objOption.dataBinding
   line.eventBinding = objOption.eventBinding
   line.castShadow = true;
@@ -1280,6 +1286,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   // mesh.add( wireframe );
   mesh.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   mesh.hiId = objOption.hiId
+  mesh.name = objOption.name;
   mesh.dataBinding = objOption.dataBinding
   mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
@@ -1393,6 +1400,7 @@ hi3D.prototype.addObj = function (option, parentGroup) {
     })
     if (!objExist) {
       obj.hiId = objOption.hiId
+      obj.name = objOption.name;
       obj.dataBinding = objOption.dataBinding
       obj.eventBinding = objOption.eventBinding
       obj.source = {
@@ -1515,6 +1523,7 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
       }
     })
     var obj = collada.scene;
+    obj.kinematics = collada.kinematics;
     obj.traverse( function ( child ) {
       if ( child.isMesh ) {
         // model does not have normals
@@ -1526,6 +1535,7 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
     obj.updateMatrix();
     if (!objExist) {
       obj.hiId = objOption.hiId
+      obj.name = objOption.name;
       obj.dataBinding = objOption.dataBinding
       obj.eventBinding = objOption.eventBinding
       obj.source = {
@@ -1637,6 +1647,7 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     })
     if (!objExist) {
       mesh.hiId = objOption.hiId
+      mesh.name = objOption.name;
       mesh.dataBinding = objOption.dataBinding
       mesh.eventBinding = objOption.eventBinding
       mesh.source = {
@@ -1766,6 +1777,7 @@ hi3D.prototype.add3ds = function (option, parentGroup) {
     })
     if (!objExist) {
       object.hiId = objOption.hiId
+      object.name = objOption.name;
       object.dataBinding = objOption.dataBinding
       object.eventBinding = objOption.eventBinding
       object.source = {
@@ -1858,6 +1870,7 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
     })
     if (!objExist) {
       mesh.hiId = objOption.hiId
+      mesh.name = objOption.name;
       mesh.dataBinding = objOption.dataBinding
       mesh.eventBinding = objOption.eventBinding
       mesh.source = {
@@ -1957,6 +1970,7 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
     if (!objExist) {
       let nrrdGroup = new THREE.Group();
       nrrdGroup.hiId = objOption.hiId
+      nrrdGroup.name = objOption.name;
       nrrdGroup.dataBinding = objOption.dataBinding
       nrrdGroup.eventBinding = objOption.eventBinding
       nrrdGroup.source = {
@@ -2074,6 +2088,7 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   ground.hiId = objOption.hiId
+  ground.name = objOption.name;
   ground.dataBinding = objOption.dataBinding
   ground.eventBinding = objOption.eventBinding
   if (parentGroup) {
@@ -2158,6 +2173,7 @@ hi3D.prototype.addWall = function (option, parentGroup) {
   cube.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
   cube.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
   cube.hiId = objOption.hiId
+  cube.name = objOption.name;
   cube.dataBinding = objOption.dataBinding
   cube.eventBinding = objOption.eventBinding
   if (parentGroup) {

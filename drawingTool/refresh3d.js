@@ -402,6 +402,7 @@ hi3D.prototype.getItemOption = function (item) {
     var pointZ = item['points'][j].z || 0
     points.push([item['points'][j].x, pointZ, item['points'][j].y])
   }
+  var name = item["name"];
   var color = item["fill"] || item["stroke"];
   var transparent = item["transparent"];
   var opacity = item["opacity"];
@@ -430,6 +431,7 @@ hi3D.prototype.getItemOption = function (item) {
   var faceMaterial = item.faceMaterial? JSON.parse(item.faceMaterial) : {}
   return {
     hiId: item.hiId,
+    name: name,
     visible: visible,
     color: this.colorToHex(color),
     transparent: transparent,

@@ -150,6 +150,7 @@ function initCanvas(canvasId, canvasViewId) {
 function showObjPropChange (object) { // opt.target
   $('#newPropHiId').val(object.get('hiId'))
   $('#newPropType').val(object.get('type'))
+  $('#newPropName').val(object.get('name'))
   $('#newPropDepth').val(parseInt(object.get('depth')) || 0)
   $('#newRotateX').val(parseInt(object.get('rotateX')) || 0)
   $('#newRotateY').val(parseInt(object.get('angle')) || 0)
@@ -215,6 +216,7 @@ function showObjPropChange (object) { // opt.target
 function setObjPropChange () {
   // $('#newPropHiId').val()
   // $('#newPropType').val()
+  var name = $('#newPropName').val()
   var stroke = $('#newPropStroke').val()
   var fill = $('#newPropFill').val()
   var transparent = Boolean($('#newPropTransparent').prop("checked"));
@@ -256,6 +258,7 @@ function setObjPropChange () {
   faceMaterial.nzImg = $('#newPropObjFaceNz').val().trim()
   var faceMaterialStr = JSON.stringify(faceMaterial)
   return {
+    name: name,
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
     transparent: transparent,

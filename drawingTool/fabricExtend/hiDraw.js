@@ -528,7 +528,7 @@
 
   hiDraw.prototype.propertiesToInclude = function () {
     return [
-      'AAA', 'label', 'uniqueIndex', 'hiId', 'altitude',
+      'AAA', 'name', 'label', 'uniqueIndex', 'hiId', 'altitude',
       'source', 'scaleZ', 'depth', 'rotateX', 'rotateZ',
       'camera', 'dataBinding', 'eventBinding',
       'directionalLight', 'hemisphereLight', 'ambientLight',
