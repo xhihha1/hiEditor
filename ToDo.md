@@ -53,7 +53,7 @@
   - cube (OK)  
   - sphere (OK)  (https://va3c.github.io/three.js/examples/canvas_geometry_earth.html)  
 
-47. 添加 scene 數據綁訂 function  
+47. 添加 scene 數據綁訂 function  ,數據綁訂更新時間  
 
 # group (OK)  
 fabric  
