@@ -534,7 +534,7 @@
       'directionalLight', 'hemisphereLight', 'ambientLight',
       'color', 'intensity', 'distance', 'rotateX', 'rotateZ', 'angle', 'penumbra', 'decay',
       'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow',
-      'animation', 'sceneProp', 'transparent', 'opacity', 'faceMaterial'
+      'animation', 'sceneProp', 'transparent', 'opacity', 'faceMaterial', 'afteraddFunc'
     ]
   }
 

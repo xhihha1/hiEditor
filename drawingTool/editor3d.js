@@ -32,6 +32,9 @@ function initCanvas3D(edit, objOption) {
             });
             console.log('activeObj', 'set')
           }
+          if (showObjPropChange) {
+            showObjPropChange(activeObj);
+          }
           // edit.canvasView.renderAll();
           edit.viewRender()
         }

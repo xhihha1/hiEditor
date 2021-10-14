@@ -64,6 +64,32 @@ function importJson(edit, objOption) {
   }
   if (fabricJson) {
     edit.hi3d.refreshByFabricJson(edit, objOption, fabricJson)
+    // object after add
+    // for (var i = 0; i < dataStructure.viewer.length; i++) {
+    //   if (dataStructure.viewer[i].hi3d &&
+    //     dataStructure.viewer[i].hi3d.scene) {
+    //       dataStructure.viewer[i].hi3d.scene.traverse(function (node) {
+    //         if (node.hiId) {
+    //           console.log('??', node.hiId)
+    //           for (var j = 0; j < fabricJson.objects.length; j++) {
+    //             if (node.hiId && node.hiId === fabricJson.objects[j].hiId) {
+    //               if (fabricJson.objects[j].afteraddFunc) {
+    //                 var afteraddFunc = hiDraw.prototype.functionGenerator(fabricJson.objects[j].afteraddFunc);
+    //                 afteraddFunc(node, edit);
+    //               }
+    //               return true
+    //             }
+    //           }
+    //         } else {
+    //           return false
+    //         }
+    //       })
+    //   }
+    // }
+    if (fabricJson.sceneProp && fabricJson.sceneProp.beforeInitial) {
+      var beforeInitial = hiDraw.prototype.functionGenerator(fabricJson.sceneProp.beforeInitial);
+      beforeInitial()
+    }
   }
   if (fabricJson.sceneProp && fabricJson.sceneProp.afterInitial) {
     var afterInitial = hiDraw.prototype.functionGenerator(fabricJson.sceneProp.afterInitial);

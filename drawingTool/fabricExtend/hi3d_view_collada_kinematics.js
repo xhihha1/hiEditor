@@ -3,7 +3,6 @@
 
   hi3D.prototype.colladaKinematicsSetupTween = function (objName) {
     const node = this.scene.getObjectByName(objName)
-    console.log('??')
     if (node && node.kinematics && TWEEN) {
       if (!tweenParameters[objName]) { tweenParameters[objName] = { tween: {} } }
       const duration = 1000
@@ -45,11 +44,9 @@
 })()
 
 /* 
-1. 在 animate 添加 update tween
+1. 添加物件給物件名稱 test
+2. 在 animate 添加 update tween
 function(){dataStructure.viewer[0].hi3d.colladaKinematicsRenderTween();}
-
-2. 添加物件給物件名稱 test
-
 3. 在物件的資料綁訂，任意添加name: AAA, function(){ dataStructure.viewer[0].hi3d.colladaKinematicsSetupTween('test');}
 
 */

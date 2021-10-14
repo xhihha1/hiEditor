@@ -104,6 +104,7 @@ function hi3D(options) {
   this.defaultOptions.containWidth = container.clientWidth
   this.defaultOptions.containHeight = container.clientHeight
   this.setRender()
+  this.clock = new THREE.Clock();
 
   container.appendChild(this.renderer.domElement);
   if (this.defaultOptions.container.enableDefaultMouse) {
@@ -1858,10 +1859,15 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
   // const loader = new THREE.TDSLoader();
   // loader.setResourcePath( objOption.source.f_3dsTextures );
   // loader.load( objOption.source.f_3ds, function ( object ) {
-  const loader = new THREE.GLTFLoader().setPath(objOption.source.gltfPath);
+  // const loader = new THREE.GLTFLoader().setPath(objOption.source.gltfPath);
+  const loader = new THREE.GLTFLoader()
+  if (objOption.source.gltfPath) {
+    loader.setPath(objOption.source.gltfPath);
+  }
   loader.load(objOption.source.gltf, function (object) {
     // object.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
     var mesh = object.scene
+    mesh.animations = object.animations;
     let objExist = false
     this.scene.traverse(function (child) {
       if (child.hiId === objOption.hiId) {
