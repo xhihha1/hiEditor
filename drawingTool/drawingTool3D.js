@@ -189,7 +189,7 @@ function showObjPropChange (object) { // opt.target
     // $('#newPropEventBinding').val(JSON.stringify(eventBinding))
   }
   $('#newPropAnimation').val(object.get('animation'))
-  $('#newPropAfterAddFunc').val(object.get('afteraddFunc'))
+  // $('#newPropAfterAddFunc').val(object.get('afteraddFunc'))
   // -------- Material ----------
   $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
   $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
@@ -248,12 +248,12 @@ function setObjPropChange () {
   animationStr = animationStr.replace(/\n/g,"")
   animationStr = animationStr.trim()
   var animation = animationStr
-  var afteraddFuncStr = $('#newPropAfterAddFunc').val()
-  afteraddFuncStr = afteraddFuncStr.trim()
-  afteraddFuncStr = afteraddFuncStr.replace(/\r\n/g,"")
-  afteraddFuncStr = afteraddFuncStr.replace(/\n/g,"")
-  afteraddFuncStr = afteraddFuncStr.trim()
-  var afteraddFunc = afteraddFuncStr
+  // var afteraddFuncStr = $('#newPropAfterAddFunc').val()
+  // afteraddFuncStr = afteraddFuncStr.trim()
+  // afteraddFuncStr = afteraddFuncStr.replace(/\r\n/g,"")
+  // afteraddFuncStr = afteraddFuncStr.replace(/\n/g,"")
+  // afteraddFuncStr = afteraddFuncStr.trim()
+  // var afteraddFunc = afteraddFuncStr
   // -------- Material ----------
   var faceMaterial = {}
   faceMaterial.image = $('#newPropObjFaceImage').val().trim()
@@ -289,7 +289,7 @@ function setObjPropChange () {
     penumbra: penumbra,
     decay: decay,
     animation: animation,
-    afteraddFunc: afteraddFunc,
+    // afteraddFunc: afteraddFunc,
     faceMaterial: faceMaterialStr
   }
 }
