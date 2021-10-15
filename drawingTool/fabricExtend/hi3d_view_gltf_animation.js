@@ -26,15 +26,16 @@
         mixer.clipAction(clip);
       }
 
-      mixer.clipAction(clip).play(); // .setDuration(1)
+      mixer.clipAction(clip).setDuration(1).play(); // .setDuration(1)
       animationsList[objName].mixers.push(mixer);
       animationsList[objName].added = true
+      animationsList[objName].clock = new THREE.Clock();
     }
-
   }
   hi3D.prototype.renderGltfAnimations = function (objName) {
-    const delta = this.clock.getDelta();
+    // const delta = this.clock.getDelta();
     if (animationsList[objName] &&　animationsList[objName].mixers){
+      const delta = animationsList[objName].clock.getDelta();
       for (let i = 0; i < animationsList[objName].mixers.length; i++) {
         animationsList[objName].mixers[i].update(delta);
       }
