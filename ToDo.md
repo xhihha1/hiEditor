@@ -52,13 +52,14 @@
   - (https://ithelp.ithome.com.tw/articles/10204288)
   - cube (OK)  
   - sphere (OK)  (https://va3c.github.io/three.js/examples/canvas_geometry_earth.html)  
+  - groundPlane (OK)  
 
 47. object prop 添加 after add  
 48. 添加 scene 數據綁訂 function  ,數據綁訂更新時間  
 49. 添加 2D文字  
 50. 封裝 viewer (OK)  
 51. 封裝 editor  
-52. editor 相機鏡頭參數開放  
+52. editor 相機鏡頭參數開放 (OK)  
 53. 完成 50後添加 %name%、%hiId% 等巨集參數，在物件function中可以使用   
 
 # group (OK)  
@@ -97,7 +98,7 @@ Three
 
 6. [icon](https://www.flaticon.com/free-icon/move-object_14296#)
 
-7. [3D模型](https://free3d.com/3d-models/)  
+7. [3D模型](https://free3d.com/3d-models/)
 
 8. https://www.thingjs.com/guide/platform/
 
@@ -115,6 +116,8 @@ Three
 14. 下載模型 https://www.thingiverse.com/thing:34836  
 
 15. Cube environment (three scene equirectangular)
+
+16. [sketchfab](https://sketchfab.com/nagas/collections/downlodable-gltf-model)  
 
 # API 參考  
 

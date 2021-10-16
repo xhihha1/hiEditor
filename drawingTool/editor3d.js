@@ -91,6 +91,7 @@ function initCanvas3D(edit, objOption) {
                   obj2d.type === 'hiFormatCollada' ||
                   obj2d.type === 'hiFormat3ds' ||
                   obj2d.type === 'hiFormatGLTF' ||
+                  obj2d.type === 'hiFormatFbx' ||
                   obj2d.type === 'hiFormatNrrd' ||
                   obj2d.type === 'hiFormatSTL') {
                   var box1 = new THREE.Box3().setFromObject(node);

@@ -22,10 +22,12 @@
   <script src="drawingTool/common/thirdparty/threejs/loaders/STLLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/TDSLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/GLTFLoader.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/libs/fflate.min.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/curves/NURBSCurve.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/loaders/FBXLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/VTKLoader.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/misc/Volume.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/misc/VolumeSlice.js"></script>
-  <script src="drawingTool/common/thirdparty/threejs/libs/fflate.min.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/NRRDLoader.js"></script>
   <!-- <script src="drawingTool/common/thirdparty/threejs/loaders/"></script> -->
   <!-- Line2 start -->
@@ -137,6 +139,7 @@
             <li id="draw3dHiFormatSTL"><img src="icon/file_stl_w.png" title="stl"></li>
             <li id="draw3dHiFormat3DS"><img src="icon/file_3ds_w.png" title="3ds"></li>
             <li id="draw3dHiFormatGLTF"><img src="icon/file_gltf_w.png" title="gltf"></li>
+            <li id="draw3dHiFormatFbx"><img src="icon/file_gltf_w.png" title="fbx"></li>
             <li id="draw3dHiFormatNRRD"><img src="icon/file_nrrd_w.png" title="Nrrd"></li>
             <li id="draw3dPlane">Plane</li>
             <li class="menuTitle">Group</li>
@@ -245,12 +248,41 @@
               <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
               <div><span>3ds</span></div>
               <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
-              <div><span>gltf path</span></div>
-              <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
+              <!-- <div><span>gltf path</span></div>
+              <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div> -->
               <div><span>gltf</span></div>
-              <div><input type="text" id="sourceGltf" placeholder="gltf" value="DamagedHelmet.gltf" class="prop_input"></div>
+              <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
               <div><span>nrrd</span></div>
               <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
+              <hr>
+              <div><span>obj files</span></div>
+              <div id="objFilesList">
+                <ul>
+                  <li>./assets/male02.obj</li>
+                </ul>
+              </div>
+              <div><span>gltf files</span></div>
+              <div id="gltfFilesList">
+                <ul>
+                  <li>./assets/gltf/Xbot.glb</li>
+                  <li>./assets/gltf/Flamingo.glb</li>
+                  <li>./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf</li>
+                  <li>./otherAssets/saber_lily_-_distant_avalon_figure/scene.gltf</li>
+                  <li>./otherAssets/showroom/scene.gltf</li>
+                </ul>
+              </div>
+              <div><span>collada files</span></div>
+              <div id="colladaFilesList">
+                <ul>
+                  <li>./assets/elf/elf.dae</li>
+                </ul>
+              </div>
+              <div><span>fdx files</span></div>
+              <div id="fdxFilesList">
+                <ul>
+                  <li>./otherAssets/showroom_fdx/source/Store.fdx</li>
+                </ul>
+              </div>
             </li>
             <li class="prop-title">hichart</li>
             <li class="prop-content">
@@ -341,22 +373,24 @@
             <li class="prop-content">
               <div><h3>Camera</h3></div>
               <div><span>camera-x: </span></div>
-              <div><input type="text" id="newPropSceneCameraX" name="camera-x" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropSceneCameraX" name="camera-x" value="0" class="prop_input"></div>
               <div><span>camera-y: </span></div>
-              <div><input type="text" id="newPropSceneCameraY" name="camera-y" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropSceneCameraY" name="camera-y" value="50" class="prop_input"></div>
               <div><span>camera-z: </span></div>
-              <div><input type="text" id="newPropSceneCameraZ" name="camera-z" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropSceneCameraZ" name="camera-z" value="100" class="prop_input"></div>
               <div><span>lookAt-x: </span></div>
-              <div><input type="text" id="newPropScenelookAtX" name="lookAt-x" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropScenelookAtX" name="lookAt-x" value="0" class="prop_input"></div>
               <div><span>lookAt-y: </span></div>
-              <div><input type="text" id="newPropScenelookAtY" name="lookAt-y" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropScenelookAtY" name="lookAt-y" value="0" class="prop_input"></div>
               <div><span>lookAt-z: </span></div>
-              <div><input type="text" id="newPropScenelookAtZ" name="lookAt-z" value="" class="prop_input"></div>
+              <div><input type="text" id="newPropScenelookAtZ" name="lookAt-z" value="0" class="prop_input"></div>
               <div><span>near</span></div>
               <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
               <div><span>far</span></div>
               <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
               <hr>
+              <div><span>data refresh time: </span></div>
+              <div><input type="text" id="newPropDataRefreshTime" placeholder="far" value="1000" class="prop_input"></div>
               <div><span>before initial: </span></div>
               <div><textarea id="newPropSceneBefInit"></textarea></div>
               <div><span>after initial: </span></div>
@@ -553,6 +587,7 @@
   <script src="drawingTool/fabricExtend/hi3d_format_stl.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_3ds.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_gltf.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_format_fdx.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_nrrd.js"></script>
   <script src="drawingTool/editor2d/addHichartObj.js"></script>
   <script src="drawingTool/editorEvent.js"></script>

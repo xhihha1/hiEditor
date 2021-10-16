@@ -216,13 +216,14 @@ function editorEvent(edit, objOption) {
       if (fileType.match('application/json')) {
         var reader = new FileReader();
         reader.onload = function() {
-          console.log('result---', this.result)
           var result = JSON.parse(this.result)
           edit.canvasView.loadFromJSON(this.result)
           if(typeof result.sceneProp === 'string') {
             result.sceneProp = JSON.parse(result.sceneProp)
           }
-          edit.hi3d.setCamera(result.sceneProp.camera)
+          if (result.sceneProp &&　result.sceneProp.camera) {
+            edit.hi3d.setCamera(result.sceneProp.camera)
+          }
         }
         reader.readAsText(file);
       }

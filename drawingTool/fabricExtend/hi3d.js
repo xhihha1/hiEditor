@@ -496,7 +496,7 @@ hi3D.prototype.addCamera = function (option) {
     aspect: this.defaultOptions.containWidth / this.defaultOptions.containHeight,
     near: 0.1,
     far: 2000,
-    position: [0, 0, 20],
+    position: [0, 50, 100],
     targetPoint: [0, 0, 0]
   }
   this.cameraOption = this.mergeDeep(cameraOption, option)
@@ -518,6 +518,7 @@ hi3D.prototype.setCamera = function (option) {
   const camera = this.camera
   camera.far = parseFloat(cameraOption.far)
   camera.near = parseFloat(cameraOption.near)
+  console.log('position', cameraOption, cameraOption.position)
   camera.position.set(cameraOption.position[0], cameraOption.position[1], cameraOption.position[2]); // Set position like this
   // camera.position.set.apply(null , cameraOption.position )
   camera.lookAt(new THREE.Vector3(cameraOption.targetPoint[0], cameraOption.targetPoint[1], cameraOption.targetPoint[2])); // Set look at coordinate like this
@@ -1890,6 +1891,15 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
       mesh.scale.y = objOption.scale[1];
       mesh.scale.z = objOption.scale[2];
       mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      if (objOption.rotateX) {
+        mesh.rotation.x = objOption.rotateX / 180 * Math.PI ;
+      }
+      if (objOption.rotateZ) {
+        mesh.rotation.z = objOption.rotateZ / 180 * Math.PI;
+      }
+      if (objOption.angle) {
+        mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+      }
       if (parentGroup) {
         parentGroup.add(mesh);
       } else {
@@ -1903,6 +1913,126 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
 }
 
 hi3D.prototype.setgltf = function (node, objOption) {
+  if (objOption.position) {
+    // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+    if (typeof objOption.position[0] !== 'undefined') {
+      node.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      node.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      node.position.z = objOption.position[2];
+    }
+  }
+  if (objOption.color) {}
+  if (objOption.source && objOption.source.gltf !== node.source.gltf) {}
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+    // node.traverse( function ( child ) {
+    //   if ( child.isMesh ) {
+    //     child.material.specular.setScalar( objOption.scale[0] );
+    //   }
+    // } );
+  }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+}
+
+
+hi3D.prototype.addfbx = function (option, parentGroup) {
+  var objOption = {
+    color: '#F00',
+    transparent: false,
+    opacity: 1,
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    source: {
+      fbx: ''
+    },
+    scale: [1, 1, 1],
+    angle: 0
+  }
+  objOption = this.mergeDeep(objOption, option)
+  if (!objOption.source || !objOption.source.fbx) {
+    return false
+  }
+  const loader = new THREE.FBXLoader();
+  loader.load(objOption.source.fbx, function ( object ) {
+    object.traverse( function ( child ) {
+      if ( child.isMesh ) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    var mesh = object
+    mesh.animations = object.animations;
+    let objExist = false
+    this.scene.traverse(function (child) {
+      if (child.hiId === objOption.hiId) {
+        objExist = true
+      }
+    })
+    console.log('fbx objExist', objExist, objOption.hiId)
+    if (!objExist) {
+      mesh.hiId = objOption.hiId
+      mesh.name = objOption.name;
+      mesh.dataBinding = objOption.dataBinding
+      mesh.eventBinding = objOption.eventBinding
+      mesh.source = {
+        fbx: objOption.source.fbx
+      }
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.scale.x = objOption.scale[0];
+      mesh.scale.y = objOption.scale[1];
+      mesh.scale.z = objOption.scale[2];
+      mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+      if (objOption.rotateX) {
+        mesh.rotation.x = objOption.rotateX / 180 * Math.PI ;
+      }
+      if (objOption.rotateZ) {
+        mesh.rotation.z = objOption.rotateZ / 180 * Math.PI;
+      }
+      if (objOption.angle) {
+        mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+      }
+      if (parentGroup) {
+        parentGroup.add(mesh);
+      } else {
+        this.scene.add(mesh); //將匯入的模型新增到場景中
+      }
+    }
+    this.viewRender()
+  }.bind(this))
+
+  // model
+  // const loader = new FBXLoader();
+  // loader.load( 'models/fbx/Samba Dancing.fbx', function ( object ) {
+  //   mixer = new THREE.AnimationMixer( object );
+  //   const action = mixer.clipAction( object.animations[ 0 ] );
+  //   action.play();
+  //   object.traverse( function ( child ) {
+  //     if ( child.isMesh ) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   } );
+  //   scene.add( object );
+  // } );
+  return this
+}
+
+hi3D.prototype.setfbx = function (node, objOption) {
   if (objOption.position) {
     // node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
     if (typeof objOption.position[0] !== 'undefined') {

@@ -1,6 +1,6 @@
 (function (global) {
   const animationsList = {}
-  hi3D.prototype.setGltfAnimations = function (objName, clipName) {
+  hi3D.prototype.setFbxAnimations = function (objName, clipName) {
     const node = this.scene.getObjectByName(objName)
     if (node && node.animations) {
       if (!animationsList[objName]) {
@@ -32,7 +32,7 @@
       animationsList[objName].clock = new THREE.Clock();
     }
   }
-  hi3D.prototype.renderGltfAnimations = function (objName) {
+  hi3D.prototype.renderFbxAnimations = function (objName) {
     // const delta = this.clock.getDelta();
     if (animationsList[objName] &&　animationsList[objName].mixers){
       const delta = animationsList[objName].clock.getDelta();

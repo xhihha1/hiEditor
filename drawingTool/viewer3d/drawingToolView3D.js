@@ -220,13 +220,17 @@ function hiViewer (edit, objOption) {
   this.fabricJson = JSON.parse(localStorage.getItem('viewJson3D')) 
   this.currentJson = JSON.parse(localStorage.getItem('viewJson3D')) 
   this.currentJson.sceneProp = this.fabricJson.sceneProp ? JSON.parse(this.fabricJson.sceneProp) : {}
+  // this.defaultOption.camera = this.currentJson.sceneProp ? this.currentJson.sceneProp.camera : {}
+  // this.defaultOption.dataRefreshTime = this.currentJson.sceneProp ? this.currentJson.sceneProp.dataRefreshTime : 1000
   this.edit.hi3d = new hi3D({
     parentId: this.defaultOption.parentId,
     container: {enableDefaultMouse: false}
   })
   this.edit.hi3d.addscene()
   this.edit.hi3d.setscene(this.currentJson.sceneProp)
+  console.log('this.currentJson.sceneProp.camera', this.currentJson.sceneProp.camera)
   this.edit.hi3d.addCamera(this.currentJson.sceneProp.camera)
+  // this.edit.hi3d.addCamera()
   // this.edit.hi3d.addLight()
   this.edit.hi3d.keyboradControlInit()
   this.edit.hi3d.addHemisphereLight()
@@ -321,6 +325,7 @@ hiViewer.prototype.dataRefresh = function (objOption) {
   if (updateView) {
     this.edit.hi3d.refreshByFabricJson(this.edit, this.defaultOption, updateView, { needRemove: false })
   }
+  // console.log('dataRefreshTime', this.defaultOption.dataRefreshTime)
   this.defaultOption.dataRefreshTimeoutIdx = setTimeout(function(){
     this.dataRefresh(this.defaultOption)
   }.bind(this), this.defaultOption.dataRefreshTime)

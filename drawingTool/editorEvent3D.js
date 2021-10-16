@@ -129,16 +129,26 @@ function editorEvent3D(edit, objOption) {
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var model = $('#sourceGltf').val()
-    var path = $('#sourceGltfPath').val()
-    // assets\gltf\DamagedHelmet
     var polyline = new edit.HiFormatGLTF(edit, objOption, {
       source: {
-        gltfPath: path,
         gltf: model
       }
     });
   });
 
+  $("#draw3dHiFormatFbx").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    // var model = './otherAssets/showroom_fbx/source/Store.fbx'
+    var model = './assets/fbx/Samba_Dancing.fbx'
+    console.log('draw3dHiFormatFbx click')
+    var polyline = new edit.HiFormatFbx(edit, objOption, {
+      source: {
+        fbx: model
+      }
+    });
+  });
   
   $("#draw3dHiFormatNRRD").click(function () {
     edit.removeCanvasEvents();
@@ -452,6 +462,58 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
+
+  $('#objFilesList').click(function(e){
+    var target = e.target
+    if ($(target).is('li')) {
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $(target).html()
+      var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: model}});
+    }
+  })
+  
+  $('#gltfFilesList').click(function(e){
+    var target = e.target
+    if ($(target).is('li')) {
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $(target).html()
+      var polyline = new edit.HiFormatGLTF(edit, objOption, {
+        source: {
+          gltf: model
+        }
+      });
+    }
+  })
+
+  $('#colladaFilesList').click(function(e){
+    var target = e.target
+    if ($(target).is('li')) {
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $(target).html()
+      var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: model}});
+    }
+  })
+    
+  $('#fbxFilesList').click(function(e){
+    var target = e.target
+    if ($(target).is('li')) {
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $(target).html()
+      var polyline = new edit.HiFormatFbx(edit, objOption, {
+        source: {
+          fbx: model
+        }
+      });
+    }
+  })
 }
 
 function setCameraPropertyUI (edit, cameraOpt) {
@@ -490,6 +552,7 @@ function saveSceneProperty (edit) {
     camera.near = parseFloat($('#cameraNear').val())
     camera.far = parseFloat($('#cameraFar').val())
     // -------------------------------------------------
+    var dataRefreshTime = parseInt($('#newPropDataRefreshTime').val())
     var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
     // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
     var afterInitialStr = edit.readTextareaFuncStr($('#newPropSceneAftInit').val())
@@ -536,7 +599,8 @@ function saveSceneProperty (edit) {
           url: bgEquirectangular
         }
       },
-      camera: camera
+      camera: camera,
+      dataRefreshTime: dataRefreshTime
     }
     if (!edit.canvasView.sceneProp) {
       edit.canvasView.sceneProp = JSON.stringify(opt)
