@@ -159,7 +159,6 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
       // this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
       this.setCamera(opt)
     }
-    console.log('item---', item)
     if (item.objects && item.objects.length > 0) {
       this.addGroupObject(edit, item, itemExist, objNode)
     } else {
@@ -323,13 +322,12 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     }
   }
   if (item["type"] == "hiFormatFbx") {
-    console.log('hiFormatFbx', item)
     var opt = this.getItemOption(item)
     if (itemExist) {
-      console.log('set setfbx', opt)
+      // console.log('set setfbx', opt)
       this.setfbx(objNode, opt)
     } else {
-      console.log('add addfbx', opt)
+      // console.log('add addfbx', opt)
       this.addfbx(opt, parentGroup)
     }
   }

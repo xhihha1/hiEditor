@@ -228,7 +228,6 @@ function hiViewer (edit, objOption) {
   })
   this.edit.hi3d.addscene()
   this.edit.hi3d.setscene(this.currentJson.sceneProp)
-  console.log('this.currentJson.sceneProp.camera', this.currentJson.sceneProp.camera)
   this.edit.hi3d.addCamera(this.currentJson.sceneProp.camera)
   // this.edit.hi3d.addCamera()
   // this.edit.hi3d.addLight()

@@ -518,7 +518,6 @@ hi3D.prototype.setCamera = function (option) {
   const camera = this.camera
   camera.far = parseFloat(cameraOption.far)
   camera.near = parseFloat(cameraOption.near)
-  console.log('position', cameraOption, cameraOption.position)
   camera.position.set(cameraOption.position[0], cameraOption.position[1], cameraOption.position[2]); // Set position like this
   // camera.position.set.apply(null , cameraOption.position )
   camera.lookAt(new THREE.Vector3(cameraOption.targetPoint[0], cameraOption.targetPoint[1], cameraOption.targetPoint[2])); // Set look at coordinate like this
@@ -1982,7 +1981,6 @@ hi3D.prototype.addfbx = function (option, parentGroup) {
         objExist = true
       }
     })
-    console.log('fbx objExist', objExist, objOption.hiId)
     if (!objExist) {
       mesh.hiId = objOption.hiId
       mesh.name = objOption.name;
