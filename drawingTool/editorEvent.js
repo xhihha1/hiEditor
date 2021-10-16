@@ -195,6 +195,11 @@ function editorEvent(edit, objOption) {
     if (json) {
       console.log('xxx')
       edit.canvasView.loadFromJSON(json)
+      var result = JSON.parse(json)
+      if(typeof result.sceneProp === 'string') {
+        result.sceneProp = JSON.parse(result.sceneProp)
+      }
+      edit.hi3d.setCamera(result.sceneProp.camera)
     }
   });
   
@@ -211,8 +216,13 @@ function editorEvent(edit, objOption) {
       if (fileType.match('application/json')) {
         var reader = new FileReader();
         reader.onload = function() {
-          // console.log(this.result)
+          console.log('result---', this.result)
+          var result = JSON.parse(this.result)
           edit.canvasView.loadFromJSON(this.result)
+          if(typeof result.sceneProp === 'string') {
+            result.sceneProp = JSON.parse(result.sceneProp)
+          }
+          edit.hi3d.setCamera(result.sceneProp.camera)
         }
         reader.readAsText(file);
       }
@@ -452,17 +462,16 @@ function editorEvent(edit, objOption) {
     }
   })
 
-  $('#objlist').click(function (e) {
+  $('#objlistParent').click(function (e) {
     var target = e.target
-    var i = 0
-    edit.canvasView.forEachObject(function (obj) {
-      if (obj['tempDrawShape']) {} else {
-        if (i === $(target).prev('li').length) {
+    if ($(target).is('li')) {
+      var hiId = $(target).html().split('/')[2]
+      edit.canvasView.forEachObject(function (obj) {
+        if (obj.hiId === hiId) {
           edit.canvasView.setActiveObject(obj);
         }
-        i++
-      }
-    })
+      })
+    }
   })
 
   $('#drawGroup').click(function (e) {

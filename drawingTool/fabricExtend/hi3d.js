@@ -499,7 +499,7 @@ hi3D.prototype.addCamera = function (option) {
     position: [0, 0, 20],
     targetPoint: [0, 0, 0]
   }
-  this.cameraOption = this.mergeDeep(this.cameraOption, option)
+  this.cameraOption = this.mergeDeep(cameraOption, option)
   const camera = new THREE.PerspectiveCamera(
     cameraOption.fov,
     cameraOption.aspect,
@@ -2081,7 +2081,14 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   }
   objOption = this.mergeDeep(objOption, option)
   const groundGeo = new THREE.PlaneGeometry(objOption.size[0], objOption.size[2]);
+  var map = null
+  var needsUpdate = false
+  if (objOption.faceMaterial && objOption.faceMaterial.image) {
+    map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+    needsUpdate = true;
+  }
   const groundMat = new THREE.MeshStandardMaterial({
+    map: map,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
@@ -2095,6 +2102,7 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   ground.receiveShadow = true;
   ground.hiId = objOption.hiId
   ground.name = objOption.name;
+  ground.material.needsUpdate = needsUpdate;
   ground.dataBinding = objOption.dataBinding
   ground.eventBinding = objOption.eventBinding
   if (parentGroup) {
@@ -2103,12 +2111,12 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
     this.scene.add(ground);
   }
   // -------------
-  const headMap = new THREE.TextureLoader().load(
-    'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
-  )
-  ground.material.map = headMap // 可延續原本的顏色
-  ground.material.needsUpdate = true;
-  ground.material.side = THREE.DoubleSide;
+  // const headMap = new THREE.TextureLoader().load(
+  //   'https://dl.dropboxusercontent.com/s/bkqu0tty04epc46/creeper_face.png'
+  // )
+  // ground.material.map = headMap // 可延續原本的顏色
+  // ground.material.needsUpdate = true;
+  // ground.material.side = THREE.DoubleSide;
   // -------------
   return this
 }

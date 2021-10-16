@@ -213,9 +213,7 @@ function hiViewer (edit, objOption) {
   this.defaultOption = {
     parentId: 'content3D',
     dataRefreshTime: 1000,
-    camera: {
-      position: [0, 50, 100]
-    }
+    camera: {}
   }
   this.defaultOption = hi3D.prototype.mergeDeep(this.defaultOption, objOption)
   this.edit = edit
@@ -228,14 +226,14 @@ function hiViewer (edit, objOption) {
   })
   this.edit.hi3d.addscene()
   this.edit.hi3d.setscene(this.currentJson.sceneProp)
-  this.edit.hi3d.addCamera()
+  this.edit.hi3d.addCamera(this.currentJson.sceneProp.camera)
   // this.edit.hi3d.addLight()
   this.edit.hi3d.keyboradControlInit()
   this.edit.hi3d.addHemisphereLight()
   this.edit.hi3d.addAmbientLight()
-  this.edit.hi3d.setCamera({
-    position: this.defaultOption.camera.position
-  })
+  // this.edit.hi3d.setCamera({
+  //   position: this.defaultOption.camera.position
+  // })
   this.edit.hi3d.nodeEvnetBinding()
   this.edit.hi3d.addOrbitControls()
   return this

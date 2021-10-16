@@ -108,7 +108,7 @@
           <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">import</li>
           <li id="importFabric"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</li>
           <li id="downloadJson"><img src="./icon/download_w.png" class="tool-icon">Download Json</li>
-          <li><input type="file" id="uploadJson" /></li>
+          <li><label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label></li>
           <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li>
           <!-- <li id=""><img src="./icon/rectangle_w.png" class="tool-icon"></li>
           <li id=""><img src="./icon/ellipse_w.png" class="tool-icon"></li> -->
@@ -121,8 +121,8 @@
           <ul>
             <li class="menuTitle">3D</li>
             <li id="render3D">3d render</li>
-            <li id="drawCamera"><img src="icon/camera_w.png" title="camera"></li>
-            <li id="drawLookAt"><img src="icon/lookAt_w.png" title="look at"></li>
+            <!-- <li id="drawCamera"><img src="icon/camera_w.png" title="camera"></li>
+            <li id="drawLookAt"><img src="icon/lookAt_w.png" title="look at"></li> -->
             <li id="drawSpotLight"><img src="icon/spotLight_w.png" title="spot line"></li>
             <li id="drawPointLight"><img src="icon/pointLight_w.png" title="point light"></li>
             <li id="drawCube"><img src="icon/cube_w.png" title="cube"></li>
@@ -192,19 +192,11 @@
             </li>
             <li class="prop-title">object List</li>
             <li class="prop-content">
-              <div>
+              <div id="objlistParent">
                 <ul id="objlist">
                   <li></li>
                 </ul>
               </div>
-            </li>
-            <li class="prop-title">camera</li>
-            <li class="prop-content">
-              <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
-              <div><span>near</span></div>
-              <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
-              <div><span>far</span></div>
-              <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
             </li>
             <li class="prop-title">Grid</li>
             <li class="prop-content">
@@ -221,7 +213,8 @@
             </li>
             <li class="prop-title">Scene</li>
             <li class="prop-content">
-              <div><label><input name="" id="btnGround" type="checkbox" value="1"> Ground</label></div>
+              <!-- <div><label><input name="" id="btnGround" type="checkbox" value="1"> Ground</label></div> -->
+              <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
               <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1" checked> AxesHelper</label></div>
               <div><label><input name="" id="btnSpotLightHelper" type="checkbox" > SpotLight Helper</label></div>
               <div><label><input name="" id="btnBoxHelper" type="checkbox">Box Helper</label></div>
@@ -346,6 +339,24 @@
             <!-- Object property -->
             <li class="prop-title">Scene property</li>
             <li class="prop-content">
+              <div><h3>Camera</h3></div>
+              <div><span>camera-x: </span></div>
+              <div><input type="text" id="newPropSceneCameraX" name="camera-x" value="" class="prop_input"></div>
+              <div><span>camera-y: </span></div>
+              <div><input type="text" id="newPropSceneCameraY" name="camera-y" value="" class="prop_input"></div>
+              <div><span>camera-z: </span></div>
+              <div><input type="text" id="newPropSceneCameraZ" name="camera-z" value="" class="prop_input"></div>
+              <div><span>lookAt-x: </span></div>
+              <div><input type="text" id="newPropScenelookAtX" name="lookAt-x" value="" class="prop_input"></div>
+              <div><span>lookAt-y: </span></div>
+              <div><input type="text" id="newPropScenelookAtY" name="lookAt-y" value="" class="prop_input"></div>
+              <div><span>lookAt-z: </span></div>
+              <div><input type="text" id="newPropScenelookAtZ" name="lookAt-z" value="" class="prop_input"></div>
+              <div><span>near</span></div>
+              <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
+              <div><span>far</span></div>
+              <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
+              <hr>
               <div><span>before initial: </span></div>
               <div><textarea id="newPropSceneBefInit"></textarea></div>
               <div><span>after initial: </span></div>
@@ -419,9 +430,8 @@
               <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
               <div><label><input name="" id="newPropTransparent" type="checkbox" checked>transparent</label></div>
               <div><span>opacity: </span></div>
-              <div></div>
+              <div><input type="number" id="newOpacity" name="opacity" value="0" class="prop_input"></div>
               <hr>
-              <div><input type="number" id="newOpacity" name="positionX" value="0" class="prop_input"></div>
               <div><span>rotate X: </span></div>
               <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div> -->
               <div><input type="number" id="newRotateX" name="rotateX" value="0" class="prop_input"></div>

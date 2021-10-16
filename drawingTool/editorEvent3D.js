@@ -1,21 +1,20 @@
 function editorEvent3D(edit, objOption) {
   $('#render3D').click(function () {
-    edit.hi3d.refreshByFabricJson(edit, objOption)
-    edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+    edit.hi3d.viewRender()
   });
 
-  $("#drawCamera").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
-    var circle = new edit.HiCamera(edit, objOption);
-  });
-  $("#drawLookAt").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
-    var circle = new edit.HiLookAt(edit, objOption);
-  });
+  // $("#drawCamera").click(function () {
+  //   edit.removeCanvasEvents();
+  //   edit.changeSelectableStatus(false);
+  //   edit.changeCanvasProperty(false, false);
+  //   var circle = new edit.HiCamera(edit, objOption);
+  // });
+  // $("#drawLookAt").click(function () {
+  //   edit.removeCanvasEvents();
+  //   edit.changeSelectableStatus(false);
+  //   edit.changeCanvasProperty(false, false);
+  //   var circle = new edit.HiLookAt(edit, objOption);
+  // });
   $("#drawSpotLight").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
@@ -436,6 +435,61 @@ function editorEvent3D(edit, objOption) {
   $('#newSceneBgAreaCubeTexture').hide()
   $('#newSceneBgAreaEquirectangular').hide()
   $('#submitSceneProp').click(function(){
+    saveSceneProperty(edit)
+  })
+  $('#submitGrid').click(function(){
+    var size = parseInt($('#gridSize').val())
+    var divisions = parseInt($('#gridDivisions').val())
+    var colorCenterLine = $('#grid_colorCenter').val()
+    var colorGrid = $('#grid_colorGrid').val()
+    if (edit.hi3d.gridHelper) {
+      edit.hi3d.setGridHelper({
+        size: size,
+        divisions: divisions,
+        colorCenterLine: colorCenterLine,
+        colorGrid: colorGrid
+      })
+      edit.hi3d.viewRender()
+    }
+  })
+}
+
+function setCameraPropertyUI (edit, cameraOpt) {
+  if (typeof cameraOpt.position[0] === 'number') { $('#newPropSceneCameraX').val(cameraOpt.position[0]) }
+  if (typeof cameraOpt.position[1] === 'number') { $('#newPropSceneCameraY').val(cameraOpt.position[1]) }
+  if (typeof cameraOpt.position[2] === 'number') { $('#newPropSceneCameraZ').val(cameraOpt.position[2]) }
+  if (typeof cameraOpt.targetPoint[0] === 'number') { $('#newPropScenelookAtX').val(cameraOpt.targetPoint[0]) }
+  if (typeof cameraOpt.targetPoint[1] === 'number') { $('#newPropScenelookAtY').val(cameraOpt.targetPoint[1]) }
+  if (typeof cameraOpt.targetPoint[2] === 'number') { $('#newPropScenelookAtZ').val(cameraOpt.targetPoint[2]) }
+  var camera = { position: [], targetPoint: [] }
+  camera.position[0] = parseFloat($('#newPropSceneCameraX').val())
+  camera.position[1] = parseFloat($('#newPropSceneCameraY').val())
+  camera.position[2] = parseFloat($('#newPropSceneCameraZ').val())
+  camera.targetPoint[0] = parseFloat($('#newPropScenelookAtX').val())
+  camera.targetPoint[1] = parseFloat($('#newPropScenelookAtY').val())
+  camera.targetPoint[2] = parseFloat($('#newPropScenelookAtZ').val())
+  var opt = {
+    camera: camera
+  }
+  if (!edit.canvasView.sceneProp) {
+    edit.canvasView.sceneProp = JSON.stringify(opt)
+  } else {
+    edit.canvasView.sceneProp = JSON.stringify(edit.hi3d.mergeDeep(JSON.parse(edit.canvasView.sceneProp), opt))
+  }
+}
+
+function saveSceneProperty (edit) {
+    // -------------------------------------------------
+    var camera = { position: [], targetPoint: [], near: 0.1, far: 2000 }
+    camera.position[0] = parseFloat($('#newPropSceneCameraX').val())
+    camera.position[1] = parseFloat($('#newPropSceneCameraY').val())
+    camera.position[2] = parseFloat($('#newPropSceneCameraZ').val())
+    camera.targetPoint[0] = parseFloat($('#newPropScenelookAtX').val())
+    camera.targetPoint[1] = parseFloat($('#newPropScenelookAtY').val())
+    camera.targetPoint[2] = parseFloat($('#newPropScenelookAtZ').val())
+    camera.near = parseFloat($('#cameraNear').val())
+    camera.far = parseFloat($('#cameraFar').val())
+    // -------------------------------------------------
     var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
     // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
     var afterInitialStr = edit.readTextareaFuncStr($('#newPropSceneAftInit').val())
@@ -481,24 +535,14 @@ function editorEvent3D(edit, objOption) {
         Equirectangular: {
           url: bgEquirectangular
         }
-      }
+      },
+      camera: camera
     }
-    edit.canvasView.sceneProp = JSON.stringify(opt)
+    if (!edit.canvasView.sceneProp) {
+      edit.canvasView.sceneProp = JSON.stringify(opt)
+    } else {
+      edit.canvasView.sceneProp = JSON.stringify(edit.hi3d.mergeDeep(JSON.parse(edit.canvasView.sceneProp), opt))
+    }
+    
     edit.hi3d.setscene(opt)
-  })
-  $('#submitGrid').click(function(){
-    var size = parseInt($('#gridSize').val())
-    var divisions = parseInt($('#gridDivisions').val())
-    var colorCenterLine = $('#grid_colorCenter').val()
-    var colorGrid = $('#grid_colorGrid').val()
-    if (edit.hi3d.gridHelper) {
-      edit.hi3d.setGridHelper({
-        size: size,
-        divisions: divisions,
-        colorCenterLine: colorCenterLine,
-        colorGrid: colorGrid
-      })
-      edit.hi3d.viewRender()
-    }
-  })
 }

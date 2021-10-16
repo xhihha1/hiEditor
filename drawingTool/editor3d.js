@@ -44,6 +44,7 @@ function initCanvas3D(edit, objOption) {
       change: function (event) {
         // console.log(edit.hi3d.camera)
         // edit.hi3d.camera.position
+        var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
         if (edit.hi3d && edit.hi3d.camera) {
           edit.canvasView.forEachObject(function (obj2d) {
             if (obj2d.hiId === edit.hi3d.camera.hiId) {
@@ -52,7 +53,6 @@ function initCanvas3D(edit, objOption) {
               obj2d.top = edit.hi3d.camera.position.z
             }
             if (obj2d.type === 'hiLookAt') {
-              var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
               obj2d.left = lookAtVector.x
               obj2d.altitude = lookAtVector.y
               obj2d.top = lookAtVector.z
@@ -60,6 +60,18 @@ function initCanvas3D(edit, objOption) {
             // var lookAtVector = new THREE.Vector3(cam.matrix[8], cam.matrix[9], cam.matrix[10]);
           })
         }
+        setCameraPropertyUI(edit, {
+          position: [
+            edit.hi3d.camera.position.x,
+            edit.hi3d.camera.position.y,
+            edit.hi3d.camera.position.z
+          ],
+          targetPoint: [
+            lookAtVector.x,
+            lookAtVector.y,
+            lookAtVector.z
+          ]
+        })
         // edit.canvasView.renderAll();
         edit.viewRender()
       }

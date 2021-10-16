@@ -30,6 +30,13 @@ function initCanvas(canvasId, canvasViewId) {
           showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit);
         }
+        var listStr = '';
+        edit.canvasView.forEachObject(function (obj) {
+          if (obj['tempDrawShape']) {} else {
+            listStr += '<li>' + obj.get('type') + '/' + obj['name'] + '/' + obj['hiId'] + '</li>'
+          }
+        })
+        $('#objlist').html(listStr)
       },
       object_modified: function (opt) {
         console.log('object_modified')
@@ -53,6 +60,13 @@ function initCanvas(canvasId, canvasViewId) {
           showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit); 
         }
+        var listStr = '';
+        edit.canvasView.forEachObject(function (obj) {
+          if (obj['tempDrawShape']) {} else {
+            listStr += '<li>' + obj.get('type') + '/' + obj['name'] + '/' + obj['hiId'] + '</li>'
+          }
+        })
+        $('#objlist').html(listStr)
       },
       after_render: function (opt) {
         // console.log('after_render')
@@ -71,14 +85,6 @@ function initCanvas(canvasId, canvasViewId) {
           }
         })
         $('#currentJson').val(JSON.stringify(fabricJson))
-
-        var listStr = '';
-        edit.canvasView.forEachObject(function (obj) {
-          if (obj['tempDrawShape']) {} else {
-            listStr += '<li>' + obj.get('type') + '/' + obj['name'] + '/' + obj['label'] + '</li>'
-          }
-        })
-        $('#objlist').html(listStr)
         // edit.hi3d.refreshByFabricJson(edit);
       },
       selection_created: function (opt) {
