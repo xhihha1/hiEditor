@@ -9,7 +9,7 @@
 	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.THREE = {}));
 }(this, (function (exports) { 'use strict';
 
-	const REVISION = '133dev';
+	const REVISION = '134dev';
 	const MOUSE = {
 		LEFT: 0,
 		MIDDLE: 1,
@@ -273,17 +273,25 @@
 
 	}
 
+	let _seed = 1234567;
+	const DEG2RAD = Math.PI / 180;
+	const RAD2DEG = 180 / Math.PI; //
+
 	const _lut = [];
 
 	for (let i = 0; i < 256; i++) {
 		_lut[i] = (i < 16 ? '0' : '') + i.toString(16);
 	}
 
-	let _seed = 1234567;
-	const DEG2RAD = Math.PI / 180;
-	const RAD2DEG = 180 / Math.PI; // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+	const hasRandomUUID = typeof crypto !== 'undefined' && 'randomUUID' in crypto;
 
 	function generateUUID() {
+		if (hasRandomUUID) {
+			return crypto.randomUUID().toUpperCase();
+		} // TODO Remove this code when crypto.randomUUID() is available everywhere
+		// http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+
+
 		const d0 = Math.random() * 0xffffffff | 0;
 		const d1 = Math.random() * 0xffffffff | 0;
 		const d2 = Math.random() * 0xffffffff | 0;
@@ -791,6 +799,11 @@
 			return this;
 		}
 
+		*[Symbol.iterator]() {
+			yield this.x;
+			yield this.y;
+		}
+
 	}
 
 	Vector2.prototype.isVector2 = true;
@@ -1101,6 +1114,36 @@
 
 	function createElementNS(name) {
 		return document.createElementNS('http://www.w3.org/1999/xhtml', name);
+	}
+	/**
+		* cyrb53 hash for string from: https://stackoverflow.com/a/52171480
+		*
+		* Public Domain, @bryc - https://stackoverflow.com/users/815680/bryc
+		*
+		* It is roughly similar to the well-known MurmurHash/xxHash algorithms. It uses a combination
+		* of multiplication and Xorshift to generate the hash, but not as thorough. As a result it's
+		* faster than either would be in JavaScript and significantly simpler to implement. Keep in
+		* mind this is not a secure algorithm, if privacy/security is a concern, this is not for you.
+		*
+		* @param {string} str
+		* @param {number} seed, default 0
+		* @returns number
+		*/
+
+
+	function hashString(str, seed = 0) {
+		let h1 = 0xdeadbeef ^ seed,
+				h2 = 0x41c6ce57 ^ seed;
+
+		for (let i = 0, ch; i < str.length; i++) {
+			ch = str.charCodeAt(i);
+			h1 = Math.imul(h1 ^ ch, 2654435761);
+			h2 = Math.imul(h2 ^ ch, 1597334677);
+		}
+
+		h1 = Math.imul(h1 ^ h1 >>> 16, 2246822507) ^ Math.imul(h2 ^ h2 >>> 13, 3266489909);
+		h2 = Math.imul(h2 ^ h2 >>> 16, 2246822507) ^ Math.imul(h1 ^ h1 >>> 13, 3266489909);
+		return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 	}
 
 	let _canvas;
@@ -1868,6 +1911,13 @@
 			this.z = Math.random();
 			this.w = Math.random();
 			return this;
+		}
+
+		*[Symbol.iterator]() {
+			yield this.x;
+			yield this.y;
+			yield this.z;
+			yield this.w;
 		}
 
 	}
@@ -3086,6 +3136,12 @@
 			this.y = f * Math.sin(t);
 			this.z = u;
 			return this;
+		}
+
+		*[Symbol.iterator]() {
+			yield this.x;
+			yield this.y;
+			yield this.z;
 		}
 
 	}
@@ -7992,21 +8048,7 @@
 		}
 
 		clone() {
-			/*
-			 // Handle primitives
-				 const parameters = this.parameters;
-				 if ( parameters !== undefined ) {
-				 const values = [];
-				 for ( const key in parameters ) {
-				 values.push( parameters[ key ] );
-				 }
-				 const geometry = Object.create( this.constructor.prototype );
-			 this.constructor.apply( geometry, values );
-			 return geometry;
-				 }
-				 return new this.constructor().copy( this );
-			 */
-			return new BufferGeometry().copy(this);
+			return new this.constructor().copy(this);
 		}
 
 		copy(source) {
@@ -8077,7 +8119,9 @@
 			this.drawRange.start = source.drawRange.start;
 			this.drawRange.count = source.drawRange.count; // user data
 
-			this.userData = source.userData;
+			this.userData = source.userData; // geometry generator parameters
+
+			if (source.parameters !== undefined) this.parameters = Object.assign({}, source.parameters);
 			return this;
 		}
 
@@ -9027,7 +9071,6 @@
 		constructor(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding) {
 			images = images !== undefined ? images : [];
 			mapping = mapping !== undefined ? mapping : CubeReflectionMapping;
-			format = format !== undefined ? format : RGBFormat;
 			super(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
 			this.flipY = false;
 		}
@@ -11769,6 +11812,14 @@
 			scene.background = background;
 		}
 
+		_setEncoding(uniform, texture) {
+			if (this._renderer.capabilities.isWebGL2 === true && texture.format === RGBAFormat && texture.type === UnsignedByteType && texture.encoding === sRGBEncoding) {
+				uniform.value = ENCODINGS[LinearEncoding];
+			} else {
+				uniform.value = ENCODINGS[texture.encoding];
+			}
+		}
+
 		_textureToCubeUV(texture, cubeUVRenderTarget) {
 			const renderer = this._renderer;
 
@@ -11791,8 +11842,9 @@
 				uniforms['texelSize'].value.set(1.0 / texture.image.width, 1.0 / texture.image.height);
 			}
 
-			uniforms['inputEncoding'].value = ENCODINGS[texture.encoding];
-			uniforms['outputEncoding'].value = ENCODINGS[cubeUVRenderTarget.texture.encoding];
+			this._setEncoding(uniforms['inputEncoding'], texture);
+
+			this._setEncoding(uniforms['outputEncoding'], cubeUVRenderTarget.texture);
 
 			_setViewport(cubeUVRenderTarget, 0, 0, 3 * SIZE_MAX, 2 * SIZE_MAX);
 
@@ -11882,8 +11934,11 @@
 
 			blurUniforms['dTheta'].value = radiansPerPixel;
 			blurUniforms['mipInt'].value = LOD_MAX - lodIn;
-			blurUniforms['inputEncoding'].value = ENCODINGS[targetIn.texture.encoding];
-			blurUniforms['outputEncoding'].value = ENCODINGS[targetIn.texture.encoding];
+
+			this._setEncoding(blurUniforms['inputEncoding'], targetIn.texture);
+
+			this._setEncoding(blurUniforms['outputEncoding'], targetIn.texture);
+
 			const outputSize = _sizeLods[lodOut];
 			const x = 3 * Math.max(0, SIZE_MAX - 2 * outputSize);
 			const y = (lodOut === 0 ? 0 : 2 * SIZE_MAX) + 2 * outputSize * (lodOut > LOD_MAX - LOD_MIN ? lodOut - LOD_MAX + LOD_MIN : 0);
@@ -12818,13 +12873,15 @@
 							buffer[offset + stride + 0] = morph.x;
 							buffer[offset + stride + 1] = morph.y;
 							buffer[offset + stride + 2] = morph.z;
+							buffer[offset + stride + 3] = 0;
 
 							if (hasMorphNormals === true) {
 								morph.fromBufferAttribute(morphNormal, j);
 								if (morphNormal.normalized === true) denormalize(morph, morphNormal);
-								buffer[offset + stride + 3] = morph.x;
-								buffer[offset + stride + 4] = morph.y;
-								buffer[offset + stride + 5] = morph.z;
+								buffer[offset + stride + 4] = morph.x;
+								buffer[offset + stride + 5] = morph.y;
+								buffer[offset + stride + 6] = morph.z;
+								buffer[offset + stride + 7] = 0;
 							}
 						}
 					}
@@ -14273,6 +14330,10 @@
 				encoding = LinearEncoding;
 			}
 
+			if (isWebGL2 && map && map.isTexture && map.format === RGBAFormat && map.type === UnsignedByteType && map.encoding === sRGBEncoding) {
+				encoding = LinearEncoding; // disable inline decode for sRGB textures in WebGL 2
+			}
+
 			return encoding;
 		}
 
@@ -14413,8 +14474,8 @@
 			if (parameters.shaderID) {
 				array.push(parameters.shaderID);
 			} else {
-				array.push(parameters.fragmentShader);
-				array.push(parameters.vertexShader);
+				array.push(hashString(parameters.fragmentShader));
+				array.push(hashString(parameters.vertexShader));
 			}
 
 			if (parameters.defines !== undefined) {
@@ -16338,7 +16399,7 @@
 			textureProperties.__maxMipLevel = Math.log2(Math.max(width, height, depth));
 		}
 
-		function getInternalFormat(internalFormatName, glFormat, glType) {
+		function getInternalFormat(internalFormatName, glFormat, glType, encoding) {
 			if (isWebGL2 === false) return glFormat;
 
 			if (internalFormatName !== null) {
@@ -16363,7 +16424,7 @@
 			if (glFormat === _gl.RGBA) {
 				if (glType === _gl.FLOAT) internalFormat = _gl.RGBA32F;
 				if (glType === _gl.HALF_FLOAT) internalFormat = _gl.RGBA16F;
-				if (glType === _gl.UNSIGNED_BYTE) internalFormat = _gl.RGBA8;
+				if (glType === _gl.UNSIGNED_BYTE) internalFormat = encoding === sRGBEncoding ? _gl.SRGB8_ALPHA8 : _gl.RGBA8;
 			}
 
 			if (internalFormat === _gl.R16F || internalFormat === _gl.R32F || internalFormat === _gl.RGBA16F || internalFormat === _gl.RGBA32F) {
@@ -16629,7 +16690,7 @@
 			const supportsMips = isPowerOfTwo$1(image) || isWebGL2,
 						glFormat = utils.convert(texture.format);
 			let glType = utils.convert(texture.type),
-					glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType);
+					glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType, texture.encoding);
 			setTextureParameters(textureType, texture, supportsMips);
 			let mipmap;
 			const mipmaps = texture.mipmaps;
@@ -16777,7 +16838,7 @@
 						supportsMips = isPowerOfTwo$1(image) || isWebGL2,
 						glFormat = utils.convert(texture.format),
 						glType = utils.convert(texture.type),
-						glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType);
+						glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType, texture.encoding);
 			setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
 			let mipmaps;
 
@@ -16840,7 +16901,7 @@
 		function setupFrameBufferTexture(framebuffer, renderTarget, texture, attachment, textureTarget) {
 			const glFormat = utils.convert(texture.format);
 			const glType = utils.convert(texture.type);
-			const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType);
+			const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType, texture.encoding);
 
 			if (textureTarget === _gl.TEXTURE_3D || textureTarget === _gl.TEXTURE_2D_ARRAY) {
 				state.texImage3D(textureTarget, 0, glInternalFormat, renderTarget.width, renderTarget.height, renderTarget.depth, 0, glFormat, glType, null);
@@ -16896,7 +16957,7 @@
 				const texture = renderTarget.isWebGLMultipleRenderTargets === true ? renderTarget.texture[0] : renderTarget.texture;
 				const glFormat = utils.convert(texture.format);
 				const glType = utils.convert(texture.type);
-				const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType);
+				const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType, texture.encoding);
 
 				if (isMultisample) {
 					const samples = getRenderTargetSamples(renderTarget);
@@ -17025,7 +17086,7 @@
 
 						const glFormat = utils.convert(texture.format);
 						const glType = utils.convert(texture.type);
-						const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType);
+						const glInternalFormat = getInternalFormat(texture.internalFormat, glFormat, glType, texture.encoding);
 						const samples = getRenderTargetSamples(renderTarget);
 
 						_gl.renderbufferStorageMultisample(_gl.RENDERBUFFER, samples, glInternalFormat, renderTarget.width, renderTarget.height);
@@ -19059,73 +19120,11 @@
 		} // Buffer rendering
 
 
-		function renderObjectImmediate(object, program) {
-			object.render(function (object) {
-				_this.renderBufferImmediate(object, program);
-			});
-		}
-
-		this.renderBufferImmediate = function (object, program) {
-			bindingStates.initAttributes();
-			const buffers = properties.get(object);
-			if (object.hasPositions && !buffers.position) buffers.position = _gl.createBuffer();
-			if (object.hasNormals && !buffers.normal) buffers.normal = _gl.createBuffer();
-			if (object.hasUvs && !buffers.uv) buffers.uv = _gl.createBuffer();
-			if (object.hasColors && !buffers.color) buffers.color = _gl.createBuffer();
-			const programAttributes = program.getAttributes();
-
-			if (object.hasPositions) {
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.position);
-
-				_gl.bufferData(_gl.ARRAY_BUFFER, object.positionArray, _gl.DYNAMIC_DRAW);
-
-				bindingStates.enableAttribute(programAttributes.position.location);
-
-				_gl.vertexAttribPointer(programAttributes.position.location, 3, _gl.FLOAT, false, 0, 0);
-			}
-
-			if (object.hasNormals) {
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.normal);
-
-				_gl.bufferData(_gl.ARRAY_BUFFER, object.normalArray, _gl.DYNAMIC_DRAW);
-
-				bindingStates.enableAttribute(programAttributes.normal.location);
-
-				_gl.vertexAttribPointer(programAttributes.normal.location, 3, _gl.FLOAT, false, 0, 0);
-			}
-
-			if (object.hasUvs) {
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.uv);
-
-				_gl.bufferData(_gl.ARRAY_BUFFER, object.uvArray, _gl.DYNAMIC_DRAW);
-
-				bindingStates.enableAttribute(programAttributes.uv.location);
-
-				_gl.vertexAttribPointer(programAttributes.uv.location, 2, _gl.FLOAT, false, 0, 0);
-			}
-
-			if (object.hasColors) {
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.color);
-
-				_gl.bufferData(_gl.ARRAY_BUFFER, object.colorArray, _gl.DYNAMIC_DRAW);
-
-				bindingStates.enableAttribute(programAttributes.color.location);
-
-				_gl.vertexAttribPointer(programAttributes.color.location, 3, _gl.FLOAT, false, 0, 0);
-			}
-
-			bindingStates.disableUnusedAttributes();
-
-			_gl.drawArrays(_gl.TRIANGLES, 0, object.count);
-
-			object.count = 0;
-		};
-
 		this.renderBufferDirect = function (camera, scene, geometry, material, object, group) {
 			if (scene === null) scene = _emptyScene; // renderBufferDirect second parameter used to be fog (could be null)
 
 			const frontFaceCW = object.isMesh && object.matrixWorld.determinant() < 0;
-			const program = setProgram(camera, scene, material, object);
+			const program = setProgram(camera, scene, geometry, material, object);
 			state.setMaterial(material, frontFaceCW); //
 
 			let index = geometry.index;
@@ -19143,10 +19142,6 @@
 			if (material.wireframe === true) {
 				index = geometries.getWireframeAttribute(geometry);
 				rangeFactor = 2;
-			}
-
-			if (geometry.morphAttributes.position !== undefined || geometry.morphAttributes.normal !== undefined) {
-				morphtargets.update(object, geometry, material, program);
 			}
 
 			bindingStates.setup(object, material, program, geometry, index);
@@ -19393,12 +19388,6 @@
 							currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
 						}
 					}
-				} else if (object.isImmediateRenderObject) {
-					if (sortObjects) {
-						_vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
-					}
-
-					currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
 				} else if (object.isMesh || object.isLine || object.isPoints) {
 					if (object.isSkinnedMesh) {
 						// update skeleton only once in a frame
@@ -19507,27 +19496,20 @@
 			object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
 			material.onBeforeRender(_this, scene, camera, geometry, object, group);
 
-			if (object.isImmediateRenderObject) {
-				const program = setProgram(camera, scene, material, object);
-				state.setMaterial(material);
-				bindingStates.reset();
-				renderObjectImmediate(object, program);
+			if (material.transparent === true && material.side === DoubleSide) {
+				material.side = BackSide;
+				material.needsUpdate = true;
+
+				_this.renderBufferDirect(camera, scene, geometry, material, object, group);
+
+				material.side = FrontSide;
+				material.needsUpdate = true;
+
+				_this.renderBufferDirect(camera, scene, geometry, material, object, group);
+
+				material.side = DoubleSide;
 			} else {
-				if (material.transparent === true && material.side === DoubleSide) {
-					material.side = BackSide;
-					material.needsUpdate = true;
-
-					_this.renderBufferDirect(camera, scene, geometry, material, object, group);
-
-					material.side = FrontSide;
-					material.needsUpdate = true;
-
-					_this.renderBufferDirect(camera, scene, geometry, material, object, group);
-
-					material.side = DoubleSide;
-				} else {
-					_this.renderBufferDirect(camera, scene, geometry, material, object, group);
-				}
+				_this.renderBufferDirect(camera, scene, geometry, material, object, group);
 			}
 
 			object.onAfterRender(_this, scene, camera, geometry, material, group);
@@ -19565,7 +19547,7 @@
 				}
 			} else {
 				parameters.uniforms = programCache.getUniforms(material);
-				material.onBuild(parameters, _this);
+				material.onBuild(object, parameters, _this);
 				material.onBeforeCompile(parameters, _this);
 				program = programCache.acquireProgram(parameters, programCacheKey);
 				programs.set(programCacheKey, program);
@@ -19626,7 +19608,7 @@
 			materialProperties.vertexTangents = parameters.vertexTangents;
 		}
 
-		function setProgram(camera, scene, material, object) {
+		function setProgram(camera, scene, geometry, material, object) {
 			if (scene.isScene !== true) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
 
 			textures.resetTextureUnits();
@@ -19634,11 +19616,11 @@
 			const environment = material.isMeshStandardMaterial ? scene.environment : null;
 			const encoding = _currentRenderTarget === null ? _this.outputEncoding : _currentRenderTarget.texture.encoding;
 			const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || environment);
-			const vertexAlphas = material.vertexColors === true && !!object.geometry && !!object.geometry.attributes.color && object.geometry.attributes.color.itemSize === 4;
-			const vertexTangents = !!object.geometry && !!object.geometry.attributes.tangent;
-			const morphTargets = !!object.geometry && !!object.geometry.morphAttributes.position;
-			const morphNormals = !!object.geometry && !!object.geometry.morphAttributes.normal;
-			const morphTargetsCount = !!object.geometry && !!object.geometry.morphAttributes.position ? object.geometry.morphAttributes.position.length : 0;
+			const vertexAlphas = material.vertexColors === true && !!geometry.attributes.color && geometry.attributes.color.itemSize === 4;
+			const vertexTangents = !!material.normalMap && !!geometry.attributes.tangent;
+			const morphTargets = !!geometry.morphAttributes.position;
+			const morphNormals = !!geometry.morphAttributes.normal;
+			const morphTargetsCount = !!geometry.morphAttributes.position ? geometry.morphAttributes.position.length : 0;
 			const materialProperties = properties.get(material);
 			const lights = currentRenderState.state.lights;
 
@@ -19748,9 +19730,9 @@
 				if (material.isMeshPhongMaterial || material.isMeshToonMaterial || material.isMeshLambertMaterial || material.isMeshBasicMaterial || material.isMeshStandardMaterial || material.isShaderMaterial || material.isShadowMaterial || object.isSkinnedMesh) {
 					p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
 				}
-			} // skinning uniforms must be set even if material didn't change
-			// auto-setting of texture unit for bone texture must go before other textures
-			// otherwise textures used for skinning can take over texture units reserved for other material textures
+			} // skinning and morph target uniforms must be set even if material didn't change
+			// auto-setting of texture unit for bone and morph texture must go before other textures
+			// otherwise textures used for skinning and morphing can take over texture units reserved for other material textures
 
 
 			if (object.isSkinnedMesh) {
@@ -19767,6 +19749,10 @@
 						p_uniforms.setOptional(_gl, skeleton, 'boneMatrices');
 					}
 				}
+			}
+
+			if (!!geometry && (geometry.morphAttributes.position !== undefined || geometry.morphAttributes.normal !== undefined)) {
+				morphtargets.update(object, geometry, material, program);
 			}
 
 			if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
@@ -20930,7 +20916,7 @@
 
 			_skinWeight.fromBufferAttribute(geometry.attributes.skinWeight, index);
 
-			_basePosition.fromBufferAttribute(geometry.attributes.position, index).applyMatrix4(this.bindMatrix);
+			_basePosition.copy(target).applyMatrix4(this.bindMatrix);
 
 			target.set(0, 0, 0);
 
@@ -22070,7 +22056,7 @@
 	}
 
 	class PolyhedronGeometry extends BufferGeometry {
-		constructor(vertices, indices, radius = 1, detail = 0) {
+		constructor(vertices = [], indices = [], radius = 1, detail = 0) {
 			super();
 			this.type = 'PolyhedronGeometry';
 			this.parameters = {
@@ -22296,111 +22282,108 @@
 	const _triangle = new Triangle();
 
 	class EdgesGeometry extends BufferGeometry {
-		constructor(geometry, thresholdAngle) {
+		constructor(geometry = null, thresholdAngle = 1) {
 			super();
 			this.type = 'EdgesGeometry';
 			this.parameters = {
+				geometry: geometry,
 				thresholdAngle: thresholdAngle
 			};
-			thresholdAngle = thresholdAngle !== undefined ? thresholdAngle : 1;
 
-			if (geometry.isGeometry === true) {
-				console.error('THREE.EdgesGeometry no longer supports THREE.Geometry. Use THREE.BufferGeometry instead.');
-				return;
-			}
+			if (geometry !== null) {
+				const precisionPoints = 4;
+				const precision = Math.pow(10, precisionPoints);
+				const thresholdDot = Math.cos(DEG2RAD * thresholdAngle);
+				const indexAttr = geometry.getIndex();
+				const positionAttr = geometry.getAttribute('position');
+				const indexCount = indexAttr ? indexAttr.count : positionAttr.count;
+				const indexArr = [0, 0, 0];
+				const vertKeys = ['a', 'b', 'c'];
+				const hashes = new Array(3);
+				const edgeData = {};
+				const vertices = [];
 
-			const precisionPoints = 4;
-			const precision = Math.pow(10, precisionPoints);
-			const thresholdDot = Math.cos(DEG2RAD * thresholdAngle);
-			const indexAttr = geometry.getIndex();
-			const positionAttr = geometry.getAttribute('position');
-			const indexCount = indexAttr ? indexAttr.count : positionAttr.count;
-			const indexArr = [0, 0, 0];
-			const vertKeys = ['a', 'b', 'c'];
-			const hashes = new Array(3);
-			const edgeData = {};
-			const vertices = [];
+				for (let i = 0; i < indexCount; i += 3) {
+					if (indexAttr) {
+						indexArr[0] = indexAttr.getX(i);
+						indexArr[1] = indexAttr.getX(i + 1);
+						indexArr[2] = indexAttr.getX(i + 2);
+					} else {
+						indexArr[0] = i;
+						indexArr[1] = i + 1;
+						indexArr[2] = i + 2;
+					}
 
-			for (let i = 0; i < indexCount; i += 3) {
-				if (indexAttr) {
-					indexArr[0] = indexAttr.getX(i);
-					indexArr[1] = indexAttr.getX(i + 1);
-					indexArr[2] = indexAttr.getX(i + 2);
-				} else {
-					indexArr[0] = i;
-					indexArr[1] = i + 1;
-					indexArr[2] = i + 2;
-				}
+					const {
+						a,
+						b,
+						c
+					} = _triangle;
+					a.fromBufferAttribute(positionAttr, indexArr[0]);
+					b.fromBufferAttribute(positionAttr, indexArr[1]);
+					c.fromBufferAttribute(positionAttr, indexArr[2]);
 
-				const {
-					a,
-					b,
-					c
-				} = _triangle;
-				a.fromBufferAttribute(positionAttr, indexArr[0]);
-				b.fromBufferAttribute(positionAttr, indexArr[1]);
-				c.fromBufferAttribute(positionAttr, indexArr[2]);
-
-				_triangle.getNormal(_normal); // create hashes for the edge from the vertices
+					_triangle.getNormal(_normal); // create hashes for the edge from the vertices
 
 
-				hashes[0] = `${Math.round(a.x * precision)},${Math.round(a.y * precision)},${Math.round(a.z * precision)}`;
-				hashes[1] = `${Math.round(b.x * precision)},${Math.round(b.y * precision)},${Math.round(b.z * precision)}`;
-				hashes[2] = `${Math.round(c.x * precision)},${Math.round(c.y * precision)},${Math.round(c.z * precision)}`; // skip degenerate triangles
+					hashes[0] = `${Math.round(a.x * precision)},${Math.round(a.y * precision)},${Math.round(a.z * precision)}`;
+					hashes[1] = `${Math.round(b.x * precision)},${Math.round(b.y * precision)},${Math.round(b.z * precision)}`;
+					hashes[2] = `${Math.round(c.x * precision)},${Math.round(c.y * precision)},${Math.round(c.z * precision)}`; // skip degenerate triangles
 
-				if (hashes[0] === hashes[1] || hashes[1] === hashes[2] || hashes[2] === hashes[0]) {
-					continue;
-				} // iterate over every edge
+					if (hashes[0] === hashes[1] || hashes[1] === hashes[2] || hashes[2] === hashes[0]) {
+						continue;
+					} // iterate over every edge
 
 
-				for (let j = 0; j < 3; j++) {
-					// get the first and next vertex making up the edge
-					const jNext = (j + 1) % 3;
-					const vecHash0 = hashes[j];
-					const vecHash1 = hashes[jNext];
-					const v0 = _triangle[vertKeys[j]];
-					const v1 = _triangle[vertKeys[jNext]];
-					const hash = `${vecHash0}_${vecHash1}`;
-					const reverseHash = `${vecHash1}_${vecHash0}`;
+					for (let j = 0; j < 3; j++) {
+						// get the first and next vertex making up the edge
+						const jNext = (j + 1) % 3;
+						const vecHash0 = hashes[j];
+						const vecHash1 = hashes[jNext];
+						const v0 = _triangle[vertKeys[j]];
+						const v1 = _triangle[vertKeys[jNext]];
+						const hash = `${vecHash0}_${vecHash1}`;
+						const reverseHash = `${vecHash1}_${vecHash0}`;
 
-					if (reverseHash in edgeData && edgeData[reverseHash]) {
-						// if we found a sibling edge add it into the vertex array if
-						// it meets the angle threshold and delete the edge from the map.
-						if (_normal.dot(edgeData[reverseHash].normal) <= thresholdDot) {
-							vertices.push(v0.x, v0.y, v0.z);
-							vertices.push(v1.x, v1.y, v1.z);
+						if (reverseHash in edgeData && edgeData[reverseHash]) {
+							// if we found a sibling edge add it into the vertex array if
+							// it meets the angle threshold and delete the edge from the map.
+							if (_normal.dot(edgeData[reverseHash].normal) <= thresholdDot) {
+								vertices.push(v0.x, v0.y, v0.z);
+								vertices.push(v1.x, v1.y, v1.z);
+							}
+
+							edgeData[reverseHash] = null;
+						} else if (!(hash in edgeData)) {
+							// if we've already got an edge here then skip adding a new one
+							edgeData[hash] = {
+								index0: indexArr[j],
+								index1: indexArr[jNext],
+								normal: _normal.clone()
+							};
 						}
+					}
+				} // iterate over all remaining, unmatched edges and add them to the vertex array
 
-						edgeData[reverseHash] = null;
-					} else if (!(hash in edgeData)) {
-						// if we've already got an edge here then skip adding a new one
-						edgeData[hash] = {
-							index0: indexArr[j],
-							index1: indexArr[jNext],
-							normal: _normal.clone()
-						};
+
+				for (const key in edgeData) {
+					if (edgeData[key]) {
+						const {
+							index0,
+							index1
+						} = edgeData[key];
+
+						_v0.fromBufferAttribute(positionAttr, index0);
+
+						_v1$1.fromBufferAttribute(positionAttr, index1);
+
+						vertices.push(_v0.x, _v0.y, _v0.z);
+						vertices.push(_v1$1.x, _v1$1.y, _v1$1.z);
 					}
 				}
-			} // iterate over all remaining, unmatched edges and add them to the vertex array
 
-
-			for (const key in edgeData) {
-				if (edgeData[key]) {
-					const {
-						index0,
-						index1
-					} = edgeData[key];
-
-					_v0.fromBufferAttribute(positionAttr, index0);
-
-					_v1$1.fromBufferAttribute(positionAttr, index1);
-
-					vertices.push(_v0.x, _v0.y, _v0.z);
-					vertices.push(_v1$1.x, _v1$1.y, _v1$1.z);
-				}
+				this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
 			}
-
-			this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
 		}
 
 	}
@@ -25072,95 +25055,6 @@
 
 	}
 
-	/**
-	 * Parametric Surfaces Geometry
-	 * based on the brilliant article by @prideout https://prideout.net/blog/old/blog/index.html@p=44.html
-	 */
-
-	class ParametricGeometry extends BufferGeometry {
-		constructor(func = (u, v, target) => target.set(u, v, Math.cos(u) * Math.sin(v)), slices = 8, stacks = 8) {
-			super();
-			this.type = 'ParametricGeometry';
-			this.parameters = {
-				func: func,
-				slices: slices,
-				stacks: stacks
-			}; // buffers
-
-			const indices = [];
-			const vertices = [];
-			const normals = [];
-			const uvs = [];
-			const EPS = 0.00001;
-			const normal = new Vector3();
-			const p0 = new Vector3(),
-						p1 = new Vector3();
-			const pu = new Vector3(),
-						pv = new Vector3();
-
-			if (func.length < 3) {
-				console.error('THREE.ParametricGeometry: Function must now modify a Vector3 as third parameter.');
-			} // generate vertices, normals and uvs
-
-
-			const sliceCount = slices + 1;
-
-			for (let i = 0; i <= stacks; i++) {
-				const v = i / stacks;
-
-				for (let j = 0; j <= slices; j++) {
-					const u = j / slices; // vertex
-
-					func(u, v, p0);
-					vertices.push(p0.x, p0.y, p0.z); // normal
-					// approximate tangent vectors via finite differences
-
-					if (u - EPS >= 0) {
-						func(u - EPS, v, p1);
-						pu.subVectors(p0, p1);
-					} else {
-						func(u + EPS, v, p1);
-						pu.subVectors(p1, p0);
-					}
-
-					if (v - EPS >= 0) {
-						func(u, v - EPS, p1);
-						pv.subVectors(p0, p1);
-					} else {
-						func(u, v + EPS, p1);
-						pv.subVectors(p1, p0);
-					} // cross product of tangent vectors returns surface normal
-
-
-					normal.crossVectors(pu, pv).normalize();
-					normals.push(normal.x, normal.y, normal.z); // uv
-
-					uvs.push(u, v);
-				}
-			} // generate indices
-
-
-			for (let i = 0; i < stacks; i++) {
-				for (let j = 0; j < slices; j++) {
-					const a = i * sliceCount + j;
-					const b = i * sliceCount + j + 1;
-					const c = (i + 1) * sliceCount + j + 1;
-					const d = (i + 1) * sliceCount + j; // faces one and two
-
-					indices.push(a, b, d);
-					indices.push(b, c, d);
-				}
-			} // build geometry
-
-
-			this.setIndex(indices);
-			this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
-			this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
-			this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
-		}
-
-	}
-
 	class RingGeometry extends BufferGeometry {
 		constructor(innerRadius = 0.5, outerRadius = 1, thetaSegments = 8, phiSegments = 1, thetaStart = 0, thetaLength = Math.PI * 2) {
 			super();
@@ -25444,45 +25338,6 @@
 
 		static fromJSON(data) {
 			return new TetrahedronGeometry(data.radius, data.detail);
-		}
-
-	}
-
-	/**
-	 * Text = 3D Text
-	 *
-	 * parameters = {
-	 *	font: <THREE.Font>, // font
-	 *
-	 *	size: <float>, // size of the text
-	 *	height: <float>, // thickness to extrude text
-	 *	curveSegments: <int>, // number of points on the curves
-	 *
-	 *	bevelEnabled: <bool>, // turn on bevel
-	 *	bevelThickness: <float>, // how deep into text bevel goes
-	 *	bevelSize: <float>, // how far from text outline (including bevelOffset) is bevel
-	 *	bevelOffset: <float> // how far from text outline does bevel start
-	 * }
-	 */
-
-	class TextGeometry extends ExtrudeGeometry {
-		constructor(text, parameters = {}) {
-			const font = parameters.font;
-
-			if (!(font && font.isFont)) {
-				console.error('THREE.TextGeometry: font parameter is not an instance of THREE.Font.');
-				return new BufferGeometry();
-			}
-
-			const shapes = font.generateShapes(text, parameters.size); // translate parameters to ExtrudeGeometry API
-
-			parameters.depth = parameters.height !== undefined ? parameters.height : 50; // defaults
-
-			if (parameters.bevelThickness === undefined) parameters.bevelThickness = 10;
-			if (parameters.bevelSize === undefined) parameters.bevelSize = 8;
-			if (parameters.bevelEnabled === undefined) parameters.bevelEnabled = false;
-			super(shapes, parameters);
-			this.type = 'TextGeometry';
 		}
 
 	}
@@ -25775,46 +25630,65 @@
 	}
 
 	class WireframeGeometry extends BufferGeometry {
-		constructor(geometry) {
+		constructor(geometry = null) {
 			super();
 			this.type = 'WireframeGeometry';
+			this.parameters = {
+				geometry: geometry
+			};
 
-			if (geometry.isGeometry === true) {
-				console.error('THREE.WireframeGeometry no longer supports THREE.Geometry. Use THREE.BufferGeometry instead.');
-				return;
-			} // buffer
+			if (geometry !== null) {
+				// buffer
+				const vertices = [];
+				const edges = new Set(); // helper variables
+
+				const start = new Vector3();
+				const end = new Vector3();
+
+				if (geometry.index !== null) {
+					// indexed BufferGeometry
+					const position = geometry.attributes.position;
+					const indices = geometry.index;
+					let groups = geometry.groups;
+
+					if (groups.length === 0) {
+						groups = [{
+							start: 0,
+							count: indices.count,
+							materialIndex: 0
+						}];
+					} // create a data structure that contains all eges without duplicates
 
 
-			const vertices = [];
-			const edges = new Set(); // helper variables
+					for (let o = 0, ol = groups.length; o < ol; ++o) {
+						const group = groups[o];
+						const groupStart = group.start;
+						const groupCount = group.count;
 
-			const start = new Vector3();
-			const end = new Vector3();
+						for (let i = groupStart, l = groupStart + groupCount; i < l; i += 3) {
+							for (let j = 0; j < 3; j++) {
+								const index1 = indices.getX(i + j);
+								const index2 = indices.getX(i + (j + 1) % 3);
+								start.fromBufferAttribute(position, index1);
+								end.fromBufferAttribute(position, index2);
 
-			if (geometry.index !== null) {
-				// indexed BufferGeometry
-				const position = geometry.attributes.position;
-				const indices = geometry.index;
-				let groups = geometry.groups;
+								if (isUniqueEdge(start, end, edges) === true) {
+									vertices.push(start.x, start.y, start.z);
+									vertices.push(end.x, end.y, end.z);
+								}
+							}
+						}
+					}
+				} else {
+					// non-indexed BufferGeometry
+					const position = geometry.attributes.position;
 
-				if (groups.length === 0) {
-					groups = [{
-						start: 0,
-						count: indices.count,
-						materialIndex: 0
-					}];
-				} // create a data structure that contains all eges without duplicates
-
-
-				for (let o = 0, ol = groups.length; o < ol; ++o) {
-					const group = groups[o];
-					const groupStart = group.start;
-					const groupCount = group.count;
-
-					for (let i = groupStart, l = groupStart + groupCount; i < l; i += 3) {
+					for (let i = 0, l = position.count / 3; i < l; i++) {
 						for (let j = 0; j < 3; j++) {
-							const index1 = indices.getX(i + j);
-							const index2 = indices.getX(i + (j + 1) % 3);
+							// three edges per triangle, an edge is represented as (index1, index2)
+							// e.g. the first triangle has the following edges: (0,1),(1,2),(2,0)
+							const index1 = 3 * i + j;
+							const index2 = 3 * i + (j + 1) % 3;
 							start.fromBufferAttribute(position, index1);
 							end.fromBufferAttribute(position, index2);
 
@@ -25824,30 +25698,11 @@
 							}
 						}
 					}
-				}
-			} else {
-				// non-indexed BufferGeometry
-				const position = geometry.attributes.position;
-
-				for (let i = 0, l = position.count / 3; i < l; i++) {
-					for (let j = 0; j < 3; j++) {
-						// three edges per triangle, an edge is represented as (index1, index2)
-						// e.g. the first triangle has the following edges: (0,1),(1,2),(2,0)
-						const index1 = 3 * i + j;
-						const index2 = 3 * i + (j + 1) % 3;
-						start.fromBufferAttribute(position, index1);
-						end.fromBufferAttribute(position, index2);
-
-						if (isUniqueEdge(start, end, edges) === true) {
-							vertices.push(start.x, start.y, start.z);
-							vertices.push(end.x, end.y, end.z);
-						}
-					}
-				}
-			} // build geometry
+				} // build geometry
 
 
-			this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+				this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+			}
 		}
 
 	}
@@ -25885,8 +25740,6 @@
 		LatheBufferGeometry: LatheGeometry,
 		OctahedronGeometry: OctahedronGeometry,
 		OctahedronBufferGeometry: OctahedronGeometry,
-		ParametricGeometry: ParametricGeometry,
-		ParametricBufferGeometry: ParametricGeometry,
 		PlaneGeometry: PlaneGeometry,
 		PlaneBufferGeometry: PlaneGeometry,
 		PolyhedronGeometry: PolyhedronGeometry,
@@ -25899,8 +25752,6 @@
 		SphereBufferGeometry: SphereGeometry,
 		TetrahedronGeometry: TetrahedronGeometry,
 		TetrahedronBufferGeometry: TetrahedronGeometry,
-		TextGeometry: TextGeometry,
-		TextBufferGeometry: TextGeometry,
 		TorusGeometry: TorusGeometry,
 		TorusBufferGeometry: TorusGeometry,
 		TorusKnotGeometry: TorusKnotGeometry,
@@ -28154,14 +28005,13 @@
 			if (url === undefined) url = '';
 			if (this.path !== undefined) url = this.path + url;
 			url = this.manager.resolveURL(url);
-			const scope = this;
 			const cached = Cache.get(url);
 
 			if (cached !== undefined) {
-				scope.manager.itemStart(url);
-				setTimeout(function () {
+				this.manager.itemStart(url);
+				setTimeout(() => {
 					if (onLoad) onLoad(cached);
-					scope.manager.itemEnd(url);
+					this.manager.itemEnd(url);
 				}, 0);
 				return cached;
 			} // Check if request is duplicate
@@ -28174,155 +28024,121 @@
 					onError: onError
 				});
 				return;
-			} // Check for data: URI
+			} // Initialise array for duplicate requests
 
 
-			const dataUriRegex = /^data:(.*?)(;base64)?,(.*)$/;
-			const dataUriRegexResult = url.match(dataUriRegex);
-			let request; // Safari can not handle Data URIs through XMLHttpRequest so process manually
+			loading[url] = [];
+			loading[url].push({
+				onLoad: onLoad,
+				onProgress: onProgress,
+				onError: onError
+			}); // create request
 
-			if (dataUriRegexResult) {
-				const mimeType = dataUriRegexResult[1];
-				const isBase64 = !!dataUriRegexResult[2];
-				let data = dataUriRegexResult[3];
-				data = decodeURIComponent(data);
-				if (isBase64) data = atob(data);
+			const req = new Request(url, {
+				headers: new Headers(this.requestHeader),
+				credentials: this.withCredentials ? 'include' : 'same-origin' // An abort controller could be added within a future PR
 
-				try {
-					let response;
-					const responseType = (this.responseType || '').toLowerCase();
+			}); // start the fetch
 
-					switch (responseType) {
-						case 'arraybuffer':
-						case 'blob':
-							const view = new Uint8Array(data.length);
+			fetch(req).then(response => {
+				if (response.status === 200 || response.status === 0) {
+					// Some browsers return HTTP Status 0 when using non-http protocol
+					// e.g. 'file://' or 'data://'. Handle as success.
+					if (response.status === 0) {
+						console.warn('THREE.FileLoader: HTTP Status 0 received.');
+					}
 
-							for (let i = 0; i < data.length; i++) {
-								view[i] = data.charCodeAt(i);
-							}
+					const callbacks = loading[url];
+					const reader = response.body.getReader();
+					const contentLength = response.headers.get('Content-Length');
+					const total = contentLength ? parseInt(contentLength) : 0;
+					const lengthComputable = total !== 0;
+					let loaded = 0; // periodically read data into the new stream tracking while download progress
 
-							if (responseType === 'blob') {
-								response = new Blob([view.buffer], {
-									type: mimeType
+					return new ReadableStream({
+						start(controller) {
+							readData();
+
+							function readData() {
+								reader.read().then(({
+									done,
+									value
+								}) => {
+									if (done) {
+										controller.close();
+									} else {
+										loaded += value.byteLength;
+										const event = new ProgressEvent('progress', {
+											lengthComputable,
+											loaded,
+											total
+										});
+
+										for (let i = 0, il = callbacks.length; i < il; i++) {
+											const callback = callbacks[i];
+											if (callback.onProgress) callback.onProgress(event);
+										}
+
+										controller.enqueue(value);
+										readData();
+									}
 								});
-							} else {
-								response = view.buffer;
 							}
+						}
 
-							break;
+					});
+				} else {
+					throw Error(`fetch for "${response.url}" responded with ${response.status}: ${response.statusText}`);
+				}
+			}).then(stream => {
+				const response = new Response(stream);
 
-						case 'document':
+				switch (this.responseType) {
+					case 'arraybuffer':
+						return response.arrayBuffer();
+
+					case 'blob':
+						return response.blob();
+
+					case 'document':
+						return response.text().then(text => {
 							const parser = new DOMParser();
-							response = parser.parseFromString(data, mimeType);
-							break;
+							return parser.parseFromString(text, this.mimeType);
+						});
 
-						case 'json':
-							response = JSON.parse(data);
-							break;
+					case 'json':
+						return response.json();
 
-						default:
-							// 'text' or other
-							response = data;
-							break;
-					} // Wait for next browser tick like standard XMLHttpRequest event dispatching does
-
-
-					setTimeout(function () {
-						if (onLoad) onLoad(response);
-						scope.manager.itemEnd(url);
-					}, 0);
-				} catch (error) {
-					// Wait for next browser tick like standard XMLHttpRequest event dispatching does
-					setTimeout(function () {
-						if (onError) onError(error);
-						scope.manager.itemError(url);
-						scope.manager.itemEnd(url);
-					}, 0);
+					default:
+						return response.text();
 				}
-			} else {
-				// Initialise array for duplicate requests
-				loading[url] = [];
-				loading[url].push({
-					onLoad: onLoad,
-					onProgress: onProgress,
-					onError: onError
-				});
-				request = new XMLHttpRequest();
-				request.open('GET', url, true);
-				request.addEventListener('load', function (event) {
-					const response = this.response;
-					const callbacks = loading[url];
-					delete loading[url];
+			}).then(data => {
+				// Add to cache only on HTTP success, so that we do not cache
+				// error response bodies as proper responses to requests.
+				Cache.add(url, data);
+				const callbacks = loading[url];
+				delete loading[url];
 
-					if (this.status === 200 || this.status === 0) {
-						// Some browsers return HTTP Status 0 when using non-http protocol
-						// e.g. 'file://' or 'data://'. Handle as success.
-						if (this.status === 0) console.warn('THREE.FileLoader: HTTP Status 0 received.'); // Add to cache only on HTTP success, so that we do not cache
-						// error response bodies as proper responses to requests.
-
-						Cache.add(url, response);
-
-						for (let i = 0, il = callbacks.length; i < il; i++) {
-							const callback = callbacks[i];
-							if (callback.onLoad) callback.onLoad(response);
-						}
-
-						scope.manager.itemEnd(url);
-					} else {
-						for (let i = 0, il = callbacks.length; i < il; i++) {
-							const callback = callbacks[i];
-							if (callback.onError) callback.onError(event);
-						}
-
-						scope.manager.itemError(url);
-						scope.manager.itemEnd(url);
-					}
-				}, false);
-				request.addEventListener('progress', function (event) {
-					const callbacks = loading[url];
-
-					for (let i = 0, il = callbacks.length; i < il; i++) {
-						const callback = callbacks[i];
-						if (callback.onProgress) callback.onProgress(event);
-					}
-				}, false);
-				request.addEventListener('error', function (event) {
-					const callbacks = loading[url];
-					delete loading[url];
-
-					for (let i = 0, il = callbacks.length; i < il; i++) {
-						const callback = callbacks[i];
-						if (callback.onError) callback.onError(event);
-					}
-
-					scope.manager.itemError(url);
-					scope.manager.itemEnd(url);
-				}, false);
-				request.addEventListener('abort', function (event) {
-					const callbacks = loading[url];
-					delete loading[url];
-
-					for (let i = 0, il = callbacks.length; i < il; i++) {
-						const callback = callbacks[i];
-						if (callback.onError) callback.onError(event);
-					}
-
-					scope.manager.itemError(url);
-					scope.manager.itemEnd(url);
-				}, false);
-				if (this.responseType !== undefined) request.responseType = this.responseType;
-				if (this.withCredentials !== undefined) request.withCredentials = this.withCredentials;
-				if (request.overrideMimeType) request.overrideMimeType(this.mimeType !== undefined ? this.mimeType : 'text/plain');
-
-				for (const header in this.requestHeader) {
-					request.setRequestHeader(header, this.requestHeader[header]);
+				for (let i = 0, il = callbacks.length; i < il; i++) {
+					const callback = callbacks[i];
+					if (callback.onLoad) callback.onLoad(data);
 				}
 
-				request.send(null);
-			}
+				this.manager.itemEnd(url);
+			}).catch(err => {
+				// Abort errors and other errors are handled the same
+				const callbacks = loading[url];
+				delete loading[url];
 
-			scope.manager.itemStart(url);
-			return request;
+				for (let i = 0, il = callbacks.length; i < il; i++) {
+					const callback = callbacks[i];
+					if (callback.onError) callback.onError(err);
+				}
+
+				this.manager.itemError(url);
+				this.manager.itemEnd(url);
+			});
+			this.manager.itemStart(url);
 		}
 
 		setResponseType(value) {
@@ -28636,10 +28452,7 @@
 			loader.setCrossOrigin(this.crossOrigin);
 			loader.setPath(this.path);
 			loader.load(url, function (image) {
-				texture.image = image; // JPEGs can't have an alpha channel, so memory can be saved by storing them as RGB.
-
-				const isJPEG = url.search(/\.jpe?g($|\?)/i) > 0 || url.search(/^data\:image\/jpeg/) === 0;
-				texture.format = isJPEG ? RGBFormat : RGBAFormat;
+				texture.image = image;
 				texture.needsUpdate = true;
 
 				if (onLoad !== undefined) {
@@ -30471,356 +30284,6 @@
 	}
 
 	ImageBitmapLoader.prototype.isImageBitmapLoader = true;
-
-	class ShapePath {
-		constructor() {
-			this.type = 'ShapePath';
-			this.color = new Color();
-			this.subPaths = [];
-			this.currentPath = null;
-		}
-
-		moveTo(x, y) {
-			this.currentPath = new Path();
-			this.subPaths.push(this.currentPath);
-			this.currentPath.moveTo(x, y);
-			return this;
-		}
-
-		lineTo(x, y) {
-			this.currentPath.lineTo(x, y);
-			return this;
-		}
-
-		quadraticCurveTo(aCPx, aCPy, aX, aY) {
-			this.currentPath.quadraticCurveTo(aCPx, aCPy, aX, aY);
-			return this;
-		}
-
-		bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
-			this.currentPath.bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY);
-			return this;
-		}
-
-		splineThru(pts) {
-			this.currentPath.splineThru(pts);
-			return this;
-		}
-
-		toShapes(isCCW, noHoles) {
-			function toShapesNoHoles(inSubpaths) {
-				const shapes = [];
-
-				for (let i = 0, l = inSubpaths.length; i < l; i++) {
-					const tmpPath = inSubpaths[i];
-					const tmpShape = new Shape();
-					tmpShape.curves = tmpPath.curves;
-					shapes.push(tmpShape);
-				}
-
-				return shapes;
-			}
-
-			function isPointInsidePolygon(inPt, inPolygon) {
-				const polyLen = inPolygon.length; // inPt on polygon contour => immediate success		or
-				// toggling of inside/outside at every single! intersection point of an edge
-				//	with the horizontal line through inPt, left of inPt
-				//	not counting lowerY endpoints of edges and whole edges on that line
-
-				let inside = false;
-
-				for (let p = polyLen - 1, q = 0; q < polyLen; p = q++) {
-					let edgeLowPt = inPolygon[p];
-					let edgeHighPt = inPolygon[q];
-					let edgeDx = edgeHighPt.x - edgeLowPt.x;
-					let edgeDy = edgeHighPt.y - edgeLowPt.y;
-
-					if (Math.abs(edgeDy) > Number.EPSILON) {
-						// not parallel
-						if (edgeDy < 0) {
-							edgeLowPt = inPolygon[q];
-							edgeDx = -edgeDx;
-							edgeHighPt = inPolygon[p];
-							edgeDy = -edgeDy;
-						}
-
-						if (inPt.y < edgeLowPt.y || inPt.y > edgeHighPt.y) continue;
-
-						if (inPt.y === edgeLowPt.y) {
-							if (inPt.x === edgeLowPt.x) return true; // inPt is on contour ?
-							// continue;				// no intersection or edgeLowPt => doesn't count !!!
-						} else {
-							const perpEdge = edgeDy * (inPt.x - edgeLowPt.x) - edgeDx * (inPt.y - edgeLowPt.y);
-							if (perpEdge === 0) return true; // inPt is on contour ?
-
-							if (perpEdge < 0) continue;
-							inside = !inside; // true intersection left of inPt
-						}
-					} else {
-						// parallel or collinear
-						if (inPt.y !== edgeLowPt.y) continue; // parallel
-						// edge lies on the same horizontal line as inPt
-
-						if (edgeHighPt.x <= inPt.x && inPt.x <= edgeLowPt.x || edgeLowPt.x <= inPt.x && inPt.x <= edgeHighPt.x) return true; // inPt: Point on contour !
-						// continue;
-					}
-				}
-
-				return inside;
-			}
-
-			const isClockWise = ShapeUtils.isClockWise;
-			const subPaths = this.subPaths;
-			if (subPaths.length === 0) return [];
-			if (noHoles === true) return toShapesNoHoles(subPaths);
-			let solid, tmpPath, tmpShape;
-			const shapes = [];
-
-			if (subPaths.length === 1) {
-				tmpPath = subPaths[0];
-				tmpShape = new Shape();
-				tmpShape.curves = tmpPath.curves;
-				shapes.push(tmpShape);
-				return shapes;
-			}
-
-			let holesFirst = !isClockWise(subPaths[0].getPoints());
-			holesFirst = isCCW ? !holesFirst : holesFirst; // console.log("Holes first", holesFirst);
-
-			const betterShapeHoles = [];
-			const newShapes = [];
-			let newShapeHoles = [];
-			let mainIdx = 0;
-			let tmpPoints;
-			newShapes[mainIdx] = undefined;
-			newShapeHoles[mainIdx] = [];
-
-			for (let i = 0, l = subPaths.length; i < l; i++) {
-				tmpPath = subPaths[i];
-				tmpPoints = tmpPath.getPoints();
-				solid = isClockWise(tmpPoints);
-				solid = isCCW ? !solid : solid;
-
-				if (solid) {
-					if (!holesFirst && newShapes[mainIdx]) mainIdx++;
-					newShapes[mainIdx] = {
-						s: new Shape(),
-						p: tmpPoints
-					};
-					newShapes[mainIdx].s.curves = tmpPath.curves;
-					if (holesFirst) mainIdx++;
-					newShapeHoles[mainIdx] = []; //console.log('cw', i);
-				} else {
-					newShapeHoles[mainIdx].push({
-						h: tmpPath,
-						p: tmpPoints[0]
-					}); //console.log('ccw', i);
-				}
-			} // only Holes? -> probably all Shapes with wrong orientation
-
-
-			if (!newShapes[0]) return toShapesNoHoles(subPaths);
-
-			if (newShapes.length > 1) {
-				let ambiguous = false;
-				const toChange = [];
-
-				for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
-					betterShapeHoles[sIdx] = [];
-				}
-
-				for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
-					const sho = newShapeHoles[sIdx];
-
-					for (let hIdx = 0; hIdx < sho.length; hIdx++) {
-						const ho = sho[hIdx];
-						let hole_unassigned = true;
-
-						for (let s2Idx = 0; s2Idx < newShapes.length; s2Idx++) {
-							if (isPointInsidePolygon(ho.p, newShapes[s2Idx].p)) {
-								if (sIdx !== s2Idx) toChange.push({
-									froms: sIdx,
-									tos: s2Idx,
-									hole: hIdx
-								});
-
-								if (hole_unassigned) {
-									hole_unassigned = false;
-									betterShapeHoles[s2Idx].push(ho);
-								} else {
-									ambiguous = true;
-								}
-							}
-						}
-
-						if (hole_unassigned) {
-							betterShapeHoles[sIdx].push(ho);
-						}
-					}
-				} // console.log("ambiguous: ", ambiguous);
-
-
-				if (toChange.length > 0) {
-					// console.log("to change: ", toChange);
-					if (!ambiguous) newShapeHoles = betterShapeHoles;
-				}
-			}
-
-			let tmpHoles;
-
-			for (let i = 0, il = newShapes.length; i < il; i++) {
-				tmpShape = newShapes[i].s;
-				shapes.push(tmpShape);
-				tmpHoles = newShapeHoles[i];
-
-				for (let j = 0, jl = tmpHoles.length; j < jl; j++) {
-					tmpShape.holes.push(tmpHoles[j].h);
-				}
-			} //console.log("shape", shapes);
-
-
-			return shapes;
-		}
-
-	}
-
-	class Font {
-		constructor(data) {
-			this.type = 'Font';
-			this.data = data;
-		}
-
-		generateShapes(text, size = 100) {
-			const shapes = [];
-			const paths = createPaths(text, size, this.data);
-
-			for (let p = 0, pl = paths.length; p < pl; p++) {
-				Array.prototype.push.apply(shapes, paths[p].toShapes());
-			}
-
-			return shapes;
-		}
-
-	}
-
-	function createPaths(text, size, data) {
-		const chars = Array.from(text);
-		const scale = size / data.resolution;
-		const line_height = (data.boundingBox.yMax - data.boundingBox.yMin + data.underlineThickness) * scale;
-		const paths = [];
-		let offsetX = 0,
-				offsetY = 0;
-
-		for (let i = 0; i < chars.length; i++) {
-			const char = chars[i];
-
-			if (char === '\n') {
-				offsetX = 0;
-				offsetY -= line_height;
-			} else {
-				const ret = createPath(char, scale, offsetX, offsetY, data);
-				offsetX += ret.offsetX;
-				paths.push(ret.path);
-			}
-		}
-
-		return paths;
-	}
-
-	function createPath(char, scale, offsetX, offsetY, data) {
-		const glyph = data.glyphs[char] || data.glyphs['?'];
-
-		if (!glyph) {
-			console.error('THREE.Font: character "' + char + '" does not exists in font family ' + data.familyName + '.');
-			return;
-		}
-
-		const path = new ShapePath();
-		let x, y, cpx, cpy, cpx1, cpy1, cpx2, cpy2;
-
-		if (glyph.o) {
-			const outline = glyph._cachedOutline || (glyph._cachedOutline = glyph.o.split(' '));
-
-			for (let i = 0, l = outline.length; i < l;) {
-				const action = outline[i++];
-
-				switch (action) {
-					case 'm':
-						// moveTo
-						x = outline[i++] * scale + offsetX;
-						y = outline[i++] * scale + offsetY;
-						path.moveTo(x, y);
-						break;
-
-					case 'l':
-						// lineTo
-						x = outline[i++] * scale + offsetX;
-						y = outline[i++] * scale + offsetY;
-						path.lineTo(x, y);
-						break;
-
-					case 'q':
-						// quadraticCurveTo
-						cpx = outline[i++] * scale + offsetX;
-						cpy = outline[i++] * scale + offsetY;
-						cpx1 = outline[i++] * scale + offsetX;
-						cpy1 = outline[i++] * scale + offsetY;
-						path.quadraticCurveTo(cpx1, cpy1, cpx, cpy);
-						break;
-
-					case 'b':
-						// bezierCurveTo
-						cpx = outline[i++] * scale + offsetX;
-						cpy = outline[i++] * scale + offsetY;
-						cpx1 = outline[i++] * scale + offsetX;
-						cpy1 = outline[i++] * scale + offsetY;
-						cpx2 = outline[i++] * scale + offsetX;
-						cpy2 = outline[i++] * scale + offsetY;
-						path.bezierCurveTo(cpx1, cpy1, cpx2, cpy2, cpx, cpy);
-						break;
-				}
-			}
-		}
-
-		return {
-			offsetX: glyph.ha * scale,
-			path: path
-		};
-	}
-
-	Font.prototype.isFont = true;
-
-	class FontLoader extends Loader {
-		constructor(manager) {
-			super(manager);
-		}
-
-		load(url, onLoad, onProgress, onError) {
-			const scope = this;
-			const loader = new FileLoader(this.manager);
-			loader.setPath(this.path);
-			loader.setRequestHeader(this.requestHeader);
-			loader.setWithCredentials(scope.withCredentials);
-			loader.load(url, function (text) {
-				let json;
-
-				try {
-					json = JSON.parse(text);
-				} catch (e) {
-					console.warn('THREE.FontLoader: typeface.js support is being deprecated. Use typeface.json instead.');
-					json = JSON.parse(text.substring(65, text.length - 2));
-				}
-
-				const font = scope.parse(json);
-				if (onLoad) onLoad(font);
-			}, onProgress, onError);
-		}
-
-		parse(json) {
-			return new Font(json);
-		}
-
-	}
 
 	let _context;
 
@@ -33994,28 +33457,6 @@
 
 	}
 
-	class ImmediateRenderObject extends Object3D {
-		constructor(material) {
-			super();
-			this.material = material;
-
-			this.render = function () {};
-
-			this.hasPositions = false;
-			this.hasNormals = false;
-			this.hasColors = false;
-			this.hasUvs = false;
-			this.positionArray = null;
-			this.normalArray = null;
-			this.colorArray = null;
-			this.uvArray = null;
-			this.count = 0;
-		}
-
-	}
-
-	ImmediateRenderObject.prototype.isImmediateRenderObject = true;
-
 	const _vector$3 = /*@__PURE__*/new Vector3();
 
 	class SpotLightHelper extends Object3D {
@@ -34837,6 +34278,218 @@
 		dispose() {
 			this.geometry.dispose();
 			this.material.dispose();
+		}
+
+	}
+
+	class ShapePath {
+		constructor() {
+			this.type = 'ShapePath';
+			this.color = new Color();
+			this.subPaths = [];
+			this.currentPath = null;
+		}
+
+		moveTo(x, y) {
+			this.currentPath = new Path();
+			this.subPaths.push(this.currentPath);
+			this.currentPath.moveTo(x, y);
+			return this;
+		}
+
+		lineTo(x, y) {
+			this.currentPath.lineTo(x, y);
+			return this;
+		}
+
+		quadraticCurveTo(aCPx, aCPy, aX, aY) {
+			this.currentPath.quadraticCurveTo(aCPx, aCPy, aX, aY);
+			return this;
+		}
+
+		bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
+			this.currentPath.bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY);
+			return this;
+		}
+
+		splineThru(pts) {
+			this.currentPath.splineThru(pts);
+			return this;
+		}
+
+		toShapes(isCCW, noHoles) {
+			function toShapesNoHoles(inSubpaths) {
+				const shapes = [];
+
+				for (let i = 0, l = inSubpaths.length; i < l; i++) {
+					const tmpPath = inSubpaths[i];
+					const tmpShape = new Shape();
+					tmpShape.curves = tmpPath.curves;
+					shapes.push(tmpShape);
+				}
+
+				return shapes;
+			}
+
+			function isPointInsidePolygon(inPt, inPolygon) {
+				const polyLen = inPolygon.length; // inPt on polygon contour => immediate success		or
+				// toggling of inside/outside at every single! intersection point of an edge
+				//	with the horizontal line through inPt, left of inPt
+				//	not counting lowerY endpoints of edges and whole edges on that line
+
+				let inside = false;
+
+				for (let p = polyLen - 1, q = 0; q < polyLen; p = q++) {
+					let edgeLowPt = inPolygon[p];
+					let edgeHighPt = inPolygon[q];
+					let edgeDx = edgeHighPt.x - edgeLowPt.x;
+					let edgeDy = edgeHighPt.y - edgeLowPt.y;
+
+					if (Math.abs(edgeDy) > Number.EPSILON) {
+						// not parallel
+						if (edgeDy < 0) {
+							edgeLowPt = inPolygon[q];
+							edgeDx = -edgeDx;
+							edgeHighPt = inPolygon[p];
+							edgeDy = -edgeDy;
+						}
+
+						if (inPt.y < edgeLowPt.y || inPt.y > edgeHighPt.y) continue;
+
+						if (inPt.y === edgeLowPt.y) {
+							if (inPt.x === edgeLowPt.x) return true; // inPt is on contour ?
+							// continue;				// no intersection or edgeLowPt => doesn't count !!!
+						} else {
+							const perpEdge = edgeDy * (inPt.x - edgeLowPt.x) - edgeDx * (inPt.y - edgeLowPt.y);
+							if (perpEdge === 0) return true; // inPt is on contour ?
+
+							if (perpEdge < 0) continue;
+							inside = !inside; // true intersection left of inPt
+						}
+					} else {
+						// parallel or collinear
+						if (inPt.y !== edgeLowPt.y) continue; // parallel
+						// edge lies on the same horizontal line as inPt
+
+						if (edgeHighPt.x <= inPt.x && inPt.x <= edgeLowPt.x || edgeLowPt.x <= inPt.x && inPt.x <= edgeHighPt.x) return true; // inPt: Point on contour !
+						// continue;
+					}
+				}
+
+				return inside;
+			}
+
+			const isClockWise = ShapeUtils.isClockWise;
+			const subPaths = this.subPaths;
+			if (subPaths.length === 0) return [];
+			if (noHoles === true) return toShapesNoHoles(subPaths);
+			let solid, tmpPath, tmpShape;
+			const shapes = [];
+
+			if (subPaths.length === 1) {
+				tmpPath = subPaths[0];
+				tmpShape = new Shape();
+				tmpShape.curves = tmpPath.curves;
+				shapes.push(tmpShape);
+				return shapes;
+			}
+
+			let holesFirst = !isClockWise(subPaths[0].getPoints());
+			holesFirst = isCCW ? !holesFirst : holesFirst; // console.log("Holes first", holesFirst);
+
+			const betterShapeHoles = [];
+			const newShapes = [];
+			let newShapeHoles = [];
+			let mainIdx = 0;
+			let tmpPoints;
+			newShapes[mainIdx] = undefined;
+			newShapeHoles[mainIdx] = [];
+
+			for (let i = 0, l = subPaths.length; i < l; i++) {
+				tmpPath = subPaths[i];
+				tmpPoints = tmpPath.getPoints();
+				solid = isClockWise(tmpPoints);
+				solid = isCCW ? !solid : solid;
+
+				if (solid) {
+					if (!holesFirst && newShapes[mainIdx]) mainIdx++;
+					newShapes[mainIdx] = {
+						s: new Shape(),
+						p: tmpPoints
+					};
+					newShapes[mainIdx].s.curves = tmpPath.curves;
+					if (holesFirst) mainIdx++;
+					newShapeHoles[mainIdx] = []; //console.log('cw', i);
+				} else {
+					newShapeHoles[mainIdx].push({
+						h: tmpPath,
+						p: tmpPoints[0]
+					}); //console.log('ccw', i);
+				}
+			} // only Holes? -> probably all Shapes with wrong orientation
+
+
+			if (!newShapes[0]) return toShapesNoHoles(subPaths);
+
+			if (newShapes.length > 1) {
+				let ambiguous = false;
+				const toChange = [];
+
+				for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
+					betterShapeHoles[sIdx] = [];
+				}
+
+				for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
+					const sho = newShapeHoles[sIdx];
+
+					for (let hIdx = 0; hIdx < sho.length; hIdx++) {
+						const ho = sho[hIdx];
+						let hole_unassigned = true;
+
+						for (let s2Idx = 0; s2Idx < newShapes.length; s2Idx++) {
+							if (isPointInsidePolygon(ho.p, newShapes[s2Idx].p)) {
+								if (sIdx !== s2Idx) toChange.push({
+									froms: sIdx,
+									tos: s2Idx,
+									hole: hIdx
+								});
+
+								if (hole_unassigned) {
+									hole_unassigned = false;
+									betterShapeHoles[s2Idx].push(ho);
+								} else {
+									ambiguous = true;
+								}
+							}
+						}
+
+						if (hole_unassigned) {
+							betterShapeHoles[sIdx].push(ho);
+						}
+					}
+				} // console.log("ambiguous: ", ambiguous);
+
+
+				if (toChange.length > 0) {
+					// console.log("to change: ", toChange);
+					if (!ambiguous) newShapeHoles = betterShapeHoles;
+				}
+			}
+
+			let tmpHoles;
+
+			for (let i = 0, il = newShapes.length; i < il; i++) {
+				tmpShape = newShapes[i].s;
+				shapes.push(tmpShape);
+				tmpHoles = newShapeHoles[i];
+
+				for (let j = 0, jl = tmpHoles.length; j < jl; j++) {
+					tmpShape.holes.push(tmpHoles[j].h);
+				}
+			} //console.log("shape", shapes);
+
+
+			return shapes;
 		}
 
 	}
@@ -36145,6 +35798,24 @@
 
 	function LensFlare() {
 		console.error('THREE.LensFlare has been moved to /examples/jsm/objects/Lensflare.js');
+	} //
+
+	function ParametricGeometry() {
+		console.error('THREE.ParametricGeometry has been moved to /examples/jsm/geometries/ParametricGeometry.js');
+		return new BufferGeometry();
+	}
+	function TextGeometry() {
+		console.error('THREE.TextGeometry has been moved to /examples/jsm/geometries/TextGeometry.js');
+		return new BufferGeometry();
+	}
+	function FontLoader() {
+		console.error('THREE.FontLoader has been moved to /examples/jsm/loaders/FontLoader.js');
+	}
+	function Font() {
+		console.error('THREE.Font has been moved to /examples/jsm/loaders/FontLoader.js');
+	}
+	function ImmediateRenderObject() {
+		console.error('THREE.ImmediateRenderObject has been removed.');
 	}
 
 	if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
@@ -36431,7 +36102,6 @@
 	exports.PCFShadowMap = PCFShadowMap;
 	exports.PCFSoftShadowMap = PCFSoftShadowMap;
 	exports.PMREMGenerator = PMREMGenerator;
-	exports.ParametricBufferGeometry = ParametricGeometry;
 	exports.ParametricGeometry = ParametricGeometry;
 	exports.Particle = Particle;
 	exports.ParticleBasicMaterial = ParticleBasicMaterial;
@@ -36568,7 +36238,6 @@
 	exports.TangentSpaceNormalMap = TangentSpaceNormalMap;
 	exports.TetrahedronBufferGeometry = TetrahedronGeometry;
 	exports.TetrahedronGeometry = TetrahedronGeometry;
-	exports.TextBufferGeometry = TextGeometry;
 	exports.TextGeometry = TextGeometry;
 	exports.Texture = Texture;
 	exports.TextureLoader = TextureLoader;
