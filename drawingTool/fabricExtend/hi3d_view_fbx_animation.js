@@ -47,6 +47,6 @@
 /* 
 
 1. 添加物件給物件名稱 bird
-2. 在 animate 添加 function(){dataStructure.viewer[0].hi3d.renderGltfAnimations('bird');}
-3. 在物件的資料綁訂，任意添加name: AAA, function(){dataStructure.viewer[0].hi3d.setGltfAnimations('bird');}
+2. 在 animate 添加 function(){dataStructure.viewer[0].hi3d.renderFbxAnimations('bird');}
+3. 在物件的資料綁訂，任意添加name: AAA, function(){dataStructure.viewer[0].hi3d.setFbxAnimations('bird');}
 */
