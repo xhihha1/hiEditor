@@ -63,6 +63,13 @@ function editorEvent(edit, objOption) {
     var line = new edit.DivHtml(edit, objOption);
   });
 
+  $('#drawIText').click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var line = new edit.HiText(edit, objOption);
+  });
+
   $('#panCanvas').click(function(){
     const panCanvas = !edit.defaultOptions.panCanvas
     edit.changeSelectableStatus(!panCanvas)
