@@ -298,6 +298,26 @@ body {
   height: 50px;
 }
 
+
+#property #mapIconArea > li {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  margin: 1px;
+  border: 1px solid #AAFFEE;
+  box-sizing: border-box;
+}
+
+#property #mapIconArea > li.imageIcon img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+}
+
 /* --- slider --- */
 .prop-slider {
   margin: 0px;

@@ -119,7 +119,9 @@ hiDraw.prototype.Image = (function () {
         // });
         // activeObject.setSrc(data.url);
         fabric.Image.fromURL(imagePath, function (img) {
-            img.scale(0.5).set({
+            console.log('img', img)
+            // img.scale(0.5).set({
+            img.set({
                 // angle: -15,
                 // clipPath: new fabric.Circle({
                 //     radius: radius,
@@ -128,8 +130,8 @@ hiDraw.prototype.Image = (function () {
                 // }),
                 top: origY,
                 left: origX,
-                originX: 'left',
-                originY: 'top',
+                originX: 'center',
+                originY: 'center',
                 // width: pointer.x - origX,
                 // height: pointer.y - origY,
                 selectable: false,

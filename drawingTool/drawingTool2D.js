@@ -122,13 +122,28 @@ function addImageObj(edit, objOption) {
   $('#imageIconArea').click(function (e) {
     var target = e.target;
     if ($(target).attr('src')) {
-      fabric.Image.fromURL($(target).attr('src'), function (img) {
-        var oImg = img.set({
-          left: 0,
-          top: 0
-        }).scale(0.25);
-        canvas.add(oImg);
-      });
+      // fabric.Image.fromURL($(target).attr('src'), function (img) {
+      //   var oImg = img.set({
+      //     left: 0,
+      //     top: 0
+      //   }).scale(0.25);
+      //   canvas.add(oImg);
+      // });
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      objOption = { imagePath: $(target).attr('src') }
+      var image = new edit.Image(edit, objOption);
+    }
+  })
+  $('#mapIconArea').click(function (e) {
+    var target = e.target;
+    if ($(target).attr('src')) {
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      objOption = { imagePath: $(target).attr('src') }
+      var image = new edit.MapTile(edit, objOption);
     }
   })
   // var activeObject = canvas.getActiveObject();
