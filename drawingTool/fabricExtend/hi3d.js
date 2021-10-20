@@ -1028,7 +1028,7 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   //   opacity: 0.8,
   //   transparent: true
   // });
-  this.setfabricTexture("drawing-canvas", texture)
+  this.setfabricTexture("drawing-canvas", texture, edit)
   const material = new THREE.MeshStandardMaterial();
   material.map = texture
   // material.map = new THREE.CanvasTexture( drawingCanvas );
@@ -2588,12 +2588,13 @@ hi3D.prototype.getfabricTexture = function (fabricElemId) {
   return this.fabricList[fabricElemId]
 }
 
-hi3D.prototype.setfabricTexture = function (fabricElemId, texture) {
+hi3D.prototype.setfabricTexture = function (fabricElemId, texture, hiDrawElem) {
   if (!this.fabricList) {
     this.fabricList = {}
   }
   this.fabricList[fabricElemId] = {
-    texture: texture
+    texture: texture,
+    hiDrawElem: hiDrawElem
   }
 }
 
