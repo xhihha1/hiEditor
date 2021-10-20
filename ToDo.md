@@ -62,6 +62,7 @@
 52. editor 相機鏡頭參數開放 (OK)  
 53. 完成 50後添加 %name%、%hiId% 等巨集參數，在物件function中可以使用   
 
+
 # group (OK)  
 fabric  
 1. group object (http://fabricjs.com/manage-selection)  
@@ -120,6 +121,9 @@ Three
 16. [sketchfab](https://sketchfab.com/nagas/collections/downlodable-gltf-model)  
 
 17. [免費圖片素材 colorhub](https://www.colorhub.me/)
+
+18. [fabricjs texture three](https://codepen.io/ricardcreagia/pen/EdEGod)  
+    [參考2](https://www.it1352.com/2075074.html)  
 
 # API 參考  
 

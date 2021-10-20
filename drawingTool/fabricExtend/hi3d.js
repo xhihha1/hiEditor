@@ -972,23 +972,70 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   objOption = this.mergeDeep(objOption, option)
   // var geometry = new THREE.Plane( new THREE.Vector3( 1, 0, 0 ), 0 );
   const geometry = new THREE.PlaneBufferGeometry(objOption.size[0], objOption.size[2]);
-  if (objOption.textureSource.imageType === 'base64') {
-    var image = new Image();
-    image.src = objOption.textureSource.base64;
-    var texture = new THREE.Texture();
-    texture.image = image;
-    image.onload = function () {
-      texture.needsUpdate = true;
-    };
-  } else {
-    var loader = new THREE.TextureLoader();
-    var texture = loader.load(objOption.textureSource.url);
+  // if (objOption.textureSource.imageType === 'base64') {
+  //   var image = new Image();
+  //   image.src = objOption.textureSource.base64;
+  //   var texture = new THREE.Texture();
+  //   texture.image = image;
+  //   image.onload = function () {
+  //     texture.needsUpdate = true;
+  //   };
+  // } else {
+  //   var loader = new THREE.TextureLoader();
+  //   var texture = loader.load(objOption.textureSource.url);
+  // }
+  var elem = document.createElement('canvas')
+  elem.id = 'drawing-canvas'
+  elem.width = 500
+  elem.height = 500
+  // elem.style = "visibility:hidden;"
+  document.body.appendChild(elem)
+  var edit = new hiDraw({ canvasViewId: 'drawing-canvas',
+    canvasWidth: 500,
+    canvasHeight: 500
+  }).createView()
+  var fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
+  if (fabricJson) {
+    edit.canvasView.loadFromJSON(fabricJson)
   }
-  const material = new THREE.MeshStandardMaterial({
-    map: texture,
-    opacity: 0.8,
-    transparent: true
-  });
+  // var canvas = new fabric.Canvas( "drawing-canvas" );
+  // canvas.backgroundColor = "#FFBE9F";
+  // var rectangle = new fabric.Rect( {
+  //   top: 0,
+  //   left: 0,
+  //   fill: '#FF6E27',
+  //   width: 100,
+  //   height: 100,
+  //   transparentCorners: false,
+  //   centeredScaling: true,
+  //   borderColor: 'black',
+  //   cornerColor: 'black',
+  //   corcerStrokeColor: 'black'
+  // } );
+  // canvas.add( rectangle );
+  // var texture = new THREE.Texture( document.getElementById( "canvas" ) );
+  var texture = new THREE.Texture( document.getElementById( "drawing-canvas" ) );
+  // texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+  // texture.needsUpdate = true;
+  // const drawingCanvas = document.getElementById( 'drawing-canvas' );
+  // const drawingCanvas = elem
+  // const drawingContext = drawingCanvas.getContext( '2d' );
+  // drawingContext.fillStyle = '#FFFF00';
+  // drawingContext.fillRect( 0, 0, 128, 128 );
+
+  // const material = new THREE.MeshStandardMaterial({
+  //   // map: texture,
+  //   opacity: 0.8,
+  //   transparent: true
+  // });
+  this.setfabricTexture("drawing-canvas", texture)
+  const material = new THREE.MeshStandardMaterial();
+  material.map = texture
+  // material.map = new THREE.CanvasTexture( drawingCanvas );
+  // material.map = new THREE.CanvasTexture( document.getElementById( "canvas" ) );
+  material.map.needsUpdate = true;
+  material.transparent = true
+  material.opacity = 0.8
 
   const plane = new THREE.Mesh(geometry, material);
   plane.castShadow = true;
@@ -2508,6 +2555,7 @@ hi3D.prototype.addBoxHelper = function () {
 }
 
 hi3D.prototype.viewRender = function () {
+  this.renderfabricTexture()
   this.renderer.render(this.scene, this.camera);
   if (typeof this.defaultOptions.renderSetting.callback === 'function') {
     this.defaultOptions.renderSetting.callback.call(this)
@@ -2532,6 +2580,28 @@ hi3D.prototype.animate = function () {
   // this.renderer.render(this.scene, this.camera);
   this.viewRender()
 };
+
+hi3D.prototype.getfabricTexture = function (fabricElemId) {
+  if (!this.fabricList) {
+    this.fabricList = {}
+  }
+  return this.fabricList[fabricElemId]
+}
+
+hi3D.prototype.setfabricTexture = function (fabricElemId, texture) {
+  if (!this.fabricList) {
+    this.fabricList = {}
+  }
+  this.fabricList[fabricElemId] = {
+    texture: texture
+  }
+}
+
+hi3D.prototype.renderfabricTexture = function() {
+  for (var k in this.fabricList) {
+    this.fabricList[k].texture.needsUpdate = true;
+  }
+}
 
 // reverse string to functionn
 hi3D.prototype.functionGenerator = function (func) {

@@ -26,7 +26,7 @@
     },
     _render(ctx) {
       // 先畫出原本的圖形
-      this.callSuper('_render', ctx)
+      // this.callSuper('_render', ctx)
 
       // -------------------------------------------------
       var north_edge = 25.032531
@@ -52,10 +52,11 @@
       var t = Math.max(bottom_tile, top_tile)
       var l = Math.min(left_tile, right_tile)
       var r = Math.max(left_tile, right_tile)
+      var numRowCol = Math.max(t - b, r - l)
       var ol = this.left - this.width / 2 * this.scaleX
       var ot = this.top - this.height / 2 * this.scaleY
-      for (var j = b; j <= t; j++) {
-        for (var i = l; i <= r; i++) {
+      for (var j = b; j <= b + numRowCol; j++) {
+        for (var i = l; i <= l + numRowCol; i++) {
           //  (imgObj, (i - left_tile) * 50, (j - bottom_tile) * 50 ,50,50);
           drawArea(ctx,
             'https://tile.openstreetmap.org/' + zoom + '/' + i + '/' + j + '.png',
@@ -78,7 +79,8 @@
 
   fabric.MapTile.fromObject = function (object, callback) {
     // This function is used for deserialize json and convert object json into button object again. (called when we call loadFromJson() fucntion on canvas)
-    return fabric.Object._fromObject("MapTile", object, callback);
+    // return fabric.Object._fromObject("MapTile", object, callback);
+    callback && callback(new fabric.MapTile(object));
   };
 
   

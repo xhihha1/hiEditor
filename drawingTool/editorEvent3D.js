@@ -167,23 +167,24 @@ function editorEvent3D(edit, objOption) {
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);
     // edit.changeCanvasProperty(false, false);
-    var elem = document.createElement('canvas')
-    elem.id = 'view1'
-    elem.width = 500
-    elem.height = 500
-    var edit = new hiDraw({ canvasViewId: 'view1',
-      canvasWidth: 500,
-      canvasHeight: 500
-    }).createView().viewEvent();
-    var fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
-    if (fabricJson) {
-      edit.canvasView.loadFromJSON(fabricJson)
-    }
-    setTimeout(function(){
-      var i = edit.canvasView.toDataURL()
-      dataStructure.editor[0].hi3d.addPlane({textureSource:{base64:i}})
-      console.log('load plane end')
-    }, 1000)
+    // var elem = document.createElement('canvas')
+    // elem.id = 'view1'
+    // elem.width = 500
+    // elem.height = 500
+    // var edit = new hiDraw({ canvasViewId: 'view1',
+    //   canvasWidth: 500,
+    //   canvasHeight: 500
+    // }).createView().viewEvent();
+    // var fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
+    // if (fabricJson) {
+    //   edit.canvasView.loadFromJSON(fabricJson)
+    // }
+    // setTimeout(function(){
+    //   var i = edit.canvasView.toDataURL()
+    //   dataStructure.editor[0].hi3d.addPlane({textureSource:{base64:i}})
+    //   console.log('load plane end')
+    // }, 1000)
+    dataStructure.editor[0].hi3d.addPlane()
   })
   $('#btnGround').click(function(){
     var checked = $(this).prop("checked");
