@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+
+</body>
+<script>
+  function gradientColor(startColor, endColor, step) {
+    startRGB = this.colorRgb(startColor); //轉換為rgb陣列模式 
+    startR = startRGB[0];
+    startG = startRGB[1];
+    startB = startRGB[2];
+    endRGB = this.colorRgb(endColor);
+    endR = endRGB[0];
+    endG = endRGB[1];
+    endB = endRGB[2];
+    sR = (endR - startR) / step; //總差值
+    sG = (endG - startG) / step;
+    sB = (endB - startB) / step;
+    var colorArr = [];
+    for (var i = 0; i < step; i++) { //計算每一步的hex值
+      var hex = this.colorHex('rgb(' + parseInt((sR * i + startR)) + ',' + parseInt((sG * i + startG)) + ',' + parseInt(
+        (sB * i + startB)) + ')');
+      colorArr.push(hex);
+    }
+    return colorArr;
+  }
+  // 將hex表示方式轉換為rgb表示方式(這裡返回rgb陣列模式) 
+  gradientColor.prototype.colorRgb = function (sColor) {
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    var sColor = sColor.toLowerCase();
+    if (sColor && reg.test(sColor)) {
+      if (sColor.length === 4) {
+        var sColorNew = "#";
+        for (var i = 1; i < 4; i += 1) {
+          sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
+        }
+        sColor = sColorNew;
+      } //處理六位的顏色值 
+      var sColorChange = [];
+      for (var i = 1; i < 7; i += 2) {
+        sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
+      }
+      return sColorChange;
+    } else {
+      return sColor;
+    }
+  }; // 將rgb表示方式轉換為hex表示方式
+  gradientColor.prototype.colorHex = function (rgb) {
+    var _this = rgb;
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    if (/^(rgb|RGB)/.test(_this)) {
+      var aColor = _this.replace(/(?:(|)|rgb|RGB)*/g, "").split(",");
+      var strHex = "#";
+      for (var i = 0; i < aColor.length; i++) {
+        var hex = Number(aColor[i]).toString(16);
+        hex = hex < 10 ? 0 + '' + hex : hex; // 保證每個rgb的值為2位
+        if (hex === "0") {
+          hex += hex;
+        }
+        strHex += hex;
+      }
+      if (strHex.length !== 7) {
+        strHex = _this;
+      }
+      return strHex;
+    } else if (reg.test(_this)) {
+      var aNum = _this.replace(/#/, "").split("");
+      if (aNum.length === 6) {
+        return _this;
+      } else if (aNum.length === 3) {
+        var numHex = "#";
+        for (var i = 0; i < aNum.length; i += 1) {
+          numHex += (aNum[i] + aNum[i]);
+        }
+        return numHex;
+      }
+    } else {
+      return _this;
+    }
+  }
+
+  window.onload = function () {
+    var gradient = new gradientColor('#ceecff', '#006296', 101);
+    console.log(gradient); //alert(gradient); 
+    for (var i = 0, j = 0; i <= 100; i++) {
+      var div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.width = "50px";
+      div.style.height = "50px";
+      div.style.left = ((i % 10) * 50 + 10) + "px";
+      div.style.border = "1px solid #ddd";
+      div.style.backgroundColor = gradient[i];
+      div.innerText = i;
+      if (i % 10 == 0) {
+        ++j;
+      }
+      div.style.top = ((j - 1) * 50 + 10) + "px";
+      document.body.appendChild(div);
+    }
+  }
+</script>
+
+</html>
