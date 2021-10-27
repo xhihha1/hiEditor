@@ -56,12 +56,13 @@
 
 47. object prop 添加 after add  
 48. 添加 scene 數據綁訂 function  ,數據綁訂更新時間  
-49. 添加 2D文字  
+49. 添加 2D文字 (OK)  
 50. 封裝 viewer (OK)  
 51. 封裝 editor  
 52. editor 相機鏡頭參數開放 (OK)  
 53. 完成 50後添加 %name%、%hiId% 等巨集參數，在物件function中可以使用   
-
+54. hiDraw texture，cube、sphere、ground (OK)  
+55. hidraw 添加 animate & dataBinding prototype，3d texture時可以使用  
 
 # group (OK)  
 fabric  

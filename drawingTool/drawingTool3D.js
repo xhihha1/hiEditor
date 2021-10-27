@@ -212,6 +212,7 @@ function showObjPropChange (object) { // opt.target
   $('#newPropObjFaceNy').val(faceMaterial.nyImg || '')
   $('#newPropObjFacePz').val(faceMaterial.pzImg || '')
   $('#newPropObjFaceNz').val(faceMaterial.nzImg || '')
+  $('#newPropHidraw').val(faceMaterial.hiDraw)
   // -------- spotLight ---------
   $('#newSpotIntensity').val(parseFloat(object.get('intensity')) || 1)
   $('#newSpotDistance').val(parseFloat(object.get('distance')) || 200)
@@ -269,6 +270,8 @@ function setObjPropChange () {
   faceMaterial.nyImg = $('#newPropObjFaceNy').val().trim()
   faceMaterial.pzImg = $('#newPropObjFacePz').val().trim()
   faceMaterial.nzImg = $('#newPropObjFaceNz').val().trim()
+  faceMaterial.hiDraw = $('#newPropHidraw').val()
+  console.log('faceMaterial.hiDraw', faceMaterial.hiDraw)
   var faceMaterialStr = JSON.stringify(faceMaterial)
   return {
     name: name,

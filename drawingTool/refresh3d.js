@@ -255,7 +255,7 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
     var opt = this.getItemOption(item)
     if (itemExist) {
       console.log('set hiPlane', opt)
-      this.setSphere(objNode, opt)
+      this.setGroundPlane(objNode, opt)
     } else {
       console.log('add hiPlane', opt)
       this.addGroundPlane(opt, parentGroup)

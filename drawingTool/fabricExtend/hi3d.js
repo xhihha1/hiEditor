@@ -601,6 +601,10 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
     map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
     needsUpdate = true;
   }
+  if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+    map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+    needsUpdate = true;
+  }
   const material = new THREE.MeshStandardMaterial({
     map: map,
     color: objOption.color,
@@ -679,6 +683,10 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
       map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
       needsUpdate = true;
     }
+    if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+      map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+      needsUpdate = true;
+    }
     sphere.material.map = map;
     sphere.material.needsUpdate = needsUpdate;
   }
@@ -707,12 +715,22 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   const faceMaterial = []
   for (let i = 0; i < 6; i++) {
     let map = null
-    if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}
-    if (i == 1 && objOption.faceMaterial.nxImg) { const nxImg = new THREE.TextureLoader().load(objOption.faceMaterial.nxImg); map = nxImg;}
-    if (i == 2 && objOption.faceMaterial.pyImg) { const pyImg = new THREE.TextureLoader().load(objOption.faceMaterial.pyImg); map = pyImg;}
-    if (i == 3 && objOption.faceMaterial.nyImg) { const nyImg = new THREE.TextureLoader().load(objOption.faceMaterial.nyImg); map = nyImg;}
-    if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
-    if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
+    if (objOption.faceMaterial && objOption.faceMaterial.image) {
+      map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+      needsUpdate = true;
+    }
+    if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+      map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+      needsUpdate = true;
+    }
+    if (objOption.faceMaterial) {
+      if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}
+      if (i == 1 && objOption.faceMaterial.nxImg) { const nxImg = new THREE.TextureLoader().load(objOption.faceMaterial.nxImg); map = nxImg;}
+      if (i == 2 && objOption.faceMaterial.pyImg) { const pyImg = new THREE.TextureLoader().load(objOption.faceMaterial.pyImg); map = pyImg;}
+      if (i == 3 && objOption.faceMaterial.nyImg) { const nyImg = new THREE.TextureLoader().load(objOption.faceMaterial.nyImg); map = nyImg;}
+      if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
+      if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
+    }
     faceMaterial.push(new THREE.MeshStandardMaterial({
       map: map,
       color: objOption.color ,
@@ -820,6 +838,16 @@ hi3D.prototype.setCube = function (cube, objOption) {
     const faceMaterial = []
     for (let i = 0; i < 6; i++) {
       let map = null
+      var needsUpdate = true
+      if (objOption.faceMaterial && objOption.faceMaterial.image) {
+        map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+        needsUpdate = true;
+      }
+      if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+        console.log('wow~~~', objOption.faceMaterial.hiDraw)
+        map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+        needsUpdate = true;
+      }
       if (i == 0 && objOption.faceMaterial.pxImg) { const pxImg = new THREE.TextureLoader().load(objOption.faceMaterial.pxImg); map = pxImg;}
       if (i == 1 && objOption.faceMaterial.nxImg) { const nxImg = new THREE.TextureLoader().load(objOption.faceMaterial.nxImg); map = nxImg;}
       if (i == 2 && objOption.faceMaterial.pyImg) { const pyImg = new THREE.TextureLoader().load(objOption.faceMaterial.pyImg); map = pyImg;}
@@ -2262,6 +2290,10 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
     map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
     needsUpdate = true;
   }
+  if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+    map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+    needsUpdate = true;
+  }
   const groundMat = new THREE.MeshStandardMaterial({
     map: map,
     color: objOption.color,
@@ -2337,6 +2369,21 @@ hi3D.prototype.setGroundPlane = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  if (objOption.faceMaterial) {
+    var map = null
+    var needsUpdate = false
+    if (objOption.faceMaterial && objOption.faceMaterial.image) {
+      map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
+      needsUpdate = true;
+    }
+    if (objOption.faceMaterial && objOption.faceMaterial.hiDraw) {
+      map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
+      needsUpdate = true;
+    }
+    node.material.map = map;
+    node.material.needsUpdate = needsUpdate;
+  }
+  return node
 }
 
 
@@ -2580,6 +2627,43 @@ hi3D.prototype.animate = function () {
   // this.renderer.render(this.scene, this.camera);
   this.viewRender()
 };
+
+hi3D.prototype.createAndLoadfabricTexture = function (filePath) {
+  var texture
+  if (document.getElementById(filePath)) {
+    var hiDrawObj = this.getfabricTexture(filePath)
+    texture = hiDrawObj.texture
+  } else {
+    var elem = document.createElement('canvas')
+    elem.id = filePath
+    elem.width = 500
+    elem.height = 500
+    // elem.style = "visibility:hidden;"
+    document.body.appendChild(elem)
+    var edit = new hiDraw({ canvasViewId: elem.id,
+      canvasWidth: 500,
+      canvasHeight: 500
+    }).createView()
+    const oReq = new XMLHttpRequest();
+    oReq.onload = function () {
+      // this.responseText
+      elem.width = 500
+      elem.height = 500
+      // localStorage.getItem('viewJson2D')
+      var fabricJson = JSON.parse(this.responseText)
+      if (fabricJson) {
+        edit.canvasView.loadFromJSON(fabricJson)
+      }
+    }
+    oReq.onerror = function () {}
+    oReq.open('get', filePath, true)
+    oReq.send()
+    texture = new THREE.Texture( document.getElementById( filePath ) );
+    this.setfabricTexture(filePath, texture, edit)
+  }
+  
+  return texture
+}
 
 hi3D.prototype.getfabricTexture = function (fabricElemId) {
   if (!this.fabricList) {
