@@ -218,21 +218,35 @@
               <div><button id="goRight">right</button></div>
               <div><button id="goLeft">left</button></div>
             </li>
-            <li class="prop-title">Object property</li>
+            <li class="prop-title">Display property</li>
             <li class="prop-content">
-              <div><span>type</span><input type="text" id="objPropType" /></div>
-              <div><span>name</span><input type="text" id="objPropName" /></div>
-              <div><span>label</span><input type="text" id="objPropLabel" /></div>
-              <div><span>stroke</span><input type="text" id="objPropStroke" /></div>
+              <div><span>width</span></div>
+              <div><input type="text" id="newPropDisplayWidth" name="displayWidth" value="500" class="prop_input"></div>
+              <div><span>height</span></div>
+              <div><input type="text" id="newPropDisplayHeight" name="displayHeight" value="500" class="prop_input"></div>
+              <div><button id="displayPropApply">submit</button></div>
             </li>
             <li class="prop-title">Obj propy change</li>
             <li class="prop-content">
-              <div><span>stroke: </span><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"><button
-                  id="propChange">submit</button></div>
-              <div><span>Fill: </span><input type="color" id="newPropFill" name="PropFill" value="#e66465"><button
-                  id="propChangeFill">submit</button></div>
-              <div><span>altitude: </span><input type="number" id="newPropAltitude" name="PropAltitude"
-                  value="0"><button id="propChangeAltitude">submit</button></div>
+              <div><span>type</span></div>
+              <div><input type="text" id="objPropType" disabled/></div>
+              <div><span>name</span></div>
+              <div><input type="text" id="objPropName" /></div>
+              <div><span>stroke: </span></div>
+              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
+              <div><span>Fill: </span></div>
+              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
+              <div><span>strokeWidth: </span></div>
+              <div><input type="text" id="newPropStrokeWidth" /></div>
+              <div><span>text: </span></div>
+              <div><textarea id="newPropText"></textarea></div>
+              <div><span>data binding: </span><button id="openDataBinding">open</button></div>
+              <div><textarea id="newPropDataBinding"></textarea></div>
+              <!-- <div><span>event binding: </span><button id="openEventBinding">open</button></div>
+              <div><textarea id="newPropEventBinding"></textarea></div> -->
+              <div><span>animation: </span></div>
+              <div><textarea id="newPropAnimation"></textarea></div>
+              <div><button id="objectPropApply">submit</button></div>
             </li>
             <li class="prop-title">heatmap</li>
             <li class="prop-content">
@@ -251,7 +265,24 @@
       <div class="clearBoth"></div>
     </div>
   </div>
-
+  <!-- Data Binding Dialog -->
+  <div id="dataBindingDialog">
+    <div id="dataBindingDialogPage">
+      <div id="dataBindingDialogTitle">DataBinding<div id="dataBindingDialogClose"></div></div>
+      <div id="dataBindingDialogContent">
+        <div class="dataBindingDialogCard" id="dataBindingDialogCardNew">
+          <div><span>property name:</span><button id="addDbPropName">add</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+        <div class="dataBindingDialogCard dbPropCard">
+          <div><span>property name:</span><button class="removeDbPropName">remove</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_LookAt.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Cube.js"></script>

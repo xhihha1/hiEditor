@@ -2643,7 +2643,7 @@ hi3D.prototype.createAndLoadfabricTexture = function (filePath) {
     var edit = new hiDraw({ canvasViewId: elem.id,
       canvasWidth: 500,
       canvasHeight: 500
-    }).createView()
+    }).createView().renderDataBinding()
     const oReq = new XMLHttpRequest();
     oReq.onload = function () {
       // this.responseText
@@ -2652,6 +2652,16 @@ hi3D.prototype.createAndLoadfabricTexture = function (filePath) {
       // localStorage.getItem('viewJson2D')
       var fabricJson = JSON.parse(this.responseText)
       if (fabricJson) {
+        if (fabricJson.displayProp) {
+          var displayProp = fabricJson.displayProp
+          if (typeof fabricJson.displayProp === 'string') {
+            displayProp = JSON.parse(fabricJson.displayProp)
+          }
+          elem.width = displayProp.width
+          elem.height = displayProp.height
+          edit.defaultOptions.canvasWidth = displayProp.width
+          edit.defaultOptions.canvasHeight = displayProp.height
+        }
         edit.canvasView.loadFromJSON(fabricJson)
       }
     }

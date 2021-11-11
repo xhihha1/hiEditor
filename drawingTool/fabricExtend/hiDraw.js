@@ -25,7 +25,9 @@
       canvasHeight: 500,
       showGridAxis: false,
       gridAxis: {
-        canvasId: 'tempaxis'
+        canvasId: 'tempaxis',
+        width: null,
+        height: null
       },
       objectDefault: {
         fillColor: 'rgba(0,0,0,0)',
@@ -422,6 +424,38 @@
     // imgElem.setAttribute('src', "data:image/png;base64," + baseStr64);
   }
 
+  hiDraw.prototype.renderDataBinding = function () {
+    function binding() {
+      if(this.canvasView){
+        this.canvasView.forEachObject(function(item){
+          console.log('item', item.type, item.dataBinding)
+          var updateObjProp = {}
+          var dataBinding = item.dataBinding
+          while (dataBinding && typeof dataBinding === 'string') {
+            dataBinding = JSON.parse(dataBinding)
+          }
+          var needChange = false
+          if (dataBinding) {
+            for(var k in dataBinding) {
+              if (dataBinding[k].advanced) {
+                var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
+                updateObjProp[k] = advancedFunc()
+                needChange = true;
+              }
+            }
+          }
+          if (needChange) { item.set(updateObjProp) }
+        })
+      }
+      this.viewRender()
+      setTimeout(function(){
+        binding.bind(this)()
+      }.bind(this), 1000)
+    }
+    binding.bind(this)()
+    return this;
+  }
+
 
   hiDraw.prototype.uniqueIdGenerater = function (action) {
     if (hiMathUtil) {
@@ -481,6 +515,9 @@
     let r
     let g
     let b
+    if (!color) {
+      return '#5f5f5f'
+    }
     if (color.indexOf('#') === 0) {
       return color
     } else if (color.indexOf('rgba(') === 0) {
@@ -534,7 +571,8 @@
       'directionalLight', 'hemisphereLight', 'ambientLight',
       'color', 'intensity', 'distance', 'rotateX', 'rotateZ', 'angle', 'penumbra', 'decay',
       'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow',
-      'animation', 'sceneProp', 'transparent', 'opacity', 'faceMaterial', 'afteraddFunc'
+      'animation', 'sceneProp', 'transparent', 'opacity', 'faceMaterial', 'afteraddFunc',
+      'displayProp'
     ]
   }
 

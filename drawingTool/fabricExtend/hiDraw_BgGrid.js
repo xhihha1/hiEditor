@@ -45,6 +45,13 @@
         y = shiftPixelY;
       ctx.lineWidth = 1;
       ctx.strokeStyle = 'rgba(200,200,200, 0.9)'
+      if (this.defaultOptions.gridAxis.width &&
+        this.defaultOptions.gridAxis.height) {
+          console.log('????')
+        ctx.rect(shiftPixelX, shiftPixelY, this.defaultOptions.gridAxis.width, this.defaultOptions.gridAxis.height);
+        ctx.stroke();
+        ctx.clip();
+      }
       while (x < canvasTemplate.width) {
         var p = fabric.util.transformPoint({
           x: x,

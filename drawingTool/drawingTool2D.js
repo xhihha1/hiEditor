@@ -47,13 +47,14 @@ function initCanvas(canvasId, canvasViewId) {
       },
       selection_created: function (opt) {
         if (opt.target) {
-          $('#objPropType').val(opt.target.get('type'))
-          $('#objPropName').val(opt.target.get('name'))
-          $('#objPropLabel').val(opt.target.get('label'))
-          $('#objPropStroke').val(opt.target.get('stroke'))
-          $('#newPropStroke').val(opt.target.get('stroke'))
-          $('#newPropFill').val(opt.target.get('fill'))
-          $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
+          // $('#objPropType').val(opt.target.get('type'))
+          // $('#objPropName').val(opt.target.get('name'))
+          // $('#objPropLabel').val(opt.target.get('label'))
+          // $('#objPropStroke').val(opt.target.get('stroke'))
+          // $('#newPropStroke').val(opt.target.get('stroke'))
+          // $('#newPropFill').val(opt.target.get('fill'))
+          // $('#newPropAltitude').val(parseInt(opt.target.get('altitude')) || 0)
+          showObjPropChange(opt.target)
         }
       },
       selection_updated: function (opt) {
@@ -84,35 +85,106 @@ function initCanvas(canvasId, canvasViewId) {
   return edit;
 }
 
-function objectPropertyChange(edit, objOption) {
-  $('#propChange').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    activeObj.set({
-      stroke: $('#newPropStroke').val()
-    });
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-  })
-  $('#propChangeFill').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    activeObj.set({
-      fill: $('#newPropFill').val()
-    });
-    // edit.canvasView.renderAll();
-    edit.viewRender()
-  })
-  $('#propChangeAltitude').click(function () {
-
-    var activeObj = edit.canvasView.getActiveObject();
-    if (activeObj) {
-      activeObj.set({
-        altitude: $('#newPropAltitude').val()
-      });
+function showObjPropChange(object) {
+  $('#objPropType').val(object.get('type'))
+  $('#objPropName').val(object.get('name'))
+  $('#newPropStroke').val(hiDraw.prototype.colorToHex(object.get('stroke')))
+  $('#newPropFill').val(hiDraw.prototype.colorToHex(object.get('fill')))
+  $('#newPropStrokeWidth').val(object.get('strokeWidth'))
+  $('#newPropText').val(object.get('text'))
+  var dataBinding = object.get('dataBinding') || {
+    fill:{
+      advanced: 'function (value) {return \'#F00\';}'
     }
-    // edit.canvasView.renderAll();
+  }
+  if(typeof dataBinding === 'string') {
+    $('#newPropDataBinding').val(dataBinding)
+  } else {
+    $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+  }
+}
+
+function objectPropertyChange(edit, objOption) {
+  $('#displayPropApply').click(function(){
+    var opt = {
+      width: $('#newPropDisplayWidth').val(),
+      height: $('#newPropDisplayHeight').val()
+    }
+    if (!edit.canvasView.displayProp) {
+      edit.canvasView.displayProp = JSON.stringify(opt)
+    } else {
+      edit.canvasView.displayProp = JSON.stringify(edit.mergeDeep(JSON.parse(edit.canvasView.displayProp), opt))
+    }
+    edit.defaultOptions.gridAxis.width = opt.width
+    edit.defaultOptions.gridAxis.height = opt.height
+    edit.BgGrid(true)
+  })
+  $('#objectPropApply').click(function(){
+    var activeObj = edit.canvasView.getActiveObject();
+    var bindingStr = hiDraw.prototype.readTextareaFuncStr($('#newPropDataBinding').val())
+    var dataBinding = bindingStr
+    var newProp = {
+      name: $('#objPropName').val(),
+      stroke: $('#newPropStroke').val(),
+      strokeWidth: parseInt($('#newPropStrokeWidth').val()),
+      fill: $('#newPropFill').val(),
+      text: $('#newPropText').val(),
+      dataBinding: dataBinding
+    }
+    activeObj.set(newProp);
     edit.viewRender()
+  })
+  // ------------ data binding 
+  $('#openDataBinding').click(function () {
+    $('#dataBindingDialog').css('display', 'block')
+    var bindingStr = $('#newPropDataBinding').val()
+    //替换所有的换行符
+    bindingStr = bindingStr.replace(/\r\n/g,"")
+    bindingStr = bindingStr.replace(/\n/g,"");
+    // var dataBinding = JSON.parse(bindingStr)
+    while (typeof bindingStr === 'string') {
+      bindingStr = JSON.parse(bindingStr)
+    }
+    var dataBinding = bindingStr
+    $('.dbPropCard').remove()
+    var str = ''
+    for(var key in dataBinding) {
+      str += '<div class="dataBindingDialogCard dbPropCard">'
+      str += '  <div><span>property name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="'+key+'" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">'+dataBinding[key].advanced+'</textarea></div>'
+      str += '</div>'
+    }
+    $('#dataBindingDialogContent').append(str)
+  })
+  $('#dataBindingDialogClose').click(function () {
+    $('#dataBindingDialog').css('display', 'none')
+    var dataBinding = {}
+    $('.dbPropCard').each(function(){
+      var key = $(this).find('.dbPropName').val()
+      var advanced = $(this).find('.dbPropFunc').val()
+      dataBinding[key] = {}
+      dataBinding[key].advanced = advanced
+    })
+    $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
+    // $('#newPropDataBinding').val(JSON.stringify(dataBinding))
+  })
+  $('#dataBindingDialogContent').click(function (e) {
+    var target = e.target
+    if ($(target).attr('id') === 'addDbPropName') {
+      var key = $(target).parents('#dataBindingDialogCardNew').find('.dbPropName').val()
+      var advanced = $(target).parents('#dataBindingDialogCardNew').find('.dbPropFunc').val()
+      var str = ''
+      str += '<div class="dataBindingDialogCard dbPropCard">'
+      str += '  <div><span>property name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="' + key + '" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">' + advanced + '</textarea></div>'
+      str += '</div>'
+      $(target).parents('#dataBindingDialogCardNew').after(str)
+    }
+    if ($(target).hasClass('removeDbPropName')) {
+      $(target).parents('.dbPropCard').remove()
+    }
   })
 }
 
