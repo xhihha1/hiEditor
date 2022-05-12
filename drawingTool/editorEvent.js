@@ -160,7 +160,6 @@ function editorEvent(edit, objOption) {
   $('#import').click(function () {
     var json = $('#importJson').val()
     edit.import(json);
-    console.log('XX');
     if (json) {
       // edit.import(json);
 
@@ -200,7 +199,6 @@ function editorEvent(edit, objOption) {
   $('#importFabric').click(function () {
     var json = $('#importfabricJson').val()
     if (json) {
-      console.log('xxx')
       edit.canvasView.loadFromJSON(json)
       var result = JSON.parse(json)
       if(typeof result.sceneProp === 'string') {
@@ -264,7 +262,7 @@ function editorEvent(edit, objOption) {
 
   var showaxis = false
   $('#axis').click(function (e) {
-    console.log('A click')
+    // console.log('A click')
     edit.BgGrid()
 
     // showaxis = !showaxis

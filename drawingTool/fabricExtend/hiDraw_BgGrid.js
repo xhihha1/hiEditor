@@ -27,8 +27,12 @@
       canvasTemplate.style.left = '0px'
       canvasTemplate.style.zIndex = '-10'
       canvasTemplate.style.pointerEvents = 'none'
-      canvasTemplate.width = document.getElementById(this.defaultOptions.canvasViewId).width
-      canvasTemplate.height = document.getElementById(this.defaultOptions.canvasViewId).height
+      const widthGrid = this.canvasView && this.canvasView.width? this.canvasView.width : document.getElementById(this.defaultOptions.canvasViewId).width
+      const heightGrid = this.canvasView && this.canvasView.height? this.canvasView.height : document.getElementById(this.defaultOptions.canvasViewId).height
+      // canvasTemplate.width = document.getElementById(this.defaultOptions.canvasViewId).width
+      // canvasTemplate.height = document.getElementById(this.defaultOptions.canvasViewId).height
+      canvasTemplate.width = widthGrid
+      canvasTemplate.height = heightGrid
       var ctx = canvasTemplate.getContext("2d");
       var canvas = this.canvasView;
       var canvasZoom = canvas.getZoom();
