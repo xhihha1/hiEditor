@@ -75,4 +75,4 @@ hichart.prototype.plotStackedAreaData = function (dataSet) {
     context.scale((1 / scaleX),(1 / scaleY));
     context.translate(-1 * translateX, -1 * translateY);
     return this;
-}
+} 
