@@ -244,6 +244,8 @@ body {
   color: #FFFFFF;
   background-color: rgb(60,60,60);
   text-overflow: ellipsis;
+  box-sizing: border-box;
+  border-bottom: 1px solid #FFFFFF;
 }
 #property .prop-content{
   position: relative;
@@ -253,6 +255,9 @@ body {
   font-size: 16px;
   color: #FFFFFF;
   background-color: rgb(91,91,91);
+}
+#property .prop-content > div {
+  line-height: 24px;
 }
 
 /* --- hichartIcon --- */
@@ -348,7 +353,14 @@ body {
   height: 25px;
   outline: none;
   border: 0;
-  padding: 0;
+  padding: 2px 5px;
+  background-color: black;
+  color: white;
+}
+#property .prop_input:disabled {
+  background-color: #252525;
+  color: #ccc;
+  cursor: not-allowed;
 }
 
 /* --- dataBindingDialog --- */

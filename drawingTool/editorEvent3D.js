@@ -515,6 +515,17 @@ function editorEvent3D(edit, objOption) {
       });
     }
   })
+
+  $('.prop-content').toggle();
+  $('#property').click(function(e){
+    const target = e.target
+    if($(target).hasClass('prop-title')){
+      $(target).next('.prop-content').toggle();
+    }
+  })
+
+  // $('#menu').scrollbar();
+
 }
 
 function setCameraPropertyUI (edit, cameraOpt) {
