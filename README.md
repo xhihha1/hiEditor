@@ -26,3 +26,5 @@ hiEditor為純前端繪圖軟體，整合 2D `fabric.js` 繪圖套件及 3D `thr
 ## 2D 繪圖  
 
 透過 fabric.js 撰寫客製化 class，支援 `div`, `video`, `image`, `heatmap` 等，`html`元素顯示。  
+
+[try](https://xhihha1.github.io/hiEditor/drawingTool3D.html)
