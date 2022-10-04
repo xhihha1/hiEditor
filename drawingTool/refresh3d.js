@@ -76,7 +76,10 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
           removeNodes[i].geometry.dispose();
         }
         if (removeNodes[i].material) {
-          removeNodes[i].material.dispose();
+          console.log(removeNodes[i].material)
+          if (typeof removeNodes[i].material.dispose === 'function') {
+            removeNodes[i].material.dispose();
+          }
         }
         this.scene.remove(removeNodes[i]);
       }

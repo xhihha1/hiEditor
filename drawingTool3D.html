@@ -98,6 +98,7 @@
   <!-- <link rel="stylesheet" href="drawingTool/editor3d/style/drawingTool.css"> -->
   <link rel="stylesheet" href="drawingTool/common/thirdparty/jqueryScrollbar/jquery.scrollbar.css">
   <link rel="stylesheet" href="drawingTool/editor3d/style/drawingTool_black.css">
+  <link rel="stylesheet" href="drawingTool/common/style/common.css">
   <style>
   </style>
 </head>
@@ -113,10 +114,10 @@
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">File</a>
             <div class="dropdown-content">
-              <div id="export" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
-              <div id="exportFabric" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
-              <div id="import" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
-              <div id="importFabric" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
+              <div id="openExportLabelmeDialog" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
+              <div id="openExportFabricDialog" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
+              <div id="openImportLabelmeDialog" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
+              <div id="openImportFabricDialog" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
               <div id="downloadJson" class="sublist"><img src="./icon/download_w.png" class="tool-icon">Download Json</div>
               <div class="sublist">
                 <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
@@ -209,6 +210,14 @@
               <div class="sublist" id="drawDiv">Div</div>
             </div>
           </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Scene</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openSceneDialog">Scene</div>
+              <div class="sublist" id="openGridDialog">Grid</div>
+              <div class="sublist" id="openTranformCtrlDialog">tranform control</div>
+            </div>
+          </li>
           <!-- <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
             <div class="dropdown-content">
@@ -267,39 +276,6 @@
                   <li></li>
                 </ul>
               </div>
-            </li>
-            <li class="prop-title">Grid</li>
-            <li class="prop-content">
-              <div><label><input name="" id="btnGridHelper" type="checkbox" value="1" checked> GridHelper</label></div>
-              <div><span>size</span></div>
-              <div><input type="text" id="gridSize" placeholder="gridSize" value="1000" class="prop_input"></div>
-              <div><span>division</span></div>
-              <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100" class="prop_input"></div>
-              <div><span>colorCenter: </span></div>
-              <div><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
-              <div><span>colorGrid: </span></div>
-              <div><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
-              <div><button id="submitGrid">submit</button></div>
-            </li>
-            <li class="prop-title">Scene</li>
-            <li class="prop-content">
-              <!-- <div><label><input name="" id="btnGround" type="checkbox" value="1"> Ground</label></div> -->
-              <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
-              <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1" checked> AxesHelper</label></div>
-              <div><label><input name="" id="btnSpotLightHelper" type="checkbox" > SpotLight Helper</label></div>
-              <div><label><input name="" id="btnBoxHelper" type="checkbox">Box Helper</label></div>
-            </li>
-            <li class="prop-title">tranform control</li>
-            <li class="prop-content">
-              <div><label><input name="" id="tc_enable" type="checkbox" value="1" checked>Enable</label></div>
-              <div><button id="tc_translate">translate</button></div>
-              <div><button id="tc_rotate">rotate</button></div>
-              <div><button id="tc_scale">scale</button></div>
-              <div><button id="tc_sizePlus">ctrl size +</button></div>
-              <div><button id="tc_sizeMinus">ctrl size -</button></div>
-              <div><button id="tc_toggleX">toggle x</button></div>
-              <div><button id="tc_toggleY">toggle y</button></div>
-              <div><button id="tc_toggleZ">toggle z</button></div>
             </li>
             <li class="prop-title">3d obj source</li>
             <li class="prop-content">
@@ -382,25 +358,6 @@
             <li class="prop-content">
               <button id="video">Video</button>
             </li>
-            <!-- export -->
-            <li class="prop-title">Export fabric Json</li>
-            <li class="prop-content">
-              <textarea id="currentJson"></textarea>
-            </li>
-            <li class="prop-title">Export Labelme Json</li>
-            <li class="prop-content">
-              <textarea id="exportJson"></textarea>
-            </li>
-            <!-- Import -->
-            <li class="prop-title">Import fabric Json</li>
-            <li class="prop-content">
-              <textarea id="importfabricJson"></textarea>
-            </li>
-            <li class="prop-title">Import Labelme Json</li>
-            <li class="prop-content">
-              <textarea id="importJson"></textarea>
-            </li>
-            <!-- control -->
             <li class="prop-title">Pan control</li>
             <li class="prop-content">
               <div><button id="goUp">up</button></div>
@@ -644,6 +601,101 @@
       </div>
     </div>
   </div>
+  <!-- property Dialog -->
+  <!-- <div class="commonDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">ABC</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent"></div>
+  </div> -->
+  <div class="commonDialog" id="exportFabricDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Export fabric</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="currentJson"></textarea></div>
+      <div><button id="exportFabric">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="exportLabelmeDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Export labelme</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="exportJson"></textarea></div>
+      <div><button id="export">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="importFabricDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Import fabric</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="importfabricJson"></textarea></div>
+      <div><button id="importFabric">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="importLabelmeDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Import labelme</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="importJson"></textarea></div>
+      <div><button id="import">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="sceneDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Scene</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="btnCameraHelper" type="checkbox" > Camera Helper</label></div>
+      <div><label><input name="" id="btnAxesHelper" type="checkbox" value="1" checked> AxesHelper</label></div>
+      <div><label><input name="" id="btnSpotLightHelper" type="checkbox" > SpotLight Helper</label></div>
+      <div><label><input name="" id="btnBoxHelper" type="checkbox">Box Helper</label></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="gridDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Grid</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="btnGridHelper" type="checkbox" value="1" checked> GridHelper</label></div>
+      <div><span>size</span></div>
+      <div><input type="text" id="gridSize" placeholder="gridSize" value="1000" class="prop_input"></div>
+      <div><span>division</span></div>
+      <div><input type="text" id="gridDivisions" placeholder="gridDivisions" value="100" class="prop_input"></div>
+      <div><span>colorCenter: </span></div>
+      <div><input type="color" id="grid_colorCenter" name="" value="#888888"></div>
+      <div><span>colorGrid: </span></div>
+      <div><input type="color" id="grid_colorGrid" name="" value="#444444"></div>
+      <div><button id="submitGrid">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="tranformCtrlDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">tranform control</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="tc_enable" type="checkbox" value="1" checked>Enable</label></div>
+      <div><button id="tc_translate">translate</button></div>
+      <div><button id="tc_rotate">rotate</button></div>
+      <div><button id="tc_scale">scale</button></div>
+      <div><button id="tc_sizePlus">ctrl size +</button></div>
+      <div><button id="tc_sizeMinus">ctrl size -</button></div>
+      <div><button id="tc_toggleX">toggle x</button></div>
+      <div><button id="tc_toggleY">toggle y</button></div>
+      <div><button id="tc_toggleZ">toggle z</button></div>
+    </div>
+  </div>
   
   <script src="drawingTool/fabricExtend/hi3d.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_controlUtil.js"></script>
@@ -674,6 +726,7 @@
   <script src="drawingTool/editor3d.js"></script>
   <script src="drawingTool/refresh3d.js"></script>
   <script src="drawingTool/drawingTool3D.js"></script>
+  <script src="drawingTool/common/script/common.js"></script>
   
   <script>
     $(document).ready(function () {

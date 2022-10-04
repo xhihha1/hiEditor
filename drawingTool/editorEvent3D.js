@@ -525,6 +525,27 @@ function editorEvent3D(edit, objOption) {
   })
 
   // $('#menu').scrollbar();
+  $('#openSceneDialog').click(function(){
+    $('#sceneDialog').show()
+  })
+  $('#openGridDialog').click(function(){
+    $('#gridDialog').show()
+  })
+  $('#openTranformCtrlDialog').click(function(){
+    $('#tranformCtrlDialog').show()
+  })
+  $('#openExportFabricDialog').click(function(){
+    $('#exportFabricDialog').show()
+  })
+  $('#openExportLabelmeDialog').click(function(){
+    $('#exportLabelmeDialog').show()
+  })
+  $('#openImportFabricDialog').click(function(){
+    $('#importFabricDialog').show()
+  })
+  $('#openImportLabelmeDialog').click(function(){
+    $('#importLabelmeDialog').show()
+  })
 
 }
 
