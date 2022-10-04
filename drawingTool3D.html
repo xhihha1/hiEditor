@@ -216,6 +216,15 @@
               <div class="sublist" id="openSceneDialog">Scene</div>
               <div class="sublist" id="openGridDialog">Grid</div>
               <div class="sublist" id="openTranformCtrlDialog">tranform control</div>
+              <div class="sublist" id="openObjectListDialog">object List</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Light</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openDirectionalLightDialog">Directional Light</div>
+              <div class="sublist" id="openHemisphereLightDialog">Hemisphere Light</div>
+              <div class="sublist" id="openAmbientLightDialog">AmbientLight Light</div>
             </div>
           </li>
           <!-- <li class="dropdown">
@@ -269,14 +278,6 @@
           <ul>
             <li class="prop-title">Title</li>
             <li class="prop-content">content</li>
-            <li class="prop-title">object List</li>
-            <li class="prop-content">
-              <div id="objlistParent">
-                <ul id="objlist">
-                  <li></li>
-                </ul>
-              </div>
-            </li>
             <li class="prop-title">3d obj source</li>
             <li class="prop-content">
               <div><span>obj</span></div>
@@ -328,7 +329,7 @@
                 </ul>
               </div>
             </li>
-            <li class="prop-title">hichart</li>
+            <li class="prop-title" style="display: none;">hichart</li>
             <li class="prop-content">
               <div style="display: none;">
                 <ul id="hichartIconArea">
@@ -344,7 +345,7 @@
               </div>
             </li>
             <!-- image -->
-            <li class="prop-title">image</li>
+            <li class="prop-title" style="display: none;">image</li>
             <li class="prop-content">
               <div style="display: none;">
                 <ul id="imageIconArea">
@@ -354,7 +355,7 @@
                 </ul>
               </div>
             </li>
-            <li class="prop-title">Video</li>
+            <li class="prop-title" style="display: none;">Video</li>
             <li class="prop-content">
               <div style="display: none;">
                 <button id="video">Video</button>
@@ -366,34 +367,6 @@
               <div><button id="goDown">down</button></div>
               <div><button id="goRight">right</button></div>
               <div><button id="goLeft">left</button></div>
-            </li>
-            <li class="prop-title">Directional Light</li>
-            <li class="prop-content">
-              <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
-              <div><label><input name="" id="btnLightHelper" type="checkbox">Light Helper</label></div>
-              <div><span>color: </span><input type="color" id="light_color" name="" value="#FFFFFF"></div>
-              <div><span>intensity: </span></div>
-              <div><input  type="range" min="0" max="1" value="1" step="0.1" id="light_intensity" name="intensity" class="prop-slider"></div>
-              <div><label><input name="" id="light_castShadow" type="checkbox" checked>castShadow</label></div>
-              <div><button id="submitLight">submit</button></div>
-            </li>
-            <li class="prop-title">HemisphereLight Light</li>
-            <li class="prop-content">
-              <div><label><input name="" id="btnHemisphereLight" type="checkbox" checked> HemisphereLight</label></div>
-              <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
-              <div><span>skyColor: </span><input type="color" id="hemisphereLight_color" name="" value="#FFFFFF"></div>
-              <div><span>groundColor: </span><input type="color" id="hemisphereLight_groundColor" name="" value="#FFFFFF"></div>
-              <div><span>intensity: </span></div>
-              <div><input  type="range" min="0" max="1" value="1" step="0.1" id="hemisphereLight_intensity" name="intensity" class="prop-slider"></div>
-              <div><button id="submitHemisphereLight">submit</button></div>
-            </li>
-            <li class="prop-title">AmbientLight Light</li>
-            <li class="prop-content">
-              <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
-              <div><span>Color: </span><input type="color" id="ambientLight_color" name="" value="#FFFFFF"></div>
-              <div><span>intensity: </span></div>
-              <div><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity" class="prop-slider"></div>
-              <div><button id="submitAmbientLight">submit</button></div>
             </li>
             <!-- Object property -->
             <li class="prop-title">Scene property</li>
@@ -550,7 +523,7 @@
               <div><input type="number" id="newSpotDecay" name="decay" value="2" class="prop_input"></div>
               <div><button id="propApply">apply property</button></div>
             </li>
-            <li class="prop-title">heatmap</li>
+            <li class="prop-title" style="display: none;">heatmap</li>
             <li class="prop-content">
               <div style="display: none;">
                 <div><span>radius: </span></div>
@@ -698,6 +671,62 @@
       <div><button id="tc_toggleX">toggle x</button></div>
       <div><button id="tc_toggleY">toggle y</button></div>
       <div><button id="tc_toggleZ">toggle z</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="objectListDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">object List</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent" style="width: 200px;">
+      <div id="objlistParent">
+        <ul id="objlist">
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="commonDialog" id="directionalLightDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Directional Light</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="btnLight" type="checkbox" checked>Light</label></div>
+      <div><label><input name="" id="btnLightHelper" type="checkbox">Light Helper</label></div>
+      <div><span>color: </span><input type="color" id="light_color" name="" value="#FFFFFF"></div>
+      <div><span>intensity: </span></div>
+      <div><input  type="range" min="0" max="1" value="1" step="0.1" id="light_intensity" name="intensity" class="prop-slider"></div>
+      <div><label><input name="" id="light_castShadow" type="checkbox" checked>castShadow</label></div>
+      <div><button id="submitLight">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="hemisphereLightDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Hemisphere Light</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="btnHemisphereLight" type="checkbox" checked> HemisphereLight</label></div>
+      <div><label><input name="" id="btnHemisphereLightHelper" type="checkbox" value="1"> HemisphereLight Helper</label></div>
+      <div><span>skyColor: </span><input type="color" id="hemisphereLight_color" name="" value="#FFFFFF"></div>
+      <div><span>groundColor: </span><input type="color" id="hemisphereLight_groundColor" name="" value="#FFFFFF"></div>
+      <div><span>intensity: </span></div>
+      <div><input  type="range" min="0" max="1" value="1" step="0.1" id="hemisphereLight_intensity" name="intensity" class="prop-slider"></div>
+      <div><button id="submitHemisphereLight">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="ambientLightDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Ambient Light</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><label><input name="" id="btnAmbientLight" type="checkbox" checked> ambientLight</label></div>
+      <div><span>Color: </span><input type="color" id="ambientLight_color" name="" value="#FFFFFF"></div>
+      <div><span>intensity: </span></div>
+      <div><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity" class="prop-slider"></div>
+      <div><button id="submitAmbientLight">submit</button></div>
     </div>
   </div>
   

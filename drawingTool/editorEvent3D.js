@@ -546,6 +546,18 @@ function editorEvent3D(edit, objOption) {
   $('#openImportLabelmeDialog').click(function(){
     $('#importLabelmeDialog').show()
   })
+  $('#openDirectionalLightDialog').click(function(){
+    $('#directionalLightDialog').show()
+  })
+  $('#openHemisphereLightDialog').click(function(){
+    $('#hemisphereLightDialog').show()
+  })
+  $('#openAmbientLightDialog').click(function(){
+    $('#ambientLightDialog').show()
+  })
+  $('#openObjectListDialog').click(function(){
+    $('#objectListDialog').show()
+  })
 
 }
 

@@ -50,4 +50,5 @@
   color: #FFFFFF;
   box-sizing: border-box;
   padding: 2px;
+  overflow: auto;
 }
