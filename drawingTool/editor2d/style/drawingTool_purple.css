@@ -24,6 +24,7 @@ body {
   width: 100%;
   height: 60px;
   background-color: rgb(36,34,74);
+  z-index: 500;
 }
 
 #mainPage {
@@ -92,11 +93,67 @@ body {
   padding: 0;
 }
 
+li .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+li.dropdown  .tool-icon {
+  vertical-align: sub;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    padding: 0;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(67,56,114, 1);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .sublistTitle {
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 5px 8px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  opacity: 1;
+}
+
+.dropdown-content .sublist {
+  color: #FFFFFF;
+  padding: 5px 8px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  opacity: 0.8;
+}
+
+.dropdown-content .sublist:hover {
+  opacity: 1;
+  color: rgb(220,38,36);
+  border-bottom: 1px solid rgb(239,175,74);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 /* --- layer 3 mainPage --- */
 #lContain {
   float: left;
   position: relative;
-  width: 50px;
+  width: 5px;
   height: 100%;
   background-color: rgba(245,245,245, 0.3);
   overflow-x: hidden;
@@ -106,7 +163,7 @@ body {
 #mContain {
   float: left;
   position: relative;
-  width: calc(100% - 300px);
+  width: calc(100% - 255px);
   height: 100%;
   /* background-color: rgba(105,105,105, 0.9); */
   background-color: #FFFFFF;

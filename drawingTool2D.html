@@ -89,15 +89,75 @@
       <div id="titleArea">Hi Editor</div>
       <div id="toolBarArea">
         <ul>
-          <li id="export"><img src="./icon/export-file_w.png" class="tool-icon">export</li>
+          <!-- <li id="export"><img src="./icon/export-file_w.png" class="tool-icon">export</li>
           <li id="exportFabric"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</li>
           <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">load Image</li>
           <li id="importFabric"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</li>
           <li id="downloadJson"><img src="./icon/download_w.png" class="tool-icon">Download Json</li>
           <li><label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label></li>
-          <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li>
+          <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li> -->
           <!-- <li id=""><img src="./icon/rectangle_w.png" class="tool-icon"></li>
           <li id=""><img src="./icon/ellipse_w.png" class="tool-icon"></li> -->
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">File</a>
+            <div class="dropdown-content">
+              <div id="export" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
+              <div id="exportFabric" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
+              <div id="import" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
+              <div id="importFabric" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
+              <div id="downloadJson" class="sublist"><img src="./icon/download_w.png" class="tool-icon">Download Json</div>
+              <div class="sublist">
+                <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Go to</a>
+            <div class="dropdown-content">
+              <div class="sublist"><a target="_blank" href="drawingTool.html">3D Editor</a></div>
+              <div class="sublist"><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
+              <div class="sublist"><a id="saveFabricLocalStorage3D">3D viewer</a></div>
+              <div class="sublist"><a id="saveFabricLocalStorage2D">2D viewer</a></div>
+              <div class="sublist"><a id="saveFabricImage2D">To 2D image</a></div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">View</a>
+            <div class="dropdown-content">
+              <div id="axis" class="sublist" title="axis">
+                <img src="./icon/axis_w.png" class="tool-icon">Axis
+              </div>
+              <div id="panCanvas" class="sublist" title="Pan">
+                <img src="icon/move.png" class="tool-icon">Pan
+              </div>
+              <div id="zoomIn" class="sublist" title="Zoom in">
+                <img src="icon/zoom-in.png" class="tool-icon">Zoom in
+              </div>
+              <div id="zoomOut" class="sublist" title="Zoom out">
+                <img src="icon/zoom-out.png" class="tool-icon">Zoom out
+              </div>
+              <div id="selectArea" class="sublist" title="Select area">
+                <img src="icon/selectArea.png" class="tool-icon">Select area
+              </div>
+              <div id="resize" class="sublist" title="Resize">
+                <img src="icon/resize.png" class="tool-icon">Resize
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">2D Shape</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="drawRect" title="Rect"><img class="tool-icon" src="icon/rectangle.png">Rect</div>
+              <div class="sublist" id="drawCircle" title="Circle"><img class="tool-icon" src="icon/ellipse.png">Circle</div>
+              <div class="sublist" id="drawPolygon" title="Polygon"><img class="tool-icon" src="icon/polygon.png">Polygon</div>
+              <div class="sublist" id="drawLine" title="Line"><img class="tool-icon" src="icon/line.png">Line</div>
+              <div class="sublist" id="drawPolyline" title="Polyline"><img class="tool-icon" src="icon/polyline.png">Polyline</div>
+              <div class="sublist" id="drawPath" title="Path"><img class="tool-icon" src="icon/path.png">Path</div>
+              <div class="sublist" id="drawHeatmapPoint" title="HeatmapPoint"><img class="tool-icon" src="icon/heatmap.png">Heatmap</div>
+              <div class="sublist" id="drawDiv">Div</div>
+              <div class="sublist" id="drawIText">Text</div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -105,29 +165,6 @@
       <div id="lContain">
         <div id="menu">
           <ul>
-            <li class="menuTitle">Shape</li>
-            <li id="drawRect"><img src="icon/rectangle.png"></li>
-            <li id="drawCircle"><img src="icon/ellipse.png"></li>
-            <li id="drawPolygon"><img src="icon/polygon.png"></li>
-            <li id="drawLine"><img src="icon/line.png"></li>
-            <li id="drawPolyline"><img src="icon/polyline.png"></li>
-            <li id="drawPath"><img src="icon/path.png"></li>
-            <li id="drawHeatmapPoint"><img src="icon/heatmap.png"></li>
-            <li id="drawDiv">Div</li>
-            <li id="drawIText">text</li>
-            <li class="menuTitle">View</li>
-            <li id="panCanvas"><img src="icon/move.png"></li>
-            <li id="zoomIn"><img src="icon/zoom-in.png"></li>
-            <li id="zoomOut"><img src="icon/zoom-out.png"></li>
-            <li id="selectArea"><img src="icon/selectArea.png"></li>
-            <li id="resize"><img src="icon/resize.png"></li>
-            <li class="menuTitle">File</li>
-            <li id="export"><img src="icon/export-file.png"></li>
-            <li id="exportFabric"><img src="icon/export-file-f.png"></li>
-            <li id="import"><img src="icon/import-file.png"></li>
-            <li id="importFabric"><img src="icon/import-file-f.png"></li>
-            <li class="menuTitle">Setting</li>
-            <li id="axis"><img src="icon/axis.png"></li>
           </ul>
         </div>
       </div>
@@ -142,14 +179,6 @@
           <ul>
             <li class="prop-title">Title</li>
             <li class="prop-content">content</li>
-            <li class="prop-title">Series Page</li>
-            <li class="prop-content">
-              <div><a target="_blank" href="drawingTool3D.html">3D Editor</a></div>
-              <div><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
-              <div><a id="saveFabricLocalStorage3D">3D viewer</a></div>
-              <div><a id="saveFabricLocalStorage2D">2D viewer</a></div>
-              <div><a id="saveFabricImage2D">To 2D image</a></div>
-            </li>
             <li class="prop-title">object List</li>
             <li class="prop-content">
               <div>

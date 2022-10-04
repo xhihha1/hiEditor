@@ -108,70 +108,142 @@
       <div id="titleArea">Hi Editor</div>
       <div id="toolBarArea">
         <ul>
-          <li id="export"><img src="./icon/export-file_w.png" class="tool-icon">export</li>
-          <li id="exportFabric"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</li>
-          <li id="import"><img src="./icon/import-file_w.png" class="tool-icon">import</li>
-          <li id="importFabric"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</li>
-          <li id="downloadJson"><img src="./icon/download_w.png" class="tool-icon">Download Json</li>
-          <li><label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label></li>
-          <li id="axis"><img src="./icon/axis_w.png" class="tool-icon" title="axis"></li>
           <!-- <li id=""><img src="./icon/rectangle_w.png" class="tool-icon"></li>
           <li id=""><img src="./icon/ellipse_w.png" class="tool-icon"></li> -->
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">File</a>
+            <div class="dropdown-content">
+              <div id="export" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
+              <div id="exportFabric" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
+              <div id="import" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
+              <div id="importFabric" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
+              <div id="downloadJson" class="sublist"><img src="./icon/download_w.png" class="tool-icon">Download Json</div>
+              <div class="sublist">
+                <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Go to</a>
+            <div class="dropdown-content">
+              <div class="sublist"><a target="_blank" href="drawingTool.html">3D Editor</a></div>
+              <div class="sublist"><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
+              <div class="sublist"><a id="saveFabricLocalStorage3D">3D viewer</a></div>
+              <div class="sublist"><a id="saveFabricLocalStorage2D">2D viewer</a></div>
+              <div class="sublist"><a id="saveFabricImage2D">To 2D image</a></div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">View</a>
+            <div class="dropdown-content">
+              <div id="axis" class="sublist" title="axis">
+                <img src="./icon/axis_w.png" class="tool-icon">Axis
+              </div>
+              <div id="panCanvas" class="sublist" title="Pan">
+                <img src="icon/move.png" class="tool-icon">Pan
+              </div>
+              <div id="zoomIn" class="sublist" title="Zoom in">
+                <img src="icon/zoom-in.png" class="tool-icon">Zoom in
+              </div>
+              <div id="zoomOut" class="sublist" title="Zoom out">
+                <img src="icon/zoom-out.png" class="tool-icon">Zoom out
+              </div>
+              <div id="selectArea" class="sublist" title="Select area">
+                <img src="icon/selectArea.png" class="tool-icon">Select area
+              </div>
+              <div id="resize" class="sublist" title="Resize">
+                <img src="icon/resize.png" class="tool-icon">Resize
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Group</a>
+            <div class="dropdown-content">
+              <div id="drawGroup" class="sublist" title="group">
+                <img src="icon/group.png" class="tool-icon">Group
+              </div>
+              <div id="drawUngroup" class="sublist" title="ungroup">
+                <img src="icon/ungroup.png" class="tool-icon">Ungroup
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">3D object</a>
+            <div class="dropdown-content">
+              <div class="sublist" title="render" id="render3D">render</div>
+              <div class="sublist" title="spot line" id="drawSpotLight"><img class="tool-icon" src="icon/spotLight_w.png">spot line</div>
+              <div class="sublist" title="point light" id="drawPointLight"><img class="tool-icon" src="icon/pointLight_w.png">point light</div>
+              <div class="sublist" title="cube" id="drawCube"><img class="tool-icon" src="icon/cube_w.png">cube</div>
+              <div class="sublist" title="sphere" id="drawSphere"><img class="tool-icon" src="icon/sphere_w.png">sphere</div>
+              <div class="sublist" title="cylinder" id="drawCylinder"><img class="tool-icon" src="icon/cylinder_w.png">cylinder</div>
+              <div class="sublist" title="line" id="draw3dPolyline"><img class="tool-icon" src="icon/polyline_w.png">line</div>
+              <div class="sublist" title="close curve" id="draw3dPolygon"><img class="tool-icon" src="icon/polygon_w.png">close curve</div>
+              <div class="sublist" title="plane" id="draw3dPlaneGround"><img class="tool-icon" src="icon/plane_w.png">plane</div>
+              <div class="sublist" title="wall" id="draw3dWall"><img class="tool-icon" src="icon/wall_w.png">wall</div>
+              <div class="sublist" title="Plane" id="draw3dPlane">Plane</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">3D model</a>
+            <div class="dropdown-content">
+              <div class="sublistTitle">Model</div>
+              <div class="sublist" title="obj" id="draw3dHiFormatObj"><img class="tool-icon" src="icon/file_obj_w.png">obj</div>
+              <div class="sublist" title="collada" id="draw3dHiFormatCollada"><img class="tool-icon" src="icon/file_collada_w.png">collada</div>
+              <div class="sublist" title="stl" id="draw3dHiFormatSTL"><img class="tool-icon" src="icon/file_stl_w.png">stl</div>
+              <div class="sublist" title="3ds" id="draw3dHiFormat3DS"><img class="tool-icon" src="icon/file_3ds_w.png">3ds</div>
+              <div class="sublist" title="gltf" id="draw3dHiFormatGLTF"><img class="tool-icon" src="icon/file_gltf_w.png">gltf</div>
+              <div class="sublist" title="fbx" id="draw3dHiFormatFbx"><img class="tool-icon" src="icon/file_gltf_w.png">fbx</div>
+              <div class="sublist" title="Nrrd" id="draw3dHiFormatNRRD"><img class="tool-icon" src="icon/file_nrrd_w.png">Nrrd</div>
+            </div>
+          </li>
+          <li class="dropdown" style="display: none;">
+            <a href="javascript:void(0)" class="dropbtn">2D Shape</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="drawRect" title="Rect"><img class="tool-icon" src="icon/rectangle.png">Rect</div>
+              <div class="sublist" id="drawCircle" title="Circle"><img class="tool-icon" src="icon/ellipse.png">Circle</div>
+              <div class="sublist" id="drawPolygon" title="Polygon"><img class="tool-icon" src="icon/polygon.png">Polygon</div>
+              <div class="sublist" id="drawLine" title="Line"><img class="tool-icon" src="icon/line.png">Line</div>
+              <div class="sublist" id="drawPolyline" title="Polyline"><img class="tool-icon" src="icon/polyline.png">Polyline</div>
+              <div class="sublist" id="drawPath" title="Path"><img class="tool-icon" src="icon/path.png">Path</div>
+              <div class="sublist" id="drawHeatmapPoint" title="HeatmapPoint"><img class="tool-icon" src="icon/heatmap.png">Heatmap</div>
+              <div class="sublist" id="drawDiv">Div</div>
+            </div>
+          </li>
+          <!-- <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+            <div class="dropdown-content">
+              <div class="sublist">Link 1</div>
+              <div class="sublist">Link 2</div>
+              <div class="sublist">Link 3</div>
+            </div>
+          </li> -->
         </ul>
       </div>
     </div>
     <div id="mainPage">
       <div id="lContain">
-        <div id="menu" class="scrollbar-inner">
-          <ul>
-            <li class="menuTitle">3D</li>
-            <li id="render3D">3d render</li>
+        <!-- <div id="menu" class="scrollbar-inner"> -->
+          <!-- <ul> -->
             <!-- <li id="drawCamera"><img src="icon/camera_w.png" title="camera"></li>
             <li id="drawLookAt"><img src="icon/lookAt_w.png" title="look at"></li> -->
-            <li id="drawSpotLight"><img src="icon/spotLight_w.png" title="spot line"></li>
-            <li id="drawPointLight"><img src="icon/pointLight_w.png" title="point light"></li>
-            <li id="drawCube"><img src="icon/cube_w.png" title="cube"></li>
-            <li id="drawSphere"><img src="icon/sphere_w.png" title="sphere"></li>
-            <li id="drawCylinder"><img src="icon/cylinder_w.png" title="cylinder"></li>
-            <li id="draw3dPolyline"><img src="icon/polyline_w.png" title="line"></li>
-            <li id="draw3dPolygon"><img src="icon/polygon_w.png" title="close curve"></li>
-            <li id="draw3dPlaneGround"><img src="icon/plane_w.png" title="plane"></li>
-            <li id="draw3dWall"><img src="icon/wall_w.png" title="wall"></li>
-            <li id="draw3dHiFormatObj"><img src="icon/file_obj_w.png" title="obj"></li>
-            <li id="draw3dHiFormatCollada"><img src="icon/file_collada_w.png" title="collada"></li>
-            <li id="draw3dHiFormatSTL"><img src="icon/file_stl_w.png" title="stl"></li>
-            <li id="draw3dHiFormat3DS"><img src="icon/file_3ds_w.png" title="3ds"></li>
-            <li id="draw3dHiFormatGLTF"><img src="icon/file_gltf_w.png" title="gltf"></li>
-            <li id="draw3dHiFormatFbx"><img src="icon/file_gltf_w.png" title="fbx"></li>
-            <li id="draw3dHiFormatNRRD"><img src="icon/file_nrrd_w.png" title="Nrrd"></li>
-            <li id="draw3dPlane">Plane</li>
-            <li class="menuTitle">Group</li>
+            <!-- <li class="menuTitle">Group</li>
             <li id="drawGroup"><img src="icon/group.png" title="group"></li>
-            <li id="drawUngroup"><img src="icon/ungroup.png" title="ungroup"></li>
-            <li class="menuTitle">2D_Shape</li>
-            <li id="drawRect"><img src="icon/rectangle.png"></li>
-            <li id="drawCircle"><img src="icon/ellipse.png"></li>
-            <li id="drawPolygon"><img src="icon/polygon.png"></li>
-            <li id="drawLine"><img src="icon/line.png"></li>
-            <li id="drawPolyline"><img src="icon/polyline.png"></li>
-            <li id="drawPath"><img src="icon/path.png"></li>
-            <li id="drawHeatmapPoint"><img src="icon/heatmap.png"></li>
-            <li id="drawDiv">Div</li>
-            <li class="menuTitle">View</li>
+            <li id="drawUngroup"><img src="icon/ungroup.png" title="ungroup"></li> -->
+            <!-- <li class="menuTitle">View</li>
             <li id="panCanvas"><img src="icon/move.png"></li>
             <li id="zoomIn"><img src="icon/zoom-in.png"></li>
             <li id="zoomOut"><img src="icon/zoom-out.png"></li>
             <li id="selectArea"><img src="icon/selectArea.png"></li>
-            <li id="resize"><img src="icon/resize.png"></li>
-            <li class="menuTitle">File</li>
+            <li id="resize"><img src="icon/resize.png"></li> -->
+            <!-- <li class="menuTitle">File</li> -->
             <!-- <li id="export"><img src="icon/export-file.png"></li> -->
             <!-- <li id="exportFabric"><img src="icon/export-file-f.png"></li> -->
             <!-- <li id="import"><img src="icon/import-file.png"></li> -->
             <!-- <li id="importFabric"><img src="icon/import-file-f.png"></li> -->
             <!-- <li class="menuTitle">Setting</li> -->
             <!-- <li id="axis"><img src="icon/axis.png"></li> -->
-          </ul>
-        </div>
+          <!-- </ul> -->
+        <!-- </div> -->
       </div>
       <div id="mContain">
         <div class="area2D">
@@ -188,14 +260,6 @@
           <ul>
             <li class="prop-title">Title</li>
             <li class="prop-content">content</li>
-            <li class="prop-title">Series Page</li>
-            <li class="prop-content">
-              <div><a target="_blank" href="drawingTool.html">3D Editor</a></div>
-              <div><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
-              <div><a id="saveFabricLocalStorage3D">3D viewer</a></div>
-              <div><a id="saveFabricLocalStorage2D">2D viewer</a></div>
-              <div><a id="saveFabricImage2D">To 2D image</a></div>
-            </li>
             <li class="prop-title">object List</li>
             <li class="prop-content">
               <div id="objlistParent">
