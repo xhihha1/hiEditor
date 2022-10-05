@@ -3,7 +3,7 @@ var dataStructure = {
   viewer: []
 }
 
-function initCanvas(canvasId, canvasViewId) {
+function hi2dViewer(canvasId, canvasViewId) {
   var elem = document.getElementById(canvasId);
   var edit = new hiDraw({
     canvasViewId: canvasViewId,
@@ -44,38 +44,43 @@ function initCanvas(canvasId, canvasViewId) {
   };
 
   edit.canvasOption = objOption
+  this.edit = edit
 
-  return edit;
+  return this;
 }
 
-function importJson(edit, objOption) {
+hi2dViewer.prototype.importJson = function (objOption) {
+  // this.edit.mergeDeep(this.edit.canvasOption, objOption)
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
-  var fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
-  console.log(fabricJson)
-  if (fabricJson) {
-    edit.canvasView.loadFromJSON(fabricJson)
+  this.fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
+  console.log(this)
+  if (this.fabricJson) {
+    this.edit.canvasView.loadFromJSON(this.fabricJson)
   }
 }
 
-function viewerRefresh (edit, objOption) {
-  // edit.canvasView.forEachObject(function(i){ i.set('fill', 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')')})
+hi2dViewer.prototype.viewerRefresh = function (objOption) {
+  // this.edit.canvasView.forEachObject(function(i){ i.set('fill', 'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')')})
+  setTimeout(function(){
+    this.viewerRefresh(objOption)
+  }.bind(this), 1000)
 }
 
-(function () {
-  dataStructure.viewer.push(initCanvas('content', 'mainEditor'))
-  dataStructure.viewer[0].heatmapInstance = heatmapCreate(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+// (function () {
+  dataStructure.viewer.push(new hi2dViewer('content', 'mainEditor'))
+  dataStructure.viewer[0].edit.heatmapInstance = heatmapCreate(dataStructure.viewer[0].edit, dataStructure.viewer[0].edit.canvasOption)
   window.requestAnimationFrame(() => {
-    heatmapSetData(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+    heatmapSetData(dataStructure.viewer[0].edit, dataStructure.viewer[0].edit.canvasOption)
   });
 
-  
-  importJson(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+  dataStructure.viewer[0].importJson(dataStructure.viewer[0].edit.canvasOption)
+  dataStructure.viewer[0].edit.renderDataBinding()
 
   // 影片如果要自動撥放需要持續更新
   // fabric.util.requestAnimFrame(function render() {
-  //   // dataStructure.viewer[0].canvasView.renderAll();
-  //   dataStructure.viewer[0].viewRender()
-  //   viewerRefresh(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+  //   // dataStructure.viewer[0].edit.canvasView.renderAll();
+  //   dataStructure.viewer[0].edit.viewRender()
+  //   viewerRefresh(dataStructure.viewer[0].edit.canvasOption)
   //   fabric.util.requestAnimFrame(render);
   // });
-})()
+// })()
