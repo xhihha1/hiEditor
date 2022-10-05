@@ -122,13 +122,14 @@
               <div class="sublist">
                 <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
               </div>
+              <div id="openSampleDialog" class="sublist">Sample</div>
             </div>
           </li>
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">Go to</a>
             <div class="dropdown-content">
-              <div class="sublist"><a target="_blank" href="drawingTool.html">3D Editor</a></div>
-              <div class="sublist"><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
+              <div class="sublist"><a class="noDec" target="_blank" href="drawingTool3D.html">3D Editor</a></div>
+              <div class="sublist"><a class="noDec" target="_blank" href="drawingTool2D.html">2D Editor</a></div>
               <div class="sublist"><a id="saveFabricLocalStorage3D">3D viewer</a></div>
               <div class="sublist"><a id="saveFabricLocalStorage2D">2D viewer</a></div>
               <div class="sublist"><a id="saveFabricImage2D">To 2D image</a></div>
@@ -379,6 +380,24 @@
     </div>
     <div class="commonDialogContent"></div>
   </div> -->
+  <div class="commonDialog" id="sampleDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Sample</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div>
+        <select name="cars" id="sampleFileSelected" class="prop_input">
+          <option value="./saveFile/city_dance.json" selected>city_dance</option>
+          <option value="./saveFile/collada_kinematics.json">collada_kinematics</option>
+          <option value="./saveFile/fbx_animate.json">fbx_animate</option>
+          <option value="./saveFile/gltf_bird_animate.json">gltf_bird_animate</option>
+          <option value="./saveFile/gltf_walk.json">gltf_walk</option>
+        </select>
+      </div>
+      <div><button id="applySampleFile">Apply</button></div>
+    </div>
+  </div>
   <div class="commonDialog" id="exportFabricDialog">
     <div class="commonDialogTitle">
       <div class="commonDialogTitleText">Export fabric</div>
@@ -679,48 +698,48 @@
       <hr>
       <div><span>Material: </span></div>
       <div class="dialogPropFlex">
-        <div><span>Image default: </span></div>
+        <div class="dialogPropTitle"><span>Image default: </span></div>
         <div><input type="text" id="newPropObjFaceImage" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>pos-x: </span></div>
+        <div class="dialogPropTitle"><span>pos-x: </span></div>
         <div><input type="text" id="newPropObjFacePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>neg-x: </span></div>
+        <div class="dialogPropTitle"><span>neg-x: </span></div>
         <div><input type="text" id="newPropObjFaceNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>pos-y: </span></div>
+        <div class="dialogPropTitle"><span>pos-y: </span></div>
         <div><input type="text" id="newPropObjFacePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>neg-y: </span></div>
+        <div class="dialogPropTitle"><span>neg-y: </span></div>
         <div><input type="text" id="newPropObjFaceNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>pos-z: </span></div>
+        <div class="dialogPropTitle"><span>pos-z: </span></div>
         <div><input type="text" id="newPropObjFacePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>neg-z: </span></div>
+        <div class="dialogPropTitle"><span>neg-z: </span></div>
         <div><input type="text" id="newPropObjFaceNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>stroke: </span></div>
+        <div class="dialogPropTitle"><span>stroke: </span></div>
         <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>Fill: </span></div>
+        <div class="dialogPropTitle"><span>Fill: </span></div>
         <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
       </div>
       <div><label><input name="" id="newPropTransparent" type="checkbox" checked>transparent</label></div>
       <div class="dialogPropFlex">
-        <div><span>opacity: </span></div>
+        <div class="dialogPropTitle"><span>opacity: </span></div>
         <div><input type="number" id="newOpacity" name="opacity" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>2D hiDraw file: </span></div>
+        <div class="dialogPropTitle"><span>2D hiDraw file: </span></div>
         <div>
           <select name="" id="newPropHidraw" class="prop_input">
             <option value=""></option>
@@ -732,83 +751,83 @@
       </div>
       <hr>
       <div class="dialogPropFlex">
-        <div><span>rotate X: </span></div>
+        <div class="dialogPropTitle"><span>rotate X: </span></div>
         <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div> -->
         <div><input type="number" id="newRotateX" name="rotateX" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>rotate Y(angle): </span></div>
+        <div class="dialogPropTitle"><span>rotate Y(angle): </span></div>
         <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateY"></div> -->
         <div><input type="number" id="newRotateY" name="rotateY" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>rotate Z: </span></div>
+        <div class="dialogPropTitle"><span>rotate Z: </span></div>
         <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateZ"></div> -->
         <div><input type="number" id="newRotateZ" name="rotateZ" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>positionX(left): </span></div>
+        <div class="dialogPropTitle"><span>positionX(left): </span></div>
         <div><input type="number" id="newpositionX" name="positionX" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>positionY(altitude): </span></div>
+        <div class="dialogPropTitle"><span>positionY(altitude): </span></div>
         <div><input type="number" id="newpositionY" name="positionY" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>positionZ(top): </span></div>
+        <div class="dialogPropTitle"><span>positionZ(top): </span></div>
         <div><input type="number" id="newpositionZ" name="positionZ" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>sizeX(width): </span></div>
+        <div class="dialogPropTitle"><span>sizeX(width): </span></div>
         <div><input type="number" id="newsizeX" name="sizeX" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>sizeY(depth): </span></div>
+        <div class="dialogPropTitle"><span>sizeY(depth): </span></div>
         <div><input type="number" id="newsizeY" name="sizeY" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>sizeZ(height): </span></div>
+        <div class="dialogPropTitle"><span>sizeZ(height): </span></div>
         <div><input type="number" id="newsizeZ" name="sizeZ" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>scaleX: </span></div>
+        <div class="dialogPropTitle"><span>scaleX: </span></div>
         <div><input type="number" id="newscaleX" name="scaleX" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>scaleY: </span></div>
+        <div class="dialogPropTitle"><span>scaleY: </span></div>
         <div><input type="number" id="newscaleY" name="scaleY" value="0" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>scaleZ: </span></div>
+        <div class="dialogPropTitle"><span>scaleZ: </span></div>
         <div><input type="number" id="newscaleZ" name="scaleZ" value="0" class="prop_input"></div>
       </div>
-      <div><span>data binding: </span><button id="openDataBinding">open</button></div>
+      <div class="dialogPropTitle"><span>data binding: </span><button id="openDataBinding">open</button></div>
       <div><textarea id="newPropDataBinding"></textarea></div>
-      <div><span>event binding: </span><button id="openEventBinding">open</button></div>
+      <div class="dialogPropTitle"><span>event binding: </span><button id="openEventBinding">open</button></div>
       <div><textarea id="newPropEventBinding"></textarea></div>
-      <div><span>animation: </span></div>
+      <div class="dialogPropTitle"><span>animation: </span></div>
       <div><textarea id="newPropAnimation"></textarea></div>
       <!-- <div><span>after add: </span></div>
       <div><textarea id="newPropAfterAddFunc"></textarea></div> -->
       <hr>
       <div class="dialogPropFlex">
-        <div><span>spotLight intensity:</span></div>
+        <div class="dialogPropTitle"><span>spotLight intensity:</span></div>
         <div><input type="number" id="newSpotIntensity" name="intensity" value="1" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>spotLight distance:</span></div>
+        <div class="dialogPropTitle"><span>spotLight distance:</span></div>
         <div><input type="number" id="newSpotDistance" name="distance" value="200" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>spotLight angle:</span></div>
+        <div class="dialogPropTitle"><span>spotLight angle:</span></div>
         <div><input type="range" id="newSpotAngle" min="0" max="1.05" value="1.05" step="0.05" class="prop-slider" disabled></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>spotLight penumbra:</span></div>
+        <div class="dialogPropTitle"><span>spotLight penumbra:</span></div>
         <div><input type="range" id="newSpotPenumbra" min="0" max="1" value="0.1" step="0.1" class="prop-slider"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>spotLight decay:</span></div>
+        <div class="dialogPropTitle"><span>spotLight decay:</span></div>
         <div><input type="number" id="newSpotDecay" name="decay" value="2" class="prop_input"></div>
       </div>
       <div><button id="propApply">apply property</button></div>
@@ -821,27 +840,27 @@
     </div>
     <div class="commonDialogContent">
       <div class="dialogPropFlex">
-        <div><span>obj</span></div>
+        <div class="dialogPropTitle"><span>obj</span></div>
         <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>dae</span></div>
+        <div class="dialogPropTitle"><span>dae</span></div>
         <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>stl</span></div>
+        <div class="dialogPropTitle"><span>stl</span></div>
         <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>3ds textures</span></div>
+        <div class="dialogPropTitle"><span>3ds textures</span></div>
         <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>3ds normal map</span></div>
+        <div class="dialogPropTitle"><span>3ds normal map</span></div>
         <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>3ds</span></div>
+        <div class="dialogPropTitle"><span>3ds</span></div>
         <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
       </div>
       <!-- <div class="dialogPropFlex">
@@ -849,11 +868,11 @@
         <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
       </div> -->
       <div class="dialogPropFlex">
-        <div><span>gltf</span></div>
+        <div class="dialogPropTitle"><span>gltf</span></div>
         <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex">
-        <div><span>nrrd</span></div>
+        <div class="dialogPropTitle"><span>nrrd</span></div>
         <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
       </div>
       <hr>

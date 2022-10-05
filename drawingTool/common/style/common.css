@@ -1,3 +1,7 @@
+a.noDec {
+  text-decoration: none;
+  color: white;
+}
 /* common dialog */
 .commonDialog {
   position: fixed;
@@ -66,4 +70,13 @@
 
 .commonContentTableCell{
   display: table-cell;
+}
+
+.dialogPropFlex {
+  display: flex;
+  justify-content: space-between;
+}
+.dialogPropTitle{
+  font-size: 10px;
+  line-height: 12px;;
 }

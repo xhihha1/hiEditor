@@ -256,6 +256,7 @@ function addVideoObj(edit, objOption) {
 (function () {
   dataStructure.editor.push(initCanvas('content', 'mainEditor'))
   editorEvent(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
+  editorEvent2D(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   addHichartObj(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   objectPropertyChange(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   dataStructure.editor[0].heatmapInstance = heatmapCreate(dataStructure.editor[0], dataStructure.editor[0].canvasOption)

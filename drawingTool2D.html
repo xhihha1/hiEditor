@@ -79,6 +79,7 @@
   <!-- <script src="js/simplify.js" type="text/javascript"></script> -->
   <!-- <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool.css"> -->
   <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool_purple.css">
+  <link rel="stylesheet" href="drawingTool/common/style/common.css">
   <style>
   </style>
 </head>
@@ -101,21 +102,22 @@
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">File</a>
             <div class="dropdown-content">
-              <div id="export" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
-              <div id="exportFabric" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
-              <div id="import" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
-              <div id="importFabric" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
+              <div id="openExportLabelmeDialog" class="sublist"><img src="./icon/export-file_w.png" class="tool-icon">export</div>
+              <div id="openExportFabricDialog" class="sublist"><img src="./icon/export-file-f_w.png" class="tool-icon">export fabric</div>
+              <div id="openImportLabelmeDialog" class="sublist"><img src="./icon/import-file_w.png" class="tool-icon">import</div>
+              <div id="openImportFabricDialog" class="sublist"><img src="./icon/import-file-f_w.png" class="tool-icon">load fabric</div>
               <div id="downloadJson" class="sublist"><img src="./icon/download_w.png" class="tool-icon">Download Json</div>
               <div class="sublist">
                 <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
               </div>
+              <div id="openSampleDialog" class="sublist">Sample</div>
             </div>
           </li>
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">Go to</a>
             <div class="dropdown-content">
-              <div class="sublist"><a target="_blank" href="drawingTool.html">3D Editor</a></div>
-              <div class="sublist"><a target="_blank" href="drawingTool2D.html">2D Editor</a></div>
+              <div class="sublist"><a class="noDec" target="_blank" href="drawingTool3D.html">3D Editor</a></div>
+              <div class="sublist"><a class="noDec" target="_blank" href="drawingTool2D.html">2D Editor</a></div>
               <div class="sublist"><a id="saveFabricLocalStorage3D">3D viewer</a></div>
               <div class="sublist"><a id="saveFabricLocalStorage2D">2D viewer</a></div>
               <div class="sublist"><a id="saveFabricImage2D">To 2D image</a></div>
@@ -142,6 +144,9 @@
               <div id="resize" class="sublist" title="Resize">
                 <img src="icon/resize.png" class="tool-icon">Resize
               </div>
+              <div id="openPanCtrl" class="sublist" title="PanCtrl">
+                <img src="icon/move.png" class="tool-icon">Pan Ctrl
+              </div>
             </div>
           </li>
           <li class="dropdown">
@@ -156,6 +161,40 @@
               <div class="sublist" id="drawHeatmapPoint" title="HeatmapPoint"><img class="tool-icon" src="icon/heatmap.png">Heatmap</div>
               <div class="sublist" id="drawDiv">Div</div>
               <div class="sublist" id="drawIText">Text</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">2D Object</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openHichartDialog">hichart</div>
+              <div class="sublist" id="openImgObjDialog">Image</div>
+              <div class="sublist" id="openVideoObjDialog">Video</div>
+              <div class="sublist" id="openMapObjDialog">Map</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Group</a>
+            <div class="dropdown-content">
+              <div id="drawGroup" class="sublist" title="group">
+                <img src="icon/group.png" class="tool-icon">Group
+              </div>
+              <div id="drawUngroup" class="sublist" title="ungroup">
+                <img src="icon/ungroup.png" class="tool-icon">Ungroup
+              </div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Display</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openObjectListDialog">object List</div>
+              <div class="sublist" id="openHeatmapSettingDialog">Heatmap setting</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Property</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openDisplayPropDialog">Display</div>
+              <div class="sublist" id="openObjPropDialog">Object</div>
             </div>
           </li>
         </ul>
@@ -174,119 +213,10 @@
         </div>
       </div>
       <div id="rContain">
-
         <div id="property">
           <ul>
-            <li class="prop-title">Title</li>
-            <li class="prop-content">content</li>
-            <li class="prop-title">object List</li>
-            <li class="prop-content">
-              <div>
-                <ul id="objlist">
-                  <li></li>
-                </ul>
-              </div>
-            </li>
-            <li class="prop-title">hichart</li>
-            <li class="prop-content">
-              <div>
-                <ul id="hichartIconArea">
-                  <li class="hichartIcon" id="addHichartArea"><img src="readme/area.jpg"></li>
-                  <li class="hichartIcon" id="addHichartBasicPie"><img src="readme/basicPie.jpg"></li>
-                  <li class="hichartIcon" id="addHichartPie"><img src="readme/pie.jpg"></li>
-                  <li class="hichartIcon" id="addHichartDoughnutPie"><img src="readme/doughnutPie.jpg"></li>
-                  <li class="hichartIcon" id="addHichartBar"><img src="readme/bar.jpg"></li>
-                  <li class="hichartIcon" id="addHichartLine"><img src="readme/bzLine.jpg"></li>
-                  <li class="hichartIcon" id="addHichartPolar"><img src="readme/polar.jpg"></li>
-                  <li class="hichartIcon" id="addHichartRadar"><img src="readme/radar.jpg"></li>
-                </ul>
-              </div>
-            </li>
-            <li class="prop-title">Map</li>
-            <li class="prop-content">
-              <div>
-                <ul id="mapIconArea">
-                  <li class="imageIcon"><img src="assets/brainstorming.png"></li>
-                </ul>
-              </div>
-            </li>
-            <li class="prop-title">image</li>
-            <li class="prop-content">
-              <div>
-                <ul id="imageIconArea">
-                  <li class="imageIcon"><img src="assets/brainstorming.png"></li>
-                  <li class="imageIcon"><img src="assets/business.png"></li>
-                  <li class="imageIcon"><img src="assets/investor.png"></li>
-                </ul>
-              </div>
-            </li>
-            <li class="prop-title">Video</li>
-            <li class="prop-content">
-              <button id="video">Video</button>
-            </li>
-            <li class="prop-title">Export fabric Json</li>
-            <li class="prop-content">
-              <textarea id="currentJson"></textarea>
-            </li>
-            <li class="prop-title">Export Labelme Json</li>
-            <li class="prop-content">
-              <textarea id="exportJson"></textarea>
-            </li>
-            <li class="prop-title">Import fabric Json</li>
-            <li class="prop-content">
-              <textarea id="importfabricJson"></textarea>
-            </li>
-            <li class="prop-title">Import Labelme Json</li>
-            <li class="prop-content">
-              <textarea id="importJson"></textarea>
-            </li>
-            <li class="prop-title">Pan control</li>
-            <li class="prop-content">
-              <div><button id="goUp">up</button></div>
-              <div><button id="goDown">down</button></div>
-              <div><button id="goRight">right</button></div>
-              <div><button id="goLeft">left</button></div>
-            </li>
-            <li class="prop-title">Display property</li>
-            <li class="prop-content">
-              <div><span>width</span></div>
-              <div><input type="text" id="newPropDisplayWidth" name="displayWidth" value="500" class="prop_input"></div>
-              <div><span>height</span></div>
-              <div><input type="text" id="newPropDisplayHeight" name="displayHeight" value="500" class="prop_input"></div>
-              <div><button id="displayPropApply">submit</button></div>
-            </li>
-            <li class="prop-title">Obj propy change</li>
-            <li class="prop-content">
-              <div><span>type</span></div>
-              <div><input type="text" id="objPropType" disabled/></div>
-              <div><span>name</span></div>
-              <div><input type="text" id="objPropName" /></div>
-              <div><span>stroke: </span></div>
-              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
-              <div><span>Fill: </span></div>
-              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
-              <div><span>strokeWidth: </span></div>
-              <div><input type="text" id="newPropStrokeWidth" /></div>
-              <div><span>text: </span></div>
-              <div><textarea id="newPropText"></textarea></div>
-              <div><span>data binding: </span><button id="openDataBinding">open</button></div>
-              <div><textarea id="newPropDataBinding"></textarea></div>
-              <!-- <div><span>event binding: </span><button id="openEventBinding">open</button></div>
-              <div><textarea id="newPropEventBinding"></textarea></div> -->
-              <div><span>animation: </span></div>
-              <div><textarea id="newPropAnimation"></textarea></div>
-              <div><button id="objectPropApply">submit</button></div>
-            </li>
-            <li class="prop-title">heatmap</li>
-            <li class="prop-content">
-              <div><span>radius: </span><input type="number" id="newheatmapradius" value="10"></div>
-              <div><span>max: </span><input type="number" id="newheatmapmax" value="100"></div>
-              <div><button id="propheatmapChange">submit</button></div>
-            </li>
-            <li class="prop-title">3D obj</li>
-            <li class="prop-content">
-              <div><button id="addAxesHelper">addAxesHelper</button> why?</div>
-              <div><button id="add3dObj">3dObj</button></div>
+            <li class="prop-title" style="display: none;"></li>
+            <li class="prop-content" style="display: none;">
             </li>
           </ul>
         </div>
@@ -312,6 +242,225 @@
       </div>
     </div>
   </div>
+  <!-- property dialog -->
+  <div class="commonDialog" id="sampleDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Sample</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div>
+        <select name="cars" id="sampleFileSelected" class="prop_input">
+          <option value="./saveFile/2d_rect.json" selected>2d_rect</option>
+          <option value="./saveFile/2d_text.json">2d_text</option>
+          <option value="./saveFile/2d_text_binding.json">2d_text_binding</option>
+        </select>
+      </div>
+      <div><button id="applySampleFile">Apply</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="exportFabricDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Export fabric</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="currentJson"></textarea></div>
+      <div><button id="exportFabric">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="exportLabelmeDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Export labelme</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="exportJson"></textarea></div>
+      <div><button id="export">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="importFabricDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Import fabric</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="importfabricJson"></textarea></div>
+      <div><button id="importFabric">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="importLabelmeDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Import labelme</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><textarea id="importJson"></textarea></div>
+      <div><button id="import">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="panCtrl">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Pan control</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="commonContentTable">
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goUp" src="icon/up_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+        </div>
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"><img id="goLeft" src="icon/left_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goRight" src="icon/right_w.png" class="tool-icon"></div>
+        </div>
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goDown" src="icon/down_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="commonDialog" id="objectListDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">object List</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div id="objlistParent">
+        <ul id="objlist">
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="commonDialog" id="heatmapSettingDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Heatmap setting</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>radius:</span></div>
+        <div><input type="number" id="newheatmapradius" value="10"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>max: </span></div>
+        <div><input type="number" id="newheatmapmax" value="100"></div>
+      </div>
+      <div><button id="propheatmapChange">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="displayPropDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Display property</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>width</span></div>
+        <div><input type="text" id="newPropDisplayWidth" name="displayWidth" value="500" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>height</span></div>
+        <div><input type="text" id="newPropDisplayHeight" name="displayHeight" value="500" class="prop_input"></div>
+      </div>
+      <div><button id="displayPropApply">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="objPropDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Object property</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>type</span></div>
+        <div><input type="text" id="objPropType" disabled/></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>name</span></div>
+        <div><input type="text" id="objPropName" /></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>stroke: </span></div>
+        <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Fill: </span></div>
+        <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>strokeWidth: </span></div>
+        <div><input type="text" id="newPropStrokeWidth" /></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>text: </span></div>
+        <div><textarea id="newPropText"></textarea></div>
+      </div>
+      <div class="dialogPropTitle"><span>data binding: </span><button id="openDataBinding">open</button></div>
+      <div><textarea id="newPropDataBinding"></textarea></div>
+      <!-- <div><span>event binding: </span><button id="openEventBinding">open</button></div>
+      <div><textarea id="newPropEventBinding"></textarea></div> -->
+      <div class="dialogPropTitle"><span>animation: </span></div>
+      <div><textarea id="newPropAnimation"></textarea></div>
+      <div><button id="objectPropApply">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="hichartDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">hichart</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <ul id="hichartIconArea">
+        <li class="hichartIcon" id="addHichartArea"><img src="readme/area.jpg"></li>
+        <li class="hichartIcon" id="addHichartBasicPie"><img src="readme/basicPie.jpg"></li>
+        <li class="hichartIcon" id="addHichartPie"><img src="readme/pie.jpg"></li>
+        <li class="hichartIcon" id="addHichartDoughnutPie"><img src="readme/doughnutPie.jpg"></li>
+        <li class="hichartIcon" id="addHichartBar"><img src="readme/bar.jpg"></li>
+        <li class="hichartIcon" id="addHichartLine"><img src="readme/bzLine.jpg"></li>
+        <li class="hichartIcon" id="addHichartPolar"><img src="readme/polar.jpg"></li>
+        <li class="hichartIcon" id="addHichartRadar"><img src="readme/radar.jpg"></li>
+      </ul>
+    </div>
+  </div>
+  <div class="commonDialog" id="imgObjDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Image</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <ul id="imageIconArea">
+        <li class="imageIcon"><img src="assets/brainstorming.png"></li>
+        <li class="imageIcon"><img src="assets/business.png"></li>
+        <li class="imageIcon"><img src="assets/investor.png"></li>
+      </ul>
+    </div>
+  </div>
+  <div class="commonDialog" id="videoObjDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Video</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <button id="video">Video</button>
+    </div>
+  </div>
+  <div class="commonDialog" id="mapObjDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Map</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <ul id="mapIconArea">
+        <li class="imageIcon"><img src="assets/brainstorming.png"></li>
+      </ul>
+    </div>
+  </div>
   <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_LookAt.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Cube.js"></script>
@@ -319,12 +468,13 @@
   <script src="drawingTool/fabricExtend/hi3d_3dPolyline.js"></script> -->
   <script src="drawingTool/editor2d/addHichartObj.js"></script>
   <script src="drawingTool/editorEvent.js"></script>
+  <script src="drawingTool/editorEvent2D.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>
   <script src="drawingTool/fabricTest.js"></script>
   <!-- <script src="drawingTool/editor3d.js"></script>
   <script src="drawingTool/refresh3d.js"></script> -->
   <script src="drawingTool/drawingTool2D.js"></script>
-
+  <script src="drawingTool/common/script/common.js"></script>
   <script>
     $(document).ready(function () {
       console.log("ready!");

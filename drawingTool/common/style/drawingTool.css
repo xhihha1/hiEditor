@@ -122,14 +122,14 @@ html, body{
 }
 
 /* --- hichartIcon --- */
-#property #hichartIconArea {
+#hichartIconArea {
   position: relative;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#property #hichartIconArea > li {
+#hichartIconArea > li {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -140,7 +140,7 @@ html, body{
   box-sizing: border-box;
 }
 
-#property #hichartIconArea > li.hichartIcon img {
+#hichartIconArea > li.hichartIcon img {
   position: absolute;
   left: 0;
   top: 0;
@@ -149,14 +149,14 @@ html, body{
 }
 
 /* --- imageIcon --- */
-#property #imageIconArea {
+#imageIconArea {
   position: relative;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#property #imageIconArea > li {
+#imageIconArea > li {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -167,7 +167,7 @@ html, body{
   box-sizing: border-box;
 }
 
-#property #imageIconArea > li.imageIcon img {
+#imageIconArea > li.imageIcon img {
   position: absolute;
   left: 0;
   top: 0;

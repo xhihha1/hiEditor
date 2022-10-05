@@ -585,11 +585,3 @@ li.dropdown  .tool-icon {
 #scenePropDialog, #objPropDialog {
   width: 400px;
 }
-.dialogPropFlex {
-  display: flex;
-  justify-content: space-between;
-}
-.dialogPropTitle{
-  font-size: 10px;
-  line-height: 12px;;
-}

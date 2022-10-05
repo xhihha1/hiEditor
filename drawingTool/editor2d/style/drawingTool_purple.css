@@ -163,7 +163,7 @@ li.dropdown  .tool-icon {
 #mContain {
   float: left;
   position: relative;
-  width: calc(100% - 255px);
+  width: calc(100% - 10px);
   height: 100%;
   /* background-color: rgba(105,105,105, 0.9); */
   background-color: #FFFFFF;
@@ -173,7 +173,7 @@ li.dropdown  .tool-icon {
 #rContain {
   float: left;
   position: relative;
-  width: 250px;
+  width: 5px;
   height: 100%;
   background-color: rgba(245,245,245, 0.3);
   overflow-x: hidden;
@@ -302,14 +302,14 @@ li.dropdown  .tool-icon {
 }
 
 /* --- hichartIcon --- */
-#property #hichartIconArea {
+#hichartIconArea {
   position: relative;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#property #hichartIconArea > li {
+#hichartIconArea > li {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -320,7 +320,7 @@ li.dropdown  .tool-icon {
   box-sizing: border-box;
 }
 
-#property #hichartIconArea > li.hichartIcon img {
+#hichartIconArea > li.hichartIcon img {
   position: absolute;
   left: 0;
   top: 0;
@@ -329,14 +329,14 @@ li.dropdown  .tool-icon {
 }
 
 /* --- imageIcon --- */
-#property #imageIconArea {
+#imageIconArea {
   position: relative;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#property #imageIconArea > li {
+#imageIconArea > li {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -347,7 +347,7 @@ li.dropdown  .tool-icon {
   box-sizing: border-box;
 }
 
-#property #imageIconArea > li.imageIcon img {
+#imageIconArea > li.imageIcon img {
   position: absolute;
   left: 0;
   top: 0;
@@ -356,7 +356,7 @@ li.dropdown  .tool-icon {
 }
 
 
-#property #mapIconArea > li {
+#mapIconArea > li {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -367,7 +367,7 @@ li.dropdown  .tool-icon {
   box-sizing: border-box;
 }
 
-#property #mapIconArea > li.imageIcon img {
+#mapIconArea > li.imageIcon img {
   position: absolute;
   left: 0;
   top: 0;

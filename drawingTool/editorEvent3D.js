@@ -524,6 +524,18 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
+  $('#applySampleFile').click(function(){
+    const fileName = $('#sampleFileSelected').val()
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", fileName, true);
+    oReq.responseType = "json";
+    oReq.onload = function (oEvent) {
+      const result = oReq.response; // Note: not oReq.responseText
+      edit.canvasView.loadFromJSON(result)
+    };
+    oReq.send(null);
+  })
+
   // $('#menu').scrollbar();
   $('#openSceneDialog').click(function(){
     $('#sceneDialog').show()
@@ -569,6 +581,9 @@ function editorEvent3D(edit, objOption) {
   })
   $('#openModelSourceDialog').click(function(){
     $('#modelSourceDialog').show()
+  })
+  $('#openSampleDialog').click(function(){
+    $('#sampleDialog').show()
   })
 
 }
