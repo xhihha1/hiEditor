@@ -558,6 +558,18 @@ function editorEvent3D(edit, objOption) {
   $('#openObjectListDialog').click(function(){
     $('#objectListDialog').show()
   })
+  $('#openPanCtrl').click(function(){
+    $('#panCtrl').show()
+  })
+  $('#openSceneProp').click(function(){
+    $('#scenePropDialog').show()
+  })
+  $('#openObjProp').click(function(){
+    $('#objPropDialog').show()
+  })
+  $('#openModelSourceDialog').click(function(){
+    $('#modelSourceDialog').show()
+  })
 
 }
 

@@ -155,6 +155,9 @@
               <div id="resize" class="sublist" title="Resize">
                 <img src="icon/resize.png" class="tool-icon">Resize
               </div>
+              <div id="openPanCtrl" class="sublist" title="PanCtrl">
+                <img src="icon/move.png" class="tool-icon">Pan Ctrl
+              </div>
             </div>
           </li>
           <li class="dropdown">
@@ -187,6 +190,7 @@
           <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">3D model</a>
             <div class="dropdown-content">
+              <div class="sublist" title="model source" id="openModelSourceDialog">Source</div>
               <div class="sublistTitle">Model</div>
               <div class="sublist" title="obj" id="draw3dHiFormatObj"><img class="tool-icon" src="icon/file_obj_w.png">obj</div>
               <div class="sublist" title="collada" id="draw3dHiFormatCollada"><img class="tool-icon" src="icon/file_collada_w.png">collada</div>
@@ -225,6 +229,13 @@
               <div class="sublist" id="openDirectionalLightDialog">Directional Light</div>
               <div class="sublist" id="openHemisphereLightDialog">Hemisphere Light</div>
               <div class="sublist" id="openAmbientLightDialog">AmbientLight Light</div>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Property</a>
+            <div class="dropdown-content">
+              <div class="sublist" id="openSceneProp">Scene</div>
+              <div class="sublist" id="openObjProp">Object</div>
             </div>
           </li>
           <!-- <li class="dropdown">
@@ -276,59 +287,6 @@
       <div id="rContain">
         <div id="property">
           <ul>
-            <li class="prop-title">Title</li>
-            <li class="prop-content">content</li>
-            <li class="prop-title">3d obj source</li>
-            <li class="prop-content">
-              <div><span>obj</span></div>
-              <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
-              <div><span>dae</span></div>
-              <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
-              <div><span>stl</span></div>
-              <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
-              <div><span>3ds textures</span></div>
-              <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
-              <div><span>3ds normal map</span></div>
-              <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
-              <div><span>3ds</span></div>
-              <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
-              <!-- <div><span>gltf path</span></div>
-              <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div> -->
-              <div><span>gltf</span></div>
-              <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
-              <div><span>nrrd</span></div>
-              <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
-              <hr>
-              <div><span>obj files</span></div>
-              <div id="objFilesList">
-                <ul>
-                  <li>./assets/male02.obj</li>
-                </ul>
-              </div>
-              <div><span>gltf files</span></div>
-              <div id="gltfFilesList">
-                <ul>
-                  <li>./assets/gltf/Xbot.glb</li>
-                  <li>./assets/gltf/Flamingo.glb</li>
-                  <li>./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf</li>
-                  <li>./otherAssets/saber_lily_-_distant_avalon_figure/scene.gltf</li>
-                  <li>./otherAssets/showroom/scene.gltf</li>
-                  <li>./otherAssets/cityscene_kyoto_japan/scene.gltf</li>
-                </ul>
-              </div>
-              <div><span>collada files</span></div>
-              <div id="colladaFilesList">
-                <ul>
-                  <li>./assets/elf/elf.dae</li>
-                </ul>
-              </div>
-              <div><span>fdx files</span></div>
-              <div id="fdxFilesList">
-                <ul>
-                  <li>./otherAssets/showroom_fdx/source/Store.fdx</li>
-                </ul>
-              </div>
-            </li>
             <li class="prop-title" style="display: none;">hichart</li>
             <li class="prop-content">
               <div style="display: none;">
@@ -361,168 +319,6 @@
                 <button id="video">Video</button>
               </div>
             </li>
-            <li class="prop-title">Pan control</li>
-            <li class="prop-content">
-              <div><button id="goUp">up</button></div>
-              <div><button id="goDown">down</button></div>
-              <div><button id="goRight">right</button></div>
-              <div><button id="goLeft">left</button></div>
-            </li>
-            <!-- Object property -->
-            <li class="prop-title">Scene property</li>
-            <li class="prop-content">
-              <div><h3>Camera</h3></div>
-              <div><span>camera-x: </span></div>
-              <div><input type="text" id="newPropSceneCameraX" name="camera-x" value="0" class="prop_input"></div>
-              <div><span>camera-y: </span></div>
-              <div><input type="text" id="newPropSceneCameraY" name="camera-y" value="50" class="prop_input"></div>
-              <div><span>camera-z: </span></div>
-              <div><input type="text" id="newPropSceneCameraZ" name="camera-z" value="100" class="prop_input"></div>
-              <div><span>lookAt-x: </span></div>
-              <div><input type="text" id="newPropScenelookAtX" name="lookAt-x" value="0" class="prop_input"></div>
-              <div><span>lookAt-y: </span></div>
-              <div><input type="text" id="newPropScenelookAtY" name="lookAt-y" value="0" class="prop_input"></div>
-              <div><span>lookAt-z: </span></div>
-              <div><input type="text" id="newPropScenelookAtZ" name="lookAt-z" value="0" class="prop_input"></div>
-              <div><span>near</span></div>
-              <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
-              <div><span>far</span></div>
-              <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
-              <hr>
-              <div><span>data refresh time: </span></div>
-              <div><input type="text" id="newPropDataRefreshTime" placeholder="far" value="1000" class="prop_input"></div>
-              <div><span>before initial: </span></div>
-              <div><textarea id="newPropSceneBefInit"></textarea></div>
-              <div><span>after initial: </span></div>
-              <div><textarea id="newPropSceneAftInit"></textarea></div>
-              <div><span>animation: </span></div>
-              <div><textarea id="newPropSceneAnimation"></textarea></div>
-              <div><span>background: </span></div>
-              <div>
-                <select name="cars" id="newPropBackgroundType" class="prop_input">
-                  <option value="Color" selected>Color</option>
-                  <option value="Image">Image</option>
-                  <option value="CubeTexture">CubeTexture</option>
-                  <option value="Equirectangular">Equirectangular</option>
-                </select>
-                <div id="newSceneBgAreaColor">
-                  <div><span>Color: </span></div>
-                  <div><input type="color" id="newPropSceneBgColor" name="PropFill" value="#F0F0F0"></div>
-                </div>
-                <div id="newSceneBgAreaImage">
-                  <div><span>Image: </span></div>
-                  <div><input type="text" id="newPropSceneBgImage" name="Image" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
-                </div>
-                <div id="newSceneBgAreaCubeTexture">
-                  <div><span>pos-x: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
-                  <div><span>neg-x: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubeNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
-                  <div><span>pos-y: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
-                  <div><span>neg-y: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubeNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
-                  <div><span>pos-z: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
-                  <div><span>neg-z: </span></div>
-                  <div><input type="text" id="newPropSceneBgCubeNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
-                </div>
-                <div id="newSceneBgAreaEquirectangular">
-                  <div><span>Equirectangular-img: </span></div>
-                  <div><input type="text" id="newPropSceneBgEquirectangularImage" name="rotateX" value="../../assets/bergsjostolen.jpg" class="prop_input"></div>
-                </div>
-              </div>
-              <div><button id="submitSceneProp">submit</button></div>
-            </li>
-            <li class="prop-title">Obj propy change</li>
-            <li class="prop-content">
-              <div><span>ID: </span></div>
-              <div><input type="text" id="newPropHiId" name="" value="0" disabled class="prop_input"></div>
-              <div><span>Type: </span></div>
-              <div><input type="text" id="newPropType" name="" value="0" disabled class="prop_input"></div>
-              <div><span>Name: </span></div>
-              <div><input type="text" id="newPropName" name="" value="0" class="prop_input"></div>
-              <hr>
-              <div><span>Material: </span></div>
-              <div><span>Image default: </span></div>
-              <div><input type="text" id="newPropObjFaceImage" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
-              <div><span>pos-x: </span></div>
-              <div><input type="text" id="newPropObjFacePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
-              <div><span>neg-x: </span></div>
-              <div><input type="text" id="newPropObjFaceNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
-              <div><span>pos-y: </span></div>
-              <div><input type="text" id="newPropObjFacePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
-              <div><span>neg-y: </span></div>
-              <div><input type="text" id="newPropObjFaceNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
-              <div><span>pos-z: </span></div>
-              <div><input type="text" id="newPropObjFacePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
-              <div><span>neg-z: </span></div>
-              <div><input type="text" id="newPropObjFaceNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
-              <div><span>stroke: </span></div>
-              <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
-              <div><span>Fill: </span></div>
-              <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
-              <div><label><input name="" id="newPropTransparent" type="checkbox" checked>transparent</label></div>
-              <div><span>opacity: </span></div>
-              <div><input type="number" id="newOpacity" name="opacity" value="0" class="prop_input"></div>
-              <div><span>hiDraw file: </span></div>
-              <div>
-                <select name="" id="newPropHidraw" class="prop_input">
-                  <option value=""></option>
-                  <option value="./saveFile/2d_text.json">2d_text.json</option>
-                  <option value="./saveFile/2d_rect.json">2d_rect.json</option>
-                  <option value="./saveFile/2d_text_binding.json">2d_text_binding.json</option>
-                </select>
-              </div>
-              <hr>
-              <div><span>rotate X: </span></div>
-              <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div> -->
-              <div><input type="number" id="newRotateX" name="rotateX" value="0" class="prop_input"></div>
-              <div><span>rotate Y(angle): </span></div>
-              <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateY"></div> -->
-              <div><input type="number" id="newRotateY" name="rotateY" value="0" class="prop_input"></div>
-              <div><span>rotate Z: </span></div>
-              <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateZ"></div> -->
-              <div><input type="number" id="newRotateZ" name="rotateZ" value="0" class="prop_input"></div>
-              <div><span>positionX(left): </span></div>
-              <div><input type="number" id="newpositionX" name="positionX" value="0" class="prop_input"></div>
-              <div><span>positionY(altitude): </span></div>
-              <div><input type="number" id="newpositionY" name="positionY" value="0" class="prop_input"></div>
-              <div><span>positionZ(top): </span></div>
-              <div><input type="number" id="newpositionZ" name="positionZ" value="0" class="prop_input"></div>
-              <div><span>sizeX(width): </span></div>
-              <div><input type="number" id="newsizeX" name="sizeX" value="0" class="prop_input"></div>
-              <div><span>sizeY(depth): </span></div>
-              <div><input type="number" id="newsizeY" name="sizeY" value="0" class="prop_input"></div>
-              <div><span>sizeZ(height): </span></div>
-              <div><input type="number" id="newsizeZ" name="sizeZ" value="0" class="prop_input"></div>
-              <div><span>scaleX: </span></div>
-              <div><input type="number" id="newscaleX" name="scaleX" value="0" class="prop_input"></div>
-              <div><span>scaleY: </span></div>
-              <div><input type="number" id="newscaleY" name="scaleY" value="0" class="prop_input"></div>
-              <div><span>scaleZ: </span></div>
-              <div><input type="number" id="newscaleZ" name="scaleZ" value="0" class="prop_input"></div>
-              <div><span>data binding: </span><button id="openDataBinding">open</button></div>
-              <div><textarea id="newPropDataBinding"></textarea></div>
-              <div><span>event binding: </span><button id="openEventBinding">open</button></div>
-              <div><textarea id="newPropEventBinding"></textarea></div>
-              <div><span>animation: </span></div>
-              <div><textarea id="newPropAnimation"></textarea></div>
-              <!-- <div><span>after add: </span></div>
-              <div><textarea id="newPropAfterAddFunc"></textarea></div> -->
-              <div><hr></div>
-              <div><span>spotLight intensity:</span></div>
-              <div><input type="number" id="newSpotIntensity" name="intensity" value="1" class="prop_input"></div>
-              <div><span>spotLight distance:</span></div>
-              <div><input type="number" id="newSpotDistance" name="distance" value="200" class="prop_input"></div>
-              <div><span>spotLight angle:</span></div>
-              <div><input type="range" id="newSpotAngle" min="0" max="1.05" value="1.05" step="0.05" class="prop-slider" disabled></div>
-              <div><span>spotLight penumbra:</span></div>
-              <div><input type="range" id="newSpotPenumbra" min="0" max="1" value="0.1" step="0.1" class="prop-slider"></div>
-              <div><span>spotLight decay:</span></div>
-              <div><input type="number" id="newSpotDecay" name="decay" value="2" class="prop_input"></div>
-              <div><button id="propApply">apply property</button></div>
-            </li>
             <li class="prop-title" style="display: none;">heatmap</li>
             <li class="prop-content">
               <div style="display: none;">
@@ -532,9 +328,6 @@
                 <div><input type="number" id="newheatmapmax" value="100" class="prop_input"></div>
                 <div><button id="propheatmapChange">submit</button></div>
               </div>
-            </li>
-            <li class="prop-title">3D obj</li>
-            <li class="prop-content">
             </li>
           </ul>
         </div>
@@ -727,6 +520,373 @@
       <div><span>intensity: </span></div>
       <div><input  type="range" min="0" max="1" value="1" step="0.1" id="ambientLight_intensity" name="intensity" class="prop-slider"></div>
       <div><button id="submitAmbientLight">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="panCtrl">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Pan control</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="commonContentTable">
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goUp" src="icon/up_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+        </div>
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"><img id="goLeft" src="icon/left_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goRight" src="icon/right_w.png" class="tool-icon"></div>
+        </div>
+        <div class="commonContentTableRow">
+          <div class="commonContentTableCell"></div>
+          <div class="commonContentTableCell"><img id="goDown" src="icon/down_w.png" class="tool-icon"></div>
+          <div class="commonContentTableCell"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="commonDialog" id="scenePropDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Scene property</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div><h3>Camera</h3></div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>camera-x: </span></div>
+        <div><input type="text" id="newPropSceneCameraX" name="camera-x" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>camera-y: </span></div>
+        <div><input type="text" id="newPropSceneCameraY" name="camera-y" value="50" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>camera-z: </span></div>
+        <div><input type="text" id="newPropSceneCameraZ" name="camera-z" value="100" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>lookAt-x: </span></div>
+        <div><input type="text" id="newPropScenelookAtX" name="lookAt-x" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>lookAt-y: </span></div>
+        <div><input type="text" id="newPropScenelookAtY" name="lookAt-y" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>lookAt-z: </span></div>
+        <div><input type="text" id="newPropScenelookAtZ" name="lookAt-z" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>near</span></div>
+        <div><input type="text" id="cameraNear" placeholder="near" value="0.1" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>far</span></div>
+        <div><input type="text" id="cameraFar" placeholder="far" value="2000" class="prop_input"></div>
+      </div>
+      <hr>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>data refresh time: </span></div>
+        <div><input type="text" id="newPropDataRefreshTime" placeholder="far" value="1000" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>before initial: </span></div>
+        <div><textarea id="newPropSceneBefInit"></textarea></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>after initial: </span></div>
+        <div><textarea id="newPropSceneAftInit"></textarea></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>animation: </span></div>
+        <div><textarea id="newPropSceneAnimation"></textarea></div>
+      </div>
+      <hr>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>background: </span></div>
+        <div>
+          <select name="cars" id="newPropBackgroundType" class="prop_input">
+            <option value="Color" selected>Color</option>
+            <option value="Image">Image</option>
+            <option value="CubeTexture">CubeTexture</option>
+            <option value="Equirectangular">Equirectangular</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div id="newSceneBgAreaColor" class="dialogPropFlex">
+          <div class="dialogPropTitle"><span>Color: </span></div>
+          <div><input type="color" id="newPropSceneBgColor" name="PropFill" value="#F0F0F0"></div>
+        </div>
+        <div id="newSceneBgAreaImage" class="dialogPropFlex">
+          <div class="dialogPropTitle"><span>Image: </span></div>
+          <div><input type="text" id="newPropSceneBgImage" name="Image" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+        </div>
+        <div id="newSceneBgAreaCubeTexture">
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>pos-x: </span></div>
+            <div><input type="text" id="newPropSceneBgCubePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+          </div>
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>neg-x: </span></div>
+            <div><input type="text" id="newPropSceneBgCubeNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
+          </div>
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>pos-y: </span></div>
+            <div><input type="text" id="newPropSceneBgCubePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
+          </div>
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>neg-y: </span></div>
+            <div><input type="text" id="newPropSceneBgCubeNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
+          </div>
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>pos-z: </span></div>
+            <div><input type="text" id="newPropSceneBgCubePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
+          </div>
+          <div class="dialogPropFlex">
+            <div class="dialogPropTitle"><span>neg-z: </span></div>
+            <div><input type="text" id="newPropSceneBgCubeNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
+          </div>
+        </div>
+        <div id="newSceneBgAreaEquirectangular" class="dialogPropFlex">
+          <div class="dialogPropTitle"><span>Equirectangular-img: </span></div>
+          <div><input type="text" id="newPropSceneBgEquirectangularImage" name="rotateX" value="../../assets/bergsjostolen.jpg" class="prop_input"></div>
+        </div>
+      </div>
+      <div><button id="submitSceneProp">submit</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="objPropDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Object Prop</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>ID: </span></div>
+        <div><input type="text" id="newPropHiId" name="" value="0" disabled class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Type: </span></div>
+        <div><input type="text" id="newPropType" name="" value="0" disabled class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Name: </span></div>
+        <div><input type="text" id="newPropName" name="" value="0" class="prop_input"></div>
+      </div>
+      <hr>
+      <div><span>Material: </span></div>
+      <div class="dialogPropFlex">
+        <div><span>Image default: </span></div>
+        <div><input type="text" id="newPropObjFaceImage" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>pos-x: </span></div>
+        <div><input type="text" id="newPropObjFacePx" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>neg-x: </span></div>
+        <div><input type="text" id="newPropObjFaceNx" name="neg-x" value="../../assets/SwedishRoyalCastle/nx.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>pos-y: </span></div>
+        <div><input type="text" id="newPropObjFacePy" name="pos-y" value="../../assets/SwedishRoyalCastle/py.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>neg-y: </span></div>
+        <div><input type="text" id="newPropObjFaceNy" name="neg-y" value="../../assets/SwedishRoyalCastle/ny.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>pos-z: </span></div>
+        <div><input type="text" id="newPropObjFacePz" name="pos-z" value="../../assets/SwedishRoyalCastle/pz.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>neg-z: </span></div>
+        <div><input type="text" id="newPropObjFaceNz" name="neg-z" value="../../assets/SwedishRoyalCastle/nz.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>stroke: </span></div>
+        <div><input type="color" id="newPropStroke" name="PropStroke" value="#e66465"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>Fill: </span></div>
+        <div><input type="color" id="newPropFill" name="PropFill" value="#e66465"></div>
+      </div>
+      <div><label><input name="" id="newPropTransparent" type="checkbox" checked>transparent</label></div>
+      <div class="dialogPropFlex">
+        <div><span>opacity: </span></div>
+        <div><input type="number" id="newOpacity" name="opacity" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>2D hiDraw file: </span></div>
+        <div>
+          <select name="" id="newPropHidraw" class="prop_input">
+            <option value=""></option>
+            <option value="./saveFile/2d_text.json">2d_text.json</option>
+            <option value="./saveFile/2d_rect.json">2d_rect.json</option>
+            <option value="./saveFile/2d_text_binding.json">2d_text_binding.json</option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="dialogPropFlex">
+        <div><span>rotate X: </span></div>
+        <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateX"></div> -->
+        <div><input type="number" id="newRotateX" name="rotateX" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>rotate Y(angle): </span></div>
+        <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateY"></div> -->
+        <div><input type="number" id="newRotateY" name="rotateY" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>rotate Z: </span></div>
+        <!-- <div><input type="range" min="0" max="0" value="0" class="prop-slider" id="newRotateZ"></div> -->
+        <div><input type="number" id="newRotateZ" name="rotateZ" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>positionX(left): </span></div>
+        <div><input type="number" id="newpositionX" name="positionX" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>positionY(altitude): </span></div>
+        <div><input type="number" id="newpositionY" name="positionY" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>positionZ(top): </span></div>
+        <div><input type="number" id="newpositionZ" name="positionZ" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>sizeX(width): </span></div>
+        <div><input type="number" id="newsizeX" name="sizeX" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>sizeY(depth): </span></div>
+        <div><input type="number" id="newsizeY" name="sizeY" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>sizeZ(height): </span></div>
+        <div><input type="number" id="newsizeZ" name="sizeZ" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>scaleX: </span></div>
+        <div><input type="number" id="newscaleX" name="scaleX" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>scaleY: </span></div>
+        <div><input type="number" id="newscaleY" name="scaleY" value="0" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>scaleZ: </span></div>
+        <div><input type="number" id="newscaleZ" name="scaleZ" value="0" class="prop_input"></div>
+      </div>
+      <div><span>data binding: </span><button id="openDataBinding">open</button></div>
+      <div><textarea id="newPropDataBinding"></textarea></div>
+      <div><span>event binding: </span><button id="openEventBinding">open</button></div>
+      <div><textarea id="newPropEventBinding"></textarea></div>
+      <div><span>animation: </span></div>
+      <div><textarea id="newPropAnimation"></textarea></div>
+      <!-- <div><span>after add: </span></div>
+      <div><textarea id="newPropAfterAddFunc"></textarea></div> -->
+      <hr>
+      <div class="dialogPropFlex">
+        <div><span>spotLight intensity:</span></div>
+        <div><input type="number" id="newSpotIntensity" name="intensity" value="1" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>spotLight distance:</span></div>
+        <div><input type="number" id="newSpotDistance" name="distance" value="200" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>spotLight angle:</span></div>
+        <div><input type="range" id="newSpotAngle" min="0" max="1.05" value="1.05" step="0.05" class="prop-slider" disabled></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>spotLight penumbra:</span></div>
+        <div><input type="range" id="newSpotPenumbra" min="0" max="1" value="0.1" step="0.1" class="prop-slider"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>spotLight decay:</span></div>
+        <div><input type="number" id="newSpotDecay" name="decay" value="2" class="prop_input"></div>
+      </div>
+      <div><button id="propApply">apply property</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="modelSourceDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">model source</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div><span>obj</span></div>
+        <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>dae</span></div>
+        <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>stl</span></div>
+        <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>3ds textures</span></div>
+        <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>3ds normal map</span></div>
+        <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>3ds</span></div>
+        <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
+      </div>
+      <!-- <div class="dialogPropFlex">
+        <div><span>gltf path</span></div>
+        <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
+      </div> -->
+      <div class="dialogPropFlex">
+        <div><span>gltf</span></div>
+        <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div><span>nrrd</span></div>
+        <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
+      </div>
+      <hr>
+      <div><span>obj files</span></div>
+      <div id="objFilesList">
+        <ul>
+          <li>./assets/male02.obj</li>
+        </ul>
+      </div>
+      <div><span>gltf files</span></div>
+      <div id="gltfFilesList">
+        <ul>
+          <li>./assets/gltf/Xbot.glb</li>
+          <li>./assets/gltf/Flamingo.glb</li>
+          <li>./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf</li>
+          <li>./otherAssets/saber_lily_-_distant_avalon_figure/scene.gltf</li>
+          <li>./otherAssets/showroom/scene.gltf</li>
+          <li>./otherAssets/cityscene_kyoto_japan/scene.gltf</li>
+        </ul>
+      </div>
+      <div><span>collada files</span></div>
+      <div id="colladaFilesList">
+        <ul>
+          <li>./assets/elf/elf.dae</li>
+        </ul>
+      </div>
+      <div><span>fdx files</span></div>
+      <div id="fdxFilesList">
+        <ul>
+          <li>./otherAssets/showroom_fdx/source/Store.fdx</li>
+        </ul>
+      </div>
+      <!-- -->
     </div>
   </div>
   

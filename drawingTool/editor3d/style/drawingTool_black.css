@@ -157,7 +157,7 @@ li.dropdown  .tool-icon {
 #mContain {
   float: left;
   position: relative;
-  width: calc(100% - 255px);
+  width: calc(100% - 10px);
   height: 100%;
   /* background-color: rgba(105,105,105, 0.9); */
   background-color: #FFFFFF;
@@ -167,7 +167,7 @@ li.dropdown  .tool-icon {
 #rContain {
   float: left;
   position: relative;
-  width: 250px;
+  width: 5px;
   height: 100%;
   background-color: rgba(245,245,245, 0.3);
   overflow-x: hidden;
@@ -580,4 +580,16 @@ li.dropdown  .tool-icon {
   box-sizing: border-box;
   height: 100px;
   width: 90%;
+}
+
+#scenePropDialog, #objPropDialog {
+  width: 400px;
+}
+.dialogPropFlex {
+  display: flex;
+  justify-content: space-between;
+}
+.dialogPropTitle{
+  font-size: 10px;
+  line-height: 12px;;
 }

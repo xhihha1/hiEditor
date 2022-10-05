@@ -46,9 +46,24 @@
 
 .commonDialogContent {
   position: relative;
-  width: 100%;
+  min-height: 150px;
+  max-height: calc(500px - 24px);
+  min-width: 150px;
+  max-width: 500px;
   color: #FFFFFF;
   box-sizing: border-box;
   padding: 2px;
   overflow: auto;
+}
+
+.commonContentTable{
+  display: table;
+}
+
+.commonContentTableRow{
+  display: table-row;
+}
+
+.commonContentTableCell{
+  display: table-cell;
 }
