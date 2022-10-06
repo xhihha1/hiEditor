@@ -299,19 +299,16 @@
     if (this.canvasView.getActiveObject().type !== 'activeSelection') {
       return;
     }
-    console.log('----K:', this.canvasView.getActiveObject().left, this.canvasView.getActiveObject().top, this.canvasView.getActiveObject().width, this.canvasView.getActiveObject().height, this.canvasView.getActiveObject().originX, this.canvasView.getActiveObject().originY)
     var newGroup = this.canvasView.getActiveObject().toHiGroup()
     // var newGroup = this.canvasView.getActiveObject().toGroup()
     newGroup.hiId = this.uniqueIdGenerater()
     newGroup.scaleZ = 1
     newGroup.altitude = 0
     // this.canvasView.requestRenderAll();
-    console.log('----G:', newGroup.left, newGroup.top, newGroup.width, newGroup.height, newGroup.originX, newGroup.originY)
     this.viewRender()
   }
 
   hiDraw.prototype.unGroupSelection = function () {
-    console.log('----B:', this.canvasView.getActiveObject().left, this.canvasView.getActiveObject().top, this.canvasView.getActiveObject().width, this.canvasView.getActiveObject().height, this.canvasView.getActiveObject().originX, this.canvasView.getActiveObject().originY)
     if (!this.canvasView.getActiveObject()) {
       return;
     }
@@ -321,17 +318,13 @@
     }
     this.canvasView.getActiveObject().toActiveSelection();
     this.canvasView.getActiveObject().setCoords();
-    console.log('----', )
-    console.log('----H:', this.canvasView.getActiveObject().left, this.canvasView.getActiveObject().top, this.canvasView.getActiveObject().width, this.canvasView.getActiveObject().height, this.canvasView.getActiveObject().originX, this.canvasView.getActiveObject().originY)
-    this.canvasView.getActiveObject().forEachObject((r) => {
-      console.log('----P:', r.left, r.top, r.width, r.height, r.originX, r.originY)
-    })
-    this.canvasView.discardActiveObject()
-    this.canvasView.forEachObject((r) => {
-      console.log('----F:', r.left, r.top, r.width, r.height, r.originX, r.originY)
-    })
+    // this.canvasView.discardActiveObject()
+    
     // this.canvasView.requestRenderAll();
     this.viewRender()
+    if (this.defaultOptions.event && this.defaultOptions.event['ungroup_selection']) {
+      this.defaultOptions.event['ungroup_selection']()
+    }
   }
 
   hiDraw.prototype.removePolygonsTempShapes = function (obj) {

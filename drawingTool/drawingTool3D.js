@@ -49,6 +49,7 @@ function initCanvas(canvasId, canvasViewId) {
           var needRefresh3d = false
           opt.target.forEachObject(function(object) {
             if (object.hiId) { needRefresh3d = true}
+            console.log('object_modified obj', object.left, object.top, object.width, object.height, object.originX, object.originY)
           });
           if (needRefresh3d) { edit.hi3d.refreshByFabricJson(edit); }
         }
@@ -88,6 +89,7 @@ function initCanvas(canvasId, canvasViewId) {
         // edit.hi3d.refreshByFabricJson(edit);
       },
       selection_created: function (opt) {
+        console.log('selection_created')
         if (opt.target) {
           if (opt.target.hiId) {
             showObjPropChange(opt.target)
@@ -104,6 +106,7 @@ function initCanvas(canvasId, canvasViewId) {
         }
       },
       selection_updated: function (opt) {
+        console.log('selection_updated')
         if (opt.target.hiId) {
           showObjPropChange(opt.target)
           edit.hi3d.scene.traverse(function (node) {
@@ -122,6 +125,9 @@ function initCanvas(canvasId, canvasViewId) {
       },
       import_callback: function () {
 
+      },
+      ungroup_selection: function () {
+        edit.hi3d.refreshByFabricJson(edit);
       }
     }
   }).createView().viewEvent().BgGrid(true);

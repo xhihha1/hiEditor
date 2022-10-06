@@ -162,6 +162,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
       // this.camera.lookAt(new THREE.Vector3(item["left"], item['altitude'], item["top"]));
       this.setCamera(opt)
     }
+    console.log('add Group ..........', item.type, item)
     if (item.objects && item.objects.length > 0) {
       this.addGroupObject(edit, item, itemExist, objNode)
     } else {

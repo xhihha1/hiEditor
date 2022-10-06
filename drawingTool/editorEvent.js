@@ -481,11 +481,6 @@ function editorEvent(edit, objOption) {
   })
 
   $('#drawGroup').click(function (e) {
-    var o = edit.canvasView.getActiveObject()
-    console.log('----add A:', o.left, o.top, o.width, o.height, o.originX, o.originY)
-    edit.canvasView.getActiveObject().forEachObject((r) => {
-      console.log('----add P:', r.left, r.top, r.width, r.height, r.originX, r.originY)
-    })
     edit.addGroupSelection()
   })
 
