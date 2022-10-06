@@ -1,4 +1,4 @@
-var dataStructure = {
+window.dataStructure = {
   editor: [],
   viewer: []
 }
@@ -50,10 +50,9 @@ function hi2dViewer(canvasId, canvasViewId) {
 }
 
 hi2dViewer.prototype.importJson = function (objOption) {
-  // this.edit.mergeDeep(this.edit.canvasOption, objOption)
+  this.edit.mergeDeep(this.edit.defaultOptions, objOption)
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
   this.fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
-  console.log(this)
   if (this.fabricJson) {
     this.edit.canvasView.loadFromJSON(this.fabricJson)
   }

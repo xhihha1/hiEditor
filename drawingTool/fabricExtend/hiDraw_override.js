@@ -46,6 +46,9 @@ hiDraw.prototype.fabricOverride = (function () {
             }
         });
         fabric.ActiveSelection.prototype.toHiGroup = function () {
+            var canvas = this.canvas;
+            var originalActiveObject = canvas._activeObject
+            console.log('----R:', originalActiveObject.left, originalActiveObject.top, originalActiveObject.width, originalActiveObject.height, originalActiveObject.originX, originalActiveObject.originY)
             var objects = this._objects.concat();
             this._objects = [];
             var options = fabric.Object.prototype.toObject.call(this);
@@ -68,7 +71,10 @@ hiDraw.prototype.fabricOverride = (function () {
             if (!this.canvas) {
                 return newGroup;
             }
-            var canvas = this.canvas;
+            if (originalActiveObject.originX === 'left' && originalActiveObject.originY === 'top') {
+                newGroup.top += newGroup.height / 2;
+                newGroup.left += newGroup.width / 2;
+            }
             canvas.add(newGroup);
             canvas._activeObject = newGroup;
             newGroup.setCoords(true);
