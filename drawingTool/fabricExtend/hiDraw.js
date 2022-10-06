@@ -323,6 +323,13 @@
     this.canvasView.getActiveObject().setCoords();
     console.log('----', )
     console.log('----H:', this.canvasView.getActiveObject().left, this.canvasView.getActiveObject().top, this.canvasView.getActiveObject().width, this.canvasView.getActiveObject().height, this.canvasView.getActiveObject().originX, this.canvasView.getActiveObject().originY)
+    this.canvasView.getActiveObject().forEachObject((r) => {
+      console.log('----P:', r.left, r.top, r.width, r.height, r.originX, r.originY)
+    })
+    this.canvasView.discardActiveObject()
+    this.canvasView.forEachObject((r) => {
+      console.log('----F:', r.left, r.top, r.width, r.height, r.originX, r.originY)
+    })
     // this.canvasView.requestRenderAll();
     this.viewRender()
   }
