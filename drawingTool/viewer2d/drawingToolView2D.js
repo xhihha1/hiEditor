@@ -14,7 +14,13 @@ function hi2dViewer(canvasId, canvasViewId) {
     objectDefault: {
       fillAlpha: 0,
       lineWidth: 1,
-      strokeColor: 'rgba(51, 51, 51, 1)'
+      strokeColor: 'rgba(51, 51, 51, 1)',
+      eventCtrl: {
+        mouse_wheel_default_behavior: false,
+        mouse_down_default_behavior: false,
+        mouse_move_default_behavior: false,
+        mouse_up_default_behavior: false
+      }
     },
     event: {
       object_added: function (opt) {},
@@ -74,6 +80,7 @@ hi2dViewer.prototype.viewerRefresh = function (objOption) {
 
   dataStructure.viewer[0].importJson(dataStructure.viewer[0].edit.canvasOption)
   dataStructure.viewer[0].edit.renderDataBinding()
+  dataStructure.viewer[0].edit.setEventBinding()
 
   // 影片如果要自動撥放需要持續更新
   // fabric.util.requestAnimFrame(function render() {

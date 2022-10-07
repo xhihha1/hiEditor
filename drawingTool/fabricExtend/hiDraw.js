@@ -458,6 +458,26 @@
     return this;
   }
 
+  hiDraw.prototype.setEventBinding = function (opt) {
+    if(this.canvasView){
+      if(opt) {
+        console.log('add', opt)
+      } else {
+        this.canvasView.forEachObject(function(item){
+          var eventBinding = item.eventBinding
+          if (typeof eventBinding === 'string') {
+            eventBinding = JSON.parse(eventBinding)
+          }
+          for (let i in eventBinding) {
+            console.log(i, eventBinding[i])
+            const eventFunc = hiDraw.prototype.functionGenerator(eventBinding[i]);
+            item.on(i, eventFunc)
+          }
+        })
+      }
+    }
+  }
+
 
   hiDraw.prototype.uniqueIdGenerater = function (action) {
     if (hiMathUtil) {

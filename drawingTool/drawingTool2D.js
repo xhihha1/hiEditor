@@ -102,6 +102,24 @@ function showObjPropChange(object) {
   } else {
     $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
   }
+  var eventBinding = object.get('eventBinding') || {
+    mousedown: 'function (value) { console.log("123456");}'
+  }
+  // event:mousedown
+  // event:mouseup
+  // event:mouseover
+  // event:mouseout
+  // event:mousewheel
+  // event:mousedblclick
+  // event:dragover
+  // event:dragenter
+  // event:dragleave
+  // event:drop
+  if(typeof eventBinding === 'string') {
+    $('#newPropEventBinding').val(eventBinding)
+  } else {
+    $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  }
 }
 
 function objectPropertyChange(edit, objOption) {
@@ -123,13 +141,16 @@ function objectPropertyChange(edit, objOption) {
     var activeObj = edit.canvasView.getActiveObject();
     var bindingStr = hiDraw.prototype.readTextareaFuncStr($('#newPropDataBinding').val())
     var dataBinding = bindingStr
+    var eventbindingStr = hiDraw.prototype.readTextareaFuncStr($('#newPropEventBinding').val())
+    var eventBinding = eventbindingStr
     var newProp = {
       name: $('#objPropName').val(),
       stroke: $('#newPropStroke').val(),
       strokeWidth: parseInt($('#newPropStrokeWidth').val()),
       fill: $('#newPropFill').val(),
       text: $('#newPropText').val(),
-      dataBinding: dataBinding
+      dataBinding: dataBinding,
+      eventBinding: eventBinding
     }
     activeObj.set(newProp);
     edit.viewRender()
@@ -181,6 +202,58 @@ function objectPropertyChange(edit, objOption) {
       str += '  <div><textarea class="dbPropFunc">' + advanced + '</textarea></div>'
       str += '</div>'
       $(target).parents('#dataBindingDialogCardNew').after(str)
+    }
+    if ($(target).hasClass('removeDbPropName')) {
+      $(target).parents('.dbPropCard').remove()
+    }
+  })
+  // ------------ event binding 
+  $('#openEventBinding').click(function () {
+    $('#eventBindingDialog').css('display', 'block')
+    var eventFuncStr = $('#newPropEventBinding').val()
+    //替换所有的换行符
+    eventFuncStr = eventFuncStr.replace(/\r\n/g,"")
+    eventFuncStr = eventFuncStr.replace(/\n/g,"");
+    while (typeof eventFuncStr === 'string') {
+      eventFuncStr = JSON.parse(eventFuncStr)
+    }
+    var eventBinding = eventFuncStr
+    if (typeof eventBinding === 'string') {eventBinding = JSON.parse(eventBinding)}
+    $('.dbPropCard').remove()
+    var str = ''
+    for(var key in eventBinding) {
+      str += '<div class="eventBindingDialogCard dbPropCard">'
+      str += '  <div><span>event name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="'+key+'" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">'+eventBinding[key]+'</textarea></div>'
+      str += '</div>'
+    }
+    $('#eventBindingDialogContent').append(str)
+  })
+  $('#eventBindingDialogClose').click(function () {
+    $('#eventBindingDialog').css('display', 'none')
+    var eventBinding = {}
+    $('.dbPropCard').each(function(){
+      var key = $(this).find('.dbPropName').val()
+      var eventFuncStr = $(this).find('.dbPropFunc').val()
+      eventFuncStr = eventFuncStr.replace(/\r\n/g,"")
+      eventFuncStr = eventFuncStr.replace(/\n/g,"");
+      eventBinding[key] = eventFuncStr
+    })
+    $('#newPropEventBinding').val(JSON.stringify(eventBinding, null, 2))
+  })
+  $('#eventBindingDialogContent').click(function (e) {
+    var target = e.target
+    if ($(target).attr('id') === 'addDbPropName') {
+      var key = $(target).parents('#eventBindingDialogCardNew').find('.dbPropName').val()
+      var eventFuncStr = $(target).parents('#eventBindingDialogCardNew').find('.dbPropFunc').val()
+      var str = ''
+      str += '<div class="eventBindingDialogCard dbPropCard">'
+      str += '  <div><span>event name:</span><button class="removeDbPropName">remove</button></div>'
+      str += '  <div><input type="text" value="' + key + '" class="dbPropName" /></div>'
+      str += '  <div><textarea class="dbPropFunc">' + eventFuncStr + '</textarea></div>'
+      str += '</div>'
+      $(target).parents('#eventBindingDialogCardNew').after(str)
     }
     if ($(target).hasClass('removeDbPropName')) {
       $(target).parents('.dbPropCard').remove()

@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <title>Hi 2D視覺化介面編輯器</title>
+  <title>Hi Juno 2D</title>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-  <meta name="title" content="Hi 2D drawing tool">
-  <meta name="description" content="2D Visualization Tools">
+  <meta name="title" content="Hi Juno 2D">
+  <meta name="description" content="2D Visualization Drawing Tools">
   <meta name="keywords" content="2D drawing tool, drawing tool, Visualization Tools">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -244,6 +244,24 @@
       </div>
     </div>
   </div>
+  <!-- Event Binding Dialog -->
+  <div id="eventBindingDialog">
+    <div id="eventBindingDialogPage">
+      <div id="eventBindingDialogTitle">EventBinding<div id="eventBindingDialogClose"></div></div>
+      <div id="eventBindingDialogContent">
+        <div class="eventBindingDialogCard" id="eventBindingDialogCardNew">
+          <div><span>event name:</span><button id="addDbPropName">add</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+        <div class="eventBindingDialogCard dbPropCard">
+          <div><span>event name:</span><button class="removeDbPropName">remove</button></div>
+          <div><input type="text" class="dbPropName" /></div>
+          <div><textarea class="dbPropFunc"></textarea></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- property dialog -->
   <div class="commonDialog" id="sampleDialog">
     <div class="commonDialogTitle">
@@ -405,8 +423,8 @@
       </div>
       <div class="dialogPropTitle"><span>data binding: </span><button id="openDataBinding">open</button></div>
       <div><textarea id="newPropDataBinding"></textarea></div>
-      <!-- <div><span>event binding: </span><button id="openEventBinding">open</button></div>
-      <div><textarea id="newPropEventBinding"></textarea></div> -->
+      <div><span>event binding: </span><button id="openEventBinding">open</button></div>
+      <div><textarea id="newPropEventBinding"></textarea></div>
       <div class="dialogPropTitle"><span>animation: </span></div>
       <div><textarea id="newPropAnimation"></textarea></div>
       <div><button id="objectPropApply">submit</button></div>
