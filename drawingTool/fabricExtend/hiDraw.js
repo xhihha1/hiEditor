@@ -316,15 +316,12 @@
       this.canvasView.getActiveObject().type !== 'hiGroup') {
       return;
     }
-    this.canvasView.getActiveObject().toActiveSelection();
+    this.canvasView.getActiveObject().toHiActiveSelection();
     this.canvasView.getActiveObject().setCoords();
     // this.canvasView.discardActiveObject()
     
     // this.canvasView.requestRenderAll();
     this.viewRender()
-    if (this.defaultOptions.event && this.defaultOptions.event['ungroup_selection']) {
-      this.defaultOptions.event['ungroup_selection']()
-    }
   }
 
   hiDraw.prototype.removePolygonsTempShapes = function (obj) {

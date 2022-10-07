@@ -125,9 +125,6 @@ function initCanvas(canvasId, canvasViewId) {
       },
       import_callback: function () {
 
-      },
-      ungroup_selection: function () {
-        edit.hi3d.refreshByFabricJson(edit);
       }
     }
   }).createView().viewEvent().BgGrid(true);

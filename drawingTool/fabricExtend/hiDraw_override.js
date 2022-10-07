@@ -80,6 +80,31 @@ hiDraw.prototype.fabricOverride = (function () {
             newGroup.setCoords(true);
             return newGroup;
         }
+        fabric.Group.prototype.toHiActiveSelection = function () {
+            if (!this.canvas) {
+                return;
+            }
+            var objects = this._objects, canvas = this.canvas;
+            this._objects = [];
+            var options = this.toObject();
+            delete options.objects;
+            canvas.remove(this);
+            objects.forEach(function(object) {
+                // object.group = activeSelection;
+                object.top += this.top;
+                object.left += this.left;
+                object.dirty = true;
+                canvas.add(object);
+            }.bind(this));
+             var activeSelection = new fabric.ActiveSelection(objects);
+            activeSelection.set(options);
+            activeSelection.type = 'activeSelection';
+            activeSelection.canvas = canvas;
+            activeSelection._objects = objects;
+            canvas._activeObject = activeSelection;
+            activeSelection.setCoords();
+            return activeSelection;
+        }
     }
     return fabricOverride
 })()
