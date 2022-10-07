@@ -292,34 +292,65 @@ hiViewer.prototype.viewerRefresh = function (objOption, fabricJson) {
   return this
 }
 
+hiViewer.prototype.getBindingObj = function (updateView, object) {
+  if (object.dataBinding) {
+    var updateObjProp = {}
+    updateObjProp.hiId = object.hiId
+    updateObjProp.type = object.type
+    var dataBinding = object.dataBinding
+    while (dataBinding && typeof dataBinding === 'string') {
+      dataBinding = JSON.parse(dataBinding)
+    }
+    // var dataBinding = hiDraw.prototype.parseStrToObj(dataBinding)
+    var needChange = false
+    // console.log('dataBinding', dataBinding)
+    if (dataBinding) {
+      for(var k in dataBinding) {
+        if (dataBinding[k].advanced) {
+          var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
+          updateObjProp[k] = advancedFunc()
+          needChange = true;
+        }
+      }
+    }
+    if (needChange) { updateView.objects.push(updateObjProp) }
+  } else if (object.objects) {
+    for(var i = 0; i < object.objects.length; i++) {
+      updateView = this.getBindingObj(updateView, object.objects[i])
+    }
+  }
+  return updateView;
+}
+
 hiViewer.prototype.dataRefresh = function (objOption) {
   this.defaultOption = hi3D.prototype.mergeDeep(this.defaultOption, objOption)
   // urgent 沒有處理 group
   var fabricJson = this.currentJson
   var updateView = { objects: [] }
   for(var i = 0; i < fabricJson.objects.length; i++) {
-    if (fabricJson.objects[i].dataBinding) {
-      var updateObjProp = {}
-      updateObjProp.hiId = fabricJson.objects[i].hiId
-      updateObjProp.type = fabricJson.objects[i].type
-      var dataBinding = fabricJson.objects[i].dataBinding
-      while (dataBinding && typeof dataBinding === 'string') {
-        dataBinding = JSON.parse(dataBinding)
-      }
-      // var dataBinding = hiDraw.prototype.parseStrToObj(dataBinding)
-      var needChange = false
-      // console.log('dataBinding', dataBinding)
-      if (dataBinding) {
-        for(var k in dataBinding) {
-          if (dataBinding[k].advanced) {
-            var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
-            updateObjProp[k] = advancedFunc()
-            needChange = true;
-          }
-        }
-      }
-      if (needChange) { updateView.objects.push(updateObjProp) }
-    }
+    updateView = this.getBindingObj(updateView, fabricJson.objects[i])
+    // if (fabricJson.objects[i].dataBinding) {
+    //   var updateObjProp = {}
+    //   updateObjProp.hiId = fabricJson.objects[i].hiId
+    //   updateObjProp.type = fabricJson.objects[i].type
+    //   var dataBinding = fabricJson.objects[i].dataBinding
+    //   while (dataBinding && typeof dataBinding === 'string') {
+    //     dataBinding = JSON.parse(dataBinding)
+    //   }
+    //   // var dataBinding = hiDraw.prototype.parseStrToObj(dataBinding)
+    //   var needChange = false
+    //   // console.log('dataBinding', dataBinding)
+    //   if (dataBinding) {
+    //     for(var k in dataBinding) {
+    //       if (dataBinding[k].advanced) {
+    //         var advancedFunc = hiDraw.prototype.functionGenerator(dataBinding[k].advanced);
+    //         updateObjProp[k] = advancedFunc()
+    //         needChange = true;
+    //       }
+    //     }
+    //   }
+    //   if (needChange) { updateView.objects.push(updateObjProp) }
+    // }
   }
   if (updateView) {
     this.edit.hi3d.refreshByFabricJson(this.edit, this.defaultOption, updateView, { needRemove: false })

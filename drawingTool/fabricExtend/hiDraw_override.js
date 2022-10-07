@@ -34,8 +34,8 @@ hiDraw.prototype.fabricOverride = (function () {
                 options || (options = {});
                 this.callSuper('initialize', element, options);
             },
-            toObject: function () {
-                return fabric.util.object.extend(this.callSuper('toObject'), {
+            toObject: function (propertiesToInclude) {
+                return fabric.util.object.extend(this.callSuper('toObject', propertiesToInclude), {
                     hiId: this.hiId,
                     altitude: this.altitude,
                     scaleZ: this.scaleZ
@@ -48,7 +48,6 @@ hiDraw.prototype.fabricOverride = (function () {
         fabric.ActiveSelection.prototype.toHiGroup = function () {
             var canvas = this.canvas;
             var originalActiveObject = canvas._activeObject
-            console.log('----R:', originalActiveObject.left, originalActiveObject.top, originalActiveObject.width, originalActiveObject.height, originalActiveObject.originX, originalActiveObject.originY)
             var objects = this._objects.concat();
             this._objects = [];
             var options = fabric.Object.prototype.toObject.call(this);
