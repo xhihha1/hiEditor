@@ -462,18 +462,28 @@
     if(this.canvasView){
       if(opt) {
         console.log('add', opt)
+        const item = opt.target
+        var eventBinding = item.eventBinding
+        if (typeof eventBinding === 'string') {
+          eventBinding = JSON.parse(eventBinding)
+        }
+        for (let i in eventBinding) {
+          console.log(i, eventBinding[i])
+          const eventFunc = hiDraw.prototype.functionGenerator(eventBinding[i]);
+          item.on(i, eventFunc)
+        }
       } else {
-        this.canvasView.forEachObject(function(item){
-          var eventBinding = item.eventBinding
-          if (typeof eventBinding === 'string') {
-            eventBinding = JSON.parse(eventBinding)
-          }
-          for (let i in eventBinding) {
-            console.log(i, eventBinding[i])
-            const eventFunc = hiDraw.prototype.functionGenerator(eventBinding[i]);
-            item.on(i, eventFunc)
-          }
-        })
+        // this.canvasView.forEachObject(function(item){
+        //   var eventBinding = item.eventBinding
+        //   if (typeof eventBinding === 'string') {
+        //     eventBinding = JSON.parse(eventBinding)
+        //   }
+        //   for (let i in eventBinding) {
+        //     console.log(i, eventBinding[i])
+        //     const eventFunc = hiDraw.prototype.functionGenerator(eventBinding[i]);
+        //     item.on(i, eventFunc)
+        //   }
+        // })
       }
     }
   }

@@ -605,12 +605,14 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
     map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
     needsUpdate = true;
   }
-  const material = new THREE.MeshStandardMaterial({
+  console.log('????', objOption)
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
-  });
+  })
   
   const sphere = new THREE.Mesh(geometry, material);
   sphere.name = objOption.name;
@@ -707,11 +709,12 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   // -------------------------
   // const geometry = new THREE.BoxGeometry(50, 50, 50);
   var transparent = objOption.transparent || false
-  const material = new THREE.MeshStandardMaterial({
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     color: objOption.color,
-    transparent: transparent,
+    transparent: objOption.transparent,
     opacity: objOption.opacity
-  });
+  })
   const faceMaterial = []
   for (let i = 0; i < 6; i++) {
     let map = null
@@ -731,9 +734,10 @@ hi3D.prototype.addCube = function (option, parentGroup) {
       if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
       if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
     }
-    faceMaterial.push(new THREE.MeshStandardMaterial({
+    faceMaterial.push(this.getMaterial({
+      materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
       map: map,
-      color: objOption.color ,
+      color: objOption.color,
       transparent: transparent,
       opacity: objOption.opacity
     }))
@@ -854,9 +858,10 @@ hi3D.prototype.setCube = function (cube, objOption) {
       if (i == 3 && objOption.faceMaterial.nyImg) { const nyImg = new THREE.TextureLoader().load(objOption.faceMaterial.nyImg); map = nyImg;}
       if (i == 4 && objOption.faceMaterial.pzImg) { const pzImg = new THREE.TextureLoader().load(objOption.faceMaterial.pzImg); map = pzImg;}
       if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
-      faceMaterial.push(new THREE.MeshStandardMaterial({
+      faceMaterial.push(this.getMaterial({
+        materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
         map: map,
-        color: color,
+        color: objOption.color,
         transparent: transparent,
         opacity: objOption.opacity
       }))
@@ -905,12 +910,13 @@ hi3D.prototype.addCylinder = function (option, parentGroup) {
     objOption.thetaStart,
     objOption.thetaLength
   );
-  const material = new THREE.MeshStandardMaterial({
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
-  });
+  })
   const node = new THREE.Mesh( geometry, material );
   node.material.needsUpdate = needsUpdate;
   node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
@@ -1051,19 +1057,21 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   // drawingContext.fillStyle = '#FFFF00';
   // drawingContext.fillRect( 0, 0, 128, 128 );
 
-  // const material = new THREE.MeshStandardMaterial({
-  //   // map: texture,
-  //   opacity: 0.8,
-  //   transparent: true
-  // });
   this.setfabricTexture("drawing-canvas", texture, edit)
-  const material = new THREE.MeshStandardMaterial();
-  material.map = texture
+  const map = texture;
+  map.needsUpdate = true;
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    map: map,
+    transparent: true,
+    opacity: 0.8
+  })
+  // material.map = texture
   // material.map = new THREE.CanvasTexture( drawingCanvas );
   // material.map = new THREE.CanvasTexture( document.getElementById( "canvas" ) );
-  material.map.needsUpdate = true;
-  material.transparent = true
-  material.opacity = 0.8
+  // material.map.needsUpdate = true;
+  // material.transparent = true
+  // material.opacity = 0.8
 
   const plane = new THREE.Mesh(geometry, material);
   plane.castShadow = true;
@@ -1348,9 +1356,11 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     radiusSegments: 3,
     closed: true
   };
-  const material = new THREE.MeshStandardMaterial({
+
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     color: objOption.color
-  });
+  })
   // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
   const sampleClosedSpline = new THREE.CatmullRomCurve3(pointArr);
   tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed);
@@ -1702,11 +1712,12 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     //   specular: 0x111111,
     //   shininess: 200
     // });
-    const material = new THREE.MeshStandardMaterial({
+    const material = this.getMaterial({
+      materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
       color: objOption.color,
       transparent: objOption.transparent,
       opacity: objOption.opacity
-    });
+    })
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
     // mesh.rotation.set( 0, - Math.PI / 2, 0 );
@@ -2294,12 +2305,13 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
     map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
     needsUpdate = true;
   }
-  const groundMat = new THREE.MeshStandardMaterial({
+  const groundMat = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
-  });
+  })
   const ground = new THREE.Mesh(groundGeo, groundMat);
   ground.position.x = objOption.position[0];
   ground.position.y = objOption.position[1];
@@ -2398,11 +2410,12 @@ hi3D.prototype.addWall = function (option, parentGroup) {
   }
   objOption = this.mergeDeep(objOption, option)
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
-  const material = new THREE.MeshStandardMaterial({
+  const material = this.getMaterial({
+    materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
-  });
+  })
   const cube = new THREE.Mesh(geometry, material);
   cube.castShadow = true;
   cube.receiveShadow = true;
@@ -2746,6 +2759,45 @@ hi3D.prototype.uniqueIdGenerater = function (action) {
       rb = i % 8 == 0 ? Math.random() * 0xffffffff | 0 : rb >> 4
     }
     return u
+  }
+}
+
+hi3D.prototype.colorToHex = function (color) {
+  let r
+  let g
+  let b
+  if (!color) {
+    return undefined
+  } else if (color.indexOf('#') === 0) {
+    return color
+  } else if (color.indexOf('rgba(') === 0) {
+    color = color.substr(5).split(')')[0].split(',');
+    r = (+color[0]).toString(16),
+    g = (+color[1]).toString(16),
+    b = (+color[2]).toString(16);
+    if (r.length == 1)
+      r = "0" + r;
+    if (g.length == 1)
+      g = "0" + g;
+    if (b.length == 1)
+      b = "0" + b;
+    
+    return "#" + r + g + b;
+  } else if (color.indexOf('rgb(') === 0) {
+    color = color.substr(4).split(')')[0].split(',');
+    r = (+color[0]).toString(16),
+    g = (+color[1]).toString(16),
+    b = (+color[2]).toString(16);
+    if (r.length == 1)
+      r = "0" + r;
+    if (g.length == 1)
+      g = "0" + g;
+    if (b.length == 1)
+      b = "0" + b;
+    
+    return "#" + r + g + b;
+  } else {
+    return color
   }
 }
 

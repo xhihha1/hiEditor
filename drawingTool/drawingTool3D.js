@@ -176,7 +176,7 @@ function showObjPropChange (object) { // opt.target
   
   var dataBinding = object.get('dataBinding') || {
     fill:{
-      advanced: 'function (value) {return hi3D.prototype.randomHexColor();}'
+      advanced: 'function (value) {return hiDraw.prototype.randomHexColor();}'
     }
   }
   // $('#newPropDataBinding').val(JSON.stringify(dataBinding, null, 2))
@@ -208,6 +208,7 @@ function showObjPropChange (object) { // opt.target
   if(typeof faceMaterial === 'string') {
     faceMaterial = JSON.parse(faceMaterial)
   }
+  $('#newMaterialType').val(faceMaterial.materialType)
   $('#newPropObjFaceImage').val(faceMaterial.image || '')
   $('#newPropObjFacePx').val(faceMaterial.pxImg || '')
   $('#newPropObjFaceNx').val(faceMaterial.nxImg || '')
@@ -266,6 +267,7 @@ function setObjPropChange () {
   // var afteraddFunc = afteraddFuncStr
   // -------- Material ----------
   var faceMaterial = {}
+  faceMaterial.materialType = $('#newMaterialType').val()
   faceMaterial.image = $('#newPropObjFaceImage').val().trim()
   faceMaterial.pxImg = $('#newPropObjFacePx').val().trim()
   faceMaterial.nxImg = $('#newPropObjFaceNx').val().trim()

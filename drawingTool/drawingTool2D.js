@@ -94,7 +94,7 @@ function showObjPropChange(object) {
   $('#newPropText').val(object.get('text'))
   var dataBinding = object.get('dataBinding') || {
     fill:{
-      advanced: 'function (value) {return \'#F00\';}'
+      advanced: 'function (value) {return hiDraw.prototype.randomHexColor();}'
     }
   }
   if(typeof dataBinding === 'string') {

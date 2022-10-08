@@ -23,7 +23,7 @@ function hi2dViewer(canvasId, canvasViewId) {
       }
     },
     event: {
-      object_added: function (opt) {},
+      object_added: function (opt) { dataStructure.viewer[0].edit.setEventBinding(opt) },
       object_modified: function (opt) {},
       object_removed: function (opt) {},
       after_render: function (opt) {},

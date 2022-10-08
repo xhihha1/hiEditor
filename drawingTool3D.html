@@ -65,6 +65,7 @@
   <script src="drawingTool/fabricExtend/hiDraw_Div.js"></script>
   <script src="drawingTool/fabricExtend/hiDraw_BgGrid.js"></script>
   <script src="drawingTool/fabricExtend/hiDraw_IText.js"></script>
+  <script src="drawingTool/fabricExtend/hiDraw_Color.js"></script>
 
   <script src="drawingTool/fabricExtend/hichart/hichart_main.js"></script>
   <script src="drawingTool/fabricExtend/hichart//hichart_axis.js"></script>
@@ -700,6 +701,20 @@
       <hr>
       <div><span>Material: </span></div>
       <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Material: </span></div>
+        <div>
+          <select name="" id="newMaterialType" class="prop_input">
+            <option value="MeshStandardMaterial" selected>MeshStandardMaterial</option>
+            <option value="MeshBasicMaterial">MeshBasicMaterial</option>
+            <option value="MeshDepthMaterial">MeshDepthMaterial</option>
+            <option value="MeshNormalMaterial">MeshNormalMaterial</option>
+            <option value="MeshLambertMaterial">MeshLambertMaterial</option>
+            <option value="MeshPhongMaterial">MeshPhongMaterial</option>
+            <option value="MeshPhysicalMaterial">MeshPhysicalMaterial</option>
+          </select>
+        </div>
+      </div>
+      <div class="dialogPropFlex">
         <div class="dialogPropTitle"><span>Image default: </span></div>
         <div><input type="text" id="newPropObjFaceImage" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
       </div>
@@ -913,7 +928,6 @@
   
   <script src="drawingTool/fabricExtend/hi3d.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_controlUtil.js"></script>
-  <script src="drawingTool/fabricExtend/hi3d_Color.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_SpotLight.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_PointLight.js"></script>
@@ -932,6 +946,7 @@
   <script src="drawingTool/fabricExtend/hi3d_format_gltf.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_fdx.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_nrrd.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_Material.js"></script>
   <script src="drawingTool/editor2d/addHichartObj.js"></script>
   <script src="drawingTool/editorEvent.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>
