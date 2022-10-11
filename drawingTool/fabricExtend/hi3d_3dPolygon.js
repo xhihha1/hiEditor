@@ -575,6 +575,8 @@ hiDraw.prototype.Hi3DPolygon = (function () {
       });
       var polygon = new fabric.Hi3DPolygon(points, {
         tempDrawShape: true,
+        originX: 'center',
+        originY: 'center',
         stroke: '#333333',
         strokeWidth: 1 / zoom,
         fill: 'rgba(204,204,204,0.3)',
@@ -602,6 +604,8 @@ hiDraw.prototype.Hi3DPolygon = (function () {
       }];
       var polygon = new fabric.Hi3DPolygon(polyPoint, {
         tempDrawShape: true,
+        originX: 'center',
+        originY: 'center',
         stroke: '#333333',
         strokeWidth: 1 / zoom,
         fill: 'rgba(204,204,204,0.3)',
@@ -650,6 +654,8 @@ hiDraw.prototype.Hi3DPolygon = (function () {
       // stroke: '#333333',
       // strokeWidth: 1,
       // fill: 'rgba(0,0,0,0)',
+      originX: 'center',
+      originY: 'center',
       opacity: 1,
       hasBorders: true,
       hasControls: true,

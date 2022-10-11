@@ -1343,12 +1343,28 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     return false
   }
   var pointArr = []
+  var min1, max1, min2, max2, min3, max3;
   for (var i = 0; i < objOption.points.length; i++) {
+    console.log('points' + i, objOption.points[i][0],
+    objOption.points[i][1],
+    objOption.points[i][2])
     pointArr.push(new THREE.Vector3(
       objOption.points[i][0],
       objOption.points[i][1],
       objOption.points[i][2]
     ));
+    if (typeof min1 === 'undefined') { min1 = objOption.points[i][0]; }
+    else { min1 = Math.min(min1, objOption.points[i][0]); }
+    if (typeof max1 === 'undefined') { max1 = objOption.points[i][0]; }
+    else { max1 = Math.min(max1, objOption.points[i][0]); }
+    if (typeof min2 === 'undefined') { min2 = objOption.points[i][1]; }
+    else { min2 = Math.min(min2, objOption.points[i][0]); }
+    if (typeof max2 === 'undefined') { max2 = objOption.points[i][1]; }
+    else { max2 = Math.min(max2, objOption.points[i][0]); }
+    if (typeof min3 === 'undefined') { min3 = objOption.points[i][2]; }
+    else { min3 = Math.min(min3, objOption.points[i][0]); }
+    if (typeof max3 === 'undefined') { max3 = objOption.points[i][2]; }
+    else { max3 = Math.min(max3, objOption.points[i][0]); }
   }
   const params = {
     scale: 4,
@@ -1357,25 +1373,36 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
     closed: true
   };
 
-  const material = this.getMaterial({
+  let material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     color: objOption.color
   })
   // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
   const sampleClosedSpline = new THREE.CatmullRomCurve3(pointArr);
-  tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed);
-  window.tubeGeometry = tubeGeometry
   sampleClosedSpline.curveType = 'centripetal';
   sampleClosedSpline.closed = true;
+  // tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed);
+  tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, pointArr.length, 1, params.radiusSegments, params.closed);
+  // const points = sampleClosedSpline.getPoints( pointArr.length );
+  // tubeGeometry = new THREE.BufferGeometry().setFromPoints( points );
+  // material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
+  // Create the final object to add to the scene
+  
+  window.tubeGeometry = tubeGeometry
+  
   var mesh = new THREE.Mesh(tubeGeometry, material);
+  // const mesh = new THREE.Line( tubeGeometry, material );
   // const wireframe = new THREE.Mesh( tubeGeometry, wireframeMaterial );
   // mesh.add( wireframe );
-  mesh.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
+  // mesh.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
   mesh.hiId = objOption.hiId
   mesh.name = objOption.name;
   mesh.dataBinding = objOption.dataBinding
   mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
+  // mesh.position.x = min1 + (max1 - min1) / 2;
+  // mesh.position.y = min2 + (max2 - min2) / 2;
+  // mesh.position.z = min3 + (max3 - min3) / 2;
   if (parentGroup) {
     parentGroup.add(mesh);
   } else {
@@ -1392,6 +1419,7 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
     closed: true
   };
   var pointArr = []
+  var min1, max1, min2, max2, min3, max3;
   if (objOption.points) {
     var pointArr = []
     for (var i = 0; i < objOption.points.length; i++) {
@@ -1400,14 +1428,29 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
         objOption.points[i][1],
         objOption.points[i][2]
       ));
+      if (typeof min1 === 'undefined') { min1 = objOption.points[i][0]; }
+      else { min1 = Math.min(min1, objOption.points[i][0]); }
+      if (typeof max1 === 'undefined') { max1 = objOption.points[i][0]; }
+      else { max1 = Math.min(max1, objOption.points[i][0]); }
+      if (typeof min2 === 'undefined') { min2 = objOption.points[i][1]; }
+      else { min2 = Math.min(min2, objOption.points[i][0]); }
+      if (typeof max2 === 'undefined') { max2 = objOption.points[i][1]; }
+      else { max2 = Math.min(max2, objOption.points[i][0]); }
+      if (typeof min3 === 'undefined') { min3 = objOption.points[i][2]; }
+      else { min3 = Math.min(min3, objOption.points[i][0]); }
+      if (typeof max3 === 'undefined') { max3 = objOption.points[i][2]; }
+      else { max3 = Math.min(max3, objOption.points[i][0]); }
     }
     // mesh.children[0].geometry.setFromPoints(pointArr)
     mesh.geometry.dispose()
     // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
     const sampleClosedSpline = new THREE.CatmullRomCurve3(pointArr);
-    tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed);
     sampleClosedSpline.curveType = 'centripetal';
     sampleClosedSpline.closed = true;
+    // const points = sampleClosedSpline.getPoints( pointArr.length );
+    // tubeGeometry = new THREE.BufferGeometry().setFromPoints( points );
+    // material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
+    tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, pointArr.length, 1, params.radiusSegments, params.closed);
     mesh.geometry = tubeGeometry
   }
   if (objOption.position) {
@@ -1423,6 +1466,10 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
       mesh.position.z = objOption.position[2];
     }
   }
+  
+  // mesh.position.x = min1 + (max1 - min1) / 2;
+  // mesh.position.y = min2 + (max2 - min2) / 2;
+  // mesh.position.z = min3 + (max3 - min3) / 2;
   if (objOption.color) {
     mesh.material.color = new THREE.Color(objOption.color)
   }

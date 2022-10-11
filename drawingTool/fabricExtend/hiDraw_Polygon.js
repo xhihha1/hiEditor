@@ -366,8 +366,10 @@ fabric.HiPolygon.prototype.polygonAddPoints = function (polygon) {
   function createNewPolygonFromOld (canvas, polygon) {
     var min = hiDraw.prototype.PolygonMinXY(canvas, polygon)
     var nPolygon = new fabric.HiPolygon(polygon.get('points'), {
-      left: min.x,
-      top: min.y,
+      // left: min.x,
+      // top: min.y,
+      originX: 'center',
+      originY: 'center',
       stroke: '#330000',
       opacity: 1,
       hasBorders: false,
@@ -641,6 +643,8 @@ hiDraw.prototype.Polygon = (function () {
       });
       var polygon = new fabric.HiPolygon(points, {
         tempDrawShape: true,
+        originX: 'center',
+        originY: 'center',
         stroke: '#333333',
         strokeWidth: 1 / zoom,
         fill: 'rgba(204,204,204,0.3)',
@@ -668,6 +672,8 @@ hiDraw.prototype.Polygon = (function () {
       }];
       var polygon = new fabric.HiPolygon(polyPoint, {
         tempDrawShape: true,
+        originX: 'center',
+        originY: 'center',
         stroke: '#333333',
         strokeWidth: 1 / zoom,
         fill: 'rgba(204,204,204,0.3)',
@@ -728,8 +734,10 @@ hiDraw.prototype.Polygon = (function () {
       // stroke: '#333333',
       // strokeWidth: 1,
       // fill: 'rgba(0,0,0,0)',
-      left: minX,
-      top: minY,
+      // left: minX,
+      // top: minY,
+      originX: 'center',
+      originY: 'center',
       opacity: 1,
       hasBorders: false,
       hasControls: true,
