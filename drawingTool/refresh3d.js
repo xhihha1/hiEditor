@@ -230,14 +230,14 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       this.addCylinder(opt, parentGroup)
     }
   }
-  if (item["type"] == "Hi3DPolyline") {
+  if (item["type"] == "hi3DPolyline") {
     var opt = this.getItemOption(item)
     if (itemExist) {
-      // console.log('set Hi3DPolyline', opt)
+      // console.log('set hi3DPolyline', opt)
       // this.setLine(objNode, opt)
       this.setLine2(objNode, opt)
     } else {
-      // console.log('add Hi3DPolyline', opt)
+      // console.log('add hi3DPolyline', opt)
       // this.addLine(opt)
       this.addLine2(opt, parentGroup)
     }

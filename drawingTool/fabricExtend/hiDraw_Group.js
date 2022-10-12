@@ -10,7 +10,7 @@
   }
 
   fabric.HiGroup = fabric.util.createClass(fabric.Group, {
-    type: 'HiGroup',
+    type: 'hiGroup',
     initialize: function (element, options) {
       // console.log(this) // 屬性都寫在 this 中
       options || (options = {});
