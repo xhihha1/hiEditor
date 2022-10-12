@@ -1342,67 +1342,41 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   if (!objOption.hiId) {
     return false
   }
-  var pointArr = []
-  var min1, max1, min2, max2, min3, max3;
+
+  const curvePath = new THREE.CurvePath();
   for (var i = 0; i < objOption.points.length; i++) {
-    console.log('points' + i, objOption.points[i][0],
-    objOption.points[i][1],
-    objOption.points[i][2])
-    pointArr.push(new THREE.Vector3(
+    const p1 = new THREE.Vector3(
       objOption.points[i][0],
       objOption.points[i][1],
       objOption.points[i][2]
-    ));
-    if (typeof min1 === 'undefined') { min1 = objOption.points[i][0]; }
-    else { min1 = Math.min(min1, objOption.points[i][0]); }
-    if (typeof max1 === 'undefined') { max1 = objOption.points[i][0]; }
-    else { max1 = Math.min(max1, objOption.points[i][0]); }
-    if (typeof min2 === 'undefined') { min2 = objOption.points[i][1]; }
-    else { min2 = Math.min(min2, objOption.points[i][0]); }
-    if (typeof max2 === 'undefined') { max2 = objOption.points[i][1]; }
-    else { max2 = Math.min(max2, objOption.points[i][0]); }
-    if (typeof min3 === 'undefined') { min3 = objOption.points[i][2]; }
-    else { min3 = Math.min(min3, objOption.points[i][0]); }
-    if (typeof max3 === 'undefined') { max3 = objOption.points[i][2]; }
-    else { max3 = Math.min(max3, objOption.points[i][0]); }
+    )
+    const it = i === (objOption.points.length - 1) ? 0: i + 1
+    const p2 = new THREE.Vector3(
+      objOption.points[it][0],
+      objOption.points[it][1],
+      objOption.points[it][2]
+    )
+    const line = new THREE.LineCurve3(p1, p2)
+    curvePath.curves.push(line)
   }
+  const points = curvePath.getPoints( 200 );
   const params = {
     scale: 4,
     extrusionSegments: 100,
-    radiusSegments: 3,
-    closed: true
+    radiusSegments: 8,
+    closed: false
   };
-
   let material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
     color: objOption.color
   })
-  // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
-  const sampleClosedSpline = new THREE.CatmullRomCurve3(pointArr);
-  sampleClosedSpline.curveType = 'centripetal';
-  sampleClosedSpline.closed = true;
-  // tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, params.extrusionSegments, 2, params.radiusSegments, params.closed);
-  tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, pointArr.length, 1, params.radiusSegments, params.closed);
-  // const points = sampleClosedSpline.getPoints( pointArr.length );
-  // tubeGeometry = new THREE.BufferGeometry().setFromPoints( points );
-  // material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
-  // Create the final object to add to the scene
-  
-  window.tubeGeometry = tubeGeometry
-  
-  var mesh = new THREE.Mesh(tubeGeometry, material);
-  // const mesh = new THREE.Line( tubeGeometry, material );
-  // const wireframe = new THREE.Mesh( tubeGeometry, wireframeMaterial );
-  // mesh.add( wireframe );
-  // mesh.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2]);
+  const geometry = new THREE.TubeGeometry(curvePath, params.extrusionSegments, 2, params.radiusSegments, params.closed);
+  var mesh = new THREE.Mesh(geometry, material);
   mesh.hiId = objOption.hiId
   mesh.name = objOption.name;
   mesh.dataBinding = objOption.dataBinding
   mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
-  // mesh.position.x = min1 + (max1 - min1) / 2;
-  // mesh.position.y = min2 + (max2 - min2) / 2;
-  // mesh.position.z = min3 + (max3 - min3) / 2;
   if (parentGroup) {
     parentGroup.add(mesh);
   } else {
@@ -1412,64 +1386,64 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   return mesh
 }
 hi3D.prototype.setClosedCurve = function (mesh, objOption) {
+  console.log('set curve', mesh, objOption)
   const params = {
     scale: 4,
     extrusionSegments: 100,
-    radiusSegments: 3,
-    closed: true
+    radiusSegments: 8,
+    closed: false
   };
-  var pointArr = []
-  var min1, max1, min2, max2, min3, max3;
   if (objOption.points) {
-    var pointArr = []
+    var min1, max1, min2, max2, min3, max3, shift1 = 0, shift2 = 0, shift3 = 0;
     for (var i = 0; i < objOption.points.length; i++) {
-      pointArr.push(new THREE.Vector3(
-        objOption.points[i][0],
-        objOption.points[i][1],
-        objOption.points[i][2]
-      ));
       if (typeof min1 === 'undefined') { min1 = objOption.points[i][0]; }
       else { min1 = Math.min(min1, objOption.points[i][0]); }
       if (typeof max1 === 'undefined') { max1 = objOption.points[i][0]; }
-      else { max1 = Math.min(max1, objOption.points[i][0]); }
+      else { max1 = Math.max(max1, objOption.points[i][0]); }
       if (typeof min2 === 'undefined') { min2 = objOption.points[i][1]; }
-      else { min2 = Math.min(min2, objOption.points[i][0]); }
+      else { min2 = Math.min(min2, objOption.points[i][1]); }
       if (typeof max2 === 'undefined') { max2 = objOption.points[i][1]; }
-      else { max2 = Math.min(max2, objOption.points[i][0]); }
+      else { max2 = Math.max(max2, objOption.points[i][1]); }
       if (typeof min3 === 'undefined') { min3 = objOption.points[i][2]; }
-      else { min3 = Math.min(min3, objOption.points[i][0]); }
+      else { min3 = Math.min(min3, objOption.points[i][2]); }
       if (typeof max3 === 'undefined') { max3 = objOption.points[i][2]; }
-      else { max3 = Math.min(max3, objOption.points[i][0]); }
+      else { max3 = Math.max(max3, objOption.points[i][2]); }
+      console.log('points:', objOption.points[i][0], objOption.points[i][1], objOption.points[i][2])
     }
-    // mesh.children[0].geometry.setFromPoints(pointArr)
+    shift1 = objOption.position[0] - (min1 + (max1 - min1) / 2);
+    shift2 = objOption.position[1] - (min2 + (max2 - min2) / 2);
+    shift3 = objOption.position[2] - (min3 + (max3 - min3) / 2);
+    // shift1 = objOption.position[0];
+    // shift2 = objOption.position[1];
+    // shift3 = objOption.position[2];
+    console.log('min:', min1, min2, min3)
+    console.log('max:', max1, max2, max3)
+    console.log('max - min:', max1 - min1, max2 - min2, max3 - min3)
+    console.log('max - min / 2:', (max1 - min1)/2, (max2 - min2)/2, (max3 - min3)/2)
+    console.log('min + (max - min) / 2:', min1 + (max1 - min1)/2, min2 + (max2 - min2)/2, min3 + (max3 - min3)/2)
+    console.log('left top:', objOption.position[0], objOption.position[1], objOption.position[2])
+    console.log('shift:', shift1, shift2, shift3)
+    const curvePath = new THREE.CurvePath();
+    for (var i = 0; i < objOption.points.length; i++) {
+      const p1 = new THREE.Vector3(
+        objOption.points[i][0] + shift1,
+        objOption.points[i][1] + shift2,
+        objOption.points[i][2] + shift3
+      )
+      const it = i === (objOption.points.length - 1) ? 0: i + 1
+      const p2 = new THREE.Vector3(
+        objOption.points[it][0] + shift1,
+        objOption.points[it][1] + shift2,
+        objOption.points[it][2] + shift3
+      )
+      const line = new THREE.LineCurve3(p1, p2)
+      curvePath.curves.push(line)
+    }
+    const geometry = new THREE.TubeGeometry(curvePath, params.extrusionSegments, 2, params.radiusSegments, params.closed);
     mesh.geometry.dispose()
-    // const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.3, wireframe: true, transparent: true } );
-    const sampleClosedSpline = new THREE.CatmullRomCurve3(pointArr);
-    sampleClosedSpline.curveType = 'centripetal';
-    sampleClosedSpline.closed = true;
-    // const points = sampleClosedSpline.getPoints( pointArr.length );
-    // tubeGeometry = new THREE.BufferGeometry().setFromPoints( points );
-    // material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
-    tubeGeometry = new THREE.TubeGeometry(sampleClosedSpline, pointArr.length, 1, params.radiusSegments, params.closed);
-    mesh.geometry = tubeGeometry
-  }
-  if (objOption.position) {
-    // line本身位置會造成座標錯誤
-    // mesh.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
-    if (typeof objOption.position[0] !== 'undefined') {
-      mesh.position.x = objOption.position[0];
-    }
-    if (typeof objOption.position[1] !== 'undefined') {
-      mesh.position.y = objOption.position[1];
-    }
-    if (typeof objOption.position[2] !== 'undefined') {
-      mesh.position.z = objOption.position[2];
-    }
+    mesh.geometry = geometry;
   }
   
-  // mesh.position.x = min1 + (max1 - min1) / 2;
-  // mesh.position.y = min2 + (max2 - min2) / 2;
-  // mesh.position.z = min3 + (max3 - min3) / 2;
   if (objOption.color) {
     mesh.material.color = new THREE.Color(objOption.color)
   }

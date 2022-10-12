@@ -498,6 +498,8 @@
         });
         var Polyline = new fabric.Hi3DPolyline(points, {
           tempDrawShape: true,
+          originX: 'center',
+          originY: 'center',
           stroke: '#333333',
           strokeWidth: 1 / zoom,
           fill: 'transparent',
@@ -525,6 +527,8 @@
         }];
         var Polyline = new fabric.Hi3DPolyline(polyPoint, {
           tempDrawShape: true,
+          originX: 'center',
+          originY: 'center',
           stroke: '#333333',
           strokeWidth: 1 / zoom,
           fill: 'transparent',
