@@ -11,7 +11,7 @@
 
   fabric.Hi3DPolyline = fabric.util.createClass(fabric.Polyline, {
 
-    type: 'hi3DPolyline',
+    type: 'Hi3DPolyline',
 
     initialize: function (element, options) {
       options || (options = {});

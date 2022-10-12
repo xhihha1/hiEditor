@@ -27,24 +27,24 @@ hiDraw.prototype.fabricOverride = (function () {
         // fabric.Rect.prototype.controls = controlOverride.rectangle();
 
         
-        fabric.HiGroup = fabric.util.createClass(fabric.Group, {
-            type: 'hiGroup',
-            initialize: function (element, options) {
-                // console.log(this) // 屬性都寫在 this 中
-                options || (options = {});
-                this.callSuper('initialize', element, options);
-            },
-            toObject: function (propertiesToInclude) {
-                return fabric.util.object.extend(this.callSuper('toObject', propertiesToInclude), {
-                    hiId: this.hiId,
-                    altitude: this.altitude,
-                    scaleZ: this.scaleZ
-                });
-            },
-            _render: function (ctx) {
-                this.callSuper('_render', ctx);
-            }
-        });
+        // fabric.HiGroup = fabric.util.createClass(fabric.Group, {
+        //     type: 'HiGroup',
+        //     initialize: function (element, options) {
+        //         // console.log(this) // 屬性都寫在 this 中
+        //         options || (options = {});
+        //         this.callSuper('initialize', element, options);
+        //     },
+        //     toObject: function (propertiesToInclude) {
+        //         return fabric.util.object.extend(this.callSuper('toObject', propertiesToInclude), {
+        //             hiId: this.hiId,
+        //             altitude: this.altitude,
+        //             scaleZ: this.scaleZ
+        //         });
+        //     },
+        //     _render: function (ctx) {
+        //         this.callSuper('_render', ctx);
+        //     }
+        // });
         fabric.ActiveSelection.prototype.toHiGroup = function () {
             var canvas = this.canvas;
             var originalActiveObject = canvas._activeObject
