@@ -604,7 +604,7 @@
       'color', 'intensity', 'distance', 'rotateX', 'rotateZ', 'angle', 'penumbra', 'decay',
       'visible', 'skyColor', 'groundColor', 'castShadow', 'shadow',
       'animation', 'sceneProp', 'transparent', 'opacity', 'faceMaterial', 'afteraddFunc',
-      'displayProp'
+      'displayProp', 'datasourceConfig'
     ]
   }
 

@@ -1,0 +1,4 @@
+V1, string, , Test, {'a': 1}
+V2, number, , 55, {'a': 1}
+V3, boolean, , true, {'a': 1}
+V4, boolean, , false, {'a': 1}

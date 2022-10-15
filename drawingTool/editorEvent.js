@@ -204,7 +204,9 @@ function editorEvent(edit, objOption) {
       if(typeof result.sceneProp === 'string') {
         result.sceneProp = JSON.parse(result.sceneProp)
       }
-      edit.hi3d.setCamera(result.sceneProp.camera)
+      if(result.sceneProp && result.sceneProp.camera){
+        edit.hi3d.setCamera(result.sceneProp.camera)
+      }
     }
   });
   
@@ -488,7 +490,19 @@ function editorEvent(edit, objOption) {
     edit.unGroupSelection()
   })
   var genTable = function(data){
-    if(!data) { data = ['','','','',''] }
+    if(!data) { return '' }
+    if(typeof data === 'object') {
+      if(!Array.isArray(data)){
+        const ary = []
+        ary.push(data.hasOwnProperty('name')? data.name : '')
+        ary.push(data.hasOwnProperty('type')? data.type : '')
+        ary.push(data.hasOwnProperty('range')? data.range : '')
+        ary.push(data.hasOwnProperty('defalut')? data.defalut : '')
+        ary.push(data.hasOwnProperty('option')? data.option : '')
+        data = ary
+      }
+    }
+    let value = data[3].trim()
     var str = ''
     str += '';
     str += '<div class="commonContentTableRow">';
@@ -497,23 +511,34 @@ function editorEvent(edit, objOption) {
     str += '  </div>';
     str += '  <div class="commonContentTableCell">';
     str += '    <select class="selVarType commonInput">';
-    str += '      <option value="string" class="commonInput">string</option>';
-    str += '      <option value="number" class="commonInput">number</option>';
-    str += '      <option value="boolean" class="commonInput">boolean</option>';
-    str += '      <option value="array" class="commonInput">array</option>';
-    str += '      <option value="object" class="commonInput">object</option>';
+    str += '      <option value="string" class="commonInput" '+ (data[1].trim().toLowerCase() === 'string'?'selected':'') +' >string</option>';
+    str += '      <option value="number" class="commonInput" '+ (data[1].trim().toLowerCase() === 'number'?'selected':'') +' >number</option>';
+    str += '      <option value="boolean" class="commonInput" '+ (data[1].trim().toLowerCase() === 'boolean'?'selected':'') +' >boolean</option>';
+    // str += '      <option value="array" class="commonInput" '+ (data[1].trim().toLowerCase() === 'array'?'selected':'') +' >array</option>';
+    str += '      <option value="object" class="commonInput" '+ (data[1].trim().toLowerCase() === 'object'?'selected':'') +' >object</option>';
     str += '    </select>';
     str += '  </div>';
     str += '  <div class="commonContentTableCell"><input type="text" class="inputVarRange commonInput" name="Range" value="'+data[2]+'"></div>';
-    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default" value="'+data[3]+'"></div>';
+    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default" value="'+value+'"></div>';
     str += '  <div class="commonContentTableCell"><input type="text" class="inputVarOption commonInput" name="Option" value="'+data[4]+'"></div>';
     str += '</div>';
     return str;
   }
   $('#openVariableConfigTable').click(function(){
     $('#variableConfigTable').show()
-    for(let i = 0; i<50;i++){
-      $('#varTbodyContent').append(genTable())
+    $('#varTbodyContent').html()
+    if (edit.canvasView.datasourceConfig) {
+      if(typeof edit.canvasView.datasourceConfig === 'string') {
+        edit.canvasView.datasourceConfig = JSON.parse(edit.canvasView.datasourceConfig)
+      }
+      if(edit.canvasView.datasourceConfig.variableConfig){
+        if(typeof edit.canvasView.datasourceConfig.variableConfig === 'string') {
+          edit.canvasView.datasourceConfig.variableConfig = JSON.parse(edit.canvasView.datasourceConfig.variableConfig)
+        }
+        for(let i = 0; i < edit.canvasView.datasourceConfig.variableConfig.length;i++){
+          $('#varTbodyContent').append(genTable(edit.canvasView.datasourceConfig.variableConfig[i]))
+        }
+      }
     }
   })
   $('#variableConfigSubmmit').click(function(){
@@ -528,6 +553,10 @@ function editorEvent(edit, objOption) {
       })
     })
     console.log('configTable:', configTable)
+    if (!edit.canvasView.datasourceConfig) {
+      edit.canvasView.datasourceConfig = {}
+    }
+    edit.canvasView.datasourceConfig.variableConfig = JSON.stringify(configTable)
   })
   $('#variableConfigImport').on('change', function(){
     const reader = new FileReader()
