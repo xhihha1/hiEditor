@@ -514,12 +514,16 @@ function editorEvent(edit, objOption) {
     str += '      <option value="string" class="commonInput" '+ (data[1].trim().toLowerCase() === 'string'?'selected':'') +' >string</option>';
     str += '      <option value="number" class="commonInput" '+ (data[1].trim().toLowerCase() === 'number'?'selected':'') +' >number</option>';
     str += '      <option value="boolean" class="commonInput" '+ (data[1].trim().toLowerCase() === 'boolean'?'selected':'') +' >boolean</option>';
-    // str += '      <option value="array" class="commonInput" '+ (data[1].trim().toLowerCase() === 'array'?'selected':'') +' >array</option>';
+    str += '      <option value="array" class="commonInput" '+ (data[1].trim().toLowerCase() === 'array'?'selected':'') +' >array</option>';
     str += '      <option value="object" class="commonInput" '+ (data[1].trim().toLowerCase() === 'object'?'selected':'') +' >object</option>';
     str += '    </select>';
     str += '  </div>';
     str += '  <div class="commonContentTableCell"><input type="text" class="inputVarRange commonInput" name="Range" value="'+data[2]+'"></div>';
-    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default" value="'+value+'"></div>';
+    if(data[1].trim().toLowerCase() === 'array' || data[1].trim().toLowerCase() === 'object') {
+      str += '  <div class="commonContentTableCell"><textarea class="inputVarDefault commonInput">'+value+'</textarea></div>';
+    } else {
+      str += '  <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default" value="'+value+'"></div>';
+    }
     str += '  <div class="commonContentTableCell"><input type="text" class="inputVarOption commonInput" name="Option" value="'+data[4]+'"></div>';
     str += '</div>';
     return str;
