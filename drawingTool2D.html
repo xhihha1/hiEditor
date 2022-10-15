@@ -191,6 +191,8 @@
             <div class="dropdown-content">
               <div class="sublist" id="openObjectListDialog">object List</div>
               <div class="sublist" id="openHeatmapSettingDialog">Heatmap setting</div>
+              <div class="sublist" id="openVariableConfigTable">Variable Config</div>
+              <div class="sublist" id="openDataSourceConfigTable">Data source Config</div>
             </div>
           </li>
           <li class="dropdown">
@@ -480,6 +482,61 @@
       <ul id="mapIconArea">
         <li class="imageIcon"><img src="assets/brainstorming.png"></li>
       </ul>
+    </div>
+  </div>
+  <div class="commonDialog" id="variableConfigTable" style="width: 500px;height:500px;">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Variable Config</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent" style="height: calc(500px - 24px);">
+      <div class="dialogPropFlex">
+        <div>
+          <label><input type="file" accept=".csv" id="variableConfigImport" name="import" style="display: none;"><img src="./icon/download_w.png" class="tool-icon">Import csv</label>
+        </div>
+        <div>
+          <button id="variableConfigSubmmit">Submit</button>
+        </div>
+      </div>
+      <div class="commonContentTable" style="width: 100%; height: 100%;">
+        <div class="commonContentTableThead">
+          <div class="commonContentTableRow">
+            <div class="commonContentTableCell">Name</div>
+            <div class="commonContentTableCell">Type</div>
+            <div class="commonContentTableCell">Range</div>
+            <div class="commonContentTableCell">Default</div>
+            <div class="commonContentTableCell">Option</div>
+          </div>
+        </div>
+        <div class="commonContentTableTbody" id="varTbodyContent" style="height: 420px; overflow-y: auto;">
+          <div class="commonContentTableRow">
+            <div class="commonContentTableCell">
+              <input type="text" class="inputVarName commonInput" name="Name">
+            </div>
+            <div class="commonContentTableCell">
+              <select class="selVarType commonInput">
+                <option value="string" class="commonInput">string</option>
+                <option value="number" class="commonInput">number</option>
+                <option value="boolean" class="commonInput">boolean</option>
+                <option value="array" class="commonInput">array</option>
+                <option value="object" class="commonInput">object</option>
+              </select>
+            </div>
+            <div class="commonContentTableCell"><input type="text" class="inputVarRange commonInput" name="Range"></div>
+            <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default"></div>
+            <div class="commonContentTableCell"><input type="text" class="inputVarOption commonInput" name="Option"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="commonDialog" id="dataSourceConfigTable">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Data source Config</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      
     </div>
   </div>
   <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>

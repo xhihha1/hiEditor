@@ -64,6 +64,18 @@ a.noDec {
   display: table;
 }
 
+.commonContentTableThead{
+  display: table-header-group;
+}
+
+.commonContentTableTbody{
+  display: table-row-group;
+}
+
+.commonContentTableTfoot{
+  display: table-footer-group;
+}
+
 .commonContentTableRow{
   display: table-row;
 }
@@ -72,6 +84,7 @@ a.noDec {
   display: table-cell;
 }
 
+
 .dialogPropFlex {
   display: flex;
   justify-content: space-between;
@@ -79,4 +92,17 @@ a.noDec {
 .dialogPropTitle{
   font-size: 12px;
   line-height: 20px;;
+}
+
+/*  variable  */
+.commonInput {
+  width: 50px;
+  background: transparent;
+  color: #FFFFFF;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #FFFFFF;
+}
+.commonInput option{
+  background: #000000;
 }

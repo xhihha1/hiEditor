@@ -487,6 +487,69 @@ function editorEvent(edit, objOption) {
   $('#drawUngroup').click(function (e) {
     edit.unGroupSelection()
   })
+  var genTable = function(data){
+    if(!data) { data = ['','','','',''] }
+    var str = ''
+    str += '';
+    str += '<div class="commonContentTableRow">';
+    str += '  <div class="commonContentTableCell">';
+    str += '    <input type="text" class="inputVarName commonInput" name="Name" value="'+data[0]+'">';
+    str += '  </div>';
+    str += '  <div class="commonContentTableCell">';
+    str += '    <select class="selVarType commonInput">';
+    str += '      <option value="string" class="commonInput">string</option>';
+    str += '      <option value="number" class="commonInput">number</option>';
+    str += '      <option value="boolean" class="commonInput">boolean</option>';
+    str += '      <option value="array" class="commonInput">array</option>';
+    str += '      <option value="object" class="commonInput">object</option>';
+    str += '    </select>';
+    str += '  </div>';
+    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarRange commonInput" name="Range" value="'+data[2]+'"></div>';
+    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarDefault commonInput" name="Default" value="'+data[3]+'"></div>';
+    str += '  <div class="commonContentTableCell"><input type="text" class="inputVarOption commonInput" name="Option" value="'+data[4]+'"></div>';
+    str += '</div>';
+    return str;
+  }
+  $('#openVariableConfigTable').click(function(){
+    $('#variableConfigTable').show()
+    for(let i = 0; i<50;i++){
+      $('#varTbodyContent').append(genTable())
+    }
+  })
+  $('#variableConfigSubmmit').click(function(){
+    const configTable = []
+    $('#varTbodyContent').find('.commonContentTableRow').each(function(idx){
+      configTable.push({
+        name: $(this).find('.inputVarName').first().val(),
+        type: $(this).find('.selVarType').first().val(),
+        range: $(this).find('.inputVarRange').first().val(),
+        defalut: $(this).find('.inputVarDefault').first().val(),
+        option: $(this).find('.inputVarOption').first().val()
+      })
+    })
+    console.log('configTable:', configTable)
+  })
+  $('#variableConfigImport').on('change', function(){
+    const reader = new FileReader()
+    const picker = document.getElementById("variableConfigImport")
+    reader.readAsText(picker.files[0])
+    reader.onloadend = () => {
+      $('#varTbodyContent').html('')
+      let rows = reader.result.split("\r\n");
+      for (let row of rows) {
+        let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+        if($('#varTbodyContent').find('.commonContentTableRow').length < 100){ $('#varTbodyContent').append(genTable(cols)) }
+        if (cols!=null) {
+          for (let col of cols) {
+            // console.log('col', col.replace(/(^"|"$)/g, ""))
+          }
+        }
+      }
+    }
+  })
+  $('#openDataSourceConfigTable').click(function(){
+    $('#dataSourceConfigTable').show()
+  })
 
 
   function pointsArrayToObjs(array) {
