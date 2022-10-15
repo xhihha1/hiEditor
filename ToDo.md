@@ -126,6 +126,8 @@ Three
 18. [fabricjs texture three](https://codepen.io/ricardcreagia/pen/EdEGod)  
     [參考2](https://www.it1352.com/2075074.html)  
 
+19. [小球沿著線移動](https://juejin.cn/post/6925358924254150670) 使用到 curve.getPoints(num) (取得分段), curve.getPoint(0~1) (取得某分段點)  
+
 # API 參考  
 
 1. scene.getObjectByProperty('uuid','14B0E24A-D794-48C2-B66B-BA1314305ADB')
