@@ -193,7 +193,7 @@ function initCanvas3D(edit, objOption) {
   }
 }
 
-function animate3D () {
+function animate3D (edit, objOption) {
   edit.hi3d.refreshByFabricJson(edit, objOption)
   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   setInterval(function(){

@@ -630,6 +630,7 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   } else {
     this.scene.add(sphere);
   }
+  this.commonAddObject(sphere, option, parentGroup)
   return sphere
 }
 
@@ -692,6 +693,7 @@ hi3D.prototype.setSphere = function (sphere, objOption) {
     sphere.material.map = map;
     sphere.material.needsUpdate = needsUpdate;
   }
+  this.commonSetObject(sphere, objOption)
   return sphere
 }
 
@@ -758,6 +760,7 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   cube.name = objOption.name;
   cube.dataBinding = objOption.dataBinding
   cube.eventBinding = objOption.eventBinding
+  this.commonAddObject(cube, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(cube);
   } else {
@@ -869,7 +872,7 @@ hi3D.prototype.setCube = function (cube, objOption) {
     cube.material = faceMaterial
     cube.material.needsUpdate = true;
   }
-  
+  this.commonSetObject(cube, objOption)
   return cube
 }
 
@@ -927,6 +930,7 @@ hi3D.prototype.addCylinder = function (option, parentGroup) {
   node.eventBinding = objOption.eventBinding
   node.castShadow = true;
   node.receiveShadow = true;
+  this.commonAddObject(node, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(node);
   } else {
@@ -988,6 +992,7 @@ hi3D.prototype.setCylinder = function (node, objOption) {
     node.material.map = map;
     node.material.needsUpdate = needsUpdate;
   }
+  this.commonSetObject(node, objOption)
   return node
 }
 
@@ -1082,6 +1087,7 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   plane.name = objOption.name;
   plane.dataBinding = objOption.dataBinding
   plane.eventBinding = objOption.eventBinding
+  this.commonAddObject(plane, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(plane);
   } else {
@@ -1125,6 +1131,7 @@ hi3D.prototype.addLine = function (option, parentGroup) {
   line.name = objOption.name;
   line.dataBinding = objOption.dataBinding
   line.eventBinding = objOption.eventBinding
+  this.commonAddObject(line, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(line);
   } else {
@@ -1164,6 +1171,7 @@ hi3D.prototype.setLine = function (line, objOption) {
   if (objOption.linewidth) {
     line.material.linewidth = objOption.linewidth
   }
+  this.commonSetObject(line, objOption)
   return line
 }
 hi3D.prototype.addLine2 = function (option, parentGroup) {
@@ -1236,6 +1244,7 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   mesh.dataBinding = objOption.dataBinding
   mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
+  this.commonAddObject(mesh, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(mesh);
   } else {
@@ -1303,6 +1312,7 @@ hi3D.prototype.setLine2 = function (mesh, objOption) {
   if (objOption.angle) {
     mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(mesh, objOption)
   return mesh
   // if (objOption.linewidth) {
   //   line.material.linewidth = objOption.linewidth
@@ -1378,6 +1388,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   mesh.dataBinding = objOption.dataBinding
   mesh.eventBinding = objOption.eventBinding
   mesh.castShadow = true;
+  this.commonAddObject(mesh, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(mesh);
   } else {
@@ -1456,6 +1467,7 @@ hi3D.prototype.setClosedCurve = function (mesh, objOption) {
   if (objOption.angle) {
     mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(mesh, objOption)
   return mesh
 }
 
@@ -1519,6 +1531,7 @@ hi3D.prototype.addObj = function (option, parentGroup) {
       obj.scale.z = objOption.scale[2];
       obj.castShadow = true;
       obj.receiveShadow = true;
+      this.commonAddObject(obj, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(obj);
       } else {
@@ -1584,6 +1597,8 @@ hi3D.prototype.setObj = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.addCollada = function (option, parentGroup) {
@@ -1655,6 +1670,7 @@ hi3D.prototype.addCollada = function (option, parentGroup) {
       // var box = obj.geometry.boundingBox;
       // var box1 = new THREE.Box3().setFromObject( obj );
       // console.log('stl boundingBox', box1)
+      this.commonAddObject(obj, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(obj);
       } else {
@@ -1706,6 +1722,8 @@ hi3D.prototype.setCollada = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.addSTL = function (option, parentGroup) {
@@ -1777,6 +1795,7 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
       // var box = geometry.boundingBox;
       // var box1 = new THREE.Box3().setFromObject( mesh );
       // console.log('stl boundingBox', box, box1)
+      this.commonAddObject(mesh, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(mesh);
       } else {
@@ -1834,6 +1853,8 @@ hi3D.prototype.setSTL = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.add3ds = function (option, parentGroup) {
@@ -1895,6 +1916,7 @@ hi3D.prototype.add3ds = function (option, parentGroup) {
       object.scale.x = objOption.scale[0];
       object.scale.y = objOption.scale[1];
       object.scale.z = objOption.scale[2];
+      this.commonAddObject(object, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(object);
       } else {
@@ -1943,6 +1965,8 @@ hi3D.prototype.set3ds = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.addgltf = function (option, parentGroup) {
@@ -2006,6 +2030,7 @@ hi3D.prototype.addgltf = function (option, parentGroup) {
       if (objOption.angle) {
         mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
       }
+      this.commonAddObject(mesh, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(mesh);
       } else {
@@ -2052,6 +2077,8 @@ hi3D.prototype.setgltf = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 
@@ -2111,6 +2138,7 @@ hi3D.prototype.addfbx = function (option, parentGroup) {
       if (objOption.angle) {
         mesh.rotation.y = -1 * objOption.angle / 180 * Math.PI;
       }
+      this.commonAddObject(mesh, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(mesh);
       } else {
@@ -2171,6 +2199,8 @@ hi3D.prototype.setfbx = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.addnrrd = function (option, parentGroup) {
@@ -2251,6 +2281,7 @@ hi3D.prototype.addnrrd = function (option, parentGroup) {
       nrrdGroup.add(sliceZ.mesh);
       nrrdGroup.add(sliceY.mesh);
       nrrdGroup.add(sliceX.mesh);
+      this.commonAddObject(nrrdGroup, option, parentGroup)
       if (parentGroup) {
         parentGroup.add(nrrdGroup);
         // parentGroup.add( mesh );
@@ -2304,6 +2335,8 @@ hi3D.prototype.setnrrd = function (node, objOption) {
   if (objOption.angle) {
     node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(node, objOption)
+  return node;
 }
 
 hi3D.prototype.addGroundPlane = function (option, parentGroup) {
@@ -2345,6 +2378,7 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   ground.material.needsUpdate = needsUpdate;
   ground.dataBinding = objOption.dataBinding
   ground.eventBinding = objOption.eventBinding
+  this.commonAddObject(ground, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(ground);
   } else {
@@ -2416,6 +2450,7 @@ hi3D.prototype.setGroundPlane = function (node, objOption) {
     node.material.map = map;
     node.material.needsUpdate = needsUpdate;
   }
+  this.commonSetObject(node, objOption)
   return node
 }
 
@@ -2446,6 +2481,7 @@ hi3D.prototype.addWall = function (option, parentGroup) {
   cube.name = objOption.name;
   cube.dataBinding = objOption.dataBinding
   cube.eventBinding = objOption.eventBinding
+  this.commonAddObject(cube, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(cube);
   } else {
@@ -2495,6 +2531,7 @@ hi3D.prototype.setWall = function (cube, objOption) {
   if (objOption.angle) {
     cube.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   }
+  this.commonSetObject(cube, objOption)
   return cube
 }
 

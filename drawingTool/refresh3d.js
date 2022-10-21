@@ -385,6 +385,7 @@ hi3D.prototype.addGroupObject = function (edit, groupItem, itemExist, objNode, p
   if(typeof objOption.angle !== 'undefined') { group.rotation.y = -1 * objOption.angle / 180 * Math.PI; }
   // group.rotation.y = -1 * objOption.angle / 180 * Math.PI;
   // -------------------------
+  this.commonSetObject(group, groupItem)
   if (parentGroup) {
     parentGroup.add( group );
   }
@@ -469,4 +470,13 @@ hi3D.prototype.getItemOption = function (item) {
     groundColor: this.colorToHex(groundColor),
     faceMaterial: faceMaterial
   }
+}
+
+hi3D.prototype.commonAddObject = function (node, option, parentGroup) {
+  console.log('common add')
+  node.visible = option.visible
+}
+hi3D.prototype.commonSetObject = function (node, option) {
+  console.log('common set')
+  node.visible = option.visible
 }

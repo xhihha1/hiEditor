@@ -158,6 +158,7 @@ function initCanvas(canvasId, canvasViewId) {
 }
 
 function showObjPropChange (object) { // opt.target
+  $('#newPropVisible').prop("checked", Boolean(object.get('visible')));
   $('#newPropHiId').val(object.get('hiId'))
   $('#newPropType').val(object.get('type'))
   $('#newPropName').val(object.get('name'))
@@ -232,6 +233,7 @@ function setObjPropChange () {
   var name = $('#newPropName').val()
   var stroke = $('#newPropStroke').val()
   var fill = $('#newPropFill').val()
+  var visible = Boolean($('#newPropVisible').prop("checked"));
   var transparent = Boolean($('#newPropTransparent').prop("checked"));
   var opacity = parseFloat($('#newOpacity').val())
   var rotateX = parseInt($('#newRotateX').val())
@@ -281,6 +283,7 @@ function setObjPropChange () {
   var faceMaterialStr = JSON.stringify(faceMaterial)
   return {
     name: name,
+    visible: visible,
     stroke: hiDraw.prototype.colorToHex(stroke),
     fill: hiDraw.prototype.colorToHex(fill),
     transparent: transparent,
@@ -497,5 +500,5 @@ function addVideoObj(edit, objOption) {
   // });
   editorEvent3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   initCanvas3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption) 
-  animate3D()
+  animate3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
 })()
