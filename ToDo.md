@@ -223,3 +223,11 @@ webgl_lightningstrike
 1. 添加物件給物件名稱 bird
 2. 在 animate 添加 function(){dataStructure.viewer[0].hi3d.renderGltfAnimations('bird');}
 3. 在物件的資料綁訂，任意添加name: AAA, function(){dataStructure.viewer[0].hi3d.setGltfAnimations('bird');}
+
+# 添加新3d物件  
+
+1. drawingTool3D.html 添加按鈕  
+2. editEvent3D.js 添加按鈕事件  
+3. 新增 hi3d_xxx.js, 添加到 html檔中。  
+4. 在hi3d.js中，添加 hi3D.prototype.addXXX, hi3D.prototype.setXXX  
+5. refresh3d.js 中添加對應屬性更新  

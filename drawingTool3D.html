@@ -204,6 +204,8 @@
               <div class="sublist" title="gltf" id="draw3dHiFormatGLTF"><img class="tool-icon" src="icon/file_gltf_w.png">gltf</div>
               <div class="sublist" title="fbx" id="draw3dHiFormatFbx"><img class="tool-icon" src="icon/file_gltf_w.png">fbx</div>
               <div class="sublist" title="Nrrd" id="draw3dHiFormatNRRD"><img class="tool-icon" src="icon/file_nrrd_w.png">Nrrd</div>
+              <div class="sublistTitle">Custom</div>
+              <div class="sublist" title="Mesh" id="draw3dHiFormatMesh"><img class="tool-icon" src="icon/file_nrrd_w.png">Mesh</div>
             </div>
           </li>
           <li class="dropdown" style="display: none;">
@@ -243,6 +245,7 @@
             <div class="dropdown-content">
               <div class="sublist" id="openSceneProp">Scene</div>
               <div class="sublist" id="openObjProp">Object</div>
+              <div class="sublist" id="openGenerateMeshDialog">Mesh Creater</div>
             </div>
           </li>
           <!-- <li class="dropdown">
@@ -984,6 +987,27 @@
       
     </div>
   </div>
+  <div class="commonDialog" id="generateMeshDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Generate Mesh</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Create function: </span><button id="">open</button></div>
+        <div><textarea id="newMeshCreateFunc"></textarea></div>
+      </div>
+      <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Refresh function: </span><button id="">open</button></div>
+        <div><textarea id="newMeshSetFunc"></textarea></div>
+      </div>
+      <div><button id="meshPropApply">apply Mesh</button></div>
+      <!-- <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>spotLight penumbra:</span></div>
+        <div><input type="range" id="newSpotPenumbra" min="0" max="1" value="0.1" step="0.1" class="prop-slider"></div>
+      </div> -->
+    </div>
+  </div>
   
   <script src="drawingTool/fabricExtend/hi3d.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_controlUtil.js"></script>
@@ -1006,6 +1030,7 @@
   <script src="drawingTool/fabricExtend/hi3d_format_fdx.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_nrrd.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_Material.js"></script>
+  <script src="drawingTool/fabricExtend/hi3d_Mesh.js"></script>
   <script src="drawingTool/editor2d/addHichartObj.js"></script>
   <script src="drawingTool/editorEvent.js"></script>
   <script src="drawingTool/heatmapShow.js"></script>

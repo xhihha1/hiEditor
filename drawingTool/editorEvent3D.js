@@ -163,6 +163,13 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
+  $("#draw3dHiFormatMesh").click(function () {
+    edit.removeCanvasEvents();
+    edit.changeSelectableStatus(false);
+    edit.changeCanvasProperty(false, false);
+    var mesh = new edit.Hi3dMesh(edit, objOption);
+  });
+
   $('#draw3dPlane').click(function(){
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);
@@ -584,6 +591,13 @@ function editorEvent3D(edit, objOption) {
   })
   $('#openSampleDialog').click(function(){
     $('#sampleDialog').show()
+  })
+  $('#openGenerateMeshDialog').click(function(){
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      $('#generateMeshDialog').show()
+      showMeshPropChange(activeObj)
+    }
   })
 
 }

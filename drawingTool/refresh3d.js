@@ -274,6 +274,16 @@ hi3D.prototype.addSingleObject = function (edit, item, itemExist, objNode, paren
       this.addWall(opt, parentGroup)
     }
   }
+  if (item["type"] == "hi3dMesh") {
+    var opt = this.getItemOption(item)
+    if (itemExist) {
+      console.log('exist mesh', objNode, opt)
+      this.setMesh(objNode, opt)
+    } else {
+      // console.log('add mesh', opt)
+      this.addMesh(opt, parentGroup)
+    }
+  }
   if (item["type"] == "hiFormatObj") {
     var opt = this.getItemOption(item)
     if (itemExist) {
@@ -442,6 +452,7 @@ hi3D.prototype.getItemOption = function (item) {
   var skyColor = typeof item.skyColor !== 'undefined' ? item.skyColor : color
   var groundColor = typeof item.groundColor !== 'undefined' ? item.groundColor : color
   var faceMaterial = item.faceMaterial? JSON.parse(item.faceMaterial) : {}
+  var customModelConfig = item.customModelConfig
   return {
     hiId: item.hiId,
     name: name,
@@ -468,7 +479,8 @@ hi3D.prototype.getItemOption = function (item) {
     decay: decay,
     skyColor: this.colorToHex(skyColor),
     groundColor: this.colorToHex(groundColor),
-    faceMaterial: faceMaterial
+    faceMaterial: faceMaterial,
+    customModelConfig: customModelConfig
   }
 }
 

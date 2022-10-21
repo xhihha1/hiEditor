@@ -312,11 +312,66 @@ function setObjPropChange () {
   }
 }
 
+function showMeshPropChange (object) {
+  let customModelConfig = object.get('customModelConfig')
+  if(customModelConfig){
+    if (typeof customModelConfig === 'string') {
+      customModelConfig = JSON.parse(customModelConfig)
+    }
+  } else {
+    customModelConfig = {}
+  }
+  var createFunc = customModelConfig.createFunc || 'function (option, parentGroup) {\n    const x = 0, y = 0;\n    const heartShape = new THREE.Shape();\n    heartShape.moveTo( x + 5, y + 5 );\n    heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );\n    heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );\n    heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );\n    heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );\n    heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );\n    heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );\n\n    const geometry = new THREE.ShapeGeometry( heartShape );\n    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );\n    const mesh = new THREE.Mesh( geometry, material ) ;\n    return mesh;\n  }';
+  if(typeof createFunc === 'string') {
+    $('#newMeshCreateFunc').val(createFunc)
+  } else {
+    $('#newMeshCreateFunc').val(JSON.stringify(createFunc, null, 2))
+  }
+  var refreshFunc = customModelConfig.refreshFunc || 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    return node;\n  }';
+  if(typeof refreshFunc === 'string') {
+    $('#newMeshSetFunc').val(refreshFunc)
+  } else {
+    $('#newMeshSetFunc').val(JSON.stringify(refreshFunc, null, 2))
+  }
+}
+function setMeshPropChange () {
+  var createFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshCreateFunc').val())
+  var refreshFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshSetFunc').val())
+  return {
+    customModelConfig : {
+      createFunc: createFuncStr,
+      refreshFunc: refreshFuncStr
+    }
+  }
+}
+
 function objectPropertyChange(edit, objOption) {
   $('#propApply').click(function () {
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
       activeObj.set(setObjPropChange ());
+      edit.viewRender(3)
+      edit.hi3d.refreshByFabricJson(edit);
+    }
+  })
+
+  $('#meshPropApply').click(function () {
+    var activeObj = edit.canvasView.getActiveObject();
+    if (activeObj) {
+      activeObj.set(setMeshPropChange ());
+      console.log('edit.hi3d', edit.hi3d, edit.hi3d.scene)
+      if (edit.hi3d.scene) {
+        var needRemove = []
+        edit.hi3d.scene.traverse(function (node) {
+          if(node.hiId === activeObj.hiId) {
+            needRemove.push(node)
+          }
+        })
+        for (var i = needRemove.length - 1; i >= 0; i--) {
+          edit.hi3d.scene.remove(needRemove[i]);
+        }
+      }
+      edit.canvasView.discardActiveObject();
       edit.viewRender(3)
       edit.hi3d.refreshByFabricJson(edit);
     }

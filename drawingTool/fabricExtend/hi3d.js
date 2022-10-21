@@ -2535,6 +2535,111 @@ hi3D.prototype.setWall = function (cube, objOption) {
   return cube
 }
 
+hi3D.prototype.addMesh = function (option, parentGroup) {
+  var objOption = {
+    color: '#F00',
+    transparent: false,
+    opacity: 1,
+    position: [0, 0, 0],
+    size: [1, 1, 1],
+    scale: [1, 1, 1]
+  }
+  objOption = this.mergeDeep(objOption, option)
+  console.log('--- addMesh ---', option)
+  // ----
+  var generateNode = function (option, parentGroup) {
+    const x = 0, y = 0;
+    const heartShape = new THREE.Shape();
+    heartShape.moveTo( x + 5, y + 5 );
+    heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );
+    heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );
+    heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );
+    heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );
+    heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
+    heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
+
+    const geometry = new THREE.ShapeGeometry( heartShape );
+    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const mesh = new THREE.Mesh( geometry, material ) ;
+    return mesh;
+  }
+  let node = generateNode();
+  if (objOption.customModelConfig && objOption.customModelConfig.createFunc) {
+    var clickFunc = hi3D.prototype.functionGenerator(objOption.customModelConfig.createFunc);
+    console.log('--- addMesh ---A')
+    node = clickFunc()
+  } else {
+    console.log('--- addMesh ---B')
+    node = generateNode();
+  }
+  
+  // ----
+  node.position.set(objOption.position[0], objOption.position[1], objOption.position[2]);
+  node.scale.set(objOption.scale[0], objOption.scale[1], objOption.scale[2])
+  node.hiId = objOption.hiId;
+  node.name = objOption.name;
+  node.dataBinding = objOption.dataBinding;
+  node.eventBinding = objOption.eventBinding;
+  this.commonAddObject(node, option, parentGroup)
+  if (parentGroup) {
+    parentGroup.add(node);
+  } else {
+    this.scene.add(node);
+  }
+  return this
+}
+
+hi3D.prototype.setMesh = function (node, objOption) {
+  console.log('--- setMesh ---', objOption)
+  var refeshNode = function (node, objOption) {
+    if (objOption.color) {
+      node.material.color = new THREE.Color(objOption.color)
+    }
+    return node;
+  }
+  if (objOption.customModelConfig && objOption.customModelConfig.refreshFunc) {
+    var clickFunc = hi3D.prototype.functionGenerator(objOption.customModelConfig.refreshFunc);
+    console.log('--- setMesh ---A')
+    node = clickFunc(node, objOption)
+  } else {
+    console.log('--- setMesh ---B')
+    node = refeshNode(node, objOption);
+  }
+  if (objOption.position) {
+    if (typeof objOption.position[0] !== 'undefined') {
+      node.position.x = objOption.position[0];
+    }
+    if (typeof objOption.position[1] !== 'undefined') {
+      node.position.y = objOption.position[1];
+    }
+    if (typeof objOption.position[2] !== 'undefined') {
+      node.position.z = objOption.position[2];
+    }
+  }
+  if (typeof objOption.transparent === 'boolean') {
+    node.material.transparent = objOption.transparent;
+  }
+  if (typeof objOption.opacity === 'number') {
+    node.material.opacity = objOption.opacity;
+  }
+  if (objOption.scale) {
+    node.scale.x = objOption.scale[0];
+    node.scale.y = objOption.scale[1];
+    node.scale.z = objOption.scale[2];
+  }
+  if (objOption.rotateX) {
+    node.rotation.x = objOption.rotateX / 180 * Math.PI ;
+  }
+  if (objOption.rotateZ) {
+    node.rotation.z = objOption.rotateZ / 180 * Math.PI;
+  }
+  if (objOption.angle) {
+    node.rotation.y = -1 * objOption.angle / 180 * Math.PI;
+  }
+  this.commonSetObject(node, objOption)
+  return node;
+}
+
 hi3D.prototype.addAxesHelper = function (option) {
   // new THREE.AxesHelper( 50 )
   const axesHelper = new THREE.AxesHelper(500);
