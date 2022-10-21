@@ -584,6 +584,7 @@
   }
 
   hiDraw.prototype.viewRender = function () {
+    console.log('2d viewRender')
     // this.canvasView.renderAll();
     this.canvasView.renderAndResetBound();
     // this.canvasView.requestRenderAllBound();

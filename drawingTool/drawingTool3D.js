@@ -26,7 +26,7 @@ function initCanvas(canvasId, canvasViewId) {
         console.log('object_added')
         if(opt.target.hiId){
           console.log('object_added', opt.target.hiId)
-          edit.viewRender()
+          edit.viewRender(1)
           showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit);
         }
@@ -41,7 +41,7 @@ function initCanvas(canvasId, canvasViewId) {
       object_modified: function (opt) {
         console.log('object_modified')
         if(opt.target.hiId){
-          edit.viewRender()
+          edit.viewRender(2)
           showObjPropChange(opt.target);
           edit.hi3d.refreshByFabricJson(edit);
         }
@@ -70,7 +70,7 @@ function initCanvas(canvasId, canvasViewId) {
         $('#objlist').html(listStr)
       },
       after_render: function (opt) {
-        // console.log('after_render')
+        console.log('after_render')
         // var fabricJson = edit.canvasView.toJSON(['label', 'uniqueIndex', 'hiId', 'altitude', 'source', 'depth']);
         // 暫時不更新 屬性，不然time interval 會造成無法改值
         // var activeObj = edit.canvasView.getActiveObject();
@@ -120,6 +120,7 @@ function initCanvas(canvasId, canvasViewId) {
         }
       },
       selection_cleared: function (opt) {
+        console.log('selection_cleared')
         edit.hi3d.disposeTransformControlsMesh()
         // edit.hi3d.refreshByFabricJson(edit);
       },
@@ -313,7 +314,7 @@ function objectPropertyChange(edit, objOption) {
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
       activeObj.set(setObjPropChange ());
-      edit.viewRender()
+      edit.viewRender(3)
       edit.hi3d.refreshByFabricJson(edit);
     }
   })
@@ -496,4 +497,5 @@ function addVideoObj(edit, objOption) {
   // });
   editorEvent3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption)
   initCanvas3D(dataStructure.editor[0], dataStructure.editor[0].canvasOption) 
+  animate3D()
 })()

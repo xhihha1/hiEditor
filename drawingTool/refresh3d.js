@@ -2,7 +2,7 @@ hi3D.prototype.refreshByFabricJson = function (edit, objOption, json, otherSetti
   var setting = { needRemove: true }
   if (otherSetting) { setting = this.mergeDeep(setting, otherSetting) }
   // console.log('refresh')
-// return false
+  // return false
   var fabricJson = null
   if (edit.canvasView) {
     // fabricJson = edit.canvasView.toJSON(['hiId', 'altitude']);

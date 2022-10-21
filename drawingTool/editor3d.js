@@ -6,6 +6,7 @@ function initCanvas3D(edit, objOption) {
     },
     transformControls: {
       objectChange: function (event) {
+        console.log('3D objectChange')
         // if (event.target) { console.log('target', event.target.object.position.x, 'hiId:', event.target.object.hiId); }
         if (event.target) {
           var node = event.target.object
@@ -36,12 +37,13 @@ function initCanvas3D(edit, objOption) {
             showObjPropChange(activeObj);
           }
           // edit.canvasView.renderAll();
-          edit.viewRender()
+          edit.viewRender(4)
         }
       }.bind(edit.hi3d)
     },
     orbitControls: {
       change: function (event) {
+        console.log('3D orbitControls')
         // console.log(edit.hi3d.camera)
         // edit.hi3d.camera.position
         var lookAtVector = new THREE.Vector3(edit.hi3d.camera.matrix[8], edit.hi3d.camera.matrix[9], edit.hi3d.camera.matrix[10]);
@@ -73,7 +75,7 @@ function initCanvas3D(edit, objOption) {
           ]
         })
         // edit.canvasView.renderAll();
-        edit.viewRender()
+        edit.viewRender(5)
       }
     },
     renderSetting: {
@@ -107,7 +109,7 @@ function initCanvas3D(edit, objOption) {
             })
           }
         })
-        edit.viewRender()
+        edit.viewRender(6)
       }.bind(edit.hi3d)
     }
   })
@@ -121,7 +123,7 @@ function initCanvas3D(edit, objOption) {
   edit.hi3d.setCamera({
     position: [0, 50, 100]
   })
-  edit.hi3d.viewRender()
+  edit.hi3d.viewRender(7)
 
   // edit.hi3d.addCube()
   // edit.hi3d.addCube({
@@ -142,28 +144,6 @@ function initCanvas3D(edit, objOption) {
   // edit.hi3d.addTransformControls()
   // edit.hi3d.animate()
 
-  function animateA() {
-    // ---------------
-    // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
-    // var fabricJson = edit.toFabricJson()
-    // if (typeof json == 'string') {
-    //   fabricJson = JSON.parse(fabricJson)
-    // }
-    // console.log('3D ---', edit.canvasView.toJSON())
-    // edit.hi3d.removeAllCube()
-    // edit.hi3d.addObj()
-    edit.hi3d.refreshByFabricJson(edit, objOption)
-    // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
-    setInterval(function(){
-      edit.hi3d.viewRender()
-    }, 100)
-    edit.hi3d.viewRender()
-    // requestAnimationFrame(animate); // 自動更新 刷新
-    // ------------------------------------------------
-
-    // ------------------------------------------------
-  }
-  animateA()
   // animate();
   function animate() {
     // 相機巡迴導覽
@@ -209,10 +189,20 @@ function initCanvas3D(edit, objOption) {
     lookAt.multiplyScalar(params.scale);
     edit.hi3d.camera.matrix.lookAt(edit.hi3d.camera.position, lookAt, normal);
     edit.hi3d.camera.quaternion.setFromRotationMatrix(edit.hi3d.camera.matrix);
-    edit.hi3d.viewRender()
+    edit.hi3d.viewRender(10)
   }
 }
 
+function animate3D () {
+  edit.hi3d.refreshByFabricJson(edit, objOption)
+  // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
+  setInterval(function(){
+    // edit.hi3d.viewRender(8)
+    console.log('--- animateA ---')
+  }, 60000)
+  edit.hi3d.viewRender(9)
+  // requestAnimationFrame(animate); // 自動更新 刷新
+}
 
 /*
         if (event.target) {

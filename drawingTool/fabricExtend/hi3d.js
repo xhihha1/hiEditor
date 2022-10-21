@@ -2635,7 +2635,8 @@ hi3D.prototype.addBoxHelper = function () {
   }.bind(this));
 }
 
-hi3D.prototype.viewRender = function () {
+hi3D.prototype.viewRender = function (num) {
+  console.log('3d viewRender', num)
   this.renderfabricTexture()
   this.renderer.render(this.scene, this.camera);
   if (typeof this.defaultOptions.renderSetting.callback === 'function') {
