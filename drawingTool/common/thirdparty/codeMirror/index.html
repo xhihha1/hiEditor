@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="codemirror.js"></script>
+        <link href="codemirror.css" rel="stylesheet">
+        <script src="javascript.js"></script>
+        <style type="text/css">
+            .CodeMirror{
+                border:1px solid black;
+                font-size:15px;
+                width:100%;
+                height:100px
+            }
+       </style>
+    </head>
+    <body>
+        <textarea id=demotext></textarea>
+        <button id="b">B</button>
+    </body>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
+            lineNumbers: true,
+            mode: "javascript",
+            matchBrackets: true,
+            tabSize: 2,
+            extraKeys:{
+                "Ctrl-Space":"autocomplete",
+                "Ctrl-F7":function () {
+                            alert("綁定了Ctrl-F7");
+                        },
+                "Shift-Alt-Enter": function (cm) {
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        }
+            }
+        });
+        document.getElementById('b').addEventListener('click', function(){
+            console.log(editor.getValue())
+            // editor.setValue("value")
+            // editor.setOption("lineNumbers",true)
+
+        })
+
+        // https://www.zendei.com/article/15309.html
+    </script>
+</html>
