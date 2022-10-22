@@ -40,3 +40,16 @@ hi3D.prototype.getMaterial = function (objOption) {
   console.log('out ---', parameters)
   return new THREE.MeshStandardMaterial(parameters);
 }
+
+hi3D.prototype.getMaterialSide = function (sideType) {
+  switch (sideType) {
+    case 'FrontSide':
+      return THREE.FrontSide;
+    case 'BackSide':
+      return THREE.BackSide;
+    case 'DoubleSide':
+      return THREE.DoubleSide;
+    default:
+      return THREE.FrontSide;
+  }
+}

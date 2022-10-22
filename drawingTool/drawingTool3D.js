@@ -211,6 +211,7 @@ function showObjPropChange (object) { // opt.target
     faceMaterial = JSON.parse(faceMaterial)
   }
   $('#newMaterialType').val(faceMaterial.materialType)
+  $('#newMaterialSide').val(faceMaterial.materialSide)
   $('#newPropObjFaceImage').val(faceMaterial.image || '')
   $('#newPropObjFacePx').val(faceMaterial.pxImg || '')
   $('#newPropObjFaceNx').val(faceMaterial.nxImg || '')
@@ -271,6 +272,7 @@ function setObjPropChange () {
   // -------- Material ----------
   var faceMaterial = {}
   faceMaterial.materialType = $('#newMaterialType').val()
+  faceMaterial.materialSide = $('#newMaterialSide').val()
   faceMaterial.image = $('#newPropObjFaceImage').val().trim()
   faceMaterial.pxImg = $('#newPropObjFacePx').val().trim()
   faceMaterial.nxImg = $('#newPropObjFaceNx').val().trim()
@@ -321,13 +323,13 @@ function showMeshPropChange (object) {
   } else {
     customModelConfig = {}
   }
-  var createFunc = customModelConfig.createFunc || 'function (option, parentGroup) {\n    const x = 0, y = 0;\n    const heartShape = new THREE.Shape();\n    heartShape.moveTo( x + 5, y + 5 );\n    heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );\n    heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );\n    heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );\n    heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );\n    heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );\n    heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );\n\n    const geometry = new THREE.ShapeGeometry( heartShape );\n    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );\n    const mesh = new THREE.Mesh( geometry, material ) ;\n    return mesh;\n  }';
+  var createFunc = customModelConfig.createFunc || 'function (option, parentGroup) {\n    const x = 0, y = 0;\n    const heartShape = new THREE.Shape();\n    heartShape.moveTo( x + 5, y + 5 );\n    heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );\n    heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );\n    heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );\n    heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );\n    heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );\n    heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );\n    let side = THREE.FrontSide;\n    if (option && option.faceMaterial) {\n      side = hi3D.prototype.getMaterialSide(option.faceMaterial.materialSide);\n    }\n    const geometry = new THREE.ShapeGeometry( heartShape );\n    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: side } );\n    const mesh = new THREE.Mesh( geometry, material ) ;\n    return mesh;\n  }';
   if(typeof createFunc === 'string') {
     $('#newMeshCreateFunc').val(createFunc)
   } else {
     $('#newMeshCreateFunc').val(JSON.stringify(createFunc, null, 2))
   }
-  var refreshFunc = customModelConfig.refreshFunc || 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    return node;\n  }';
+  var refreshFunc = customModelConfig.refreshFunc || 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    if (objOption && objOption.faceMaterial) {\n      node.material.side = hi3D.prototype.getMaterialSide(objOption.faceMaterial.materialSide);\n    }\n    return node;\n  }';
   if(typeof refreshFunc === 'string') {
     $('#newMeshSetFunc').val(refreshFunc)
   } else {
@@ -373,7 +375,9 @@ function objectPropertyChange(edit, objOption) {
       }
       edit.canvasView.discardActiveObject();
       edit.viewRender(3)
-      edit.hi3d.refreshByFabricJson(edit);
+      edit.hi3d.refreshByFabricJson(edit); // add new mesh
+      edit.hi3d.refreshByFabricJson(edit); // reset mesh
+      $('#generateMeshDialog').hide()
     }
   })
 

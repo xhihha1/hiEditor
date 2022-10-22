@@ -597,6 +597,7 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
   // });
   var map = null
   var needsUpdate = false
+  let side = THREE.FrontSide;
   if (objOption.faceMaterial && objOption.faceMaterial.image) {
     map = new THREE.TextureLoader().load(objOption.faceMaterial.image);
     needsUpdate = true;
@@ -605,9 +606,12 @@ hi3D.prototype.addSphere = function (option, parentGroup) {
     map = this.createAndLoadfabricTexture(objOption.faceMaterial.hiDraw)
     needsUpdate = true;
   }
-  console.log('????', objOption)
+  if (objOption.faceMaterial && objOption.faceMaterial.materialSide) {
+    side = this.getMaterialSide(objOption.faceMaterial.materialSide);
+  }
   const material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: side,
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
@@ -711,8 +715,10 @@ hi3D.prototype.addCube = function (option, parentGroup) {
   // -------------------------
   // const geometry = new THREE.BoxGeometry(50, 50, 50);
   var transparent = objOption.transparent || false
+  let side = THREE.FrontSide
   const material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
@@ -738,6 +744,7 @@ hi3D.prototype.addCube = function (option, parentGroup) {
     }
     faceMaterial.push(this.getMaterial({
       materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+      side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
       map: map,
       color: objOption.color,
       transparent: transparent,
@@ -863,6 +870,7 @@ hi3D.prototype.setCube = function (cube, objOption) {
       if (i == 5 && objOption.faceMaterial.nzImg) { const nzImg = new THREE.TextureLoader().load(objOption.faceMaterial.nzImg); map = nzImg;}
       faceMaterial.push(this.getMaterial({
         materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+        side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
         map: map,
         color: objOption.color,
         transparent: transparent,
@@ -915,6 +923,7 @@ hi3D.prototype.addCylinder = function (option, parentGroup) {
   );
   const material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
@@ -1067,6 +1076,7 @@ hi3D.prototype.addPlane = function (option, parentGroup) {
   map.needsUpdate = true;
   const material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     map: map,
     transparent: true,
     opacity: 0.8
@@ -1235,6 +1245,7 @@ hi3D.prototype.addLine2 = function (option, parentGroup) {
   };
   let material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     color: objOption.color
   })
   const geometry = new THREE.TubeGeometry(curvePath, params.extrusionSegments, 2, params.radiusSegments, params.closed);
@@ -1379,6 +1390,7 @@ hi3D.prototype.addClosedCurve = function (option, parentGroup) {
   };
   let material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     color: objOption.color
   })
   const geometry = new THREE.TubeGeometry(curvePath, params.extrusionSegments, 2, params.radiusSegments, params.closed);
@@ -1753,6 +1765,7 @@ hi3D.prototype.addSTL = function (option, parentGroup) {
     // });
     const material = this.getMaterial({
       materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+      side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
       color: objOption.color,
       transparent: objOption.transparent,
       opacity: objOption.opacity
@@ -2361,6 +2374,7 @@ hi3D.prototype.addGroundPlane = function (option, parentGroup) {
   }
   const groundMat = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     map: map,
     color: objOption.color,
     transparent: objOption.transparent,
@@ -2468,6 +2482,7 @@ hi3D.prototype.addWall = function (option, parentGroup) {
   const geometry = new THREE.BoxGeometry(objOption.size[0], objOption.size[1], objOption.size[2]);
   const material = this.getMaterial({
     materialType: objOption.faceMaterial? objOption.faceMaterial.materialType : '',
+    side: objOption.faceMaterial? this.getMaterialSide(objOption.faceMaterial.materialSide) : THREE.FrontSide,
     color: objOption.color,
     transparent: objOption.transparent,
     opacity: objOption.opacity
@@ -2557,9 +2572,12 @@ hi3D.prototype.addMesh = function (option, parentGroup) {
     heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );
     heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
     heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
-
+    let side = THREE.FrontSide;
+    if (option && option.faceMaterial) {
+      side = hi3D.prototype.getMaterialSide(option.faceMaterial.materialSide);
+    }
     const geometry = new THREE.ShapeGeometry( heartShape );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: side } );
     const mesh = new THREE.Mesh( geometry, material ) ;
     return mesh;
   }
@@ -2594,6 +2612,9 @@ hi3D.prototype.setMesh = function (node, objOption) {
   var refeshNode = function (node, objOption) {
     if (objOption.color) {
       node.material.color = new THREE.Color(objOption.color)
+    }
+    if (objOption && objOption.faceMaterial) {
+      node.material.side = hi3D.prototype.getMaterialSide(objOption.faceMaterial.materialSide);
     }
     return node;
   }

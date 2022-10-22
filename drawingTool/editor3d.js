@@ -95,7 +95,8 @@ function initCanvas3D(edit, objOption) {
                   obj2d.type === 'hiFormatGLTF' ||
                   obj2d.type === 'hiFormatFbx' ||
                   obj2d.type === 'hiFormatNrrd' ||
-                  obj2d.type === 'hiFormatSTL') {
+                  obj2d.type === 'hiFormatSTL' ||
+                  obj2d.type === 'hi3dMesh') {
                   var box1 = new THREE.Box3().setFromObject(node);
                   // console.log('boundingBox', box1)
                   var width = Math.abs(box1.max.x - box1.min.x)

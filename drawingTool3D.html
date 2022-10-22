@@ -722,6 +722,16 @@
         </div>
       </div>
       <div class="dialogPropFlex">
+        <div class="dialogPropTitle"><span>Material side: </span></div>
+        <div>
+          <select name="" id="newMaterialSide" class="prop_input">
+            <option value="FrontSide">FrontSide</option>
+            <option value="BackSide">BackSide</option>
+            <option value="DoubleSide" selected>DoubleSide</option>
+          </select>
+        </div>
+      </div>
+      <div class="dialogPropFlex">
         <div class="dialogPropTitle"><span>Image default: </span></div>
         <div><input type="text" id="newPropObjFaceImage" name="pos-x" value="../../assets/SwedishRoyalCastle/px.jpg" class="prop_input"></div>
       </div>
@@ -994,13 +1004,15 @@
     </div>
     <div class="commonDialogContent">
       <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>Create function: </span><button id="">open</button></div>
-        <div><textarea id="newMeshCreateFunc"></textarea></div>
+        <div class="dialogPropTitle"><span>Create function: </span></div>
+        <div><button id="">open</button></div>
       </div>
+      <div><textarea id="newMeshCreateFunc"></textarea></div>
       <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>Refresh function: </span><button id="">open</button></div>
-        <div><textarea id="newMeshSetFunc"></textarea></div>
+        <div class="dialogPropTitle"><span>Refresh function: </span></div>
+        <div><button id="">open</button></div>
       </div>
+      <div><textarea id="newMeshSetFunc"></textarea></div>
       <div><button id="meshPropApply">apply Mesh</button></div>
       <!-- <div class="dialogPropFlex">
         <div class="dialogPropTitle"><span>spotLight penumbra:</span></div>
