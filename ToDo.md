@@ -231,3 +231,11 @@ webgl_lightningstrike
 3. 新增 hi3d_xxx.js, 添加到 html檔中。  
 4. 在hi3d.js中，添加 hi3D.prototype.addXXX, hi3D.prototype.setXXX  
 5. refresh3d.js 中添加對應屬性更新  
+
+# 變量  
+
+    // 2D
+    dataStructure.viewer[0].dsConfig.getValue('V2')
+    // 3D
+    viewer.dsConfig.getValue('V1')
+
