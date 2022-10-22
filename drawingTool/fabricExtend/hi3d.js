@@ -2584,11 +2584,9 @@ hi3D.prototype.addMesh = function (option, parentGroup) {
   let node = generateNode();
   if (objOption.customModelConfig && objOption.customModelConfig.createFunc) {
     var clickFunc = hi3D.prototype.functionGenerator(objOption.customModelConfig.createFunc);
-    console.log('--- addMesh ---A')
-    node = clickFunc()
+    node = clickFunc(objOption, parentGroup)
   } else {
-    console.log('--- addMesh ---B')
-    node = generateNode();
+    node = generateNode(objOption, parentGroup);
   }
   
   // ----
@@ -2598,6 +2596,7 @@ hi3D.prototype.addMesh = function (option, parentGroup) {
   node.name = objOption.name;
   node.dataBinding = objOption.dataBinding;
   node.eventBinding = objOption.eventBinding;
+  node.customModelConfig = objOption.customModelConfig;
   this.commonAddObject(node, option, parentGroup)
   if (parentGroup) {
     parentGroup.add(node);
@@ -2608,23 +2607,18 @@ hi3D.prototype.addMesh = function (option, parentGroup) {
 }
 
 hi3D.prototype.setMesh = function (node, objOption) {
-  console.log('--- setMesh ---', objOption)
-  var refeshNode = function (node, objOption) {
+  // console.log('--- setMesh ---', node, objOption)
+  var refreshNode = function (node, objOption) {
     if (objOption.color) {
       node.material.color = new THREE.Color(objOption.color)
     }
-    if (objOption && objOption.faceMaterial) {
-      node.material.side = hi3D.prototype.getMaterialSide(objOption.faceMaterial.materialSide);
-    }
     return node;
   }
-  if (objOption.customModelConfig && objOption.customModelConfig.refreshFunc) {
-    var clickFunc = hi3D.prototype.functionGenerator(objOption.customModelConfig.refreshFunc);
-    console.log('--- setMesh ---A')
+  if (node.customModelConfig && node.customModelConfig.refreshFunc) {
+    var clickFunc = hi3D.prototype.functionGenerator(node.customModelConfig.refreshFunc);
     node = clickFunc(node, objOption)
   } else {
-    console.log('--- setMesh ---B')
-    node = refeshNode(node, objOption);
+    node = refreshNode(node, objOption);
   }
   if (objOption.position) {
     if (typeof objOption.position[0] !== 'undefined') {

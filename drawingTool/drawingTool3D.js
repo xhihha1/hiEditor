@@ -329,7 +329,7 @@ function showMeshPropChange (object) {
   } else {
     $('#newMeshCreateFunc').val(JSON.stringify(createFunc, null, 2))
   }
-  var refreshFunc = customModelConfig.refreshFunc || 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    if (objOption && objOption.faceMaterial) {\n      node.material.side = hi3D.prototype.getMaterialSide(objOption.faceMaterial.materialSide);\n    }\n    return node;\n  }';
+  var refreshFunc = customModelConfig.refreshFunc || 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    return node;\n  }';
   if(typeof refreshFunc === 'string') {
     $('#newMeshSetFunc').val(refreshFunc)
   } else {
