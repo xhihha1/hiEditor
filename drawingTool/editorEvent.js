@@ -593,7 +593,29 @@ function editorEvent(edit, objOption) {
         tabSize: 2
       });
     }
-    
+  })
+  $('#openLitegraphCanvasDialog').click(function () {
+    $('#litegraphCanvasDialog').show()
+    if (!window.litegraphConfig) {
+      window.litegraphConfig = {}
+      const graph = new LGraph();
+      const canvas = new LGraphCanvas("#litegraphCanvas", graph);
+      const node_const = LiteGraph.createNode("basic/const");
+      node_const.pos = [50, 100];
+      graph.add(node_const);
+      node_const.setValue(4.5);
+      const node_watch = LiteGraph.createNode("basic/watch");
+      node_watch.pos = [400, 100];
+      graph.add(node_watch);
+      node_const.connect(0, node_watch, 0);
+      graph.start()
+      canvas.resize()
+      window.litegraphConfig.graph = graph;
+      window.litegraphConfig.canvas = canvas;
+    } else {
+      window.litegraphConfig.canvas.resize()
+    }
+    // litegraphCanvas
   })
 
 

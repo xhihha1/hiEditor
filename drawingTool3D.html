@@ -18,6 +18,7 @@
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.js"></script> -->
   <script src="drawingTool/common/thirdparty/codeMirror/codemirror.js"></script>
   <script src="drawingTool/common/thirdparty/codeMirror/javascript.js"></script>
+  <script src="drawingTool/common/thirdparty/litegraph/litegraph.js"></script>
   <script src="drawingTool/common/script/hiMathUtil.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/three.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/MTLLoader.js"></script>
@@ -103,6 +104,7 @@
   <!-- <script src="js/simplify.js" type="text/javascript"></script> -->
   <!-- <link rel="stylesheet" href="drawingTool/editor3d/style/drawingTool.css"> -->
   <link rel="stylesheet" href="drawingTool/common/thirdparty/codeMirror/codemirror.css">
+  <link rel="stylesheet" href="drawingTool/common/thirdparty/litegraph/litegraph.css">
   <link rel="stylesheet" href="drawingTool/common/thirdparty/jqueryScrollbar/jquery.scrollbar.css">
   <link rel="stylesheet" href="drawingTool/editor3d/style/drawingTool_black.css">
   <link rel="stylesheet" href="drawingTool/common/style/common.css">
@@ -131,6 +133,7 @@
               </div>
               <div id="openSampleDialog" class="sublist">Sample</div>
               <div class="sublist" id="openEditCodeDialog">Edit code</div>
+              <div class="sublist" id="openLitegraphCanvasDialog">litegraph</div>
             </div>
           </li>
           <li class="dropdown">
@@ -1029,14 +1032,22 @@
   </div>
   <div class="commonDialog" id="editCodeDialog" style="width: 500px;height:500px;">
     <div class="commonDialogTitle">
-      <div class="commonDialogTitleText">Data source Config</div>
+      <div class="commonDialogTitleText">Edit Code</div>
       <div class="commonDialogClose"></div>
     </div>
     <div class="commonDialogContent">
       <textarea id=demotextEditor></textarea>
     </div>
   </div>
-  
+  <div class="commonDialog" id="litegraphCanvasDialog" style="max-width: 600px;max-height:600px;width: 600px;height:600px;">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">litegraph</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent" style="max-width: 600px;max-height:600px;width: 100%;height:calc(100% - 25px);overflow: hidden;">
+      <canvas id='litegraphCanvas'></canvas>
+    </div>
+  </div>
   
   <script src="drawingTool/fabricExtend/hi3d.js"></script>
   <script src="drawingTool/fabricExtend/hi3d_format_controlUtil.js"></script>
