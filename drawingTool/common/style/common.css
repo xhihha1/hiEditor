@@ -106,3 +106,11 @@ a.noDec {
 .commonInput option{
   background: #000000;
 }
+
+/* --- CodeMirror --- */
+.CodeMirror{
+  border:1px solid black;
+  font-size:15px;
+  width:calc(100% - 4px);
+  height:450px;
+}

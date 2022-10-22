@@ -16,6 +16,8 @@
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="icon/Key_logo.png" />
   <link rel="SHORTCUT ICON" href="icon/Key_logo.png">
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r120/three.js"></script> -->
+  <script src="drawingTool/common/thirdparty/codeMirror/codemirror.js"></script>
+  <script src="drawingTool/common/thirdparty/codeMirror/javascript.js"></script>
   <script src="drawingTool/common/script/hiMathUtil.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/three.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/MTLLoader.js"></script>
@@ -82,6 +84,7 @@
   <!-- <script src="js/opencv.js" async onload="onOpenCvReady();" type="text/javascript"></script> -->
   <!-- <script src="js/simplify.js" type="text/javascript"></script> -->
   <!-- <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool.css"> -->
+  <link rel="stylesheet" href="drawingTool/common/thirdparty/codeMirror/codemirror.css">
   <link rel="stylesheet" href="drawingTool/editor2d/style/drawingTool_purple.css">
   <link rel="stylesheet" href="drawingTool/common/style/common.css">
   <style>
@@ -115,6 +118,7 @@
                 <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
               </div>
               <div id="openSampleDialog" class="sublist">Sample</div>
+              <div class="sublist" id="openEditCodeDialog">Edit code</div>
             </div>
           </li>
           <li class="dropdown">
@@ -538,6 +542,15 @@
     </div>
     <div class="commonDialogContent">
       
+    </div>
+  </div>
+  <div class="commonDialog" id="editCodeDialog" style="width: 500px;height:500px;">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">Data source Config</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <textarea id=demotextEditor></textarea>
     </div>
   </div>
   <!-- <script src="drawingTool/fabricExtend/hi3d_Camera.js"></script>

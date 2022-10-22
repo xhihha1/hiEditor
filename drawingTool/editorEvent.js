@@ -583,6 +583,18 @@ function editorEvent(edit, objOption) {
   $('#openDataSourceConfigTable').click(function(){
     $('#dataSourceConfigTable').show()
   })
+  $('#openEditCodeDialog').click(function () {
+    $('#editCodeDialog').show()
+    if (!window.textEditor) {
+      window.textEditor = CodeMirror.fromTextArea(document.getElementById("demotextEditor"), {
+        lineNumbers: true,
+        mode: "javascript",
+        matchBrackets: true,
+        tabSize: 2
+      });
+    }
+    
+  })
 
 
   function pointsArrayToObjs(array) {
