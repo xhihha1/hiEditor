@@ -407,6 +407,7 @@ hiViewer.prototype.animationCallback = function () {
 
   dataStructure.viewer.push({})
   var viewer = new hiViewer(dataStructure.viewer[0], dataStructure.viewer[0].canvasOption)
+  viewer.dsConfig = new datasourceOp(viewer.currentJson.datasourceConfig)
   viewer.importJson(dataStructure.viewer[0].canvasOption)
   viewer.dataRefresh (dataStructure.viewer[0].canvasOption)
   viewer.viewerAnimation(dataStructure.viewer[0].canvasOption)
