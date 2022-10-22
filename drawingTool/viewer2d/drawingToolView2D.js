@@ -59,9 +59,6 @@ hi2dViewer.prototype.importJson = function (objOption) {
   this.edit.mergeDeep(this.edit.defaultOptions, objOption)
   // var fabricJson = edit.canvasView.toJSON(['hiId', 'altitude', 'source']);
   this.fabricJson = JSON.parse(localStorage.getItem('viewJson2D'))
-  if (typeof datasourceOp !== 'undefined') {
-    this.dsConfig = new datasourceOp(this.fabricJson.datasourceConfig)
-  }
   if (this.fabricJson) {
     this.edit.canvasView.loadFromJSON(this.fabricJson)
   }
@@ -82,6 +79,9 @@ hi2dViewer.prototype.viewerRefresh = function (objOption) {
   });
 
   dataStructure.viewer[0].importJson(dataStructure.viewer[0].edit.canvasOption)
+  if (typeof datasourceOp !== 'undefined') {
+    window.dsConfig = new datasourceOp(dataStructure.viewer[0].fabricJson.datasourceConfig)
+  }
   dataStructure.viewer[0].edit.renderDataBinding()
   dataStructure.viewer[0].edit.setEventBinding()
 

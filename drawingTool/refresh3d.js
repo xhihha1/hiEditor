@@ -485,10 +485,8 @@ hi3D.prototype.getItemOption = function (item) {
 }
 
 hi3D.prototype.commonAddObject = function (node, option, parentGroup) {
-  console.log('common add')
   node.visible = option.visible
 }
 hi3D.prototype.commonSetObject = function (node, option) {
-  console.log('common set')
   node.visible = option.visible
 }
