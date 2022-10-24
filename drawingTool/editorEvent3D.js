@@ -599,6 +599,67 @@ function editorEvent3D(edit, objOption) {
       showMeshPropChange(activeObj)
     }
   })
+  $('#openThreeDModelDialog').click(function(){
+    $('#threeDModelDialog').show()
+    let node
+    if(!window.show3DModelSample) {
+      const show3DModelSample = {}
+      show3DModelSample.container = document.getElementById('showSelected3DModelDiv');
+      show3DModelSample.scene = new THREE.Scene()
+      show3DModelSample.renderer = new THREE.WebGLRenderer()
+      show3DModelSample.renderer.setSize(show3DModelSample.container.offsetWidth, show3DModelSample.container.offsetHeight) // 場景大小
+      // show3DModelSample.renderer.setClearColor(0xeeeeee, 1.0) // 預設背景顏色
+      show3DModelSample.renderer.shadowMap.enable = true // 陰影效果
+      show3DModelSample.container.appendChild( show3DModelSample.renderer.domElement );
+      show3DModelSample.camera = new THREE.PerspectiveCamera(
+        45,
+        show3DModelSample.container.offsetWidth / show3DModelSample.container.offsetHeight,
+        0.1,
+        100
+      )
+      show3DModelSample.camera.position.set(10, 10, 10)
+      show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
+      const light = new THREE.HemisphereLight( 0xffeeee, 0x111122 );
+      show3DModelSample.scene.add( light );
+      let pointLight = new THREE.PointLight(0xffffff)
+      pointLight.position.set(10, 10, -10)
+      show3DModelSample.scene.add(pointLight)
+      // 建立物體
+      const geometry = new THREE.BoxGeometry(1, 1, 1) // 幾何體
+      const material = new THREE.MeshPhongMaterial({
+        color: 0x0000ff
+      }) // 材質
+      node = new THREE.Mesh(geometry, material) // 建立網格物件
+      node.position.set(0, 0, 0)
+    //   // ------------------
+    //   const geometry = new THREE.SphereGeometry( 15, 32, 16 );
+    //   const wireframe = new THREE.WireframeGeometry( geometry );
+    //   node = new THREE.LineSegments( wireframe );
+    //   node.material.depthTest = false;
+    //   node.material.opacity = 0.25;
+    //   node.material.transparent = true;
+      window.show3DModelSample = show3DModelSample;
+    } else {
+      window.show3DModelSample.scene.remove( window.show3DModelSample.scene.getObjectByName('preview3DModel') );
+      const geometry = new THREE.ConeGeometry( 5, 20, 32 );
+      const wireframe = new THREE.WireframeGeometry( geometry );
+      node = new THREE.LineSegments( wireframe );
+      node.material.depthTest = false;
+      node.material.opacity = 0.25;
+      node.material.transparent = true;
+    }
+    window.show3DModelSample.scene.add( node );
+    node.name = "preview3DModel";
+    var box1 = new THREE.Box3().setFromObject(node);
+    var width = Math.abs(box1.max.x - box1.min.x)
+    var depth = Math.abs(box1.max.y - box1.min.y)
+    var height = Math.abs(box1.max.z - box1.min.z)
+    show3DModelSample.camera.position.set( 4*width, 3*depth, 4*height );
+    show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
+    show3DModelSample.renderer.render(show3DModelSample.scene, show3DModelSample.camera)
+    // window.show3DModelSample.camera.position.set( 3*box1.max.x, 1.5*box1.max.y, box1.max.z );
+    // window.show3DModelSample.renderer.render( window.show3DModelSample.scene, window.show3DModelSample.camera );
+  })
 
 }
 

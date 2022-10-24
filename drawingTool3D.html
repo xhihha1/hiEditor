@@ -214,6 +214,7 @@
               <div class="sublist" title="gltf" id="draw3dHiFormatGLTF"><img class="tool-icon" src="icon/file_gltf_w.png">gltf</div>
               <div class="sublist" title="fbx" id="draw3dHiFormatFbx"><img class="tool-icon" src="icon/file_gltf_w.png">fbx</div>
               <div class="sublist" title="Nrrd" id="draw3dHiFormatNRRD"><img class="tool-icon" src="icon/file_nrrd_w.png">Nrrd</div>
+              <div class="sublist" title="Preview" id="openThreeDModelDialog"><img class="tool-icon" src="icon/file_nrrd_w.png">3D model</div>
               <div class="sublistTitle">Custom</div>
               <div class="sublist" title="Mesh" id="draw3dHiFormatMesh"><img class="tool-icon" src="icon/file_nrrd_w.png">Mesh</div>
             </div>
@@ -1046,6 +1047,25 @@
     </div>
     <div class="commonDialogContent" style="max-width: 600px;max-height:600px;width: 100%;height:calc(100% - 25px);overflow: hidden;">
       <canvas id='litegraphCanvas'></canvas>
+    </div>
+  </div>
+  <div class="commonDialog" id="threeDModelDialog" style="width: 600px;height:600px;">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">3D Model Preview</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div>
+        <span>Type:</span>
+        <span></span>
+      </div>
+      <div>
+        <span>File url:</span><input type="text" /><button>Load</button>
+      </div>
+      <div class="dialogPropFlex" style="justify-content:center;">
+        <div style="width: 600px; height: 400px;" id="showSelected3DModelDiv"></div>
+      </div>
+      <div><button>Add</button></div>
     </div>
   </div>
   
