@@ -214,7 +214,7 @@
               <div class="sublist" title="gltf" id="draw3dHiFormatGLTF"><img class="tool-icon" src="icon/file_gltf_w.png">gltf</div>
               <div class="sublist" title="fbx" id="draw3dHiFormatFbx"><img class="tool-icon" src="icon/file_gltf_w.png">fbx</div>
               <div class="sublist" title="Nrrd" id="draw3dHiFormatNRRD"><img class="tool-icon" src="icon/file_nrrd_w.png">Nrrd</div>
-              <div class="sublist" title="Preview" id="openThreeDModelDialog"><img class="tool-icon" src="icon/file_nrrd_w.png">3D model</div>
+              <!-- <div class="sublist" title="Preview" id="openThreeDModelDialog"><img class="tool-icon" src="icon/file_nrrd_w.png">3D model</div> -->
               <div class="sublistTitle">Custom</div>
               <div class="sublist" title="Mesh" id="draw3dHiFormatMesh"><img class="tool-icon" src="icon/file_nrrd_w.png">Mesh</div>
             </div>
@@ -884,43 +884,6 @@
       <div class="commonDialogClose"></div>
     </div>
     <div class="commonDialogContent">
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>obj</span></div>
-        <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>dae</span></div>
-        <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>stl</span></div>
-        <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>3ds textures</span></div>
-        <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>3ds normal map</span></div>
-        <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>3ds</span></div>
-        <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
-      </div>
-      <!-- <div class="dialogPropFlex">
-        <div><span>gltf path</span></div>
-        <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
-      </div> -->
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>gltf</span></div>
-        <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
-      </div>
-      <div class="dialogPropFlex">
-        <div class="dialogPropTitle"><span>nrrd</span></div>
-        <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
-      </div>
-      <hr>
       <div><span>obj files</span></div>
       <div id="objFilesList">
         <ul>
@@ -1057,15 +1020,55 @@
     <div class="commonDialogContent">
       <div>
         <span>Type:</span>
-        <span></span>
+        <span id="previewModelType"></span>
       </div>
       <div>
-        <span>File url:</span><input type="text" /><button>Load</button>
+        <span>File:</span><button id="previewModelReload">Reload</button>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_nrrd">
+        <div class="dialogPropTitle"><span>nrrd</span></div>
+        <div><input type="text" id="sourceNrrd" placeholder="nrrd" value="./assets/nrrd/stent.nrrd" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_fbx">
+        <div class="dialogPropTitle"><span>fbx</span></div>
+        <div><input type="text" id="sourceFBXVal" placeholder="fbx" value="./assets/fbx/Samba_Dancing.fbx" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_stl">
+        <div class="dialogPropTitle"><span>stl</span></div>
+        <div><input type="text" id="sourceStlVal" placeholder="stl" value="./assets/slotted_disk.stl" class="prop_input"></div>
+      </div>
+      <!-- <div class="dialogPropFlex prevFormat prevFormat_gltf">
+        <div><span>gltf path</span></div>
+        <div><input type="text" id="sourceGltfPath" placeholder="gltf path" value="./assets/gltf/DamagedHelmet/glTF/" class="prop_input"></div>
+      </div> -->
+      <div class="dialogPropFlex prevFormat prevFormat_gltf">
+        <div class="dialogPropTitle"><span>gltf</span></div>
+        <div><input type="text" id="sourceGltf" placeholder="gltf" value="./assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_3ds">
+        <div class="dialogPropTitle"><span>3ds textures</span></div>
+        <div><input type="text" id="source3dsTexturesVal" placeholder="3ds textures" value="./assets/3ds/portalgun/textures/" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_3ds">
+        <div class="dialogPropTitle"><span>3ds normal map</span></div>
+        <div><input type="text" id="source3dsNormalMapVal" placeholder="3ds normal map" value="./assets/3ds/portalgun/textures/normal.jpg" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_3ds">
+        <div class="dialogPropTitle"><span>3ds</span></div>
+        <div><input type="text" id="source3dsVal" placeholder="3ds" value="./assets/3ds/portalgun/portalgun.3ds" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_obj">
+        <div class="dialogPropTitle"><span>obj</span></div>
+        <div><input type="text" id="sourceObjVal" placeholder="obj" value="./assets/male02.obj" class="prop_input"></div>
+      </div>
+      <div class="dialogPropFlex prevFormat prevFormat_dae">
+        <div class="dialogPropTitle"><span>dae</span></div>
+        <div><input type="text" id="sourceDaeVal" placeholder="dae" value="./assets/elf/elf.dae" class="prop_input"></div>
       </div>
       <div class="dialogPropFlex" style="justify-content:center;">
         <div style="width: 600px; height: 400px;" id="showSelected3DModelDiv"></div>
       </div>
-      <div><button>Add</button></div>
+      <div><button id="addPreviewModelToScene">Add</button></div>
     </div>
   </div>
   

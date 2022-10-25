@@ -84,93 +84,193 @@ function editorEvent3D(edit, objOption) {
   })
 
   $("#draw3dHiFormatObj").click(function () {
-    console.log('click obj')
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_obj').show()
+    $('#previewModelType').text('obj')
     var model = $('#sourceObjVal').val()
-    var polyline = new edit.HiFormatObj(edit, objOption, {
-      source: {
-        obj: model
+    preview3DDialog('obj', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $('#sourceObjVal').val()
+      if (model) {
+        var polyline = new edit.HiFormatObj(edit, objOption, {
+          source: {
+            obj: model
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormatCollada").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_dae').show()
+    $('#previewModelType').text('collada')
     var model = $('#sourceDaeVal').val()
-    var polyline = new edit.HiFormatCollada(edit, objOption, {
-      source: {
-        dae: model
+    preview3DDialog('collada', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $('#sourceDaeVal').val()
+      if (model) {
+        var polyline = new edit.HiFormatCollada(edit, objOption, {
+          source: {
+            dae: model
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormatSTL").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_stl').show()
+    $('#previewModelType').text('stl')
     var model = $('#sourceStlVal').val()
-    var polyline = new edit.HiFormatSTL(edit, objOption, {
-      source: {
-        stl: model
+    preview3DDialog('stl', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $('#sourceStlVal').val()
+      if (model) {
+        var polyline = new edit.HiFormatSTL(edit, objOption, {
+          source: {
+            stl: model
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormat3DS").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_3ds').show()
+    $('#previewModelType').text('3ds')
     var model = $('#source3dsVal').val()
     var textures = $('#source3dsTexturesVal').val()
     var normalMap = $('#source3dsNormalMapVal').val()
-    var polyline = new edit.HiFormat3ds(edit, objOption, {
-      source: {
-        f_3ds: model,
-        f_3dsTextures: textures,
-        f_3dsNormalMap: normalMap
+    preview3DDialog('3ds', {
+      f_3dsNormalMap: normalMap,
+      f_3dsTextures: textures,
+      f_3ds: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $('#source3dsVal').val()
+      var textures = $('#source3dsTexturesVal').val()
+      var normalMap = $('#source3dsNormalMapVal').val()
+      if (model) {
+        var polyline = new edit.HiFormat3ds(edit, objOption, {
+          source: {
+            f_3ds: model,
+            f_3dsTextures: textures,
+            f_3dsNormalMap: normalMap
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormatGLTF").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_gltf').show()
+    $('#previewModelType').text('gltf')
     var model = $('#sourceGltf').val()
-    var polyline = new edit.HiFormatGLTF(edit, objOption, {
-      source: {
-        gltf: model
+    preview3DDialog('gltf', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var model = $('#sourceGltf').val()
+      if (model) {
+        var polyline = new edit.HiFormatGLTF(edit, objOption, {
+          source: {
+            gltf: model
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormatFbx").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
-    // var model = './otherAssets/showroom_fbx/source/Store.fbx'
-    var model = './assets/fbx/Samba_Dancing.fbx'
-    console.log('draw3dHiFormatFbx click')
-    var polyline = new edit.HiFormatFbx(edit, objOption, {
-      source: {
-        fbx: model
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_fbx').show()
+    $('#previewModelType').text('fbx')
+    var model = $('#sourceFBXVal').val()
+    preview3DDialog('fbx', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      // var model = './otherAssets/showroom_fbx/source/Store.fbx'
+      var model = $('#sourceFBXVal').val()
+      if (model) {
+        var polyline = new edit.HiFormatFbx(edit, objOption, {
+          source: {
+            fbx: model
+          }
+        });
       }
     });
   });
 
   $("#draw3dHiFormatNRRD").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_nrrd').show()
+    $('#previewModelType').text('nrrd')
     var model = $('#sourceNrrd').val()
-    // assets\gltf\DamagedHelmet
-    var polyline = new edit.HiFormatNrrd(edit, objOption, {
-      source: {
-        nrrd: model
+    preview3DDialog('nrrd', { 
+      url: model
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      // var model = './otherAssets/showroom_fbx/source/Store.fbx'
+      var model = $('#sourceNrrd').val()
+      if (model) {
+        var polyline = new edit.HiFormatNrrd(edit, objOption, {
+          source: {
+            nrrd: model
+          }
+        });
       }
     });
   });
@@ -647,6 +747,49 @@ function editorEvent3D(edit, objOption) {
     // preview3DDialog_new()
   })
 
+  $('#previewModelReload').on( "click", function() {
+    if ($('#previewModelType').text() === 'collada') {
+      var model = $('#sourceDaeVal').val()
+      preview3DDialog('collada', { 
+        url: model
+      })
+    } else if ($('#previewModelType').text() === 'obj') {
+      var model = $('#sourceObjVal').val()
+      preview3DDialog('obj', { 
+        url: model
+      })
+    } else if ($('#previewModelType').text() === '3ds') {
+      var model = $('#source3dsVal').val()
+      var textures = $('#source3dsTexturesVal').val()
+      var normalMap = $('#source3dsNormalMapVal').val()
+      preview3DDialog('3ds', {
+        f_3dsNormalMap: normalMap,
+        f_3dsTextures: textures,
+        f_3ds: model
+      })
+    } else if ($('#previewModelType').text() === 'gltf') {
+      var model = $('#sourceGltf').val()
+      preview3DDialog('gltf', { 
+        url: model
+      })
+    } else if ($('#previewModelType').text() === 'stl') {
+      var model = $('#sourceStlVal').val()
+      preview3DDialog('stl', { 
+        url: model
+      })
+    } else if ($('#previewModelType').text() === 'fbx') {
+      var model = $('#sourceFBXVal').val()
+      preview3DDialog('fbx', { 
+        url: model
+      })
+    } else if ($('#previewModelType').text() === 'nrrd') {
+      var model = $('#sourceFBXVal').val()
+      preview3DDialog('nrrd', { 
+        url: model
+      })
+    }
+  })
+
 }
 
 function setCameraPropertyUI(edit, cameraOpt) {
@@ -767,52 +910,53 @@ function saveSceneProperty(edit) {
 
   edit.hi3d.setscene(opt)
 }
-function preview3DDialog_new(type, urlObj) {
-  container = document.getElementById('showSelected3DModelDiv');
-  camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 2000);
-  camera.position.set(8, 10, 8);
-  camera.lookAt(0, 3, 0);
-  scene = new THREE.Scene();
-  clock = new THREE.Clock();
-  const loadingManager = new THREE.LoadingManager(function () {
+// function preview3DDialog_new(type, urlObj) {
+//   container = document.getElementById('showSelected3DModelDiv');
+//   camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 2000);
+//   camera.position.set(8, 10, 8);
+//   camera.lookAt(0, 3, 0);
+//   scene = new THREE.Scene();
+//   clock = new THREE.Clock();
+//   const loadingManager = new THREE.LoadingManager(function () {
 
-    scene.add(elf);
-    renderer.render(scene, camera);
-  });
-  const loader = new THREE.ColladaLoader(loadingManager);
-  loader.load('./assets/elf/elf.dae', function (collada) {
+//     scene.add(elf);
+//     renderer.render(scene, camera);
+//   });
+//   const loader = new THREE.ColladaLoader(loadingManager);
+//   loader.load('./assets/elf/elf.dae', function (collada) {
 
-    elf = collada.scene;
+//     elf = collada.scene;
     
-  });
-  const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
-  scene.add(ambientLight);
+//   });
+//   const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+//   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight.position.set(1, 1, 0).normalize();
-  scene.add(directionalLight);
-  renderer = new THREE.WebGLRenderer();
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(container.offsetWidth, container.offsetHeight);
-  container.appendChild(renderer.domElement);
-  renderer.render(scene, camera);
-  setTimeout(function(){renderer.render(scene, camera);},500) 
-  function animate() {
-    requestAnimationFrame(animate);
-    render();
-  }
-  function render() {
-    const delta = clock.getDelta();
-    if (elf !== undefined) {
-      elf.rotation.z += delta * 0.5;
+//   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+//   directionalLight.position.set(1, 1, 0).normalize();
+//   scene.add(directionalLight);
+//   renderer = new THREE.WebGLRenderer();
+//   renderer.outputEncoding = THREE.sRGBEncoding;
+//   renderer.setPixelRatio(window.devicePixelRatio);
+//   renderer.setSize(container.offsetWidth, container.offsetHeight);
+//   container.appendChild(renderer.domElement);
+//   renderer.render(scene, camera);
+//   setTimeout(function(){renderer.render(scene, camera);},500) 
+//   function animate() {
+//     requestAnimationFrame(animate);
+//     render();
+//   }
+//   function render() {
+//     const delta = clock.getDelta();
+//     if (elf !== undefined) {
+//       elf.rotation.z += delta * 0.5;
 
-    }
-    // renderer.render(scene, camera);
-  }
-  // animate();
-}
+//     }
+//     // renderer.render(scene, camera);
+//   }
+//   // animate();
+// }
 function preview3DDialog(type, urlObj) {
+  console.log('----', type, urlObj)
   let node
   if (!window.show3DModelSample) {
     const show3DModelSample = {}
@@ -849,6 +993,14 @@ function preview3DDialog(type, urlObj) {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
     directionalLight.position.set(1, 1, 0).normalize();
     show3DModelSample.scene.add(directionalLight);
+    show3DModelSample.controls = new THREE.OrbitControls(show3DModelSample.camera, show3DModelSample.renderer.domElement);
+    show3DModelSample.controls.minDistance = 1;
+    show3DModelSample.controls.maxDistance = 2000;
+    show3DModelSample.controls.maxPolarAngle = Math.PI;
+    show3DModelSample.controls.addEventListener('change', function (event) {
+      window.show3DModelSample.renderer.render(window.show3DModelSample.scene, window.show3DModelSample.camera)
+    }.bind(this));
+    show3DModelSample.controls.update();
     show3DModelSample.renderer.render(show3DModelSample.scene, show3DModelSample.camera);
     window.show3DModelSample = show3DModelSample;
   }
@@ -929,9 +1081,19 @@ function preview3DDialog(type, urlObj) {
         preview3DRender(mesh)
       })
     }
-  } else if (type === 'stl' && urlObj) {
-
-  } else if (type === 'collada' && urlObj) {
+  } else if (type === 'stl' && urlObj.url) {
+    let obj
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(obj)
+    });
+    const loader = new THREE.STLLoader(loadingManager);
+    loader.load(urlObj.url, function ( geometry ) {
+      var material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF, specular: 0x111111, shininess: 200 } );
+      obj = new THREE.Mesh( geometry, material );
+      obj.position.set( 0, 0, 0);
+      preview3DRender(obj)
+    });
+  } else if (type === 'collada' && urlObj.url) {
     let obj
     const loadingManager = new THREE.LoadingManager(function () {
       preview3DRender(obj)
@@ -964,10 +1126,36 @@ function preview3DDialog(type, urlObj) {
     // loader.load('./assets/elf/elf.dae', function (collada) {
     //   elf = collada.scene;
     // });
-  } else if (type === 'fdx' && urlObj) {
-
-  } else if (type === 'nrrd' && urlObj) {
-
+  } else if (type === 'fbx' && urlObj.url) {
+    let obj
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(obj)
+    });
+    const loader = new THREE.FBXLoader(loadingManager);
+    loader.load(urlObj.url, function ( object ) {
+      // object.traverse( function ( child ) {
+      //   if ( child.isMesh ) {
+      //     child.castShadow = true;
+      //     child.receiveShadow = true;
+      //   }
+      // });
+      obj = object
+      preview3DRender(obj)
+    })
+  } else if (type === 'nrrd' && urlObj.url) {
+    let obj
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(obj)
+    });
+    const loader = new THREE.NRRDLoader(loadingManager);
+    loader.load(urlObj.url, function (volume) {
+      const geometry = new THREE.BoxBufferGeometry(volume.xLength, volume.yLength, volume.zLength);
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xdddddd
+      });
+      obj = new THREE.Mesh(geometry, material);
+      preview3DRender(obj)
+    })
   } else {
     const geometry = new THREE.BoxGeometry(1, 1, 1) // 幾何體
     const material = new THREE.MeshPhongMaterial({
