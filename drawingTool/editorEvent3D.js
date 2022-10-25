@@ -625,25 +625,26 @@ function editorEvent3D(edit, objOption) {
   })
   $('#openThreeDModelDialog').click(function () {
     $('#threeDModelDialog').show()
-    // preview3DDialog('3ds', {
-    //   f_3dsNormalMap: './assets/3ds/portalgun/textures/normal.jpg',
-    //   f_3dsTextures: './assets/3ds/portalgun/textures/',
-    //   f_3ds: './assets/3ds/portalgun/portalgun.3ds'
-    // })
+    preview3DDialog('3ds', {
+      f_3dsNormalMap: './assets/3ds/portalgun/textures/normal.jpg',
+      f_3dsTextures: './assets/3ds/portalgun/textures/',
+      f_3ds: './assets/3ds/portalgun/portalgun.3ds'
+    })
     // preview3DDialog('')
     // preview3DDialog('gltf', { 
     //   url: './assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf'
     // })
-    // preview3DDialog('obj', { 
-    //   url: './assets/obj/tree.obj'
+    // preview3DDialog('obj', { // ./assets/male02.obj ./assets/obj/tree.obj
+    //   url: './assets/male02.obj'
     // })
     // preview3DDialog('obj', { 
     //   url: './assets/obj/walt/WaltHead.obj',
     //   mtl: './assets/obj/walt/WaltHead.mtl'
     // })
-    preview3DDialog('collada', { 
-      url: './assets/elf/elf.dae'
-    })
+    // preview3DDialog('collada', { 
+    //   url: './assets/elf/elf.dae'
+    // })
+    // preview3DDialog_new()
   })
 
 }
@@ -766,7 +767,51 @@ function saveSceneProperty(edit) {
 
   edit.hi3d.setscene(opt)
 }
+function preview3DDialog_new(type, urlObj) {
+  container = document.getElementById('showSelected3DModelDiv');
+  camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 2000);
+  camera.position.set(8, 10, 8);
+  camera.lookAt(0, 3, 0);
+  scene = new THREE.Scene();
+  clock = new THREE.Clock();
+  const loadingManager = new THREE.LoadingManager(function () {
 
+    scene.add(elf);
+    renderer.render(scene, camera);
+  });
+  const loader = new THREE.ColladaLoader(loadingManager);
+  loader.load('./assets/elf/elf.dae', function (collada) {
+
+    elf = collada.scene;
+    
+  });
+  const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(1, 1, 0).normalize();
+  scene.add(directionalLight);
+  renderer = new THREE.WebGLRenderer();
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(container.offsetWidth, container.offsetHeight);
+  container.appendChild(renderer.domElement);
+  renderer.render(scene, camera);
+  setTimeout(function(){renderer.render(scene, camera);},500) 
+  function animate() {
+    requestAnimationFrame(animate);
+    render();
+  }
+  function render() {
+    const delta = clock.getDelta();
+    if (elf !== undefined) {
+      elf.rotation.z += delta * 0.5;
+
+    }
+    // renderer.render(scene, camera);
+  }
+  // animate();
+}
 function preview3DDialog(type, urlObj) {
   let node
   if (!window.show3DModelSample) {
@@ -777,55 +822,70 @@ function preview3DDialog(type, urlObj) {
     show3DModelSample.renderer.outputEncoding = THREE.sRGBEncoding;
     show3DModelSample.renderer.setPixelRatio( window.devicePixelRatio );
     show3DModelSample.renderer.setSize(show3DModelSample.container.offsetWidth, show3DModelSample.container.offsetHeight) // 場景大小
-    show3DModelSample.renderer.setClearColor(0xeeeeee, 1.0) // 預設背景顏色
-    show3DModelSample.renderer.shadowMap.enable = true // 陰影效果
+    // show3DModelSample.renderer.setClearColor(0xeeeeee, 1.0) // 預設背景顏色
+    // show3DModelSample.renderer.shadowMap.enable = true // 陰影效果
     show3DModelSample.container.appendChild(show3DModelSample.renderer.domElement);
     show3DModelSample.camera = new THREE.PerspectiveCamera(
       45,
       show3DModelSample.container.offsetWidth / show3DModelSample.container.offsetHeight,
       0.1,
-      100
+      2000
     )
     show3DModelSample.camera.position.set(10, 10, 10)
     show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
-    const light = new THREE.HemisphereLight(new THREE.Color('#FFFFBB'), new THREE.Color('#080820'), 1);
-    light.position.set(0,1,0)
-    show3DModelSample.scene.add(light);
-    const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-		show3DModelSample.scene.add( ambientLight );
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-    directionalLight.position.set( 1, 1, 0 ).normalize();
-    show3DModelSample.scene.add( directionalLight );
-    let pointLight = new THREE.PointLight(0xffffff)
-    pointLight.position.set(10, 10, -10)
-    show3DModelSample.scene.add(pointLight)
+    // const light = new THREE.HemisphereLight(new THREE.Color('#FFFFBB'), new THREE.Color('#080820'), 1);
+    // light.position.set(0,1,0)
+    // show3DModelSample.scene.add(light);
+    // const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+		// show3DModelSample.scene.add( ambientLight );
+    // const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    // directionalLight.position.set( 1, 1, 0 ).normalize();
+    // show3DModelSample.scene.add( directionalLight );
+    // let pointLight = new THREE.PointLight(0xffffff)
+    // pointLight.position.set(10, 10, -10)
+    // show3DModelSample.scene.add(pointLight)
+    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+    show3DModelSample.scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(1, 1, 0).normalize();
+    show3DModelSample.scene.add(directionalLight);
+    show3DModelSample.renderer.render(show3DModelSample.scene, show3DModelSample.camera);
     window.show3DModelSample = show3DModelSample;
   }
   if (window.show3DModelSample.scene.getObjectByName('preview3DModel')) {
     window.show3DModelSample.scene.remove(window.show3DModelSample.scene.getObjectByName('preview3DModel'));
   }
   if (type === '3ds' && urlObj.f_3ds) {
+    let mesh
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(mesh)
+    });
     const normal = new THREE.TextureLoader().load(urlObj.f_3dsNormalMap);
-    const loader = new THREE.TDSLoader();
+    const loader = new THREE.TDSLoader(loadingManager);
     loader.setResourcePath(urlObj.f_3dsTextures);
     loader.load(urlObj.f_3ds, function (node) {
-      node.traverse(function (child) {
+      mesh = node;
+      mesh.traverse(function (child) {
         if (child.isMesh) {
           if (normal) {
             child.material.normalMap = normal;
           }
         }
       });
-      node.position.set(0,0,0);
-      node.castShadow = true;
-      node.receiveShadow = true;
-      preview3DRender(node)
+      mesh.position.set(0,0,0);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      preview3DRender(mesh)
     }.bind(this));
   } else if (type === 'gltf' && urlObj.url) {
-    const loader = new THREE.GLTFLoader()
+    let mesh
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(mesh)
+    });
+    const loader = new THREE.GLTFLoader(loadingManager)
     if (urlObj.gltfPath) {loader.setPath(urlObj.gltfPath); }
     loader.load(urlObj.url, function (object) {
-      const mesh = object.scene
+      mesh = object.scene
       mesh.animations = object.animations;
       mesh.position.set(0,0,0);
       mesh.castShadow = true;
@@ -846,9 +906,14 @@ function preview3DDialog(type, urlObj) {
         } );
       } );
     } else {
-      var loader = new THREE.OBJLoader();
+      let mesh
+      const loadingManager = new THREE.LoadingManager(function () {
+        preview3DRender(mesh)
+      });
+      var loader = new THREE.OBJLoader(loadingManager);
       loader.load(urlObj.url, function (obj) {
-        obj.traverse(function (child) {
+        mesh = obj;
+        mesh.traverse(function (child) {
           if (child instanceof THREE.Mesh) {
             // child.material.side = THREE.DoubleSide;
             child.material.color.setHex(0x00FF00);
@@ -860,16 +925,20 @@ function preview3DDialog(type, urlObj) {
             // child.material.color.set('blue');
           }
         });
-        obj.position.set(0,0,0);
-        preview3DRender(obj)
+        mesh.position.set(0,0,0);
+        preview3DRender(mesh)
       })
     }
   } else if (type === 'stl' && urlObj) {
 
   } else if (type === 'collada' && urlObj) {
-    var loader = new THREE.ColladaLoader();
+    let obj
+    const loadingManager = new THREE.LoadingManager(function () {
+      preview3DRender(obj)
+    });
+    var loader = new THREE.ColladaLoader(loadingManager);
     loader.load(urlObj.url, function (collada) {
-      var obj = collada.scene;
+      obj = collada.scene;
       obj.kinematics = collada.kinematics;
       obj.traverse( function ( child ) {
         if ( child.isMesh ) {
@@ -885,6 +954,16 @@ function preview3DDialog(type, urlObj) {
       obj.receiveShadow = true;
       preview3DRender(obj)
     })
+    // window.show3DModelSample.camera.position.set(8, 10, 8);
+    // window.show3DModelSample.camera.lookAt(0, 3, 0);
+    // let elf
+    // const loadingManager = new THREE.LoadingManager(function () {
+    //   preview3DRender(elf)
+    // });
+    // const loader = new THREE.ColladaLoader(loadingManager);
+    // loader.load('./assets/elf/elf.dae', function (collada) {
+    //   elf = collada.scene;
+    // });
   } else if (type === 'fdx' && urlObj) {
 
   } else if (type === 'nrrd' && urlObj) {
