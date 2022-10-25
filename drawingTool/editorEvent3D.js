@@ -65,7 +65,7 @@ function editorEvent3D(edit, objOption) {
     edit.changeCanvasProperty(false, false);
     var HiPlane = new edit.HiPlane(edit, objOption);
   });
-  
+
   $("#draw3dWall").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
@@ -89,7 +89,11 @@ function editorEvent3D(edit, objOption) {
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var model = $('#sourceObjVal').val()
-    var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: model}});
+    var polyline = new edit.HiFormatObj(edit, objOption, {
+      source: {
+        obj: model
+      }
+    });
   });
 
   $("#draw3dHiFormatCollada").click(function () {
@@ -97,7 +101,11 @@ function editorEvent3D(edit, objOption) {
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var model = $('#sourceDaeVal').val()
-    var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: model}});
+    var polyline = new edit.HiFormatCollada(edit, objOption, {
+      source: {
+        dae: model
+      }
+    });
   });
 
   $("#draw3dHiFormatSTL").click(function () {
@@ -105,7 +113,11 @@ function editorEvent3D(edit, objOption) {
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var model = $('#sourceStlVal').val()
-    var polyline = new edit.HiFormatSTL(edit, objOption, { source: { stl: model}});
+    var polyline = new edit.HiFormatSTL(edit, objOption, {
+      source: {
+        stl: model
+      }
+    });
   });
 
   $("#draw3dHiFormat3DS").click(function () {
@@ -149,7 +161,7 @@ function editorEvent3D(edit, objOption) {
       }
     });
   });
-  
+
   $("#draw3dHiFormatNRRD").click(function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
@@ -170,7 +182,7 @@ function editorEvent3D(edit, objOption) {
     var mesh = new edit.Hi3dMesh(edit, objOption);
   });
 
-  $('#draw3dPlane').click(function(){
+  $('#draw3dPlane').click(function () {
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);
     // edit.changeCanvasProperty(false, false);
@@ -193,9 +205,9 @@ function editorEvent3D(edit, objOption) {
     // }, 1000)
     dataStructure.editor[0].hi3d.addPlane()
   })
-  $('#btnGround').click(function(){
+  $('#btnGround').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.ground) {
+    if (!edit.hi3d.ground) {
       edit.hi3d.addGroundPlane()
     } else {
       edit.hi3d.ground.visible = checked;
@@ -203,9 +215,9 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnGridHelper').click(function(){
+  $('#btnGridHelper').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.gridHelper) {
+    if (!edit.hi3d.gridHelper) {
       edit.hi3d.setGridHelper()
     } else {
       edit.hi3d.gridHelper.visible = checked;
@@ -213,9 +225,9 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnAxesHelper').click(function(){
+  $('#btnAxesHelper').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.axesHelper) {
+    if (!edit.hi3d.axesHelper) {
       edit.hi3d.addAxesHelper()
     } else {
       edit.hi3d.axesHelper.visible = checked;
@@ -229,9 +241,9 @@ function editorEvent3D(edit, objOption) {
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnLightHelper').click(function(){
+  $('#btnLightHelper').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.dirLightHelper) {
+    if (!edit.hi3d.dirLightHelper) {
       edit.hi3d.addLightHelper()
     } else {
       edit.hi3d.dirLightHelper.visible = checked;
@@ -239,7 +251,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  
+
   // $('#btnHemisphereLight').click(function(){
   //   var checked = $(this).prop("checked");
   //   // edit.hi3d.directionalLight.visible = checked;
@@ -248,9 +260,9 @@ function editorEvent3D(edit, objOption) {
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnHemisphereLightHelper').click(function(){
+  $('#btnHemisphereLightHelper').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.hemiLightHelper) {
+    if (!edit.hi3d.hemiLightHelper) {
       edit.hi3d.addHemisphereLightHelper()
     } else {
       edit.hi3d.hemiLightHelper.visible = checked;
@@ -264,7 +276,7 @@ function editorEvent3D(edit, objOption) {
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnSpotLightHelper').click(function(){
+  $('#btnSpotLightHelper').click(function () {
     var checked = $(this).prop("checked");
     edit.hi3d.addSpotLightHelper()
     edit.hi3d.scene.traverse(function (node) {
@@ -275,9 +287,9 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnCameraHelper').click(function(){
+  $('#btnCameraHelper').click(function () {
     var checked = $(this).prop("checked");
-    if(!edit.hi3d.cameraHelper) {
+    if (!edit.hi3d.cameraHelper) {
       edit.hi3d.addCameraHelper()
     } else {
       edit.hi3d.cameraHelper.visible = checked;
@@ -285,7 +297,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnBoxHelper').click(function(){
+  $('#btnBoxHelper').click(function () {
     var checked = $(this).prop("checked");
     var boxs = []
     edit.hi3d.scene.traverse(function (node) {
@@ -296,13 +308,13 @@ function editorEvent3D(edit, objOption) {
     for (let i = 0; i < boxs.length; i++) {
       edit.hi3d.scene.remove(boxs[i]);
     }
-    if(checked) {
+    if (checked) {
       edit.hi3d.addBoxHelper()
-    } 
+    }
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#tc_enable').click(function(){
+  $('#tc_enable').click(function () {
     var checked = $(this).prop("checked");
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.enabled = checked;
@@ -310,47 +322,47 @@ function editorEvent3D(edit, objOption) {
       $(this).prop("checked", true);
     }
   })
-  $('#tc_translate').click(function(){
+  $('#tc_translate').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.setMode( 'translate' );
+      edit.hi3d.transformControls.setMode('translate');
     }
   })
-  $('#tc_rotate').click(function(){
+  $('#tc_rotate').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.setMode( 'rotate' );
+      edit.hi3d.transformControls.setMode('rotate');
     }
   })
-  $('#tc_scale').click(function(){
+  $('#tc_scale').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.setMode( 'scale' );
+      edit.hi3d.transformControls.setMode('scale');
     }
   })
-  $('#tc_sizePlus').click(function(){
+  $('#tc_sizePlus').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.setSize( edit.hi3d.transformControls.size + 0.1 );
+      edit.hi3d.transformControls.setSize(edit.hi3d.transformControls.size + 0.1);
     }
   })
-  $('#tc_sizeMinus').click(function(){
+  $('#tc_sizeMinus').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.setSize( Math.max( edit.hi3d.transformControls.size - 0.1, 0.1 ) );
+      edit.hi3d.transformControls.setSize(Math.max(edit.hi3d.transformControls.size - 0.1, 0.1));
     }
   })
-  $('#tc_toggleX').click(function(){
+  $('#tc_toggleX').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.showX =! edit.hi3d.transformControls.showX;
+      edit.hi3d.transformControls.showX = !edit.hi3d.transformControls.showX;
     }
   })
-  $('#tc_toggleY').click(function(){
+  $('#tc_toggleY').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.showY =! edit.hi3d.transformControls.showY;
+      edit.hi3d.transformControls.showY = !edit.hi3d.transformControls.showY;
     }
   })
-  $('#tc_toggleZ').click(function(){
+  $('#tc_toggleZ').click(function () {
     if (edit.hi3d.transformControls) {
-      edit.hi3d.transformControls.showZ =! edit.hi3d.transformControls.showZ;
+      edit.hi3d.transformControls.showZ = !edit.hi3d.transformControls.showZ;
     }
   })
-  $('#cameraNear').on('change', function(){
+  $('#cameraNear').on('change', function () {
     console.log('cameraNear')
     var near = $(this).val()
     edit.canvasView.forEachObject(function (obj) {
@@ -359,10 +371,12 @@ function editorEvent3D(edit, objOption) {
         obj.camera.near = parseFloat(near)
       }
     })
-    edit.hi3d.setCamera({ near: near })
+    edit.hi3d.setCamera({
+      near: near
+    })
     edit.hi3d.viewRender()
   })
-  $('#cameraFar').on('change', function(){
+  $('#cameraFar').on('change', function () {
     var far = $(this).val()
     edit.canvasView.forEachObject(function (obj) {
       if (obj.type == 'hiCamera') {
@@ -370,10 +384,12 @@ function editorEvent3D(edit, objOption) {
         obj.camera.far = parseFloat(far)
       }
     })
-    edit.hi3d.setCamera({ far: far })
+    edit.hi3d.setCamera({
+      far: far
+    })
     edit.hi3d.viewRender()
   })
-  $('#submitLight').click(function(){
+  $('#submitLight').click(function () {
     var visible = $('#btnLight').prop("checked");
     var color = $('#light_color').val()
     var intensity = parseFloat($('#light_intensity').val())
@@ -391,7 +407,7 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
-  $('#submitHemisphereLight').click(function(){
+  $('#submitHemisphereLight').click(function () {
     var visible = $('#btnHemisphereLight').prop("checked");
     var color = $('#hemisphereLight_color').val()
     var groundColor = $('#hemisphereLight_groundColor').val()
@@ -409,7 +425,7 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
-  $('#submitAmbientLight').click(function(){
+  $('#submitAmbientLight').click(function () {
     var visible = $('#btnAmbientLight').prop("checked");
     var color = $('#ambientLight_color').val()
     var intensity = parseFloat($('#ambientLight_intensity').val())
@@ -424,7 +440,7 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
-  $('#newPropBackgroundType').on('change', function (){
+  $('#newPropBackgroundType').on('change', function () {
     var value = $(this).val()
     if (value === 'Image') {
       $('#newSceneBgAreaColor').hide()
@@ -452,10 +468,10 @@ function editorEvent3D(edit, objOption) {
   $('#newSceneBgAreaImage').hide()
   $('#newSceneBgAreaCubeTexture').hide()
   $('#newSceneBgAreaEquirectangular').hide()
-  $('#submitSceneProp').click(function(){
+  $('#submitSceneProp').click(function () {
     saveSceneProperty(edit)
   })
-  $('#submitGrid').click(function(){
+  $('#submitGrid').click(function () {
     var size = parseInt($('#gridSize').val())
     var divisions = parseInt($('#gridDivisions').val())
     var colorCenterLine = $('#grid_colorCenter').val()
@@ -471,18 +487,22 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#objFilesList').click(function(e){
+  $('#objFilesList').click(function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
       edit.changeSelectableStatus(false);
       edit.changeCanvasProperty(false, false);
       var model = $(target).html()
-      var polyline = new edit.HiFormatObj(edit, objOption, { source: { obj: model}});
+      var polyline = new edit.HiFormatObj(edit, objOption, {
+        source: {
+          obj: model
+        }
+      });
     }
   })
-  
-  $('#gltfFilesList').click(function(e){
+
+  $('#gltfFilesList').click(function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -497,18 +517,22 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#colladaFilesList').click(function(e){
+  $('#colladaFilesList').click(function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
       edit.changeSelectableStatus(false);
       edit.changeCanvasProperty(false, false);
       var model = $(target).html()
-      var polyline = new edit.HiFormatCollada(edit, objOption, { source: { dae: model}});
+      var polyline = new edit.HiFormatCollada(edit, objOption, {
+        source: {
+          dae: model
+        }
+      });
     }
   })
-    
-  $('#fbxFilesList').click(function(e){
+
+  $('#fbxFilesList').click(function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -524,14 +548,14 @@ function editorEvent3D(edit, objOption) {
   })
 
   $('.prop-content').toggle();
-  $('#property').click(function(e){
+  $('#property').click(function (e) {
     const target = e.target
-    if($(target).hasClass('prop-title')){
+    if ($(target).hasClass('prop-title')) {
       $(target).next('.prop-content').toggle();
     }
   })
 
-  $('#applySampleFile').click(function(){
+  $('#applySampleFile').click(function () {
     const fileName = $('#sampleFileSelected').val()
     var oReq = new XMLHttpRequest();
     oReq.open("GET", fileName, true);
@@ -544,133 +568,109 @@ function editorEvent3D(edit, objOption) {
   })
 
   // $('#menu').scrollbar();
-  $('#openSceneDialog').click(function(){
+  $('#openSceneDialog').click(function () {
     $('#sceneDialog').show()
   })
-  $('#openGridDialog').click(function(){
+  $('#openGridDialog').click(function () {
     $('#gridDialog').show()
   })
-  $('#openTranformCtrlDialog').click(function(){
+  $('#openTranformCtrlDialog').click(function () {
     $('#tranformCtrlDialog').show()
   })
-  $('#openExportFabricDialog').click(function(){
+  $('#openExportFabricDialog').click(function () {
     $('#exportFabricDialog').show()
   })
-  $('#openExportLabelmeDialog').click(function(){
+  $('#openExportLabelmeDialog').click(function () {
     $('#exportLabelmeDialog').show()
   })
-  $('#openImportFabricDialog').click(function(){
+  $('#openImportFabricDialog').click(function () {
     $('#importFabricDialog').show()
   })
-  $('#openImportLabelmeDialog').click(function(){
+  $('#openImportLabelmeDialog').click(function () {
     $('#importLabelmeDialog').show()
   })
-  $('#openDirectionalLightDialog').click(function(){
+  $('#openDirectionalLightDialog').click(function () {
     $('#directionalLightDialog').show()
   })
-  $('#openHemisphereLightDialog').click(function(){
+  $('#openHemisphereLightDialog').click(function () {
     $('#hemisphereLightDialog').show()
   })
-  $('#openAmbientLightDialog').click(function(){
+  $('#openAmbientLightDialog').click(function () {
     $('#ambientLightDialog').show()
   })
-  $('#openObjectListDialog').click(function(){
+  $('#openObjectListDialog').click(function () {
     $('#objectListDialog').show()
   })
-  $('#openPanCtrl').click(function(){
+  $('#openPanCtrl').click(function () {
     $('#panCtrl').show()
   })
-  $('#openSceneProp').click(function(){
+  $('#openSceneProp').click(function () {
     $('#scenePropDialog').show()
   })
-  $('#openObjProp').click(function(){
+  $('#openObjProp').click(function () {
     $('#objPropDialog').show()
   })
-  $('#openModelSourceDialog').click(function(){
+  $('#openModelSourceDialog').click(function () {
     $('#modelSourceDialog').show()
   })
-  $('#openSampleDialog').click(function(){
+  $('#openSampleDialog').click(function () {
     $('#sampleDialog').show()
   })
-  $('#openGenerateMeshDialog').click(function(){
+  $('#openGenerateMeshDialog').click(function () {
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
       $('#generateMeshDialog').show()
       showMeshPropChange(activeObj)
     }
   })
-  $('#openThreeDModelDialog').click(function(){
+  $('#openThreeDModelDialog').click(function () {
     $('#threeDModelDialog').show()
-    let node
-    if(!window.show3DModelSample) {
-      const show3DModelSample = {}
-      show3DModelSample.container = document.getElementById('showSelected3DModelDiv');
-      show3DModelSample.scene = new THREE.Scene()
-      show3DModelSample.renderer = new THREE.WebGLRenderer()
-      show3DModelSample.renderer.setSize(show3DModelSample.container.offsetWidth, show3DModelSample.container.offsetHeight) // 場景大小
-      // show3DModelSample.renderer.setClearColor(0xeeeeee, 1.0) // 預設背景顏色
-      show3DModelSample.renderer.shadowMap.enable = true // 陰影效果
-      show3DModelSample.container.appendChild( show3DModelSample.renderer.domElement );
-      show3DModelSample.camera = new THREE.PerspectiveCamera(
-        45,
-        show3DModelSample.container.offsetWidth / show3DModelSample.container.offsetHeight,
-        0.1,
-        100
-      )
-      show3DModelSample.camera.position.set(10, 10, 10)
-      show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
-      const light = new THREE.HemisphereLight( 0xffeeee, 0x111122 );
-      show3DModelSample.scene.add( light );
-      let pointLight = new THREE.PointLight(0xffffff)
-      pointLight.position.set(10, 10, -10)
-      show3DModelSample.scene.add(pointLight)
-      // 建立物體
-      const geometry = new THREE.BoxGeometry(1, 1, 1) // 幾何體
-      const material = new THREE.MeshPhongMaterial({
-        color: 0x0000ff
-      }) // 材質
-      node = new THREE.Mesh(geometry, material) // 建立網格物件
-      node.position.set(0, 0, 0)
-    //   // ------------------
-    //   const geometry = new THREE.SphereGeometry( 15, 32, 16 );
-    //   const wireframe = new THREE.WireframeGeometry( geometry );
-    //   node = new THREE.LineSegments( wireframe );
-    //   node.material.depthTest = false;
-    //   node.material.opacity = 0.25;
-    //   node.material.transparent = true;
-      window.show3DModelSample = show3DModelSample;
-    } else {
-      window.show3DModelSample.scene.remove( window.show3DModelSample.scene.getObjectByName('preview3DModel') );
-      const geometry = new THREE.ConeGeometry( 5, 20, 32 );
-      const wireframe = new THREE.WireframeGeometry( geometry );
-      node = new THREE.LineSegments( wireframe );
-      node.material.depthTest = false;
-      node.material.opacity = 0.25;
-      node.material.transparent = true;
-    }
-    window.show3DModelSample.scene.add( node );
-    node.name = "preview3DModel";
-    var box1 = new THREE.Box3().setFromObject(node);
-    var width = Math.abs(box1.max.x - box1.min.x)
-    var depth = Math.abs(box1.max.y - box1.min.y)
-    var height = Math.abs(box1.max.z - box1.min.z)
-    show3DModelSample.camera.position.set( 4*width, 3*depth, 4*height );
-    show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
-    show3DModelSample.renderer.render(show3DModelSample.scene, show3DModelSample.camera)
-    // window.show3DModelSample.camera.position.set( 3*box1.max.x, 1.5*box1.max.y, box1.max.z );
-    // window.show3DModelSample.renderer.render( window.show3DModelSample.scene, window.show3DModelSample.camera );
+    // preview3DDialog('3ds', {
+    //   f_3dsNormalMap: './assets/3ds/portalgun/textures/normal.jpg',
+    //   f_3dsTextures: './assets/3ds/portalgun/textures/',
+    //   f_3ds: './assets/3ds/portalgun/portalgun.3ds'
+    // })
+    // preview3DDialog('')
+    // preview3DDialog('gltf', { 
+    //   url: './assets/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf'
+    // })
+    // preview3DDialog('obj', { 
+    //   url: './assets/obj/tree.obj'
+    // })
+    // preview3DDialog('obj', { 
+    //   url: './assets/obj/walt/WaltHead.obj',
+    //   mtl: './assets/obj/walt/WaltHead.mtl'
+    // })
+    preview3DDialog('collada', { 
+      url: './assets/elf/elf.dae'
+    })
   })
 
 }
 
-function setCameraPropertyUI (edit, cameraOpt) {
-  if (typeof cameraOpt.position[0] === 'number') { $('#newPropSceneCameraX').val(cameraOpt.position[0]) }
-  if (typeof cameraOpt.position[1] === 'number') { $('#newPropSceneCameraY').val(cameraOpt.position[1]) }
-  if (typeof cameraOpt.position[2] === 'number') { $('#newPropSceneCameraZ').val(cameraOpt.position[2]) }
-  if (typeof cameraOpt.targetPoint[0] === 'number') { $('#newPropScenelookAtX').val(cameraOpt.targetPoint[0]) }
-  if (typeof cameraOpt.targetPoint[1] === 'number') { $('#newPropScenelookAtY').val(cameraOpt.targetPoint[1]) }
-  if (typeof cameraOpt.targetPoint[2] === 'number') { $('#newPropScenelookAtZ').val(cameraOpt.targetPoint[2]) }
-  var camera = { position: [], targetPoint: [] }
+function setCameraPropertyUI(edit, cameraOpt) {
+  if (typeof cameraOpt.position[0] === 'number') {
+    $('#newPropSceneCameraX').val(cameraOpt.position[0])
+  }
+  if (typeof cameraOpt.position[1] === 'number') {
+    $('#newPropSceneCameraY').val(cameraOpt.position[1])
+  }
+  if (typeof cameraOpt.position[2] === 'number') {
+    $('#newPropSceneCameraZ').val(cameraOpt.position[2])
+  }
+  if (typeof cameraOpt.targetPoint[0] === 'number') {
+    $('#newPropScenelookAtX').val(cameraOpt.targetPoint[0])
+  }
+  if (typeof cameraOpt.targetPoint[1] === 'number') {
+    $('#newPropScenelookAtY').val(cameraOpt.targetPoint[1])
+  }
+  if (typeof cameraOpt.targetPoint[2] === 'number') {
+    $('#newPropScenelookAtZ').val(cameraOpt.targetPoint[2])
+  }
+  var camera = {
+    position: [],
+    targetPoint: []
+  }
   camera.position[0] = parseFloat($('#newPropSceneCameraX').val())
   camera.position[1] = parseFloat($('#newPropSceneCameraY').val())
   camera.position[2] = parseFloat($('#newPropSceneCameraZ').val())
@@ -687,73 +687,237 @@ function setCameraPropertyUI (edit, cameraOpt) {
   }
 }
 
-function saveSceneProperty (edit) {
-    // -------------------------------------------------
-    var camera = { position: [], targetPoint: [], near: 0.1, far: 2000 }
-    camera.position[0] = parseFloat($('#newPropSceneCameraX').val())
-    camera.position[1] = parseFloat($('#newPropSceneCameraY').val())
-    camera.position[2] = parseFloat($('#newPropSceneCameraZ').val())
-    camera.targetPoint[0] = parseFloat($('#newPropScenelookAtX').val())
-    camera.targetPoint[1] = parseFloat($('#newPropScenelookAtY').val())
-    camera.targetPoint[2] = parseFloat($('#newPropScenelookAtZ').val())
-    camera.near = parseFloat($('#cameraNear').val())
-    camera.far = parseFloat($('#cameraFar').val())
-    // -------------------------------------------------
-    var dataRefreshTime = parseInt($('#newPropDataRefreshTime').val())
-    var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
-    // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
-    var afterInitialStr = edit.readTextareaFuncStr($('#newPropSceneAftInit').val())
-    // afterInitialStr = afterInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
-    var animationStr = edit.readTextareaFuncStr($('#newPropSceneAnimation').val())
-    // animationStr = animationStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
-    var beforeInitial = beforeInitialStr
-    var afterInitial = afterInitialStr
-    var animation = animationStr
-    // --- background ---
-    var bgType = $('#newPropBackgroundType').val()
-    var bgColor, ImageUrl, bgPx, bgPy, bgPz, bgNx, bgNy, bgNz, bgEquirectangular
-    if (bgType === 'Image') {
-      ImageUrl = $('#newPropSceneBgImage').val()
-    } else if (bgType === 'CubeTexture') {
-      bgPx = $('#newPropSceneBgCubePx').val()
-      bgPy = $('#newPropSceneBgCubePy').val()
-      bgPz = $('#newPropSceneBgCubePz').val()
-      bgNx = $('#newPropSceneBgCubeNx').val()
-      bgNy = $('#newPropSceneBgCubeNy').val()
-      bgNz = $('#newPropSceneBgCubeNz').val()
-    } else if (bgType === 'Equirectangular') {
-      bgEquirectangular = $('#newPropSceneBgEquirectangularImage').val()
-    } else {
-      bgColor = hiDraw.prototype.colorToHex($('#newPropSceneBgColor').val())
-    }
-    var opt = {
-      beforeInitial: beforeInitial,
-      afterInitial: afterInitial,
-      animation: animation,
-      background: {
-        type: bgType,
-        Color: { color: bgColor },
-        Image: { url: ImageUrl },
-        CubeTexture: {
-          px: bgPx,
-          py: bgPy,
-          pz: bgPz,
-          nx: bgNx,
-          ny: bgNy,
-          nz: bgNz
-        },
-        Equirectangular: {
-          url: bgEquirectangular
-        }
+function saveSceneProperty(edit) {
+  // -------------------------------------------------
+  var camera = {
+    position: [],
+    targetPoint: [],
+    near: 0.1,
+    far: 2000
+  }
+  camera.position[0] = parseFloat($('#newPropSceneCameraX').val())
+  camera.position[1] = parseFloat($('#newPropSceneCameraY').val())
+  camera.position[2] = parseFloat($('#newPropSceneCameraZ').val())
+  camera.targetPoint[0] = parseFloat($('#newPropScenelookAtX').val())
+  camera.targetPoint[1] = parseFloat($('#newPropScenelookAtY').val())
+  camera.targetPoint[2] = parseFloat($('#newPropScenelookAtZ').val())
+  camera.near = parseFloat($('#cameraNear').val())
+  camera.far = parseFloat($('#cameraFar').val())
+  // -------------------------------------------------
+  var dataRefreshTime = parseInt($('#newPropDataRefreshTime').val())
+  var beforeInitialStr = edit.readTextareaFuncStr($('#newPropSceneBefInit').val())
+  // beforeInitialStr = beforeInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+  var afterInitialStr = edit.readTextareaFuncStr($('#newPropSceneAftInit').val())
+  // afterInitialStr = afterInitialStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+  var animationStr = edit.readTextareaFuncStr($('#newPropSceneAnimation').val())
+  // animationStr = animationStr.trim().replace(/\r\n/g,"").replace(/\n/g,"").trim()
+  var beforeInitial = beforeInitialStr
+  var afterInitial = afterInitialStr
+  var animation = animationStr
+  // --- background ---
+  var bgType = $('#newPropBackgroundType').val()
+  var bgColor, ImageUrl, bgPx, bgPy, bgPz, bgNx, bgNy, bgNz, bgEquirectangular
+  if (bgType === 'Image') {
+    ImageUrl = $('#newPropSceneBgImage').val()
+  } else if (bgType === 'CubeTexture') {
+    bgPx = $('#newPropSceneBgCubePx').val()
+    bgPy = $('#newPropSceneBgCubePy').val()
+    bgPz = $('#newPropSceneBgCubePz').val()
+    bgNx = $('#newPropSceneBgCubeNx').val()
+    bgNy = $('#newPropSceneBgCubeNy').val()
+    bgNz = $('#newPropSceneBgCubeNz').val()
+  } else if (bgType === 'Equirectangular') {
+    bgEquirectangular = $('#newPropSceneBgEquirectangularImage').val()
+  } else {
+    bgColor = hiDraw.prototype.colorToHex($('#newPropSceneBgColor').val())
+  }
+  var opt = {
+    beforeInitial: beforeInitial,
+    afterInitial: afterInitial,
+    animation: animation,
+    background: {
+      type: bgType,
+      Color: {
+        color: bgColor
       },
-      camera: camera,
-      dataRefreshTime: dataRefreshTime
-    }
-    if (!edit.canvasView.sceneProp) {
-      edit.canvasView.sceneProp = JSON.stringify(opt)
+      Image: {
+        url: ImageUrl
+      },
+      CubeTexture: {
+        px: bgPx,
+        py: bgPy,
+        pz: bgPz,
+        nx: bgNx,
+        ny: bgNy,
+        nz: bgNz
+      },
+      Equirectangular: {
+        url: bgEquirectangular
+      }
+    },
+    camera: camera,
+    dataRefreshTime: dataRefreshTime
+  }
+  if (!edit.canvasView.sceneProp) {
+    edit.canvasView.sceneProp = JSON.stringify(opt)
+  } else {
+    edit.canvasView.sceneProp = JSON.stringify(edit.hi3d.mergeDeep(JSON.parse(edit.canvasView.sceneProp), opt))
+  }
+
+  edit.hi3d.setscene(opt)
+}
+
+function preview3DDialog(type, urlObj) {
+  let node
+  if (!window.show3DModelSample) {
+    const show3DModelSample = {}
+    show3DModelSample.container = document.getElementById('showSelected3DModelDiv');
+    show3DModelSample.scene = new THREE.Scene()
+    show3DModelSample.renderer = new THREE.WebGLRenderer()
+    show3DModelSample.renderer.outputEncoding = THREE.sRGBEncoding;
+    show3DModelSample.renderer.setPixelRatio( window.devicePixelRatio );
+    show3DModelSample.renderer.setSize(show3DModelSample.container.offsetWidth, show3DModelSample.container.offsetHeight) // 場景大小
+    show3DModelSample.renderer.setClearColor(0xeeeeee, 1.0) // 預設背景顏色
+    show3DModelSample.renderer.shadowMap.enable = true // 陰影效果
+    show3DModelSample.container.appendChild(show3DModelSample.renderer.domElement);
+    show3DModelSample.camera = new THREE.PerspectiveCamera(
+      45,
+      show3DModelSample.container.offsetWidth / show3DModelSample.container.offsetHeight,
+      0.1,
+      100
+    )
+    show3DModelSample.camera.position.set(10, 10, 10)
+    show3DModelSample.camera.lookAt(show3DModelSample.scene.position)
+    const light = new THREE.HemisphereLight(new THREE.Color('#FFFFBB'), new THREE.Color('#080820'), 1);
+    light.position.set(0,1,0)
+    show3DModelSample.scene.add(light);
+    const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+		show3DModelSample.scene.add( ambientLight );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    directionalLight.position.set( 1, 1, 0 ).normalize();
+    show3DModelSample.scene.add( directionalLight );
+    let pointLight = new THREE.PointLight(0xffffff)
+    pointLight.position.set(10, 10, -10)
+    show3DModelSample.scene.add(pointLight)
+    window.show3DModelSample = show3DModelSample;
+  }
+  if (window.show3DModelSample.scene.getObjectByName('preview3DModel')) {
+    window.show3DModelSample.scene.remove(window.show3DModelSample.scene.getObjectByName('preview3DModel'));
+  }
+  if (type === '3ds' && urlObj.f_3ds) {
+    const normal = new THREE.TextureLoader().load(urlObj.f_3dsNormalMap);
+    const loader = new THREE.TDSLoader();
+    loader.setResourcePath(urlObj.f_3dsTextures);
+    loader.load(urlObj.f_3ds, function (node) {
+      node.traverse(function (child) {
+        if (child.isMesh) {
+          if (normal) {
+            child.material.normalMap = normal;
+          }
+        }
+      });
+      node.position.set(0,0,0);
+      node.castShadow = true;
+      node.receiveShadow = true;
+      preview3DRender(node)
+    }.bind(this));
+  } else if (type === 'gltf' && urlObj.url) {
+    const loader = new THREE.GLTFLoader()
+    if (urlObj.gltfPath) {loader.setPath(urlObj.gltfPath); }
+    loader.load(urlObj.url, function (object) {
+      const mesh = object.scene
+      mesh.animations = object.animations;
+      mesh.position.set(0,0,0);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      preview3DRender(mesh)
+    })
+  } else if (type === 'obj' && urlObj.url) {
+    if (urlObj.mtl) {
+      var mtlLoader = new THREE.MTLLoader();
+      // mtlLoader.setPath( "https://threejs.org/examples/models/obj/walt/" );
+      mtlLoader.load( urlObj.mtl, function( materials ) {
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.load( urlObj.url, function ( object ) {
+          object.position.set(0,0,0);
+          preview3DRender(object)
+        } );
+      } );
     } else {
-      edit.canvasView.sceneProp = JSON.stringify(edit.hi3d.mergeDeep(JSON.parse(edit.canvasView.sceneProp), opt))
+      var loader = new THREE.OBJLoader();
+      loader.load(urlObj.url, function (obj) {
+        obj.traverse(function (child) {
+          if (child instanceof THREE.Mesh) {
+            // child.material.side = THREE.DoubleSide;
+            child.material.color.setHex(0x00FF00);
+            // child.material.ambient.setHex(0xFF0000);
+            child.material.transparent = true;
+            // child.material.opacity = 0.7;
+            child.castShadow = true;
+            child.receiveShadow = true;
+            // child.material.color.set('blue');
+          }
+        });
+        obj.position.set(0,0,0);
+        preview3DRender(obj)
+      })
     }
-    
-    edit.hi3d.setscene(opt)
+  } else if (type === 'stl' && urlObj) {
+
+  } else if (type === 'collada' && urlObj) {
+    var loader = new THREE.ColladaLoader();
+    loader.load(urlObj.url, function (collada) {
+      var obj = collada.scene;
+      obj.kinematics = collada.kinematics;
+      obj.traverse( function ( child ) {
+        if ( child.isMesh ) {
+          // model does not have normals
+          child.material.flatShading = true;
+          child.material.transparent = false;
+          child.material.opacity = 1
+        }
+      } );
+      obj.updateMatrix();
+      obj.position.set(0,0,0);
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+      preview3DRender(obj)
+    })
+  } else if (type === 'fdx' && urlObj) {
+
+  } else if (type === 'nrrd' && urlObj) {
+
+  } else {
+    const geometry = new THREE.BoxGeometry(1, 1, 1) // 幾何體
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x0000ff
+    }) // 材質
+    node = new THREE.Mesh(geometry, material) // 建立網格物件
+    node.position.set(0, 0, 0)
+    // const geometry = new THREE.SphereGeometry( 5, 32, 16 );
+    // const wireframe = new THREE.WireframeGeometry( geometry );
+    // node = new THREE.LineSegments( wireframe );
+    // node.material.depthTest = false;
+    // node.material.transparent = true;
+    // node.position.set(0, 0, 0)
+    preview3DRender(node)
+  }
+
+  
+  // window.show3DModelSample.camera.position.set( 3*box1.max.x, 1.5*box1.max.y, box1.max.z );
+  // window.show3DModelSample.renderer.render( window.show3DModelSample.scene, window.show3DModelSample.camera );
+}
+function preview3DRender(node){
+  window.show3DModelSample.scene.add(node);
+  node.name = "preview3DModel";
+  var box1 = new THREE.Box3().setFromObject(node);
+  var width = Math.abs(box1.max.x - box1.min.x)
+  var depth = Math.abs(box1.max.y - box1.min.y)
+  var height = Math.abs(box1.max.z - box1.min.z)
+  window.show3DModelSample.camera.position.set(4 * width, 3 * depth, 4 * height);
+  // window.show3DModelSample.camera.lookAt(window.show3DModelSample.scene.position)
+  window.show3DModelSample.camera.lookAt(0,0,0)
+  window.show3DModelSample.renderer.render(window.show3DModelSample.scene, window.show3DModelSample.camera)
 }
