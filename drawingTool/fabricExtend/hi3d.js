@@ -2670,7 +2670,7 @@ hi3D.prototype.addOrbitControls = function () {
   const controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
   controls.minDistance = this.defaultOptions.orbitControls.minDistance;
   controls.maxDistance = this.defaultOptions.orbitControls.maxDistance;
-  controls.maxPolarAngle = Math.PI / 2;
+  controls.maxPolarAngle = Math.PI;
   controls.update();
   // controls.addEventListener( 'change', render );
   controls.addEventListener('change', function (event) {

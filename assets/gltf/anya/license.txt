@@ -1,0 +1,11 @@
+Model Information:
+* title:	Anya
+* source:	https://sketchfab.com/3d-models/anya-7548f77d443b4244bc88d1f51fc6cbd2
+* author:	cx00540 (https://sketchfab.com/cx00540)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Anya" (https://sketchfab.com/3d-models/anya-7548f77d443b4244bc88d1f51fc6cbd2) by cx00540 (https://sketchfab.com/cx00540) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
