@@ -276,10 +276,37 @@ function editorEvent3D(edit, objOption) {
   });
 
   $("#draw3dHiFormatMesh").click(function () {
-    edit.removeCanvasEvents();
-    edit.changeSelectableStatus(false);
-    edit.changeCanvasProperty(false, false);
-    var mesh = new edit.Hi3dMesh(edit, objOption);
+    // edit.removeCanvasEvents();
+    // edit.changeSelectableStatus(false);
+    // edit.changeCanvasProperty(false, false);
+    // var mesh = new edit.Hi3dMesh(edit, objOption);
+    $('#threeDModelDialog').show()
+    $('.prevFormat').hide()
+    $('.prevFormat_mesh').show()
+    $('#previewModelType').text('mesh')
+    var createFunc = 'function (option, parentGroup) {\n    const x = 0, y = 0;\n    const heartShape = new THREE.Shape();\n    heartShape.moveTo( x + 5, y + 5 );\n    heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );\n    heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );\n    heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );\n    heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );\n    heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );\n    heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );\n    let side = THREE.DoubleSide;\n     const geometry = new THREE.ShapeGeometry( heartShape );\n    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: side } );\n    const mesh = new THREE.Mesh( geometry, material ) ;\n    return mesh;\n  }';
+    var refreshFunc = 'function (node, objOption) {\n    if (objOption.color) {\n      node.material.color = new THREE.Color(objOption.color)\n    }\n    return node;\n  }';
+    $('#newMeshCreateFunc_prev').val(createFunc)
+    $('#newMeshSetFunc_prev').val(refreshFunc)
+    preview3DDialog('mesh', { 
+      created: hiDraw.prototype.readTextareaFuncStr($('#newMeshCreateFunc_prev').val()),
+      refresh: hiDraw.prototype.readTextareaFuncStr($('#newMeshSetFunc_prev').val())
+    })
+    $('#addPreviewModelToScene').off('click')
+    $('#addPreviewModelToScene').one( "click", function() {
+      $('#threeDModelDialog').hide();
+      edit.removeCanvasEvents();
+      edit.changeSelectableStatus(false);
+      edit.changeCanvasProperty(false, false);
+      var createFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshCreateFunc_prev').val())
+      var refreshFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshSetFunc_prev').val())
+      var mesh = new edit.Hi3dMesh(edit, objOption, {
+        customModelConfig: {
+          createFunc: createFuncStr,
+          refreshFunc: refreshFuncStr
+        }
+      });
+    });
   });
 
   $('#draw3dPlane').click(function () {
@@ -722,6 +749,7 @@ function editorEvent3D(edit, objOption) {
       $('#generateMeshDialog').show()
       showMeshPropChange(activeObj)
     }
+    // $('#threeDModelDialog').show()
   })
   $('#openThreeDModelDialog').click(function () {
     $('#threeDModelDialog').show()
@@ -786,6 +814,13 @@ function editorEvent3D(edit, objOption) {
       var model = $('#sourceFBXVal').val()
       preview3DDialog('nrrd', { 
         url: model
+      })
+    } else if ($('#previewModelType').text() === 'mesh') {
+      var createFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshCreateFunc_prev').val())
+      var refreshFuncStr = hiDraw.prototype.readTextareaFuncStr($('#newMeshSetFunc_prev').val())
+      preview3DDialog('mesh', { 
+        created: createFuncStr,
+        refresh: refreshFuncStr
       })
     }
   })
@@ -1156,6 +1191,16 @@ function preview3DDialog(type, urlObj) {
       obj = new THREE.Mesh(geometry, material);
       preview3DRender(obj)
     })
+  } else if (type === 'mesh' && urlObj.created) {
+    var createFuncStr = hiDraw.prototype.readTextareaFuncStr(urlObj.created)
+    var refreshFuncStr = hiDraw.prototype.readTextareaFuncStr(urlObj.refresh)
+    var createFunc = hi3D.prototype.functionGenerator(createFuncStr);
+    node = createFunc()
+    node.position.set(0,0,0);
+    node.castShadow = true;
+    node.receiveShadow = true;
+    node.rotation.y = Math.PI / 3;
+    preview3DRender(node)
   } else {
     const geometry = new THREE.BoxGeometry(1, 1, 1) // 幾何體
     const material = new THREE.MeshPhongMaterial({
