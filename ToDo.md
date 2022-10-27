@@ -63,6 +63,12 @@
 53. 完成 50後添加 %name%、%hiId% 等巨集參數，在物件function中可以使用   
 54. hiDraw texture，cube、sphere、ground (OK)  
 55. hidraw 添加 animate & dataBinding prototype，3d texture時可以使用  
+56. add THREE.plane 列表(+planehelper)，作為後續 clip 使用
+57. 獨立 spotlight 屬性 dialog  
+58. 切換相機 webgl_camera.html  
+59. 動態讀取js套件  
+60. 添加文字    
+
 
 # group (OK)  
 fabric  
