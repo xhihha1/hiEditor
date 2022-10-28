@@ -34,6 +34,9 @@
   <script src="drawingTool/common/thirdparty/threejs/misc/Volume.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/misc/VolumeSlice.js"></script>
   <script src="drawingTool/common/thirdparty/threejs/loaders/NRRDLoader.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/exporters/OBJExporter.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/exporters/STLExporter.js"></script>
+  <script src="drawingTool/common/thirdparty/threejs/exporters/GLTFExporter.js"></script>
   <!-- <script src="drawingTool/common/thirdparty/threejs/loaders/"></script> -->
   <!-- Line2 start -->
   <script src='drawingTool/common/thirdparty/threejs/lines/LineSegmentsGeometry.js'></script>
@@ -131,6 +134,9 @@
               <div class="sublist">
                 <label><input type="file" id="uploadJson" style="display: none;" /><img src="./icon/download_w.png" class="tool-icon">Open Json</label>
               </div>
+              <div id="downloadSceneStl" class="sublist">Download STL</div>
+              <div id="downloadSceneObj" class="sublist">Download Obj</div>
+              <!-- <div id="downloadSceneGLTF" class="sublist">Download GLTF</div> -->
               <div id="openSampleDialog" class="sublist">Sample</div>
               <div class="sublist" id="openEditCodeDialog">Edit code</div>
               <div class="sublist" id="openLitegraphCanvasDialog">litegraph</div>
@@ -301,6 +307,7 @@
             <canvas id="mainEditor"></canvas>
           </div>
         </div>
+        <div id="updownResizer"></div>
         <div class="area3D">
           <div id="content3D"></div>
         </div>

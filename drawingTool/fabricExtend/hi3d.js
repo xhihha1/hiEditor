@@ -129,17 +129,25 @@ function hi3D(options) {
   }
   if (this.defaultOptions.window.enableDefaultEvent) {
     window.addEventListener('resize', function () {
-      var container = document.getElementById(this.defaultOptions.parentId);
-      this.defaultOptions.containWidth = container.clientWidth
-      this.defaultOptions.containHeight = container.clientHeight
-      this.camera.aspect = this.defaultOptions.containWidth / this.defaultOptions.containHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
+      // var container = document.getElementById(this.defaultOptions.parentId);
+      // this.defaultOptions.containWidth = container.clientWidth
+      // this.defaultOptions.containHeight = container.clientHeight
+      // this.camera.aspect = this.defaultOptions.containWidth / this.defaultOptions.containHeight;
+      // this.camera.updateProjectionMatrix();
+      // this.renderer.setSize(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
+      this.resizeView()
     }.bind(this));
   }
-
-
   return this
+}
+
+hi3D.prototype.resizeView = function () {
+  var container = document.getElementById(this.defaultOptions.parentId);
+  this.defaultOptions.containWidth = container.clientWidth
+  this.defaultOptions.containHeight = container.clientHeight
+  this.camera.aspect = this.defaultOptions.containWidth / this.defaultOptions.containHeight;
+  this.camera.updateProjectionMatrix();
+  this.renderer.setSize(this.defaultOptions.containWidth, this.defaultOptions.containHeight);
 }
 
 hi3D.prototype.addscene = function () {
@@ -3002,7 +3010,7 @@ hi3D.prototype.exportToObj = function (scene) {
   }
 }
 
-hi3D.prototype.exportToSTL = function () {
+hi3D.prototype.exportToSTL = function (scene) {
   if (!scene) { scene = this.scene; }
   if (THREE.STLExporter) {
     const exporter = new THREE.STLExporter();
@@ -3011,13 +3019,13 @@ hi3D.prototype.exportToSTL = function () {
   }
 }
 
-hi3D.prototype.exportToGltf = function () {
+hi3D.prototype.exportToGltf = function (scene) {
   if (!scene) { scene = this.scene; }
   if (THREE.GLTFExporter) {
     const options = {
       trs: false,
       onlyVisible: true,
-      binary: true,
+      binary: false,
       includeCustomExtensions: false
     }
     const exporter = new THREE.GLTFExporter();
@@ -3031,11 +3039,11 @@ hi3D.prototype.exportToGltf = function () {
         } else {
           this.exportString(gltf, "model.gltf");
         }
-      },
+      }.bind(this),
       // called when there is an error in the generation
       function ( error ) {
         console.log( 'An error happened' );
-      },
+      }.bind(this),
       options
     );
   }
@@ -3046,7 +3054,10 @@ hi3D.prototype.exportString = function (text, filename) {
 }
 
 hi3D.prototype.exportDownload = function (blob, filename) {
+  var link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = filename;
+  document.body.appendChild(link); 
   link.click();
+  link.remove();
 }

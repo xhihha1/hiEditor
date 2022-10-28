@@ -1,4 +1,41 @@
+function resizeMouseUp (e) {
+  window.resizeCover = false
+  window.removeEventListener('mousemove', resizeMouseMove)
+  window.removeEventListener('mouseup', resizeMouseUp)
+}
+function resizeMouseMove (e) {
+  clearTimeout(window.resizeTimeout)
+  const height = parseInt(window.original2DHeight) - (window.originalMouseY - e.pageY)
+  window.resizeTimeout = setTimeout(function () {
+    const edit = dataStructure.editor[0];
+    if (parseInt(height) <= 195) {
+      $('.area2D').first().css({ height: 195 + 'px'})
+      $('.area3D').first().css({ height: 'calc(100% - 200px)' })
+    } else {
+      $('.area2D').first().css({ height: (height - 5) + 'px'})
+      $('.area3D').first().css({ height: 'calc(100% - ' + height + 'px)' })
+    }
+    edit.hi3d.resizeView()
+    var elem = document.getElementById('content');
+    edit.canvasView.setWidth(parseInt(elem.offsetWidth))
+    edit.canvasView.setHeight(parseInt(elem.offsetHeight))
+    edit.BgGrid(true)
+    edit.viewRender()
+    edit.hi3d.viewRender()
+  }, 0)
+}
+
 function editorEvent3D(edit, objOption) {
+  $('#updownResizer').on('mousedown', function (e) {
+    e.preventDefault()
+    window.resizeCover = true
+    window.original2DHeight = parseInt($('.area2D').first().height())
+    window.originalMouseX = e.pageX
+    window.originalMouseY = e.pageY
+    window.addEventListener('mousemove', resizeMouseMove)
+    window.addEventListener('mouseup', resizeMouseUp)
+  });
+  
   $('#render3D').click(function () {
     edit.hi3d.viewRender()
   });
@@ -742,6 +779,15 @@ function editorEvent3D(edit, objOption) {
   })
   $('#openSampleDialog').click(function () {
     $('#sampleDialog').show()
+  })
+  $('#downloadSceneStl').click(function () {
+    edit.hi3d.exportToSTL()
+  })
+  $('#downloadSceneObj').click(function () {
+    edit.hi3d.exportToObj()
+  })
+  $('#downloadSceneGLTF').click(function () {
+    // edit.hi3d.exportToGltf()
   })
   $('#openGenerateMeshDialog').click(function () {
     var activeObj = edit.canvasView.getActiveObject();
