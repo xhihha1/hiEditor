@@ -134,6 +134,8 @@ Three
 
 19. [小球沿著線移動](https://juejin.cn/post/6925358924254150670) 使用到 curve.getPoints(num) (取得分段), curve.getPoint(0~1) (取得某分段點)  
 
+20. [IFC converter](https://www.npmjs.com/package/ifc-convert)
+
 # API 參考  
 
 1. scene.getObjectByProperty('uuid','14B0E24A-D794-48C2-B66B-BA1314305ADB')
@@ -245,3 +247,58 @@ webgl_lightningstrike
     // 3D
     viewer.dsConfig.getValue('V1')
 
+
+# export 3D格式  
+
+    function exportToObj() {
+        const exporter = new OBJExporter();
+        console.log("exporter", exporter);
+        const result = exporter.parse(scene);
+        saveString(result, "model.obj");
+    }
+
+    function exportToSTL() {
+        const exporter = new STLExporter();
+        console.log("exporter", exporter);
+        const result = exporter.parse(scene);
+        saveString(result, "model.stl");
+    }
+
+    function saveString(text, filename) {
+        save(new Blob([text], { type: "text/plain" }), filename);
+    }
+
+    function save(blob, filename) {
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+# Three js save & load  
+
+1.
+You can serialize the scene like so:  
+
+    const json = scene.toJSON();
+
+And load it via ObjectLoader 99:  
+
+    const scene = new THREE.ObjectLoader().parse( json );
+
+2.
+
+    function exportSceneToJSON(input){
+        control.detach();
+        scene.remove(control);
+        var result=scene.toJSON();
+        var output =JSON.stringify(result);
+        download(output, 'scene.json', 'application/json');
+    }
+
+# 挖洞 切割 (ThreeBSP)
+
+CSG
+https://codepen.io/eroxburgh/pen/NWxXaZr
+
+BSP
+https://blog.csdn.net/qq_30100043/article/details/78944426

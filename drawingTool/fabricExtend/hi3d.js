@@ -2992,3 +2992,61 @@ hi3D.prototype.colorToHex = function (color) {
 
 // 回設 3d模型 size
 // https://stackoverflow.com/questions/20864931/three-js-how-can-i-return-the-size-of-an-object
+
+hi3D.prototype.exportToObj = function (scene) {
+  if (!scene) { scene = this.scene; }
+  if (THREE.OBJExporter) {
+    const exporter = new THREE.OBJExporter();
+    const result = exporter.parse(scene);
+    this.exportString(result, "model.obj");
+  }
+}
+
+hi3D.prototype.exportToSTL = function () {
+  if (!scene) { scene = this.scene; }
+  if (THREE.STLExporter) {
+    const exporter = new THREE.STLExporter();
+    const result = exporter.parse(scene);
+    this.exportString(result, "model.stl");
+  }
+}
+
+hi3D.prototype.exportToGltf = function () {
+  if (!scene) { scene = this.scene; }
+  if (THREE.GLTFExporter) {
+    const options = {
+      trs: false,
+      onlyVisible: true,
+      binary: true,
+      includeCustomExtensions: false
+    }
+    const exporter = new THREE.GLTFExporter();
+    exporter.parse(
+      scene,
+      // called when the gltf has been generated
+      function ( gltf ) {
+        console.log( gltf );
+        if (options.binary) {
+          this.exportString(gltf, "model.glb");
+        } else {
+          this.exportString(gltf, "model.gltf");
+        }
+      },
+      // called when there is an error in the generation
+      function ( error ) {
+        console.log( 'An error happened' );
+      },
+      options
+    );
+  }
+}
+
+hi3D.prototype.exportString = function (text, filename) {
+  this.exportDownload(new Blob([text], { type: "text/plain" }), filename);
+}
+
+hi3D.prototype.exportDownload = function (blob, filename) {
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
