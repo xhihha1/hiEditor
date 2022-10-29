@@ -2809,6 +2809,25 @@ hi3D.prototype.viewRender = function (num) {
   }
 }
 
+hi3D.prototype.getSurfacePlaneByName = function (name) {
+  if(this.surfacePlane && this.surfacePlane.hasOwnProperty(name)){
+    if(this.surfacePlane[name].isPlane) {
+      return this.surfacePlane[name]
+    }
+  }
+  return false
+}
+hi3D.prototype.setSurfacePlane = function () {
+  if (!this.surfacePlane) {
+    return false;
+  }
+  const surfaceList = this.surfacePlane;
+  for (let i = 0; i < surfaceList.length; i++) {
+    this.surfacePlane[surfaceList[i].name] = new THREE.Plane( new THREE.Vector3( surfaceList[i].x, surfaceList[i].y, surfaceList[i].z ), surfaceList[i].constant );
+  }
+  return true;
+}
+
 hi3D.prototype.animate = function () {
   // console.log(typeof this.animate, '-----------', this)
   const that = this
@@ -3019,38 +3038,55 @@ hi3D.prototype.exportToSTL = function (scene) {
   }
 }
 
-hi3D.prototype.exportToGltf = function (scene) {
+hi3D.prototype.exportToGltf = function (scene, exportOption) {
   if (!scene) { scene = this.scene; }
   if (THREE.GLTFExporter) {
     const options = {
-      trs: false,
-      onlyVisible: true,
+      // trs: false,
+      // onlyVisible: true,
       binary: false,
-      includeCustomExtensions: false
+      // includeCustomExtensions: false,
+      animations: []
     }
+    this.mergeDeep(options, exportOption)
     const exporter = new THREE.GLTFExporter();
-    exporter.parse(
-      scene,
-      // called when the gltf has been generated
-      function ( gltf ) {
-        console.log( gltf );
-        if (options.binary) {
-          this.exportString(gltf, "model.glb");
-        } else {
-          this.exportString(gltf, "model.gltf");
-        }
-      }.bind(this),
-      // called when there is an error in the generation
-      function ( error ) {
-        console.log( 'An error happened' );
-      }.bind(this),
-      options
-    );
+    exporter.parse( scene, function ( gltf ) {
+
+			if (options.binary) {
+        this.exportArrayBuffer(gltf, "model.glb");
+      } else {
+        this.exportString(JSON.stringify( gltf, null, 2 ), "model.gltf");
+      }
+
+		}.bind(this), options );
+    // exporter.parse(
+    //   scene,
+    //   // called when the gltf has been generated
+    //   function ( gltf ) {
+    //     console.log( gltf );
+    //     if (options.binary) {
+    //       this.exportArrayBuffer(gltf, "model.glb");
+    //     } else {
+    //       this.exportString(JSON.stringify( gltf, null, 2 ), "model.gltf");
+    //     }
+    //   }.bind(this),
+    //   // called when there is an error in the generation
+    //   function ( error ) {
+    //     console.log( 'An error happened' );
+    //   }.bind(this),
+    //   options
+    // );
   }
 }
 
 hi3D.prototype.exportString = function (text, filename) {
   this.exportDownload(new Blob([text], { type: "text/plain" }), filename);
+}
+
+hi3D.prototype.exportArrayBuffer = function ( buffer, filename ) {
+
+  this.exportDownload( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
+
 }
 
 hi3D.prototype.exportDownload = function (blob, filename) {

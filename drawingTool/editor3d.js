@@ -114,6 +114,7 @@ function initCanvas3D(edit, objOption) {
       }.bind(edit.hi3d)
     }
   })
+  edit.hi3d.setSurfacePlane()
   edit.hi3d.addscene()
   edit.hi3d.setGridHelper()
   edit.hi3d.addAxesHelper()

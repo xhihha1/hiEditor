@@ -787,7 +787,10 @@ function editorEvent3D(edit, objOption) {
     edit.hi3d.exportToObj()
   })
   $('#downloadSceneGLTF').click(function () {
-    // edit.hi3d.exportToGltf()
+    edit.hi3d.exportToGltf()
+  })
+  $('#downloadSceneGLB').click(function () {
+    edit.hi3d.exportToGltf('', { binary: true })
   })
   $('#openGenerateMeshDialog').click(function () {
     var activeObj = edit.canvasView.getActiveObject();
@@ -871,6 +874,142 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
+  $('#openAddjsDialog').click(function () {
+    $('#addjsDialog').show()
+    $('#addjsBodyRow').empty()
+    if (edit.canvasView.generalPropConfig &&
+      edit.canvasView.generalPropConfig.jsList) {
+        const jsList = edit.canvasView.generalPropConfig.jsList;
+        for(let i = 0; i < jsList.length;i++) {
+          $('#addjsBodyRow').append(`
+            <div class="commonContentTableRow addjsRow">
+              <div class="commonContentTableCell"></div>
+              <div class="commonContentTableCell">
+                <input type="text" class="addjsPathInput" value="${jsList[i]}" />
+              </div>
+              <div class="commonContentTableCell">
+                <button class="addjsPathRemove"></button>
+              </div>
+            </div>
+          `)
+        }
+    }
+  })
+  $('#addjsPathAdd').click(function () {
+    $('#addjsBodyRow').append(`
+      <div class="commonContentTableRow addjsRow">
+        <div class="commonContentTableCell"></div>
+        <div class="commonContentTableCell">
+          <input type="text" class="addjsPathInput" />
+        </div>
+        <div class="commonContentTableCell">
+          <button class="addjsPathRemove"></button>
+        </div>
+      </div>
+    `)
+  })
+  $('#addjsBodyRow').click(function (e) {
+    console.log(e.target)
+    if ($(e.target).hasClass('addjsPathRemove')) {
+      $(e.target).parents('.addjsRow').remove()
+    }
+  })
+  $('#applyAddjsList').click(function () {
+    const jsList = []
+    $('.addjsPathInput').each(function(idx){
+      jsList.push($(this).val().trim())
+    })
+    if(!edit.canvasView.generalPropConfig) {
+      edit.canvasView.generalPropConfig = {}
+    }
+    edit.canvasView.generalPropConfig.jsList = jsList;
+  })
+  $('#openAddSurfaceDialog').click(function () {
+    $('#addSurfaceDialog').show()
+    $('#addSurfaceBodyRow').empty()
+    if (edit.canvasView.generalPropConfig &&
+      edit.canvasView.generalPropConfig.surfaceList) {
+        const surfaceList = edit.canvasView.generalPropConfig.surfaceList;
+        for(let i = 0; i < surfaceList.length;i++) {
+          $('#addSurfaceBodyRow').append(`
+          <div class="commonContentTableRow addSurfaceRow">
+            <div class="commonContentTableCell"></div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceName" value="${surfaceList[i].name}"/>
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceX" value="${surfaceList[i].x}" />
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceY" value="${surfaceList[i].y}" />
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceZ" value="${surfaceList[i].z}" />
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceConstant" value="${surfaceList[i].constant}" />
+            </div>
+            <div class="commonContentTableCell">
+              <button class="addSurfaceRemove"></button>
+            </div>
+          </div>
+          `)
+        }
+    }
+  })
+  $('#addSurfaceAdd').click(function () {
+    $('#addSurfaceBodyRow').append(`
+    <div class="commonContentTableRow addSurfaceRow">
+      <div class="commonContentTableCell"></div>
+      <div class="commonContentTableCell">
+        <input type="text" class="addSurfaceName" />
+      </div>
+      <div class="commonContentTableCell">
+        <input type="text" class="addSurfaceX" value="1" />
+      </div>
+      <div class="commonContentTableCell">
+        <input type="text" class="addSurfaceY" value="0" />
+      </div>
+      <div class="commonContentTableCell">
+        <input type="text" class="addSurfaceZ" value="0" />
+      </div>
+      <div class="commonContentTableCell">
+        <input type="text" class="addSurfaceConstant" value="0" />
+      </div>
+      <div class="commonContentTableCell">
+        <button class="addSurfaceRemove"></button>
+      </div>
+    </div>
+    `)
+  })
+  $('#addSurfaceBodyRow').click(function (e) {
+    if ($(e.target).hasClass('addSurfaceRemove')) {
+      $(e.target).parents('.addSurfaceRow').remove()
+    }
+  })
+  $('#applyAddSurfaceList').click(function () {
+    const surfaceList = []
+    $('.addSurfaceRow').each(function(idx){
+      const planeOpt = {}
+      planeOpt.name = $(this).find('.addSurfaceName').val().trim()
+      planeOpt.x = parseFloat($(this).find('.addSurfaceX').val().trim())
+      planeOpt.y = parseFloat($(this).find('.addSurfaceY').val().trim())
+      planeOpt.z = parseFloat($(this).find('.addSurfaceZ').val().trim())
+      planeOpt.constant = parseFloat($(this).find('.addSurfaceConstant').val().trim())
+      surfaceList.push(planeOpt)
+    })
+    if(!edit.canvasView.generalPropConfig) {
+      edit.canvasView.generalPropConfig = {}
+    }
+    edit.canvasView.generalPropConfig.surfaceList = surfaceList;
+    // new THREE.Plane( new THREE.Vector3( 0, - 1, 0 ), 0.8 );
+    if (!edit.hi3d.surfacePlane) {
+      edit.hi3d.surfacePlane = {}
+    }
+    for (let i = 0; i < surfaceList.length; i++) {
+      edit.hi3d.surfacePlane[surfaceList[i].name] = new THREE.Plane( new THREE.Vector3( surfaceList[i].x, surfaceList[i].y, surfaceList[i].z ), surfaceList[i].constant );
+    }
+  })
 }
 
 function setCameraPropertyUI(edit, cameraOpt) {

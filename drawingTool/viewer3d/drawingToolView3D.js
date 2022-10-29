@@ -23,6 +23,7 @@ function hiViewer (edit, objOption) {
     parentId: this.defaultOption.parentId,
     container: {enableDefaultMouse: false}
   })
+  this.edit.hi3d.setSurfacePlane()
   this.edit.hi3d.addscene()
   this.edit.hi3d.setscene(this.currentJson.sceneProp)
   this.edit.hi3d.addCamera(this.currentJson.sceneProp.camera)
@@ -186,7 +187,13 @@ hiViewer.prototype.animationCallback = function () {
   }
   dataStructure.viewer[0].dataRefresh (dataStructure.viewer[0].edit.canvasOption)
   dataStructure.viewer[0].viewerAnimation(dataStructure.viewer[0].edit.canvasOption)
-
+  if(commonView) {
+    if(dataStructure.viewer[0].fabricJson &&
+      dataStructure.viewer[0].fabricJson.generalPropConfig &&
+      Array.isArray(dataStructure.viewer[0].fabricJson.generalPropConfig.jsList)) {
+        commonView.loadJsFilesToPage(dataStructure.viewer[0].fabricJson.generalPropConfig.jsList)
+      }
+  }
   
 // (function () {
 

@@ -136,7 +136,8 @@
               </div>
               <div id="downloadSceneStl" class="sublist">Download STL</div>
               <div id="downloadSceneObj" class="sublist">Download Obj</div>
-              <!-- <div id="downloadSceneGLTF" class="sublist">Download GLTF</div> -->
+              <div id="downloadSceneGLTF" class="sublist">Download GLTF</div>
+              <div id="downloadSceneGLB" class="sublist">Download GLB</div>
               <div id="openSampleDialog" class="sublist">Sample</div>
               <div class="sublist" id="openEditCodeDialog">Edit code</div>
               <div class="sublist" id="openLitegraphCanvasDialog">litegraph</div>
@@ -223,6 +224,7 @@
               <!-- <div class="sublist" title="Preview" id="openThreeDModelDialog"><img class="tool-icon" src="icon/file_nrrd_w.png">3D model</div> -->
               <div class="sublistTitle">Custom</div>
               <div class="sublist" title="Mesh" id="draw3dHiFormatMesh"><img class="tool-icon" src="icon/file_nrrd_w.png">Mesh</div>
+              <div class="sublist" id="openAddSurfaceDialog">Plane surface</div>
             </div>
           </li>
           <li class="dropdown" style="display: none;">
@@ -247,6 +249,7 @@
               <div class="sublist" id="openObjectListDialog">object List</div>
               <div class="sublist" id="openVariableConfigTable">Variable Config</div>
               <div class="sublist" id="openDataSourceConfigTable">Data source Config</div>
+              <div class="sublist" id="openAddjsDialog">add script file</div>
             </div>
           </li>
           <li class="dropdown">
@@ -1083,6 +1086,85 @@
       </div>
       <div class="prevFormat prevFormat_mesh"><textarea id="newMeshSetFunc_prev"></textarea></div>
       <div><button id="addPreviewModelToScene">Add</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="addjsDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">add js file</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="commonContentTable">
+        <div class="commonContentTableThead">
+          <div class="commonContentTableRow">
+            <div class="commonContentTableCell">
+              <button id="addjsPathAdd"></button>
+            </div>
+            <div class="commonContentTableCell">file path</div>
+            <div class="commonContentTableCell"></div>
+          </div>
+        </div>
+        <div class="commonContentTableTbody" id="addjsBodyRow">
+          <div class="commonContentTableRow addjsRow">
+            <div class="commonContentTableCell"></div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addjsPathInput" />
+            </div>
+            <div class="commonContentTableCell">
+              <button class="addjsPathRemove"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div><button id="applyAddjsList">Add</button></div>
+    </div>
+  </div>
+  <div class="commonDialog" id="addSurfaceDialog">
+    <div class="commonDialogTitle">
+      <div class="commonDialogTitleText">add Plane surface</div>
+      <div class="commonDialogClose"></div>
+    </div>
+    <div class="commonDialogContent">
+      <div class="commonContentTable">
+        <div class="commonContentTableThead">
+          <div class="commonContentTableRow">
+            <div class="commonContentTableCell">
+              <button id="addSurfaceAdd"></button>
+            </div>
+            <div class="commonContentTableCell">Name</div>
+            <div class="commonContentTableCell">x</div>
+            <div class="commonContentTableCell">y</div>
+            <div class="commonContentTableCell">z</div>
+            <div class="commonContentTableCell">constant</div>
+            <div class="commonContentTableCell"></div>
+          </div>
+        </div>
+        <div class="commonContentTableTbody" id="addSurfaceBodyRow">
+          <div class="commonContentTableRow addSurfaceRow">
+            <div class="commonContentTableCell"></div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceName" />
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceX" value="1"/>
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceY" value="0"/>
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceZ" value="0"/>
+            </div>
+            <div class="commonContentTableCell">
+              <input type="text" class="addSurfaceConstant" value="0"/>
+            </div>
+            <div class="commonContentTableCell">
+              <button class="addSurfaceRemove"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div><button id="applyAddSurfaceList">Add</button></div>
+      <div>hi3d.getSurfacePlaneByName</div>
     </div>
   </div>
   
