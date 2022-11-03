@@ -658,8 +658,8 @@
         )
         touchProp.originalDistBefore = touchProp.originalDist
         touchProp.originalCenter = {
-          x: Math.abs((touchProp.point1.clientX - touchProp.point2.clientX) / 2),
-          y: Math.abs((touchProp.point1.clientY - touchProp.point2.clientY) / 2)
+          x: Math.abs((touchProp.point1.clientX + touchProp.point2.clientX) / 2),
+          y: Math.abs((touchProp.point1.clientY + touchProp.point2.clientY) / 2)
         }
         touchProp.originalCenterBefore = { x: touchProp.originalCenter.x, y: touchProp.originalCenter.y }
         touchProp.point0 = { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
@@ -680,8 +680,8 @@
           touchProp.point2new.clientY
         )
         touchProp.originalCenterNew = {
-          x: Math.abs((touchProp.point1new.clientX - touchProp.point2new.clientX) / 2),
-          y: Math.abs((touchProp.point1new.clientY - touchProp.point2new.clientY) / 2)
+          x: Math.abs((touchProp.point1new.clientX + touchProp.point2new.clientX) / 2),
+          y: Math.abs((touchProp.point1new.clientY + touchProp.point2new.clientY) / 2)
         }
         touchProp.point0new ={ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
         const moveX = (touchProp.point0Before.clientX - touchProp.point0new.clientX)
