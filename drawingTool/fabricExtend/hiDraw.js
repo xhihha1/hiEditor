@@ -628,6 +628,7 @@
   }
 
   hiDraw.prototype.canvasDivTouchEvent = function (element, canvas) {
+    var self = this
     const touchProp = {}
     // const el = document.getElementById('mainContain');
     if (!element) {
@@ -643,7 +644,6 @@
     el.addEventListener('touchcancel', handleCancel);
     el.addEventListener('touchmove', handleMove);
     function handleStart (e) {
-      console.log(e)
       // document.getElementById('log').innerText = 'touch start'
       if (e.touches &&　e.touches.length === 2){
         // document.getElementById('log').innerText = 'touch start2'
@@ -697,7 +697,9 @@
           x: touchProp.originalCenterNew.x,
           y: touchProp.originalCenterNew.y
         }, zoom);
-
+        if (self.defaultOptions.showGridAxis) {
+          self.BgGrid(true)
+        }
       }
     }
     function distance(x1, y1, x2, y2) {
