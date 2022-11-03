@@ -646,7 +646,7 @@
       console.log(e)
       // document.getElementById('log').innerText = 'touch start'
       if (e.touches &&　e.touches.length === 2){
-        document.getElementById('log').innerText = 'touch start2'
+        // document.getElementById('log').innerText = 'touch start2'
         touchProp.point1 = e.touches[0]
         touchProp.point2 = e.touches[1]
         touchProp.originalZoomRate = canvas.getZoom()
@@ -670,7 +670,7 @@
     function handleCancel (e) {}
     function handleMove (e) {
       if (e.touches &&　e.touches.length === 2){
-        document.getElementById('log').innerText = 'touch move 2'
+        // document.getElementById('log').innerText = 'touch move 2'
         touchProp.point1new = e.touches[0]
         touchProp.point2new = e.touches[1]
         touchProp.originalDistNew = distance(
