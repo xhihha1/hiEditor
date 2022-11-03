@@ -19,6 +19,7 @@
     }
     this.hiObjectList = {}
     this.defaultOptions = {
+      canvasparentId: '',
       canvasViewId: 'mainEditor',
       activeJsonTextId: 'hiActiveJsonArea',
       canvasWidth: 500,
@@ -623,6 +624,86 @@
       return this.canvasView.toJSON(this.propertiesToInclude());
     } else {
       return {}
+    }
+  }
+
+  hiDraw.prototype.canvasDivTouchEvent = function (element, canvas) {
+    const touchProp = {}
+    // const el = document.getElementById('mainContain');
+    if (!element) {
+      element = document.getElementById(this.defaultOptions.canvasparentId)
+    }
+    console.log(this.defaultOptions.canvasparentId, element)
+    if (!canvas) {
+      canvas = this.canvasView
+    }
+    const el = element;
+    el.addEventListener('touchstart', handleStart);
+    el.addEventListener('touchend', handleEnd);
+    el.addEventListener('touchcancel', handleCancel);
+    el.addEventListener('touchmove', handleMove);
+    function handleStart (e) {
+      console.log(e)
+      // document.getElementById('log').innerText = 'touch start'
+      if (e.touches &&　e.touches.length === 2){
+        document.getElementById('log').innerText = 'touch start2'
+        touchProp.point1 = e.touches[0]
+        touchProp.point2 = e.touches[1]
+        touchProp.originalZoomRate = canvas.getZoom()
+        touchProp.originalDist = distance(
+          touchProp.point1.clientX,
+          touchProp.point1.clientY,
+          touchProp.point2.clientX,
+          touchProp.point2.clientY
+        )
+        touchProp.originalDistBefore = touchProp.originalDist
+        touchProp.originalCenter = {
+          x: Math.abs((touchProp.point1.clientX - touchProp.point2.clientX) / 2),
+          y: Math.abs((touchProp.point1.clientY - touchProp.point2.clientY) / 2)
+        }
+        touchProp.originalCenterBefore = { x: touchProp.originalCenter.x, y: touchProp.originalCenter.y }
+        touchProp.point0 = { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
+        touchProp.point0Before = touchProp.point0
+      }
+    }
+    function handleEnd (e) {}
+    function handleCancel (e) {}
+    function handleMove (e) {
+      if (e.touches &&　e.touches.length === 2){
+        document.getElementById('log').innerText = 'touch move 2'
+        touchProp.point1new = e.touches[0]
+        touchProp.point2new = e.touches[1]
+        touchProp.originalDistNew = distance(
+          touchProp.point1new.clientX,
+          touchProp.point1new.clientY,
+          touchProp.point2new.clientX,
+          touchProp.point2new.clientY
+        )
+        touchProp.originalCenterNew = {
+          x: Math.abs((touchProp.point1new.clientX - touchProp.point2new.clientX) / 2),
+          y: Math.abs((touchProp.point1new.clientY - touchProp.point2new.clientY) / 2)
+        }
+        touchProp.point0new ={ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
+        const moveX = (touchProp.point0Before.clientX - touchProp.point0new.clientX)
+        const moveY = (touchProp.point0Before.clientY - touchProp.point0new.clientY)
+        touchProp.point0Before = touchProp.point0new
+        var delta = new fabric.Point(-1*moveX, -1*moveY);
+        canvas.relativePan(delta);
+        // Zoom
+        const zoomRate = touchProp.originalDistNew / touchProp.originalDist
+        const zoom = touchProp.originalZoomRate * zoomRate
+        touchProp.originalDistBefore = touchProp.originalDistNew
+        canvas.zoomToPoint({
+          x: touchProp.originalCenterNew.x,
+          y: touchProp.originalCenterNew.y
+        }, zoom);
+
+      }
+    }
+    function distance(x1, y1, x2, y2) {
+      let y = x2 - x1;
+      let x = y2 - y1;
+      return Math.sqrt(x * x + y * y);
     }
   }
 

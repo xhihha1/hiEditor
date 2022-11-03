@@ -36,91 +36,91 @@ function editorEvent3D(edit, objOption) {
     window.addEventListener('mouseup', resizeMouseUp)
   });
   
-  $('#render3D').click(function () {
+  $('#render3D').on('click touchstart', function () {
     edit.hi3d.viewRender()
   });
 
-  // $("#drawCamera").click(function () {
+  // $("#drawCamera").on('click touchstart', function () {
   //   edit.removeCanvasEvents();
   //   edit.changeSelectableStatus(false);
   //   edit.changeCanvasProperty(false, false);
   //   var circle = new edit.HiCamera(edit, objOption);
   // });
-  // $("#drawLookAt").click(function () {
+  // $("#drawLookAt").on('click touchstart', function () {
   //   edit.removeCanvasEvents();
   //   edit.changeSelectableStatus(false);
   //   edit.changeCanvasProperty(false, false);
   //   var circle = new edit.HiLookAt(edit, objOption);
   // });
-  $("#drawSpotLight").click(function () {
+  $("#drawSpotLight").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiSpotLight(edit, objOption);
   });
-  $("#drawPointLight").click(function () {
+  $("#drawPointLight").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiPointLight(edit, objOption);
   });
-  $("#drawCube").click(function () {
+  $("#drawCube").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var circle = new edit.HiCube(edit, objOption);
   });
-  $("#drawSphere").click(function () {
+  $("#drawSphere").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var squrect = new edit.HiSphere(edit, objOption);
   });
-  $("#drawCylinder").click(function () {
+  $("#drawCylinder").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var squrect = new edit.HiCylinder(edit, objOption);
   });
-  $("#draw3dPolyline").click(function () {
+  $("#draw3dPolyline").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var polyline = new edit.Hi3DPolyline(edit, objOption);
   });
 
-  $("#draw3dPolygon").click(function () {
+  $("#draw3dPolygon").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var polyline = new edit.Hi3DPolygon(edit, objOption);
   });
 
-  $("#draw3dPlaneGround").click(function () {
+  $("#draw3dPlaneGround").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var HiPlane = new edit.HiPlane(edit, objOption);
   });
 
-  $("#draw3dWall").click(function () {
+  $("#draw3dWall").on('click touchstart', function () {
     edit.removeCanvasEvents();
     edit.changeSelectableStatus(false);
     edit.changeCanvasProperty(false, false);
     var HiPlane = new edit.HiWall(edit, objOption);
   });
 
-  $('#add3dObj').click(function (e) {
+  $('#add3dObj').on('click touchstart', function (e) {
     edit.hi3d.addObj()
     edit.hi3d.refreshByFabricJson(edit);
   })
 
-  $('#addAxesHelper').click(function (e) {
+  $('#addAxesHelper').on('click touchstart', function (e) {
     edit.hi3d.addAxesHelper()
     edit.hi3d.refreshByFabricJson(edit);
   })
 
-  $("#draw3dHiFormatObj").click(function () {
+  $("#draw3dHiFormatObj").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_obj').show()
@@ -146,7 +146,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatCollada").click(function () {
+  $("#draw3dHiFormatCollada").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_dae').show()
@@ -172,7 +172,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatSTL").click(function () {
+  $("#draw3dHiFormatSTL").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_stl').show()
@@ -198,7 +198,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormat3DS").click(function () {
+  $("#draw3dHiFormat3DS").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_3ds').show()
@@ -232,7 +232,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatGLTF").click(function () {
+  $("#draw3dHiFormatGLTF").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_gltf').show()
@@ -258,7 +258,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatFbx").click(function () {
+  $("#draw3dHiFormatFbx").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_fbx').show()
@@ -285,7 +285,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatNRRD").click(function () {
+  $("#draw3dHiFormatNRRD").on('click touchstart', function () {
     $('#threeDModelDialog').show()
     $('.prevFormat').hide()
     $('.prevFormat_nrrd').show()
@@ -312,7 +312,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $("#draw3dHiFormatMesh").click(function () {
+  $("#draw3dHiFormatMesh").on('click touchstart', function () {
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);
     // edit.changeCanvasProperty(false, false);
@@ -346,7 +346,7 @@ function editorEvent3D(edit, objOption) {
     });
   });
 
-  $('#draw3dPlane').click(function () {
+  $('#draw3dPlane').on('click touchstart', function () {
     // edit.removeCanvasEvents();
     // edit.changeSelectableStatus(false);
     // edit.changeCanvasProperty(false, false);
@@ -369,7 +369,7 @@ function editorEvent3D(edit, objOption) {
     // }, 1000)
     dataStructure.editor[0].hi3d.addPlane()
   })
-  $('#btnGround').click(function () {
+  $('#btnGround').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.ground) {
       edit.hi3d.addGroundPlane()
@@ -379,7 +379,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnGridHelper').click(function () {
+  $('#btnGridHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.gridHelper) {
       edit.hi3d.setGridHelper()
@@ -389,7 +389,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnAxesHelper').click(function () {
+  $('#btnAxesHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.axesHelper) {
       edit.hi3d.addAxesHelper()
@@ -399,13 +399,13 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  // $('#btnLight').click(function(){
+  // $('#btnLight').on('click touchstart', function(){
   //   var checked = $(this).prop("checked");
   //   edit.hi3d.directionalLight.visible = checked;
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnLightHelper').click(function () {
+  $('#btnLightHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.dirLightHelper) {
       edit.hi3d.addLightHelper()
@@ -416,7 +416,7 @@ function editorEvent3D(edit, objOption) {
     edit.hi3d.viewRender()
   })
 
-  // $('#btnHemisphereLight').click(function(){
+  // $('#btnHemisphereLight').on('click touchstart', function(){
   //   var checked = $(this).prop("checked");
   //   // edit.hi3d.directionalLight.visible = checked;
   //   // edit.hi3d.ambientLight.visible = ! edit.hi3d.ambientLight.visible;
@@ -424,7 +424,7 @@ function editorEvent3D(edit, objOption) {
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnHemisphereLightHelper').click(function () {
+  $('#btnHemisphereLightHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.hemiLightHelper) {
       edit.hi3d.addHemisphereLightHelper()
@@ -434,13 +434,13 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  // $('#btnAmbientLight').click(function(){
+  // $('#btnAmbientLight').on('click touchstart', function(){
   //   var checked = $(this).prop("checked");
   //   edit.hi3d.ambientLight.visible = checked;
   //   // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
   //   edit.hi3d.viewRender()
   // })
-  $('#btnSpotLightHelper').click(function () {
+  $('#btnSpotLightHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     edit.hi3d.addSpotLightHelper()
     edit.hi3d.scene.traverse(function (node) {
@@ -451,7 +451,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnCameraHelper').click(function () {
+  $('#btnCameraHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (!edit.hi3d.cameraHelper) {
       edit.hi3d.addCameraHelper()
@@ -461,7 +461,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#btnBoxHelper').click(function () {
+  $('#btnBoxHelper').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     var boxs = []
     edit.hi3d.scene.traverse(function (node) {
@@ -478,7 +478,7 @@ function editorEvent3D(edit, objOption) {
     // edit.hi3d.renderer.render(edit.hi3d.scene, edit.hi3d.camera);
     edit.hi3d.viewRender()
   })
-  $('#tc_enable').click(function () {
+  $('#tc_enable').on('click touchstart', function () {
     var checked = $(this).prop("checked");
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.enabled = checked;
@@ -486,42 +486,42 @@ function editorEvent3D(edit, objOption) {
       $(this).prop("checked", true);
     }
   })
-  $('#tc_translate').click(function () {
+  $('#tc_translate').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.setMode('translate');
     }
   })
-  $('#tc_rotate').click(function () {
+  $('#tc_rotate').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.setMode('rotate');
     }
   })
-  $('#tc_scale').click(function () {
+  $('#tc_scale').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.setMode('scale');
     }
   })
-  $('#tc_sizePlus').click(function () {
+  $('#tc_sizePlus').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.setSize(edit.hi3d.transformControls.size + 0.1);
     }
   })
-  $('#tc_sizeMinus').click(function () {
+  $('#tc_sizeMinus').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.setSize(Math.max(edit.hi3d.transformControls.size - 0.1, 0.1));
     }
   })
-  $('#tc_toggleX').click(function () {
+  $('#tc_toggleX').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.showX = !edit.hi3d.transformControls.showX;
     }
   })
-  $('#tc_toggleY').click(function () {
+  $('#tc_toggleY').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.showY = !edit.hi3d.transformControls.showY;
     }
   })
-  $('#tc_toggleZ').click(function () {
+  $('#tc_toggleZ').on('click touchstart', function () {
     if (edit.hi3d.transformControls) {
       edit.hi3d.transformControls.showZ = !edit.hi3d.transformControls.showZ;
     }
@@ -553,7 +553,7 @@ function editorEvent3D(edit, objOption) {
     })
     edit.hi3d.viewRender()
   })
-  $('#submitLight').click(function () {
+  $('#submitLight').on('click touchstart', function () {
     var visible = $('#btnLight').prop("checked");
     var color = $('#light_color').val()
     var intensity = parseFloat($('#light_intensity').val())
@@ -571,7 +571,7 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
-  $('#submitHemisphereLight').click(function () {
+  $('#submitHemisphereLight').on('click touchstart', function () {
     var visible = $('#btnHemisphereLight').prop("checked");
     var color = $('#hemisphereLight_color').val()
     var groundColor = $('#hemisphereLight_groundColor').val()
@@ -589,7 +589,7 @@ function editorEvent3D(edit, objOption) {
       edit.hi3d.viewRender()
     }
   })
-  $('#submitAmbientLight').click(function () {
+  $('#submitAmbientLight').on('click touchstart', function () {
     var visible = $('#btnAmbientLight').prop("checked");
     var color = $('#ambientLight_color').val()
     var intensity = parseFloat($('#ambientLight_intensity').val())
@@ -632,10 +632,10 @@ function editorEvent3D(edit, objOption) {
   $('#newSceneBgAreaImage').hide()
   $('#newSceneBgAreaCubeTexture').hide()
   $('#newSceneBgAreaEquirectangular').hide()
-  $('#submitSceneProp').click(function () {
+  $('#submitSceneProp').on('click touchstart', function () {
     saveSceneProperty(edit)
   })
-  $('#submitGrid').click(function () {
+  $('#submitGrid').on('click touchstart', function () {
     var size = parseInt($('#gridSize').val())
     var divisions = parseInt($('#gridDivisions').val())
     var colorCenterLine = $('#grid_colorCenter').val()
@@ -651,7 +651,7 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#objFilesList').click(function (e) {
+  $('#objFilesList').on('click touchstart', function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -666,7 +666,7 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#gltfFilesList').click(function (e) {
+  $('#gltfFilesList').on('click touchstart', function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -681,7 +681,7 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#colladaFilesList').click(function (e) {
+  $('#colladaFilesList').on('click touchstart', function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -696,7 +696,7 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#fbxFilesList').click(function (e) {
+  $('#fbxFilesList').on('click touchstart', function (e) {
     var target = e.target
     if ($(target).is('li')) {
       edit.removeCanvasEvents();
@@ -712,14 +712,14 @@ function editorEvent3D(edit, objOption) {
   })
 
   $('.prop-content').toggle();
-  $('#property').click(function (e) {
+  $('#property').on('click touchstart', function (e) {
     const target = e.target
     if ($(target).hasClass('prop-title')) {
       $(target).next('.prop-content').toggle();
     }
   })
 
-  $('#applySampleFile').click(function () {
+  $('#applySampleFile').on('click touchstart', function () {
     const fileName = $('#sampleFileSelected').val()
     var oReq = new XMLHttpRequest();
     oReq.open("GET", fileName, true);
@@ -732,67 +732,67 @@ function editorEvent3D(edit, objOption) {
   })
 
   // $('#menu').scrollbar();
-  $('#openSceneDialog').click(function () {
+  $('#openSceneDialog').on('click touchstart', function () {
     $('#sceneDialog').show()
   })
-  $('#openGridDialog').click(function () {
+  $('#openGridDialog').on('click touchstart', function () {
     $('#gridDialog').show()
   })
-  $('#openTranformCtrlDialog').click(function () {
+  $('#openTranformCtrlDialog').on('click touchstart', function () {
     $('#tranformCtrlDialog').show()
   })
-  $('#openExportFabricDialog').click(function () {
+  $('#openExportFabricDialog').on('click touchstart', function () {
     $('#exportFabricDialog').show()
   })
-  $('#openExportLabelmeDialog').click(function () {
+  $('#openExportLabelmeDialog').on('click touchstart', function () {
     $('#exportLabelmeDialog').show()
   })
-  $('#openImportFabricDialog').click(function () {
+  $('#openImportFabricDialog').on('click touchstart', function () {
     $('#importFabricDialog').show()
   })
-  $('#openImportLabelmeDialog').click(function () {
+  $('#openImportLabelmeDialog').on('click touchstart', function () {
     $('#importLabelmeDialog').show()
   })
-  $('#openDirectionalLightDialog').click(function () {
+  $('#openDirectionalLightDialog').on('click touchstart', function () {
     $('#directionalLightDialog').show()
   })
-  $('#openHemisphereLightDialog').click(function () {
+  $('#openHemisphereLightDialog').on('click touchstart', function () {
     $('#hemisphereLightDialog').show()
   })
-  $('#openAmbientLightDialog').click(function () {
+  $('#openAmbientLightDialog').on('click touchstart', function () {
     $('#ambientLightDialog').show()
   })
-  $('#openObjectListDialog').click(function () {
+  $('#openObjectListDialog').on('click touchstart', function () {
     $('#objectListDialog').show()
   })
-  $('#openPanCtrl').click(function () {
+  $('#openPanCtrl').on('click touchstart', function () {
     $('#panCtrl').show()
   })
-  $('#openSceneProp').click(function () {
+  $('#openSceneProp').on('click touchstart', function () {
     $('#scenePropDialog').show()
   })
-  $('#openObjProp').click(function () {
+  $('#openObjProp').on('click touchstart', function () {
     $('#objPropDialog').show()
   })
-  $('#openModelSourceDialog').click(function () {
+  $('#openModelSourceDialog').on('click touchstart', function () {
     $('#modelSourceDialog').show()
   })
-  $('#openSampleDialog').click(function () {
+  $('#openSampleDialog').on('click touchstart', function () {
     $('#sampleDialog').show()
   })
-  $('#downloadSceneStl').click(function () {
+  $('#downloadSceneStl').on('click touchstart', function () {
     edit.hi3d.exportToSTL()
   })
-  $('#downloadSceneObj').click(function () {
+  $('#downloadSceneObj').on('click touchstart', function () {
     edit.hi3d.exportToObj()
   })
-  $('#downloadSceneGLTF').click(function () {
+  $('#downloadSceneGLTF').on('click touchstart', function () {
     edit.hi3d.exportToGltf()
   })
-  $('#downloadSceneGLB').click(function () {
+  $('#downloadSceneGLB').on('click touchstart', function () {
     edit.hi3d.exportToGltf('', { binary: true })
   })
-  $('#openGenerateMeshDialog').click(function () {
+  $('#openGenerateMeshDialog').on('click touchstart', function () {
     var activeObj = edit.canvasView.getActiveObject();
     if (activeObj) {
       $('#generateMeshDialog').show()
@@ -800,7 +800,7 @@ function editorEvent3D(edit, objOption) {
     }
     // $('#threeDModelDialog').show()
   })
-  $('#openThreeDModelDialog').click(function () {
+  $('#openThreeDModelDialog').on('click touchstart', function () {
     $('#threeDModelDialog').show()
     preview3DDialog('3ds', {
       f_3dsNormalMap: './assets/3ds/portalgun/textures/normal.jpg',
@@ -874,7 +874,7 @@ function editorEvent3D(edit, objOption) {
     }
   })
 
-  $('#openAddjsDialog').click(function () {
+  $('#openAddjsDialog').on('click touchstart', function () {
     $('#addjsDialog').show()
     $('#addjsBodyRow').empty()
     if (edit.canvasView.generalPropConfig &&
@@ -895,7 +895,7 @@ function editorEvent3D(edit, objOption) {
         }
     }
   })
-  $('#addjsPathAdd').click(function () {
+  $('#addjsPathAdd').on('click touchstart', function () {
     $('#addjsBodyRow').append(`
       <div class="commonContentTableRow addjsRow">
         <div class="commonContentTableCell"></div>
@@ -908,13 +908,13 @@ function editorEvent3D(edit, objOption) {
       </div>
     `)
   })
-  $('#addjsBodyRow').click(function (e) {
+  $('#addjsBodyRow').on('click touchstart', function (e) {
     console.log(e.target)
     if ($(e.target).hasClass('addjsPathRemove')) {
       $(e.target).parents('.addjsRow').remove()
     }
   })
-  $('#applyAddjsList').click(function () {
+  $('#applyAddjsList').on('click touchstart', function () {
     const jsList = []
     $('.addjsPathInput').each(function(idx){
       jsList.push($(this).val().trim())
@@ -924,7 +924,7 @@ function editorEvent3D(edit, objOption) {
     }
     edit.canvasView.generalPropConfig.jsList = jsList;
   })
-  $('#openAddSurfaceDialog').click(function () {
+  $('#openAddSurfaceDialog').on('click touchstart', function () {
     $('#addSurfaceDialog').show()
     $('#addSurfaceBodyRow').empty()
     if (edit.canvasView.generalPropConfig &&
@@ -957,7 +957,7 @@ function editorEvent3D(edit, objOption) {
         }
     }
   })
-  $('#addSurfaceAdd').click(function () {
+  $('#addSurfaceAdd').on('click touchstart', function () {
     $('#addSurfaceBodyRow').append(`
     <div class="commonContentTableRow addSurfaceRow">
       <div class="commonContentTableCell"></div>
@@ -982,12 +982,12 @@ function editorEvent3D(edit, objOption) {
     </div>
     `)
   })
-  $('#addSurfaceBodyRow').click(function (e) {
+  $('#addSurfaceBodyRow').on('click touchstart', function (e) {
     if ($(e.target).hasClass('addSurfaceRemove')) {
       $(e.target).parents('.addSurfaceRow').remove()
     }
   })
-  $('#applyAddSurfaceList').click(function () {
+  $('#applyAddSurfaceList').on('click touchstart', function () {
     const surfaceList = []
     $('.addSurfaceRow').each(function(idx){
       const planeOpt = {}
