@@ -707,6 +707,7 @@
       let x = y2 - y1;
       return Math.sqrt(x * x + y * y);
     }
+    return this;
   }
 
 

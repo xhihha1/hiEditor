@@ -11,6 +11,7 @@ function appendProp() {
 function initCanvas(canvasId, canvasViewId) {
   var elem = document.getElementById(canvasId);
   var edit = new hiDraw({
+    canvasparentId: canvasId,
     canvasViewId: canvasViewId,
     // viewJsonTextId: 'hiJsonArea',
     // activeJsonTextId: 'hiActiveJsonArea',
@@ -65,7 +66,7 @@ function initCanvas(canvasId, canvasViewId) {
 
       }
     }
-  }).createView().viewEvent().BgGrid(true);
+  }).createView().viewEvent().BgGrid(true).canvasDivTouchEvent();
 
 
   var objOption = {
